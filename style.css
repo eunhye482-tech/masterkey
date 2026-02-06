@@ -1,0 +1,49 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
+}
+
+.container {
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+#korean-sentence {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+#english-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 1.2em;
+  margin: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+}
+
+button:active {
+  background-color: #45a049;
+}
+
+#feedback {
+  font-size: 1.2em;
+  margin-top: 15px;
+  color: #333;
+}

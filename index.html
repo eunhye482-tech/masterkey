@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>영어 학습 앱</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>영어 학습 앱</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>영어 문장 연습</h1>
-    
-    <!-- 한글 문장 표시 -->
-    <p id="koreanSentence"></p>
-    
-    <!-- 학생 음성 결과 표시 -->
-    <p>학생이 말한 영어: <span id="studentSpeech"></span></p>
-    
-    <!-- 피드백 표시 -->
-    <p>피드백: <span id="feedback"></span></p>
-    
-    <!-- 버튼 -->
-    <button id="startBtn">말하기 시작</button>
-    <button id="nextBtn">다음 문장</button>
+  <div class="container">
+    <h1 id="korean-sentence">한글 문장이 여기에 나와요</h1>
 
-    <script src="script.js"></script>
+    <input type="text" id="english-input" placeholder="영어로 입력하세요">
+
+    <button id="record-btn">🎤 녹음 시작</button>
+    <button id="check-btn">제출</button>
+    <button id="next-btn">다음 문장</button>
+
+    <p id="feedback"></p>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
