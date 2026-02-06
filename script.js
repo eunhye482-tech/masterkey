@@ -122,14 +122,22 @@ function showResultTable() {
       return;
     }
     html2canvas(document.getElementById("result-table")).then(canvas => {
-      canvas.toBlob(function(blob) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "오늘_학습결과.png";
-        a.click();
-      });
-    });
+  const imgData = canvas.toDataURL("image/png");
+
+  const newWindow = window.open();
+  newWindow.document.write(`
+    <html>
+      <body style="margin:0; text-align:center;">
+        <img src="${imgData}" style="width:100%">
+        <p style="font-size:16px; margin-top:10px;">
+          📱 아이폰은 이미지를 길게 눌러<br>
+          <b>“사진에 추가”</b> 하세요
+        </p>
+      </body>
+    </html>
+  `);
+});
+
   });
 
   koreanEl.textContent = "오늘 학습이 완료되었습니다!";
