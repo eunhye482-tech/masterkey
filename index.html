@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>영어 학습 앱</title>
+  <title>오늘의 영어 말하기 연습</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,11 +13,11 @@
     <h1 id="korean-sentence">한글 문장이 여기에 나와요</h1>
 
     <input type="text" id="english-input" placeholder="영어로 입력하세요">
-
     <button id="record-btn">🎤 녹음 시작</button>
     <button id="check-btn">제출</button>
     <button id="next-btn">다음 문장</button>
 
+    <div id="result-table-container"></div>
     <p id="feedback"></p>
   </div>
 

@@ -1,42 +1,43 @@
-// 1. 한글 문장 10개 + 영어 답 10개
+// 기존 sentences, 변수 선언, 문장 표시, 녹음, 제출, 다음 문장 등 그대로 유지
 const sentences = [
-  { korean: "나는 오늘 학교에 갔다.", english: "I went to school today." },
-  { korean: "나는 사과를 좋아한다.", english: "I like apples." },
-  { korean: "그는 매일 아침 달린다.", english: "He runs every morning." },
-  { korean: "우리는 도서관에서 공부했다.", english: "We studied in the library." },
-  { korean: "내 친구는 피아노를 칠 수 있다.", english: "My friend can play the piano." },
-  { korean: "나는 어제 영화를 봤다.", english: "I watched a movie yesterday." },
-  { korean: "그녀는 커피를 마시고 있다.", english: "She is drinking coffee." },
-  { korean: "나는 매주 토요일에 운동한다.", english: "I exercise every Saturday." },
-  { korean: "고양이가 창문 밖을 보고 있다.", english: "The cat is looking out the window." },
-  { korean: "우리는 내일 여행을 갈 예정이다.", english: "We are going on a trip tomorrow." }
+  { korean: "그 러닝화는 다른 신발들보다 두 배 더 비싸다.", english: "The running shoes are twice as expensive as other shoes." },
+  { korean: "가능한 한 빨리 오세요.", english: "Please come as soon as possible." },
+  { korean: "가능한 한 빨리 오세요.", english: "Please come as soon as you can." },
+  { korean: "더 많이 웃을수록, 너는 더 행복해진다.", english: "The more you laugh, the happier you become." },
+  { korean: "다비드는 가능한 한 일찍 학교에 간다.", english: "David goes to school as early as possible." },
+  { korean: "시험이 다가올수록, 앨리스는 점점 더 긴장했다.", english: "Alice got more and more nervous as the test came." },
+  { korean: "이번 주에 날씨가 점점 더 추워지고 있다.", english: "The weather is getting colder and colder this week." },
+  { korean: "새로운 경기장은 이전 것의 세 배만큼 더 크다.", english: "The new stadium is three times as big as the old one." },
+  { korean: "우리가 더 많이 연습할수록, 우리의 공연은 더 좋아질 것이다.", english: "The more we practice, the better our performance will be." },
+  { korean: "그 노트북은 데스크톱 컴퓨터보다 두 배 더 가볍다.", english: "The laptop is twice as light as the desktop computer." }
 ];
 
 let currentIndex = 0;
+let studentAnswers = [];
 
-// DOM 요소
 const koreanEl = document.getElementById("korean-sentence");
 const englishInput = document.getElementById("english-input");
 const feedbackEl = document.getElementById("feedback");
 const recordBtn = document.getElementById("record-btn");
 const checkBtn = document.getElementById("check-btn");
 const nextBtn = document.getElementById("next-btn");
+const resultContainer = document.getElementById("result-table-container");
 
-// 2. 화면에 한글 문장 표시
+// 문장 표시
 function showSentence(index) {
   koreanEl.textContent = sentences[index].korean;
   englishInput.value = "";
   feedbackEl.textContent = "";
 }
 
-// 3. 정답 음성 읽기
+// 정답 음성 읽기
 function speakText(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-US';
   speechSynthesis.speak(utterance);
 }
 
-// 4. 제출 확인
+// 제출
 checkBtn.addEventListener("click", () => {
   const userAnswer = englishInput.value.trim();
   const correctAnswer = sentences[currentIndex].english;
@@ -46,27 +47,33 @@ checkBtn.addEventListener("click", () => {
     return;
   }
 
-  if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-    feedbackEl.textContent = "✅ 정답입니다!";
-  } else {
-    feedbackEl.textContent = `❌ 틀렸어요. 정답: ${correctAnswer}`;
-  }
+  const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
 
-  // 정답 음성 읽어주기
+  feedbackEl.textContent = isCorrect
+    ? "✅ 정답입니다!"
+    : `❌ 틀렸어요. 정답: ${correctAnswer}`;
+
   speakText(correctAnswer);
+
+  studentAnswers[currentIndex] = {
+    question: sentences[currentIndex].korean,
+    student: userAnswer,
+    correct: correctAnswer,
+    isCorrect: isCorrect
+  };
 });
 
-// 5. 다음 문장
+// 다음 문장
 nextBtn.addEventListener("click", () => {
   currentIndex++;
   if (currentIndex >= sentences.length) {
-    alert("모든 문장을 완료했습니다!");
-    currentIndex = 0; // 다시 처음으로
+    showResultTable();
+  } else {
+    showSentence(currentIndex);
   }
-  showSentence(currentIndex);
 });
 
-// 6. 녹음 버튼 (웹 SpeechRecognition 사용, Chrome/Edge 권장)
+// 녹음
 recordBtn.addEventListener("click", () => {
   if (!('webkitSpeechRecognition' in window)) {
     alert("이 브라우저는 음성인식을 지원하지 않습니다.");
@@ -82,13 +89,53 @@ recordBtn.addEventListener("click", () => {
 
   recognition.onresult = (event) => {
     const speechResult = event.results[0][0].transcript;
-    englishInput.value = speechResult; // 입력창에 자동 입력
+    englishInput.value = speechResult;
   };
 
   recognition.onerror = (event) => {
-    alert("녹음 중 오류가 발생했습니다: " + event.error);
+    alert("녹음 중 오류 발생: " + event.error);
   };
 });
 
-// 7. 초기 문장 표시
+// 결과표 표시 + 이미지 저장 버튼 추가
+function showResultTable() {
+  let html = "<h2>오늘 학습 결과</h2><table id='result-table'>";
+  html += "<tr><th>한글 문장</th><th>학생 답</th><th>정답</th><th>채점</th></tr>";
+  studentAnswers.forEach(a => {
+    html += `<tr>
+      <td>${a.question}</td>
+      <td>${a.student}</td>
+      <td>${a.correct}</td>
+      <td>${a.isCorrect ? "✅" : "❌"}</td>
+    </tr>`;
+  });
+  html += "</table>";
+  
+  // 다운로드 버튼 추가
+  html += `<button id="download-btn">📥 결과 이미지로 저장</button>`;
+  resultContainer.innerHTML = html;
+
+  // 버튼 이벤트
+  document.getElementById("download-btn").addEventListener("click", () => {
+    if (!window.html2canvas) {
+      alert("html2canvas 라이브러리를 먼저 불러와야 합니다.");
+      return;
+    }
+    html2canvas(document.getElementById("result-table")).then(canvas => {
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "오늘_학습결과.png";
+        a.click();
+      });
+    });
+  });
+
+  koreanEl.textContent = "오늘 학습이 완료되었습니다!";
+  englishInput.value = "";
+  feedbackEl.textContent = "";
+}
+
+// 초기 문장 표시
 showSentence(currentIndex);
