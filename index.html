@@ -1,126 +1,269 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>엄마 계산 연습</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #f9f9f9;
-}
-button {
-  font-size: 24px;
-  padding: 20px 40px;
-  margin: 20px;
-  cursor: pointer;
-}
-#box {
-  background: white;
-  padding: 30px;
-  margin: 40px auto;
-  width: 80%;
-  max-width: 500px;
-  border-radius: 10px;
-}
-input {
-  font-size: 24px;
-  width: 150px;
-  text-align: center;
-}
-.result {
-  font-size: 22px;
-  margin-top: 20px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>단어 말하기 연습</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f7f7f7;
+    }
+    .word {
+      font-size: 52px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .blank {
+      font-size: 44px;
+      border-bottom: 4px solid #333;
+      min-width: 300px;
+      text-align: center;
+      margin-bottom: 40px;
+      height: 60px;
+    }
+    .buttons {
+      display: flex;
+      gap: 16px;
+    }
+    button {
+      font-size: 20px;
+      padding: 14px 22px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    #recordBtn { background: #4CAF50; color: white; }
+    #recordBtn.recording { background: #E53935; }
+    #gradeBtn { background: #2196F3; color: white; }
+    #nextBtn { background: #9E9E9E; color: white; }
+  </style>
 </head>
 <body>
+  <div id="word" class="word"></div>
+  <div id="result" class="blank"></div>
 
-<div id="box">
-  <div id="menu">
-    <button onclick="startSimple()">단순연산</button>
-    <button onclick="startMarket()">활용연산</button>
+  <div class="buttons">
+    <button id="recordBtn">녹음</button>
+    <button id="gradeBtn">채점</button>
+    <button id="nextBtn">다음</button>
   </div>
 
-  <div id="game" style="display:none;">
-    <p id="question" style="font-size:26px;"></p>
-    <input type="number" id="answer">
-    <br><br>
-    <button onclick="checkAnswer()">확인</button>
-    <p class="result" id="result"></p>
-    <p id="count"></p>
-    <br>
-    <button onclick="goMenu()">처음으로</button>
-  </div>
-</div>
+  <script>
+    const words = [
+      { en: "be inclined to", ko: "~하는 성향이 있다" },
+      { en: "corresponding", ko: "상응하는" },
+      { en: "obligation", ko: "의무, 책임" },
+      { en: "entitled to", ko: "~할 자격이 있는" },
+      { en: "possess", ko: "가지다, 소지하다" },
+      { en: "familiar to", ko: "~에게 익숙한" },
+      { en: "attempt to", ko: "~하려고 애쓰다" },
+      { en: "intervene in", ko: "~에 개입하다" },
+      { en: "fence off", ko: "~을 울타리로 구분하다" },
+      { en: "inherently", ko: "본질적으로" },
+      { en: "yield", ko: "수확(량)" },
+      { en: "crowd out", ko: "~을 밀어내다, ~을 몰아내다" },
+      { en: "insecticide", ko: "살충제" },
+      { en: "commitment", ko: "약속" },
+      { en: "desire", ko: "욕망" },
+      { en: "facilitate", ko: "용이하게 하다" },
+      { en: "coordination", ko: "조정" },
+      { en: "joint", ko: "공동의" },
+      { en: "otherwise", ko: "그렇지 않으면" },
+      { en: "destination", ko: "목적지" },
+      { en: "be committed to", ko: "~할 것을 약속하다" },
+      { en: "sustain", ko: "유지하다" },
+      { en: "currency", ko: "통화" },
+      { en: "object", ko: "대상, 객체" },
+      { en: "institution", ko: "제도" },
+      { en: "fluctuation", ko: "동요" },
+      { en: "end up -ing", ko: "(결국) ~하게 되다" },
+      { en: "two-tier", ko: "2단계의" },
+      { en: "when it comes to", ko: "~에 있어서, ~에 관해서" },
+      { en: "give rise to", ko: "~을 유발하다" },
+      { en: "sensation", ko: "감정, 기분" },
+      { en: "clarify", ko: "명확하게 하다" },
+      { en: "encounter", ko: "마주치다" },
+      { en: "conflict", ko: "갈등, 충돌" },
+      { en: "civil rights", ko: "시민권" },
+      { en: "progressive", ko: "진보적인" },
+      { en: "resist", ko: "저항하다" },
+      { en: "ridiculous", ko: "어리석은, 우스운" },
+      { en: "brief", ko: "짧은" },
+      { en: "scolding", ko: "질책, 꾸지람" },
+      { en: "tolerant", ko: "관용적인" },
+      { en: "account for", ko: "~을 차지하다 / 설명하다" },
+      { en: "commute", ko: "통근" },
+      { en: "physics", ko: "물리학" },
+      { en: "classify", ko: "분류하다" },
+      { en: "attribute", ko: "속성" },
+      { en: "classification", ko: "분류" },
+      { en: "conventional", ko: "관습적인, 전통적인" },
+      { en: "method", ko: "방법" },
+      { en: "appoint", ko: "지명하다" },
+      { en: "previous", ko: "이전의" },
+      { en: "prominence", ko: "두드러짐, 중요성" },
+      { en: "suspect", ko: "~라고 생각하다" },
+      { en: "serve", ko: "제공하다" },
+      { en: "independently of", ko: "~와 관계없이" },
+      { en: "appreciation", ko: "감상" },
+      { en: "ritual", ko: "의례, 의식" },
+      { en: "excessively", ko: "과도하게" },
+      { en: "critical thinking", ko: "비판적 사고" },
+      { en: "essential", ko: "필수적인" },
+      { en: "in spite of", ko: "~에도 불구하고" },
+      { en: "objectivity", ko: "객관성" },
+      { en: "biased", ko: "편향적인" },
+      { en: "foster", ko: "조장하다, 키우다" },
+      { en: "obesity", ko: "비만" },
+      { en: "diabetes", ko: "당뇨병" },
+      { en: "suspicion", ko: "의심" },
+      { en: "disclosure", ko: "공개" },
+      { en: "as well as", ko: "~뿐만 아니라" },
+      { en: "propel", ko: "추진하다, 촉진하다" },
+      { en: "ordinary", ko: "평범한" },
+      { en: "rebellion", ko: "저항" },
+      { en: "exclude from", ko: "~로부터 배제하다" },
+      { en: "novelty", ko: "참신함" },
+      { en: "empowerment", ko: "자율성" },
+      { en: "sphere", ko: "영역" },
+      { en: "seldom", ko: "거의 ~않게" },
+      { en: "wonder", ko: "놀라운 사람, 스타" },
+      { en: "gravitation", ko: "중력" },
+      { en: "optimization", ko: "최적화" },
+      { en: "phenomenon", ko: "현상" },
+      { en: "initial", ko: "처음의" },
+      { en: "legitimacy", ko: "정당성" },
+      { en: "status", ko: "지위" },
+      { en: "odds", ko: "가능성" },
+      { en: "appealing", ko: "흥미를 끄는" },
+      { en: "alternative", ko: "대안의" },
+      { en: "endeavor", ko: "노력" },
+      { en: "dictate", ko: "지시하다, 좌우하다" },
+      { en: "pause", ko: "잠시 멈추다" },
+      { en: "sequence", ko: "연속, 순서" },
+      { en: "notion", ko: "개념" },
+      { en: "fluently", ko: "유창하게" },
+      { en: "halting", ko: "더듬거리는" },
+      { en: "tag", ko: "붙어 다니다" },
+      { en: "clumsy", ko: "서투른, 어설픈" },
+      { en: "companion", ko: "동반자" },
+      { en: "represent", ko: "나타내다" },
+      { en: "revolutionary", ko: "혁명가" },
+      { en: "look to", ko: "~에 의존하다" },
+      { en: "cause", ko: "대의" },
+      { en: "amply", ko: "충분히" },
+      { en: "illustrate", ko: "예증하다" },
+      { en: "contemporary", ko: "동시대인" },
+      { en: "accumulation", ko: "축적" },
+      { en: "in reverse", ko: "반대로" },
+      { en: "orientation to", ko: "~으로의 지향성" },
+      { en: "define", ko: "정의하다" },
+      { en: "more often than not", ko: "대개, 대체로" },
+      { en: "robust", ko: "탄탄한" },
+      { en: "obscure", ko: "난해한" },
+      { en: "virtually", ko: "거의, 실질적으로" },
+      { en: "attach to", ko: "~을 부여하다" },
+      { en: "insure", ko: "보증하다" },
+      { en: "resident", ko: "거주하는" },
+      { en: "self-sufficiency", ko: "자급자족" },
+      { en: "domestic", ko: "국내의" },
+      { en: "vary", ko: "다양하다" },
+      { en: "drained", ko: "피로한" },
+      { en: "go through", ko: "~을 겪다" },
+      { en: "demonstrate", ko: "보여 주다" },
+      { en: "chronic", ko: "만성적인" },
+      { en: "flight", ko: "달아남, 회피" },
+      { en: "procedure", ko: "절차" },
+      { en: "hypothesis", ko: "가설" },
+      { en: "modify", ko: "수정하다" },
+      { en: "emerge", ko: "나타나다" },
+      { en: "variant", ko: "변형" },
+      { en: "speculation", ko: "추측" },
+      { en: "correspond to", ko: "~와 일치하다, 상응하다" },
+      { en: "occasion", ko: "경우" },
+      { en: "coin", ko: "만들다" },
+      { en: "distinction", ko: "구분, 차이" },
+      { en: "refer to", ko: "~을 지칭하다" },
+      { en: "hypothetical", ko: "가상의" },
+      { en: "pertinent", ko: "관련 있는" },
+      { en: "terminology", ko: "용어" },
+      { en: "indigenous", ko: "토착의" },
+      { en: "fate", ko: "운명" },
+      { en: "extinction", ko: "멸종" },
+      { en: "dominant", ko: "지배적인" },
+      { en: "vanish", ko: "사라지다" },
+      { en: "term", ko: "용어" },
+      { en: "prestigious", ko: "권력을 가진" },
+      { en: "subordinate", ko: "종속된" }
+    ];
 
-<script>
-let mode = "";
-let correctAnswer = 0;
-let questionCount = 0;
+    let index = 0;
+    let spokenText = "";
 
-function goMenu() {
-  document.getElementById("menu").style.display = "block";
-  document.getElementById("game").style.display = "none";
-}
+    const wordDiv = document.getElementById('word');
+    const resultDiv = document.getElementById('result');
+    const recordBtn = document.getElementById('recordBtn');
+    const gradeBtn = document.getElementById('gradeBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
-function startSimple() {
-  mode = "simple";
-  questionCount = 0;
-  document.getElementById("menu").style.display = "none";
-  document.getElementById("game").style.display = "block";
-  nextQuestion();
-}
+    function normalize(text) {
+      return text.replace(/[\.。]/g, '').replace(/,/g, '').replace(/\s/g, '').trim();
+    }
 
-function startMarket() {
-  mode = "market";
-  questionCount = 0;
-  document.getElementById("menu").style.display = "none";
-  document.getElementById("game").style.display = "block";
-  nextQuestion();
-}
+    function showWord() {
+      wordDiv.textContent = words[index].en;
+      resultDiv.textContent = "";
+      spokenText = "";
+    }
 
-function nextQuestion() {
-  if (questionCount >= 30) {
-    questionCount = 0;
-  }
+    wordDiv.addEventListener('click', () => {
+      const utterance = new SpeechSynthesisUtterance(words[index].en);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    });
 
-  document.getElementById("answer").value = "";
-  document.getElementById("result").innerText = "";
-  questionCount++;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ko-KR';
 
-  if (mode === "simple") {
-    let a = Math.floor(Math.random() * 90) + 10;
-    let b = Math.random() > 0.5
-      ? Math.floor(Math.random() * 9) + 1
-      : Math.floor(Math.random() * 90) + 10;
-    correctAnswer = a + b;
-    document.getElementById("question").innerText = `${a} + ${b} = ?`;
-  } else {
-    let price = [1000,2000,3000,5000][Math.floor(Math.random()*4)];
-    let qty = Math.floor(Math.random() * 3) + 1;
-    let paid = [10000,20000][Math.floor(Math.random()*2)];
-    let total = price * qty;
-    correctAnswer = paid - total;
-    document.getElementById("question").innerText =
-      `한 단에 ${price.toLocaleString()}원인 물건을 ${qty}단 샀어요.\n` +
-      `${paid.toLocaleString()}원을 받았어요.\n잔돈은 얼마일까요?`;
-  }
+    recordBtn.addEventListener('click', () => {
+      recordBtn.classList.add('recording');
+      recognition.start();
+    });
 
-  document.getElementById("count").innerText = `문제 ${questionCount} / 30`;
-}
+    recognition.onresult = (event) => {
+      spokenText = normalize(event.results[0][0].transcript);
+      resultDiv.textContent = spokenText;
+    };
 
-function checkAnswer() {
-  let user = Number(document.getElementById("answer").value);
-  if (user === correctAnswer) {
-    document.getElementById("result").innerText = "⭕ 정답이에요! 잘했어요!";
-  } else {
-    document.getElementById("result").innerText =
-      `❌ 틀렸어요. 정답은 ${correctAnswer.toLocaleString()}원이에요.`;
-  }
-  setTimeout(nextQuestion, 2000);
-}
-</script>
+    recognition.onend = () => {
+      recordBtn.classList.remove('recording');
+    };
 
+    gradeBtn.addEventListener('click', () => {
+      if (!spokenText) return alert('먼저 녹음하세요');
+      const answer = normalize(words[index].ko);
+      if (answer.includes(spokenText) || spokenText.includes(answer)) {
+        alert('정답이에요!');
+      } else {
+        alert('다시 말해볼래요?');
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % words.length;
+      showWord();
+    });
+
+    showWord();
+  </script>
 </body>
 </html>
