@@ -1,269 +1,258 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>단어 말하기 연습</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background: #f7f7f7;
-    }
-    .word {
-      font-size: 52px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      cursor: pointer;
-    }
-    .blank {
-      font-size: 44px;
-      border-bottom: 4px solid #333;
-      min-width: 300px;
-      text-align: center;
-      margin-bottom: 40px;
-      height: 60px;
-    }
-    .buttons {
-      display: flex;
-      gap: 16px;
-    }
-    button {
-      font-size: 20px;
-      padding: 14px 22px;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-    }
-    #recordBtn { background: #4CAF50; color: white; }
-    #recordBtn.recording { background: #E53935; }
-    #gradeBtn { background: #2196F3; color: white; }
-    #nextBtn { background: #9E9E9E; color: white; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레벨 1 단어 마스터</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary: #4A90E2; --success: #2ECC71; --error: #E74C3C; --bg: #f5f7f9; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
+        /* 목록 화면 */
+        .list-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .list-btn { padding: 15px 5px; background: white; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; font-weight: bold; }
+        
+        /* 학습 화면 */
+        .word-item { background: white; padding: 15px; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-group button { flex: 1; padding: 15px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-meaning { background: var(--primary); }
+        .btn-spell { background: var(--success); }
+
+        /* 테스트 화면 */
+        .test-box { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .test-question { font-size: 2.2rem; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
+        input { width: 90%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 10px; outline: none; text-align: center; }
+        input:focus { border-color: var(--primary); }
+        .feedback { margin-top: 20px; font-weight: bold; min-height: 30px; font-size: 1.1rem; }
+
+        /* 성적표 스타일 */
+        #report-card { background: white; padding: 25px; border-radius: 20px; border: 4px solid var(--primary); text-align: center; margin-top: 10px; }
+        .report-list { text-align: left; margin: 20px 0; border-top: 2px solid #eee; padding-top: 15px; font-size: 0.95rem; }
+        .report-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dotted #eee; }
+        .ox-o { color: var(--success); font-weight: bold; }
+        .ox-x { color: var(--error); font-weight: bold; }
+        .correct-ans { font-size: 0.85rem; color: #888; margin-left: 5px; text-decoration: underline; }
+        .capture-hint { font-size: 0.85rem; color: #888; margin-top: 15px; text-align: center; }
+    </style>
 </head>
 <body>
-  <div id="word" class="word"></div>
-  <div id="result" class="blank"></div>
+<div class="container">
+    
+    <div id="screen-list" class="screen active">
+        <h2 style="text-align: center;">📚 레벨 1 목록 (1-100)</h2>
+        <p style="text-align: center; color: #666; font-size: 0.9rem;">학습할 번호를 선택하세요.</p>
+        <div class="list-grid" id="list-container"></div>
+    </div>
 
-  <div class="buttons">
-    <button id="recordBtn">녹음</button>
-    <button id="gradeBtn">채점</button>
-    <button id="nextBtn">다음</button>
-  </div>
+    <div id="screen-study" class="screen">
+        <h3 id="study-title" style="text-align: center;"></h3>
+        <div id="study-container"></div>
+        <div class="btn-group">
+            <button class="btn-meaning" onclick="startTest('meaning')">뜻 공부 시작</button>
+            <button class="btn-spell" onclick="startTest('spell')">철자 공부 시작</button>
+        </div>
+        <button onclick="showList()" style="width:100%; margin-top:15px; background:none; border:none; color:#888; cursor:pointer;">◀ 목록으로 돌아가기</button>
+    </div>
 
-  <script>
-    const words = [
-      { en: "be inclined to", ko: "~하는 성향이 있다" },
-      { en: "corresponding", ko: "상응하는" },
-      { en: "obligation", ko: "의무, 책임" },
-      { en: "entitled to", ko: "~할 자격이 있는" },
-      { en: "possess", ko: "가지다, 소지하다" },
-      { en: "familiar to", ko: "~에게 익숙한" },
-      { en: "attempt to", ko: "~하려고 애쓰다" },
-      { en: "intervene in", ko: "~에 개입하다" },
-      { en: "fence off", ko: "~을 울타리로 구분하다" },
-      { en: "inherently", ko: "본질적으로" },
-      { en: "yield", ko: "수확(량)" },
-      { en: "crowd out", ko: "~을 밀어내다, ~을 몰아내다" },
-      { en: "insecticide", ko: "살충제" },
-      { en: "commitment", ko: "약속" },
-      { en: "desire", ko: "욕망" },
-      { en: "facilitate", ko: "용이하게 하다" },
-      { en: "coordination", ko: "조정" },
-      { en: "joint", ko: "공동의" },
-      { en: "otherwise", ko: "그렇지 않으면" },
-      { en: "destination", ko: "목적지" },
-      { en: "be committed to", ko: "~할 것을 약속하다" },
-      { en: "sustain", ko: "유지하다" },
-      { en: "currency", ko: "통화" },
-      { en: "object", ko: "대상, 객체" },
-      { en: "institution", ko: "제도" },
-      { en: "fluctuation", ko: "동요" },
-      { en: "end up -ing", ko: "(결국) ~하게 되다" },
-      { en: "two-tier", ko: "2단계의" },
-      { en: "when it comes to", ko: "~에 있어서, ~에 관해서" },
-      { en: "give rise to", ko: "~을 유발하다" },
-      { en: "sensation", ko: "감정, 기분" },
-      { en: "clarify", ko: "명확하게 하다" },
-      { en: "encounter", ko: "마주치다" },
-      { en: "conflict", ko: "갈등, 충돌" },
-      { en: "civil rights", ko: "시민권" },
-      { en: "progressive", ko: "진보적인" },
-      { en: "resist", ko: "저항하다" },
-      { en: "ridiculous", ko: "어리석은, 우스운" },
-      { en: "brief", ko: "짧은" },
-      { en: "scolding", ko: "질책, 꾸지람" },
-      { en: "tolerant", ko: "관용적인" },
-      { en: "account for", ko: "~을 차지하다 / 설명하다" },
-      { en: "commute", ko: "통근" },
-      { en: "physics", ko: "물리학" },
-      { en: "classify", ko: "분류하다" },
-      { en: "attribute", ko: "속성" },
-      { en: "classification", ko: "분류" },
-      { en: "conventional", ko: "관습적인, 전통적인" },
-      { en: "method", ko: "방법" },
-      { en: "appoint", ko: "지명하다" },
-      { en: "previous", ko: "이전의" },
-      { en: "prominence", ko: "두드러짐, 중요성" },
-      { en: "suspect", ko: "~라고 생각하다" },
-      { en: "serve", ko: "제공하다" },
-      { en: "independently of", ko: "~와 관계없이" },
-      { en: "appreciation", ko: "감상" },
-      { en: "ritual", ko: "의례, 의식" },
-      { en: "excessively", ko: "과도하게" },
-      { en: "critical thinking", ko: "비판적 사고" },
-      { en: "essential", ko: "필수적인" },
-      { en: "in spite of", ko: "~에도 불구하고" },
-      { en: "objectivity", ko: "객관성" },
-      { en: "biased", ko: "편향적인" },
-      { en: "foster", ko: "조장하다, 키우다" },
-      { en: "obesity", ko: "비만" },
-      { en: "diabetes", ko: "당뇨병" },
-      { en: "suspicion", ko: "의심" },
-      { en: "disclosure", ko: "공개" },
-      { en: "as well as", ko: "~뿐만 아니라" },
-      { en: "propel", ko: "추진하다, 촉진하다" },
-      { en: "ordinary", ko: "평범한" },
-      { en: "rebellion", ko: "저항" },
-      { en: "exclude from", ko: "~로부터 배제하다" },
-      { en: "novelty", ko: "참신함" },
-      { en: "empowerment", ko: "자율성" },
-      { en: "sphere", ko: "영역" },
-      { en: "seldom", ko: "거의 ~않게" },
-      { en: "wonder", ko: "놀라운 사람, 스타" },
-      { en: "gravitation", ko: "중력" },
-      { en: "optimization", ko: "최적화" },
-      { en: "phenomenon", ko: "현상" },
-      { en: "initial", ko: "처음의" },
-      { en: "legitimacy", ko: "정당성" },
-      { en: "status", ko: "지위" },
-      { en: "odds", ko: "가능성" },
-      { en: "appealing", ko: "흥미를 끄는" },
-      { en: "alternative", ko: "대안의" },
-      { en: "endeavor", ko: "노력" },
-      { en: "dictate", ko: "지시하다, 좌우하다" },
-      { en: "pause", ko: "잠시 멈추다" },
-      { en: "sequence", ko: "연속, 순서" },
-      { en: "notion", ko: "개념" },
-      { en: "fluently", ko: "유창하게" },
-      { en: "halting", ko: "더듬거리는" },
-      { en: "tag", ko: "붙어 다니다" },
-      { en: "clumsy", ko: "서투른, 어설픈" },
-      { en: "companion", ko: "동반자" },
-      { en: "represent", ko: "나타내다" },
-      { en: "revolutionary", ko: "혁명가" },
-      { en: "look to", ko: "~에 의존하다" },
-      { en: "cause", ko: "대의" },
-      { en: "amply", ko: "충분히" },
-      { en: "illustrate", ko: "예증하다" },
-      { en: "contemporary", ko: "동시대인" },
-      { en: "accumulation", ko: "축적" },
-      { en: "in reverse", ko: "반대로" },
-      { en: "orientation to", ko: "~으로의 지향성" },
-      { en: "define", ko: "정의하다" },
-      { en: "more often than not", ko: "대개, 대체로" },
-      { en: "robust", ko: "탄탄한" },
-      { en: "obscure", ko: "난해한" },
-      { en: "virtually", ko: "거의, 실질적으로" },
-      { en: "attach to", ko: "~을 부여하다" },
-      { en: "insure", ko: "보증하다" },
-      { en: "resident", ko: "거주하는" },
-      { en: "self-sufficiency", ko: "자급자족" },
-      { en: "domestic", ko: "국내의" },
-      { en: "vary", ko: "다양하다" },
-      { en: "drained", ko: "피로한" },
-      { en: "go through", ko: "~을 겪다" },
-      { en: "demonstrate", ko: "보여 주다" },
-      { en: "chronic", ko: "만성적인" },
-      { en: "flight", ko: "달아남, 회피" },
-      { en: "procedure", ko: "절차" },
-      { en: "hypothesis", ko: "가설" },
-      { en: "modify", ko: "수정하다" },
-      { en: "emerge", ko: "나타나다" },
-      { en: "variant", ko: "변형" },
-      { en: "speculation", ko: "추측" },
-      { en: "correspond to", ko: "~와 일치하다, 상응하다" },
-      { en: "occasion", ko: "경우" },
-      { en: "coin", ko: "만들다" },
-      { en: "distinction", ko: "구분, 차이" },
-      { en: "refer to", ko: "~을 지칭하다" },
-      { en: "hypothetical", ko: "가상의" },
-      { en: "pertinent", ko: "관련 있는" },
-      { en: "terminology", ko: "용어" },
-      { en: "indigenous", ko: "토착의" },
-      { en: "fate", ko: "운명" },
-      { en: "extinction", ko: "멸종" },
-      { en: "dominant", ko: "지배적인" },
-      { en: "vanish", ko: "사라지다" },
-      { en: "term", ko: "용어" },
-      { en: "prestigious", ko: "권력을 가진" },
-      { en: "subordinate", ko: "종속된" }
-    ];
+    <div id="screen-test" class="screen">
+        <div class="test-box">
+            <div id="test-progress" style="color:#888; margin-bottom:10px;">1 / 10</div>
+            <div class="test-question" id="test-q"></div>
+            <input type="text" id="test-input" placeholder="정답을 입력하세요" autocomplete="off">
+            <div class="feedback" id="test-feedback"></div>
+        </div>
+    </div>
 
-    let index = 0;
-    let spokenText = "";
+    <div id="screen-result" class="screen">
+        <div id="report-card">
+            <h1 style="color:var(--primary); margin: 0;">성적표</h1>
+            <p id="report-date" style="color:#888; margin: 5px 0;"></p>
+            <div style="font-size: 3.5rem; margin: 15px 0; font-weight: bold;" id="report-score"></div>
+            <p id="report-level" style="font-weight: bold; color: #555;"></p>
+            
+            <div id="report-detail-list" class="report-list">
+                </div>
 
-    const wordDiv = document.getElementById('word');
-    const resultDiv = document.getElementById('result');
-    const recordBtn = document.getElementById('recordBtn');
-    const gradeBtn = document.getElementById('gradeBtn');
-    const nextBtn = document.getElementById('nextBtn');
+            <button onclick="saveAsImage()" style="background:var(--primary); color:white; border:none; padding:12px 25px; border-radius:8px; font-weight:bold; cursor:pointer; width: 100%;">이미지 저장하기 (PNG)</button>
+        </div>
+        <p class="capture-hint">클릭하면 성적표가 사진으로 저장됩니다.</p>
+        <button onclick="showList()" style="width:100%; margin-top:15px; padding:15px; background:#ddd; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">다른 목록 도전하기</button>
+    </div>
 
-    function normalize(text) {
-      return text.replace(/[\.。]/g, '').replace(/,/g, '').replace(/\s/g, '').trim();
+</div>
+
+<script>
+let allWords = [];
+let currentListWords = [];
+let currentMode = ''; 
+let currentIndex = 0;
+let score = 0;
+let testResults = []; 
+
+// 1. 데이터 불러오기 (강사님의 words_lv1.json 파일과 연결)
+fetch('words_lv1.json')
+    .then(res => res.json())
+    .then(data => {
+        allWords = data;
+        renderListMenu();
+    });
+
+// 2. 목록 메뉴 생성 (1~100번 버튼)
+function renderListMenu() {
+    const container = document.getElementById('list-container');
+    for (let i = 1; i <= 100; i++) {
+        const btn = document.createElement('div');
+        btn.className = 'list-btn';
+        btn.innerText = i;
+        btn.onclick = () => showStudy(i);
+        container.appendChild(btn);
     }
+}
 
-    function showWord() {
-      wordDiv.textContent = words[index].en;
-      resultDiv.textContent = "";
-      spokenText = "";
+// 3. 단어 학습 화면 (10개 노출)
+function showStudy(listNum) {
+    currentIndex = 0;
+    score = 0;
+    const startIdx = (listNum - 1) * 10;
+    currentListWords = allWords.slice(startIdx, startIdx + 10);
+    
+    document.getElementById('study-title').innerText = `목록 ${listNum} (10단어)`;
+    const container = document.getElementById('study-container');
+    container.innerHTML = '';
+    
+    currentListWords.forEach(w => {
+        const item = document.createElement('div');
+        item.className = 'word-item';
+        // 강사님 데이터의 키 값인 Word, Meaning 사용
+        item.innerHTML = `<span><strong>${w.Word}</strong></span> <span>${w.Meaning} 🔊</span>`;
+        item.onclick = () => speak(w.Word);
+        container.appendChild(item);
+    });
+    
+    switchScreen('screen-study');
+}
+
+// 4. 음성 출력
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    window.speechSynthesis.speak(utterance);
+}
+
+// 5. 테스트 시작 설정
+function startTest(mode) {
+    currentMode = mode;
+    currentIndex = 0;
+    score = 0;
+    testResults = []; 
+    switchScreen('screen-test');
+    nextQuestion();
+}
+
+// 6. 다음 문제로 이동
+function nextQuestion() {
+    if (currentIndex >= 10) {
+        showResult();
+        return;
     }
+    
+    const w = currentListWords[currentIndex];
+    const qDiv = document.getElementById('test-q');
+    const input = document.getElementById('test-input');
+    const progress = document.getElementById('test-progress');
+    const feedback = document.getElementById('test-feedback');
+    
+    progress.innerText = `${currentIndex + 1} / 10`;
+    input.value = '';
+    feedback.innerText = '';
+    
+    qDiv.innerText = currentMode === 'meaning' ? w.Word : w.Meaning;
+    input.focus();
+}
 
-    wordDiv.addEventListener('click', () => {
-      const utterance = new SpeechSynthesisUtterance(words[index].en);
-      utterance.lang = 'en-US';
-      speechSynthesis.speak(utterance);
+// 7. 정답 체크 (Enter 입력 시)
+document.getElementById('test-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        const userAns = this.value.trim();
+        const w = currentListWords[currentIndex];
+        const feedback = document.getElementById('test-feedback');
+        const correctAns = currentMode === 'meaning' ? w.Meaning : w.Word;
+        
+        let isCorrect = (userAns === correctAns);
+        
+        // 결과 기록
+        testResults.push({
+            word: w.Word,
+            meaning: w.Meaning,
+            isCorrect: isCorrect,
+            userAns: userAns || "(미입력)",
+            correctAns: correctAns
+        });
+
+        if (isCorrect) {
+            score++;
+            feedback.innerText = "정답입니다! 👍";
+            feedback.style.color = "var(--success)";
+        } else {
+            feedback.innerText = `오답입니다. 정답: ${correctAns}`;
+            feedback.style.color = "var(--error)";
+        }
+        
+        setTimeout(() => {
+            currentIndex++;
+            nextQuestion();
+        }, 1200);
+    }
+});
+
+// 8. 최종 성적표 화면 생성
+function showResult() {
+    switchScreen('screen-result');
+    document.getElementById('report-score').innerText = `${score * 10}점`;
+    document.getElementById('report-date').innerText = new Date().toLocaleString();
+    document.getElementById('report-level').innerText = `레벨 1 - ${currentMode === 'meaning' ? '뜻 테스트' : '철자 테스트'}`;
+
+    const listDiv = document.getElementById('report-detail-list');
+    listDiv.innerHTML = ''; // 초기화
+
+    testResults.forEach((res, idx) => {
+        const item = document.createElement('div');
+        item.className = 'report-item';
+        const ox = res.isCorrect ? '<span class="ox-o">O</span>' : '<span class="ox-x">X</span>';
+        const correctInfo = res.isCorrect ? '' : `<span class="correct-ans">정답: ${res.correctAns}</span>`;
+        
+        item.innerHTML = `
+            <span>${idx + 1}. ${res.word}</span>
+            <span>${res.userAns} ${ox} ${correctInfo}</span>
+        `;
+        listDiv.appendChild(item);
     });
+}
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'ko-KR';
-
-    recordBtn.addEventListener('click', () => {
-      recordBtn.classList.add('recording');
-      recognition.start();
+// 9. 성적표 이미지 저장 (PNG)
+function saveAsImage() {
+    const report = document.getElementById('report-card');
+    html2canvas(report, { scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `성적표_${Date.now()}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
     });
+}
 
-    recognition.onresult = (event) => {
-      spokenText = normalize(event.results[0][0].transcript);
-      resultDiv.textContent = spokenText;
-    };
+function switchScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
 
-    recognition.onend = () => {
-      recordBtn.classList.remove('recording');
-    };
-
-    gradeBtn.addEventListener('click', () => {
-      if (!spokenText) return alert('먼저 녹음하세요');
-      const answer = normalize(words[index].ko);
-      if (answer.includes(spokenText) || spokenText.includes(answer)) {
-        alert('정답이에요!');
-      } else {
-        alert('다시 말해볼래요?');
-      }
-    });
-
-    nextBtn.addEventListener('click', () => {
-      index = (index + 1) % words.length;
-      showWord();
-    });
-
-    showWord();
-  </script>
+function showList() {
+    switchScreen('screen-list');
+}
+</script>
 </body>
 </html>
