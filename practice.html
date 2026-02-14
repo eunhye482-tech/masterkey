@@ -2,19 +2,73 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>강사님의 영어 학교</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어 연습 - 리스트 1</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 100px; background: #f8f9fa; }
-        .menu-container { display: grid; grid-template-columns: repeat(2, 200px); gap: 20px; justify-content: center; }
-        .menu-btn { padding: 40px 20px; font-size: 24px; cursor: pointer; border: none; border-radius: 15px; background: #4A90E2; color: white; transition: 0.3s; }
-        .menu-btn:hover { background: #357ABD; transform: translateY(-5px); }
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f0f4f8; }
+        .container { background: white; padding: 30px; border-radius: 15px; display: inline-block; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { padding: 10px; font-size: 18px; width: 200px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; font-size: 18px; cursor: pointer; background: #4A90E2; color: white; border: none; border-radius: 5px; margin: 5px; }
+        #result { margin-top: 20px; font-weight: bold; font-size: 20px; }
     </style>
 </head>
 <body>
-    <h1>강사님의 영어 학습 시스템</h1>
-    <div class="menu-container">
-        <button class="menu-btn" onclick="alert('단어 학습으로 이동!')">WORD</button>
-        <button class="menu-btn" onclick="alert('회화 학습으로 이동!')">SPEAKING</button>
-    </div>
+
+<div class="container">
+    <h3 id="info">준비 중...</h3>
+    <h1 id="koreanQ">데이터를 불러오세요</h1>
+    <input type="text" id="answerInput" placeholder="정답 입력" autofocus>
+    <br><br>
+    <button onclick="check()">확인</button>
+    <button onclick="next()">다음</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    let words = [];
+    let currentIdx = 0;
+
+    // JSON 파일 불러오기
+    fetch('practice.json')
+        .then(res => res.json())
+        .then(data => {
+            words = data;
+            show();
+        })
+        .catch(err => alert("파일을 찾을 수 없습니다!"));
+
+    function show() {
+        if(currentIdx < words.length) {
+            let item = words[currentIdx];
+            document.getElementById('info').innerText = "레벨 " + item.Level + " - 목록 " + item.List_No;
+            document.getElementById('koreanQ').innerText = item.Korean;
+            document.getElementById('answerInput').value = "";
+            document.getElementById('result').innerText = "";
+        } else {
+            document.getElementById('koreanQ').innerText = "🎉 학습 끝!";
+            document.getElementById('info').innerText = "";
+            document.getElementById('answerInput').style.display = "none";
+        }
+    }
+
+    function check() {
+        let user = document.getElementById('answerInput').value.toLowerCase().trim();
+        let correct = words[currentIdx].English.toLowerCase().trim();
+        
+        if(user === correct) {
+            document.getElementById('result').innerText = "⭕ 정답입니다!";
+            document.getElementById('result').style.color = "green";
+        } else {
+            document.getElementById('result').innerText = "❌ 땡! 정답은: " + correct;
+            document.getElementById('result').style.color = "red";
+        }
+    }
+
+    function next() {
+        currentIdx++;
+        show();
+    }
+</script>
+
 </body>
 </html>
