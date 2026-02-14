@@ -2,36 +2,45 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>단어 학습</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어 학습 및 시험</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; background: #f5f7f9; }
-        .container { background: white; max-width: 450px; margin: 0 auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .screen { display: none; } /* 기본적으로 모든 화면 숨김 */
-        .active { display: block; } /* active 클래스가 있으면 보임 */
-        button { padding: 12px 25px; font-size: 16px; cursor: pointer; border-radius: 10px; border: none; margin: 10px; }
-        .lvl-btn { background: #4A90E2; color: white; font-size: 20px; width: 200px; }
+        body { font-family: sans-serif; text-align: center; padding: 20px; background: #f5f7f9; }
+        .container { background: white; max-width: 450px; margin: 0 auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .screen { display: none; } 
+        .active { display: block; }
+        button { padding: 15px; font-size: 16px; cursor: pointer; border-radius: 12px; border: none; margin: 10px; width: 80%; }
+        .lvl-btn { background: #4A90E2; color: white; }
+        /* 학습 리스트 스타일 */
+        .word-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .speaker-btn { width: 40px; height: 40px; padding: 0; background: #eee; border-radius: 50%; cursor: pointer; }
         input { width: 80%; padding: 15px; font-size: 18px; border: 2px solid #ddd; border-radius: 12px; text-align: center; }
-        #resultMsg { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="level-screen" class="screen active">
-        <h1>단어 레벨을 선택하세요</h1>
-        <button class="lvl-btn" onclick="startApp(1)">Level 1</button><br>
-        <button class="lvl-btn" onclick="startApp(2)">Level 2</button>
+        <h1>단어 레벨 선택</h1>
+        <button class="lvl-btn" onclick="startApp(1)">Level 1 학습하기</button>
+        <button class="lvl-btn" onclick="startApp(2)">Level 2 학습하기</button>
+    </div>
+
+    <div id="study-screen" class="screen">
+        <div class="container">
+            <h2>오늘 배울 단어</h2>
+            <p style="color:#888;">스피커를 눌러 발음을 들어보세요!</p>
+            <div id="word-list"></div>
+            <button onclick="startQuiz()" style="background:#2ECC71; color:white; margin-top:20px;">시험 시작하기!</button>
+        </div>
     </div>
 
     <div id="quiz-screen" class="screen">
         <div class="container">
             <div id="info"></div>
-            <div id="koreanQ">단어 불러오는 중...</div>
-            <input type="text" id="answerInput" placeholder="정답 입력" onkeypress="handleEnter(event)">
-            <div style="margin-top:20px;">
-                <button onclick="checkAnswer()" style="background:#4A90E2; color:white;">확인</button>
-                <button id="nextBtn" onclick="nextWord()" disabled>다음</button>
-            </div>
-            <div id="resultMsg"></div>
+            <div id="koreanQ" style="font-size:30px; font-weight:bold; margin:20px 0;"></div>
+            <input type="text" id="answerInput" placeholder="영어 단어 입력" onkeypress="handleEnter(event)">
+            <div id="resultMsg" style="margin-top:15px; font-weight:bold;"></div>
+            <button id="nextBtn" onclick="nextWord()" style="background:#4A90E2; color:white; display:none;">다음 문제</button>
         </div>
     </div>
 
@@ -39,59 +48,83 @@
         let words = [];
         let currentIdx = 0;
 
-        function startApp(level) {
-            // 1. 화면 전환
-            document.getElementById('level-screen').classList.remove('active');
-            document.getElementById('quiz-screen').classList.add('active');
+        // 음성 읽어주기 함수 (TTS)
+        function speak(text) {
+            const uttr = new SpeechSynthesisUtterance(text);
+            uttr.lang = 'en-US';
+            window.speechSynthesis.speak(uttr);
+        }
 
-            // 2. 데이터 불러오기
+        function startApp(level) {
             fetch(`level${level}.json`)
                 .then(res => res.json())
                 .then(data => {
                     words = data;
-                    show();
-                })
-                .catch(err => alert("파일을 찾을 수 없습니다: level" + level + ".json"));
+                    showStudyList();
+                });
         }
 
-        function show() {
+        // 학습 리스트 보여주기
+        function showStudyList() {
+            document.getElementById('level-screen').classList.remove('active');
+            document.getElementById('study-screen').classList.add('active');
+            
+            const listDiv = document.getElementById('word-list');
+            listDiv.innerHTML = "";
+            
+            words.forEach(item => {
+                const kor = item.Korean || item["Korean (C열)"];
+                const eng = item.English || item["English (D열)"];
+                listDiv.innerHTML += `
+                    <div class="word-item">
+                        <span><strong>${kor}</strong> : ${eng}</span>
+                        <button class="speaker-btn" onclick="speak('${eng}')">🔊</button>
+                    </div>
+                `;
+            });
+        }
+
+        function startQuiz() {
+            document.getElementById('study-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+            currentIdx = 0;
+            showQuiz();
+        }
+
+        function showQuiz() {
             if (currentIdx < words.length) {
                 let item = words[currentIdx];
                 document.getElementById('koreanQ').innerText = item.Korean || item["Korean (C열)"];
-                document.getElementById('info').innerText = "진행도: " + (currentIdx + 1) + " / " + words.length;
+                document.getElementById('info').innerText = `시험 중 (${currentIdx+1}/${words.length})`;
                 document.getElementById('answerInput').value = "";
                 document.getElementById('resultMsg').innerText = "";
-                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('nextBtn').style.display = "none";
                 document.getElementById('answerInput').focus();
             } else {
-                alert("학습이 완료되었습니다!");
-                location.href = 'index.html'; // 대문으로 이동
-            }
-        }
-
-        function checkAnswer() {
-            let user = document.getElementById('answerInput').value.toLowerCase().trim();
-            let correct = (words[currentIdx].English || words[currentIdx]["English (D열)"]).toLowerCase().trim();
-            
-            if(user === correct) {
-                document.getElementById('resultMsg').innerText = "⭕ 정답입니다!";
-                document.getElementById('resultMsg').style.color = "green";
-                document.getElementById('nextBtn').disabled = false;
-            } else {
-                document.getElementById('resultMsg').innerText = "❌ 땡! 정답은: " + correct;
-                document.getElementById('resultMsg').style.color = "red";
+                alert("시험 완료! 대문으로 돌아갑니다.");
+                location.href = 'index.html';
             }
         }
 
         function nextWord() {
             currentIdx++;
-            show();
+            showQuiz();
         }
 
         function handleEnter(e) {
             if(e.key === 'Enter') {
-                if(!document.getElementById('nextBtn').disabled) nextWord();
-                else checkAnswer();
+                const user = document.getElementById('answerInput').value.toLowerCase().trim();
+                const correct = (words[currentIdx].English || words[currentIdx]["English (D열)"]).toLowerCase().trim();
+                
+                if(user === correct) {
+                    document.getElementById('resultMsg').innerText = "⭕ 정답!";
+                    document.getElementById('resultMsg').style.color = "green";
+                    document.getElementById('nextBtn').style.display = "block";
+                    speak(correct); // 정답 맞추면 발음도 들려줌
+                } else {
+                    document.getElementById('resultMsg').innerText = "❌ 틀렸어요!";
+                    document.getElementById('resultMsg').style.color = "red";
+                }
             }
         }
     </script>
