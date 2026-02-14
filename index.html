@@ -9,12 +9,19 @@
 
         /* 영상을 화면 꽉 차게 배경으로 깔기 */
         #bg-video {
-            position: fixed;
-            right: 0; bottom: 0;
-            min-width: 100%; min-height: 100%;
-            z-index: -1; /* 버튼보다 뒤로 보냄 */
-            object-fit: cover; /* 화면에 꽉 차게 맞춤 */
-        }
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    /* 핵심 수정 부분: cover를 contain으로 바꾸거나 아래처럼 조절 */
+    transform: translate(-50%, -50%);
+    object-fit: contain; /* 영상이 짤리지 않고 전체가 다 나오게 함 */
+    background-color: black; /* 여백이 생길 경우 검은색으로 채움 */
+}
 
         /* 영상 위에 어두운 덮개를 씌워 글자를 잘 보이게 함 */
         .overlay {
