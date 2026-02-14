@@ -3,60 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>강사님의 영어 학습 시스템</title>
+    <title>강사님의 영어 학교</title>
     <style>
-        body { 
-            font-family: 'Pretendard', sans-serif; 
-            background-color: #f0f2f5; 
-            text-align: center; 
-            padding: 50px 20px; 
-            margin: 0;
-        }
-        h1 { color: #333; margin-bottom: 40px; }
-        
-        /* 5개 버튼을 가로/세로로 정렬하는 틀 */
-        .menu-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 20px; 
-            max-width: 900px; 
-            margin: 0 auto; 
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; }
+
+        /* 영상을 화면 꽉 차게 배경으로 깔기 */
+        #bg-video {
+            position: fixed;
+            right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            z-index: -1; /* 버튼보다 뒤로 보냄 */
+            object-fit: cover; /* 화면에 꽉 차게 맞춤 */
         }
 
-        /* 버튼 공통 디자인 */
+        /* 영상 위에 어두운 덮개를 씌워 글자를 잘 보이게 함 */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명도 */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        h1 { color: white; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); margin-bottom: 30px; }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 90%; max-width: 400px; }
         .menu-btn { 
-            padding: 40px 10px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            border: none; 
-            border-radius: 20px; 
-            color: white; 
-            cursor: pointer; 
-            transition: 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px; font-size: 18px; font-weight: bold; border: none; border-radius: 15px; 
+            color: white; cursor: pointer; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.2); /* 버튼을 반투명하게 */
+            backdrop-filter: blur(5px); /* 버튼 뒤를 살짝 흐리게 (고급 기술!) */
+            border: 1px solid rgba(255,255,255,0.3);
         }
-
-        /* 각 영역별 색상 (강사님 취향대로 수정 가능) */
-        .word { background-color: #4A90E2; }      /* WORD: 파란색 */
-        .speaking { background-color: #2ECC71; }  /* SPEAKING: 초록색 */
-        .writing { background-color: #E67E22; }   /* WRITING: 주황색 */
-        .listening { background-color: #9B59B6; } /* LISTENING: 보라색 */
-        .reading { background-color: #34495E; }   /* READING: 남색 */
-
-        .menu-btn:hover { transform: translateY(-5px); opacity: 0.9; }
+        .menu-btn:hover { background: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
 
-    <h1>어떤 공부를 시작할까요?</h1>
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="bg_video.mp4" type="video/mp4">
+        브라우저가 영상을 지원하지 않습니다.
+    </video>
 
-    <div class="menu-grid">
-        <button class="menu-btn word" onclick="location.href='practice.html'">WORD</button>
-        
-        <button class="menu-btn speaking" onclick="alert('SPEAKING 준비 중!')">SPEAKING</button>
-        <button class="menu-btn writing" onclick="alert('WRITING 준비 중!')">WRITING</button>
-        <button class="menu-btn listening" onclick="alert('LISTENING 준비 중!')">LISTENING</button>
-        <button class="menu-btn reading" onclick="alert('READING 준비 중!')">READING</button>
+    <div class="overlay">
+        <h1>ENGLISH ADVENTURE</h1>
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="location.href='practice.html'">WORD</button>
+            <button class="menu-btn" onclick="location.href='speaking.html'">SPEAKING</button>
+            <button class="menu-btn" onclick="alert('준비 중!')">WRITING</button>
+            <button class="menu-btn" onclick="alert('준비 중!')">LISTENING</button>
+        </div>
     </div>
 
 </body>
