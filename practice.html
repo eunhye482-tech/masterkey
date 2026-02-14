@@ -4,81 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>단어 학습 및 시험</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body { 
             font-family: sans-serif; text-align: center; padding: 20px; margin: 0;
-            /* 배경 이미지: 1.png 적용 */
-            background-image: url('1.png'); 
+            background-image: url('1.png'); /* 강사님이 지정하신 1.png 배경 */
             background-size: cover; background-position: center; background-attachment: fixed;
         }
         .container { 
-            background: rgba(255, 255, 255, 0.9); /* 글자가 잘 보이게 흰색 판 깔기 */
-            max-width: 450px; margin: 20px auto; padding: 25px; border-radius: 25px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); min-height: 400px;
+            background: rgba(255, 255, 255, 0.9); max-width: 450px; margin: 10px auto; padding: 25px; 
+            border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); min-height: 400px;
         }
         .screen { display: none; } .active { display: block; }
-        button { padding: 15px; font-size: 16px; cursor: pointer; border-radius: 12px; border: none; margin: 10px; width: 85%; }
+        button { padding: 15px; font-size: 16px; cursor: pointer; border-radius: 12px; border: none; margin: 10px; width: 85%; transition: 0.3s; }
         .lvl-btn { background: #4A90E2; color: white; font-weight: bold; }
         .word-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
-        .speaker-btn { width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; cursor: pointer; }
-        input { width: 85%; padding: 15px; font-size: 18px; border: 2px solid #ddd; border-radius: 12px; text-align: center; }
+        .speaker-btn { width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; cursor: pointer; border: none; }
+        input { width: 85%; padding: 15px; font-size: 18px; border: 2px solid #ddd; border-radius: 12px; text-align: center; outline: none; }
+        
+        /* 성적표 스타일 */
+        #report-card { background: white; padding: 30px; border: 5px solid #4A90E2; border-radius: 20px; margin-bottom: 20px; }
+        .score-big { font-size: 60px; color: #E74C3C; font-weight: bold; margin: 20px 0; }
+        .save-btn { background: #2ECC71; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="container">
         <div id="level-screen" class="screen active">
             <h1 style="color:#2c3e50;">VOCABULARY</h1>
             <button class="lvl-btn" onclick="startApp(1)">Level 1 학습하기</button>
             <button class="lvl-btn" onclick="startApp(2)">Level 2 학습하기</button>
-            <button onclick="location.href='index.html'" style="background:none; color:#999; text-decoration:underline;">대문으로 가기</button>
+            <button onclick="location.href='index.html'" style="background:none; color:#999; text-decoration:underline;">대문으로 돌아가기</button>
         </div>
+
         <div id="study-screen" class="screen">
             <h2 style="color:#2c3e50;">Today's Words</h2>
-            <div id="word-list"></div>
-            <button onclick="startQuiz()" style="background:#2ECC71; color:white; font-weight:bold; margin-top:20px;">시험 시작!</button>
+            <div id="word-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;"></div>
+            <button onclick="startQuiz()" style="background:#2ECC71; color:white; font-weight:bold;">시험 시작하기!</button>
         </div>
+
         <div id="quiz-screen" class="screen">
-            <div id="info"></div>
-            <div id="koreanQ" style="font-size:32px; font-weight:bold; margin:25px 0;"></div>
-            <input type="text" id="answerInput" placeholder="정답 입력" onkeypress="handleEnter(event)">
+            <div id="info" style="color:#999;"></div>
+            <div id="koreanQ" style="font-size:32px; font-weight:bold; margin:25px 0; color:#2c3e50;"></div>
+            <input type="text" id="answerInput" placeholder="정답을 입력하세요" onkeypress="handleEnter(event)">
             <div id="resultMsg" style="margin-top:20px; font-weight:bold; font-size:20px;"></div>
             <button id="nextBtn" onclick="nextWord()" style="background:#4A90E2; color:white; display:none;">다음 문제 👉</button>
         </div>
+
+        <div id="report-screen" class="screen">
+            <div id="report-area" style="padding:10px; background:#f9f9f9;">
+                <div id="report-card">
+                    <h2 style="margin:0; color:#333;">VOCAB TEST REPORT</h2>
+                    <div class="score-big" id="final-score">0점</div>
+                    <p id="score-summary" style="font-size:18px; color:#666;"></p>
+                    <h3 style="color:#4A90E2;">Great Job! 👍</h3>
+                </div>
+            </div>
+            <button class="save-btn" onclick="saveAsImg()">📸 성적표 이미지 저장</button>
+            <button onclick="location.href='index.html'" style="background:#eee;">메인으로 돌아가기</button>
+        </div>
     </div>
+
     <script>
-        let words = []; let currentIdx = 0;
-        function speak(text) { const uttr = new SpeechSynthesisUtterance(text); uttr.lang = 'en-US'; window.speechSynthesis.speak(uttr); }
-        function startApp(level) { fetch(`level${level}.json`).then(res => res.json()).then(data => { words = data; showStudyList(); }); }
+        let words = [];
+        let currentIdx = 0;
+        let score = 0;
+
+        function speak(text) {
+            const uttr = new SpeechSynthesisUtterance(text);
+            uttr.lang = 'en-US';
+            window.speechSynthesis.speak(uttr);
+        }
+
+        function startApp(level) {
+            fetch(`level${level}.json`)
+                .then(res => res.json())
+                .then(data => {
+                    words = data;
+                    showStudyList();
+                });
+        }
+
         function showStudyList() {
             document.getElementById('level-screen').classList.remove('active');
             document.getElementById('study-screen').classList.add('active');
             const listDiv = document.getElementById('word-list');
             listDiv.innerHTML = "";
             words.forEach(item => {
-                const kor = item.Korean || item["Korean (C열)"]; const eng = item.English || item["English (D열)"];
-                listDiv.innerHTML += `<div class="word-item"><span><strong>${kor}</strong> : ${eng}</span><button class="speaker-btn" onclick="speak('${eng}')">🔊</button></div>`;
+                const kor = item.Korean || item["Korean (C열)"];
+                const eng = item.English || item["English (D열)"];
+                listDiv.innerHTML += `
+                    <div class="word-item">
+                        <span style="font-size:17px;"><strong>${kor}</strong> : ${eng}</span>
+                        <button class="speaker-btn" onclick="speak('${eng.replace(/'/g, "\\'")}')">🔊</button>
+                    </div>
+                `;
             });
         }
-        function startQuiz() { document.getElementById('study-screen').classList.remove('active'); document.getElementById('quiz-screen').classList.add('active'); currentIdx = 0; showQuiz(); }
+
+        function startQuiz() {
+            document.getElementById('study-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+            currentIdx = 0;
+            score = 0;
+            showQuiz();
+        }
+
         function showQuiz() {
             if (currentIdx < words.length) {
                 let item = words[currentIdx];
                 document.getElementById('koreanQ').innerText = item.Korean || item["Korean (C열)"];
-                document.getElementById('info').innerText = `${currentIdx+1} / ${words.length}`;
-                document.getElementById('answerInput').value = ""; document.getElementById('resultMsg').innerText = "";
-                document.getElementById('nextBtn').style.display = "none"; document.getElementById('answerInput').focus();
-            } else { alert("시험 완료!"); location.href = 'index.html'; }
+                document.getElementById('info').innerText = `Question ${currentIdx+1} / ${words.length}`;
+                document.getElementById('answerInput').value = "";
+                document.getElementById('resultMsg').innerText = "";
+                document.getElementById('nextBtn').style.display = "none";
+                document.getElementById('answerInput').focus();
+            } else {
+                showReport();
+            }
         }
-        function nextWord() { currentIdx++; showQuiz(); }
+
         function handleEnter(e) {
             if(e.key === 'Enter') {
                 const user = document.getElementById('answerInput').value.toLowerCase().trim();
                 const correct = (words[currentIdx].English || words[currentIdx]["English (D열)"]).toLowerCase().trim();
                 if(user === correct) {
-                    document.getElementById('resultMsg').innerText = "⭕ Perfect!"; document.getElementById('resultMsg').style.color = "#2ECC71";
-                    document.getElementById('nextBtn').style.display = "block"; speak(correct);
-                } else { document.getElementById('resultMsg').innerText = "❌ Try Again!"; document.getElementById('resultMsg').style.color = "#E74C3C"; }
+                    document.getElementById('resultMsg').innerText = "⭕ Correct!";
+                    document.getElementById('resultMsg').style.color = "#2ECC71";
+                    document.getElementById('nextBtn').style.display = "block";
+                    score++;
+                    speak(correct);
+                } else {
+                    document.getElementById('resultMsg').innerText = "❌ Try Again!";
+                    document.getElementById('resultMsg').style.color = "#E74C3C";
+                }
             }
+        }
+
+        function nextWord() {
+            currentIdx++;
+            showQuiz();
+        }
+
+        function showReport() {
+            document.getElementById('quiz-screen').classList.remove('active');
+            document.getElementById('report-screen').classList.add('active');
+            const finalPercent = Math.round((score / words.length) * 100);
+            document.getElementById('final-score').innerText = finalPercent + "점";
+            document.getElementById('score-summary').innerText = `총 ${words.length}단어 중 ${score}개 정답!`;
+        }
+
+        function saveAsImg() {
+            const area = document.getElementById('report-area');
+            html2canvas(area).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'word_report.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
         }
     </script>
 </body>
