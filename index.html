@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>강사님의 통합 학습 시스템</title>
+    <title>강사님의 영어 학습 시스템</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f0f2f5; text-align: center; padding: 50px 20px; }
+        body { 
+            font-family: 'Pretendard', sans-serif; 
+            background-color: #f0f2f5; 
+            text-align: center; 
+            padding: 50px 20px; 
+            margin: 0;
+        }
         h1 { color: #333; margin-bottom: 40px; }
-        /* 버튼들을 배치하는 바둑판 모양 틀 */
+        
+        /* 5개 버튼을 가로/세로로 정렬하는 틀 */
         .menu-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
             gap: 20px; 
-            max-width: 800px; 
+            max-width: 900px; 
             margin: 0 auto; 
         }
+
+        /* 버튼 공통 디자인 */
         .menu-btn { 
-            padding: 30px 10px; 
+            padding: 40px 10px; 
             font-size: 18px; 
             font-weight: bold; 
             border: none; 
-            border-radius: 15px; 
+            border-radius: 20px; 
             color: white; 
             cursor: pointer; 
-            transition: 0.3s; 
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        /* 각 버튼별 색상 구분 */
-        .word { background-color: #4A90E2; }
-        .speaking { background-color: #2ECC71; }
-        .writing { background-color: #E67E22; }
-        .listening { background-color: #9B59B6; }
-        .reading { background-color: #34495E; }
-        .menu-btn:hover { transform: scale(1.05); opacity: 0.9; }
+
+        /* 각 영역별 색상 (강사님 취향대로 수정 가능) */
+        .word { background-color: #4A90E2; }      /* WORD: 파란색 */
+        .speaking { background-color: #2ECC71; }  /* SPEAKING: 초록색 */
+        .writing { background-color: #E67E22; }   /* WRITING: 주황색 */
+        .listening { background-color: #9B59B6; } /* LISTENING: 보라색 */
+        .reading { background-color: #34495E; }   /* READING: 남색 */
+
+        .menu-btn:hover { transform: translateY(-5px); opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -40,6 +52,7 @@
 
     <div class="menu-grid">
         <button class="menu-btn word" onclick="location.href='practice.html'">WORD</button>
+        
         <button class="menu-btn speaking" onclick="alert('SPEAKING 준비 중!')">SPEAKING</button>
         <button class="menu-btn writing" onclick="alert('WRITING 준비 중!')">WRITING</button>
         <button class="menu-btn listening" onclick="alert('LISTENING 준비 중!')">LISTENING</button>
