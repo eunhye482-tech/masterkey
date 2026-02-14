@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강사님의 통합 학습 시스템</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background: #f0f2f5; text-align: center; padding: 50px 20px; }
+        h1 { color: #333; margin-bottom: 40px; }
+        /* 버튼들을 배치하는 바둑판 모양 틀 */
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        .menu-btn { 
+            padding: 30px 10px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 15px; 
+            color: white; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        /* 각 버튼별 색상 구분 */
+        .word { background-color: #4A90E2; }
+        .speaking { background-color: #2ECC71; }
+        .writing { background-color: #E67E22; }
+        .listening { background-color: #9B59B6; }
+        .reading { background-color: #34495E; }
+        .menu-btn:hover { transform: scale(1.05); opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <h1>어떤 공부를 시작할까요?</h1>
+
+    <div class="menu-grid">
+        <button class="menu-btn word" onclick="location.href='practice.html'">WORD</button>
+        <button class="menu-btn speaking" onclick="alert('SPEAKING 준비 중!')">SPEAKING</button>
+        <button class="menu-btn writing" onclick="alert('WRITING 준비 중!')">WRITING</button>
+        <button class="menu-btn listening" onclick="alert('LISTENING 준비 중!')">LISTENING</button>
+        <button class="menu-btn reading" onclick="alert('READING 준비 중!')">READING</button>
+    </div>
+
+</body>
+</html>
