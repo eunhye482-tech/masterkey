@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI 회화 학습 센터</title>
+    <style>
+        /* 모바일에서 버튼이 큼직하게 보이도록 디자인 */
+        body { font-family: -apple-system, sans-serif; text-align: center; padding: 20px; background: #fdfcf0; margin: 0; }
+        .container { background: white; max-width: 400px; margin: 20px auto; padding: 25px; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .screen { display: none; } 
+        .active { display: block; }
+        
+        button { padding: 18px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 15px; border: none; margin: 10px 0; width: 100%; transition: 0.2s; }
+        .lvl-btn { background: #2ECC71; color: white; box-shadow: 0 4px #27ae60; }
+        .lvl-btn:active { transform: translateY(3px); box-shadow: none; }
+        
+        .mic-btn { background: #E74C3C; color: white; font-size: 20px; height: 80px; margin-top: 20px; }
+        .mic-btn.recording { background: #c0392b; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        
+        #recognizedText { margin-top: 25px; font-size: 16px; color: #666; min-height: 50px; padding: 10px; background: #f9f9f9; border-radius: 10px; border: 1px dashed #ccc; }
+        #resultMsg { margin-top: 20px; font-weight: bold; font-size: 22px; }
+        .next-btn { background: #3498db; color: white; display: none; } /* 정답일 때만 보임 */
+    </style>
+</head>
+<body>
+
+    <div id="level-screen" class="screen active">
+        <h2 style="margin-top:40px;">회화 레벨 선택</h2>
+        <p style="color:#888;">연습할 단계를 골라주세요.</p>
+        <div style="max-width:300px; margin: 0 auto;">
+            <button class="lvl-btn" onclick="startApp(1)">Level 1 시작</button>
+            <button class="lvl-btn" onclick="startApp(2)">Level 2 시작</button>
+        </div>
+    </div>
+
+    <div id="quiz-screen" class="screen">
+        <div class="container">
+            <div id="info" style="font-size:14px; color:#aaa;"></div>
+            <div id="koreanQ" style="font-size:26px; font-weight:bold; margin:20px 0; color:#2c3e50; line-height:1.4;"></div>
+            
+            <div id="recognizedText">아래 버튼을 누르고 말씀하세요.</div>
+            
+            <button id="micBtn" class="mic-btn" onclick="toggleListening()">🎤 말하기 시작</button>
+            <button id="nextBtn" class="next-btn" onclick="nextSentence()">다음 문장으로 👉</button>
+            
+            <div id="resultMsg"></div>
+        </div>
+        <button onclick="location.href='index.html'" style="background:none; color:#aaa; font-size:14px; text-decoration:underline;">그만하기</button>
+    </div>
+
+    <script>
+        let sentences = [];
+        let currentIdx = 0;
+        let isListening = false;
+        
+        // 아이폰/안드로이드 통합 음성 인식 엔진 설정
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("이 브라우저는 음성 인식을 지원하지 않습니다. 아이폰은 Safari, 안드로이드는 Chrome을 이용해 주세요.");
+        }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        function startApp(level) {
+            document.getElementById('level-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+
+            fetch(`speak${level}.json`)
+                .then(res => res.json())
+                .then(data => {
+                    sentences = data;
+                    show();
+                })
+                .catch(() => alert("데이터 파일(speak" + level + ".json)을 찾을 수 없습니다!"));
+        }
+
+        function show() {
+            if (currentIdx < sentences.length) {
+                const item = sentences[currentIdx];
+                document.getElementById('koreanQ').innerText = item.Korean;
+                document.getElementById('info').innerText = `문장 ${currentIdx + 1} / ${sentences.length}`;
+                document.getElementById('recognizedText').innerText = "기다리는 중...";
+                document.getElementById('resultMsg').innerText = "";
+                document.getElementById('micBtn').style.display = "block";
+                document.getElementById('nextBtn').style.display = "none";
+            } else {
+                alert("축하합니다! 모든 연습을 마쳤습니다.");
+                location.href = 'index.html';
+            }
+        }
+
+        function toggleListening() {
+            try {
+                recognition.start();
+            } catch (e) {
+                recognition.stop();
+            }
+        }
+
+        recognition.onstart = () => {
+            isListening = true;
+            const btn = document.getElementById('micBtn');
+            btn.innerText = "🎧 듣고 있어요...";
+            btn.classList.add('recording');
+        };
+
+        recognition.onresult = (event) => {
+            const speechResult = event.results[0][0].transcript.toLowerCase().replace(/[.?!,]/g, "").trim();
+            document.getElementById('recognizedText').innerText = `내 목소리: "${speechResult}"`;
+            checkAnswer(speechResult);
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            const btn = document.getElementById('micBtn');
+            btn.innerText = "🎤 다시 말하기";
+            btn.classList.remove('recording');
+        };
+
+        function checkAnswer(speech) {
+            const correct = sentences[currentIdx].English.toLowerCase().replace(/[.?!,]/g, "").trim();
+            const resultArea = document.getElementById('resultMsg');
+
+            if(speech === correct) {
+                resultArea.innerText = "⭕ Perfect! 정확해요!";
+                resultArea.style.color = "#2ECC71";
+                document.getElementById('micBtn').style.display = "none";
+                document.getElementById('nextBtn').style.display = "block";
+            } else {
+                resultArea.innerText = `❌ 조금 달라요! 정답: "${correct}"`;
+                resultArea.style.color = "#E74C3C";
+            }
+        }
+
+        function nextSentence() {
+            currentIdx++;
+            show();
+        }
+
+        recognition.onerror = (event) => {
+            if(event.error === 'not-allowed') alert("마이크 권한을 허용해 주세요!");
+            isListening = false;
+            document.getElementById('micBtn').innerText = "🎤 말하기 시작";
+            document.getElementById('micBtn').classList.remove('recording');
+        };
+    </script>
+</body>
+</html>
