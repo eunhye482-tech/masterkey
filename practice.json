@@ -1,0 +1,37 @@
+[
+  {
+    "Level": 1,
+    "List_No": 1,
+    "Korean": "사과",
+    "English": "apple",
+    "Hint": "a--le"
+  },
+  {
+    "Level": 1,
+    "List_No": 1,
+    "Korean": "아기",
+    "English": "baby",
+    "Hint": "b--y"
+  },
+  {
+    "Level": 1,
+    "List_No": 1,
+    "Korean": "고양이",
+    "English": "cat",
+    "Hint": "c-t"
+  },
+  {
+    "Level": 1,
+    "List_No": 1,
+    "Korean": "개",
+    "English": "dog",
+    "Hint": "d-g"
+  },
+  {
+    "Level": 1,
+    "List_No": 1,
+    "Korean": "먹다",
+    "English": "eat",
+    "Hint": "e-t"
+  }
+]
