@@ -3,202 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI 회화 학습 & 성적표</title>
+    <title>AI 회화 학습</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        body { font-family: -apple-system, sans-serif; text-align: center; padding: 20px; background: #fdfcf0; margin: 0; }
-        .container { background: white; max-width: 450px; margin: 10px auto; padding: 20px; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .screen { display: none; } 
-        .active { display: block; }
-        button { padding: 15px; font-size: 17px; font-weight: bold; cursor: pointer; border-radius: 15px; border: none; margin: 10px 0; width: 100%; transition: 0.2s; }
+        body { 
+            font-family: -apple-system, sans-serif; text-align: center; padding: 20px; margin: 0;
+            /* 배경 이미지: 2.png 적용 */
+            background-image: url('2.png'); 
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .container { 
+            background: rgba(255, 255, 255, 0.9); max-width: 450px; margin: 10px auto; padding: 20px; 
+            border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+        }
+        .screen { display: none; } .active { display: block; }
+        button { padding: 15px; font-size: 17px; font-weight: bold; cursor: pointer; border-radius: 15px; border: none; margin: 10px 0; width: 100%; }
         .lvl-btn { background: #2ECC71; color: white; }
-        .sentence-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
         .mic-btn { background: #E74C3C; color: white; font-size: 20px; height: 70px; }
-        .mic-btn.recording { background: #c0392b; animation: pulse 1.2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-        #recognizedText { margin-top: 20px; font-size: 16px; color: #666; min-height: 40px; padding: 10px; background: #f9f9f9; border-radius: 10px; border: 1px dashed #ccc; }
-        #resultMsg { margin-top: 15px; font-weight: bold; font-size: 20px; }
         .next-btn { background: #3498db; color: white; display: none; }
-        
-        /* 성적표 디자인 */
-        #report-card { background: white; padding: 30px; border: 5px solid #4A90E2; border-radius: 20px; text-align: center; }
+        #report-card { background: white; padding: 30px; border: 5px solid #4A90E2; border-radius: 20px; }
         .score-big { font-size: 50px; color: #E74C3C; font-weight: bold; margin: 20px 0; }
-        .wrong-list { text-align: left; font-size: 14px; background: #fff5f5; padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-
     <div id="level-screen" class="screen active">
-        <h2 style="margin-top:30px;">AI 회화 학습 시작</h2>
-        <div style="max-width:300px; margin: 0 auto;">
+        <div class="container">
+            <h2 style="margin-top:20px;">AI SPEAKING</h2>
             <button class="lvl-btn" onclick="startApp(1)">Level 1 연습하기</button>
             <button class="lvl-btn" onclick="startApp(2)">Level 2 연습하기</button>
         </div>
     </div>
-
     <div id="study-screen" class="screen">
         <div class="container">
-            <h3>오늘의 문장 미리보기</h3>
+            <h3>미리보기 학습</h3>
             <div id="sentence-list"></div>
-            <button onclick="startQuiz()" style="background:#E74C3C; color:white; margin-top:20px;">다 외웠어요! 시험 시작 👉</button>
+            <button onclick="startQuiz()" style="background:#E74C3C; color:white; margin-top:20px;">시험 시작 👉</button>
         </div>
     </div>
-
     <div id="quiz-screen" class="screen">
         <div class="container">
             <div id="info"></div>
             <div id="koreanQ" style="font-size:24px; font-weight:bold; margin:15px 0;"></div>
-            <div id="recognizedText">버튼을 누르고 말하세요.</div>
-            <button id="micBtn" class="mic-btn" onclick="toggleListening()">🎤 말하기 시작</button>
-            <button id="nextBtn" class="next-btn" onclick="nextSentence()">다음 문장 👉</button>
+            <div id="recognizedText">말씀하세요...</div>
+            <button id="micBtn" class="mic-btn" onclick="toggleListening()">🎤 말하기</button>
+            <button id="nextBtn" class="next-btn" onclick="nextSentence()">다음으로 👉</button>
             <div id="resultMsg"></div>
         </div>
     </div>
-
     <div id="report-screen" class="screen">
         <div id="report-area" style="padding:10px; background:#f0f0f0;">
             <div id="report-card">
-                <h2 style="margin:0;">ENGLISH SPEAKING REPORT</h2>
-                <p id="report-date"></p>
-                <hr>
+                <h2>SPEAKING REPORT</h2>
                 <div class="score-big" id="final-score">0점</div>
-                <p id="score-summary"></p>
-                <div class="wrong-list" id="wrong-container" style="display:none;">
-                    <p><strong>⚠️ 복습이 필요한 문장:</strong></p>
-                    <div id="wrong-items"></div>
-                </div>
-                <h3 style="margin-top:20px; color:#4A90E2;">Excellent Effort! 👍</h3>
+                <div id="score-summary"></div>
+                <h3 style="color:#4A90E2;">Keep it up! 👍</h3>
             </div>
         </div>
         <div class="container">
-            <button onclick="saveAsImg()" style="background:#2ECC71; color:white;">📸 성적표 이미지로 저장하기</button>
-            <button onclick="location.reload()" style="background:#eee;">다시 하기</button>
+            <button onclick="saveAsImg()" style="background:#2ECC71; color:white;">📸 성적표 이미지 저장</button>
+            <button onclick="location.href='index.html'" style="background:#eee;">메인으로</button>
         </div>
     </div>
-
     <script>
-        let sentences = [];
-        let currentIdx = 0;
-        let score = 0;
-        let wrongAnswers = [];
-
-        function speak(text) {
-            const uttr = new SpeechSynthesisUtterance(text);
-            uttr.lang = 'en-US';
-            window.speechSynthesis.speak(uttr);
-        }
-
+        let sentences = []; let currentIdx = 0; let score = 0;
+        function speak(text) { const uttr = new SpeechSynthesisUtterance(text); uttr.lang = 'en-US'; window.speechSynthesis.speak(uttr); }
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = SpeechRecognition ? new SpeechRecognition() : null;
         if(recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
-
-        function startApp(level) {
-            fetch(`speak${level}.json`).then(res => res.json()).then(data => {
-                sentences = data;
-                showStudyList();
-            });
-        }
-
+        function startApp(level) { fetch(`speak${level}.json`).then(res => res.json()).then(data => { sentences = data; showStudyList(); }); }
         function showStudyList() {
             document.getElementById('level-screen').classList.remove('active');
             document.getElementById('study-screen').classList.add('active');
-            const listDiv = document.getElementById('sentence-list');
-            listDiv.innerHTML = "";
+            const listDiv = document.getElementById('sentence-list'); listDiv.innerHTML = "";
             sentences.forEach(item => {
-                listDiv.innerHTML += `<div class="sentence-item">
-                    <span><strong>${item.Korean}</strong><br><small>${item.English}</small></span>
-                    <button style="width:40px; height:40px; padding:0;" onclick="speak('${item.English}')">🔊</button>
+                listDiv.innerHTML += `<div style="text-align:left; border-bottom:1px solid #eee; padding:10px;">
+                    <strong>${item.Korean}</strong><br><small>${item.English}</small>
+                    <button style="width:30px; height:30px; float:right;" onclick="speak('${item.English.replace(/'/g, "\\'")}')">🔊</button>
                 </div>`;
             });
         }
-
-        function startQuiz() {
-            document.getElementById('study-screen').classList.remove('active');
-            document.getElementById('quiz-screen').classList.add('active');
-            currentIdx = 0; score = 0; wrongAnswers = [];
-            showQuiz();
-        }
-
+        function startQuiz() { document.getElementById('study-screen').classList.remove('active'); document.getElementById('quiz-screen').classList.add('active'); currentIdx = 0; score = 0; showQuiz(); }
         function showQuiz() {
             if (currentIdx < sentences.length) {
                 document.getElementById('koreanQ').innerText = sentences[currentIdx].Korean;
-                document.getElementById('info').innerText = `문장 ${currentIdx + 1} / ${sentences.length}`;
-                document.getElementById('recognizedText').innerText = "기다리는 중...";
+                document.getElementById('info').innerText = `${currentIdx + 1} / ${sentences.length}`;
                 document.getElementById('resultMsg').innerText = "";
-                document.getElementById('micBtn').style.display = "block";
-                document.getElementById('nextBtn').style.display = "none";
+                document.getElementById('micBtn').style.display = "block"; document.getElementById('nextBtn').style.display = "none";
             } else { showReport(); }
         }
-
         function toggleListening() { try { recognition.start(); } catch (e) { recognition.stop(); } }
-
         if(recognition) {
-            recognition.onstart = () => { document.getElementById('micBtn').innerText = "🎧 듣고 있어요..."; };
             recognition.onresult = (event) => {
                 const speechResult = event.results[0][0].transcript.toLowerCase().replace(/[.?!,]/g, "").trim();
-                document.getElementById('recognizedText').innerText = `인식 결과: "${speechResult}"`;
-                checkAnswer(speechResult);
+                const correct = sentences[currentIdx].English.toLowerCase().replace(/[.?!,]/g, "").trim();
+                if(speechResult === correct || correct.includes(speechResult)) {
+                    document.getElementById('resultMsg').innerText = "⭕ Good!"; score++;
+                    document.getElementById('micBtn').style.display = "none"; document.getElementById('nextBtn').style.display = "block"; speak(correct);
+                } else { document.getElementById('resultMsg').innerText = "❌ Try Again!"; }
             };
-            recognition.onend = () => { document.getElementById('micBtn').innerText = "🎤 다시 말하기"; };
         }
-
-        // 유연한 정답 체크 로직 (글자 포함 여부 등으로 판단)
-        function checkAnswer(speech) {
-            const correct = sentences[currentIdx].English.toLowerCase().replace(/[.?!,]/g, "").trim();
-            const resultArea = document.getElementById('resultMsg');
-
-            // 정확히 일치하거나, 정답 문장의 70% 이상이 포함되어 있으면 정답 처리
-            if(speech === correct || speech.includes(correct) || correct.includes(speech)) {
-                resultArea.innerText = "⭕ Good Job!";
-                resultArea.style.color = "#2ECC71";
-                score++;
-                document.getElementById('micBtn').style.display = "none";
-                document.getElementById('nextBtn').style.display = "block";
-                speak(correct);
-            } else {
-                resultArea.innerText = "❌ 조금 더 비슷하게 말해볼까요?";
-                resultArea.style.color = "#E74C3C";
-                // 틀려도 다음으로 넘어갈 수 있도록 2초 후 버튼 노출 (강제 통과용)
-                setTimeout(() => {
-                    if(document.getElementById('nextBtn').style.display === "none") {
-                        resultArea.innerText = "연습했으니 다음으로 넘어갈게요! 👍";
-                        wrongAnswers.push(sentences[currentIdx]);
-                        document.getElementById('micBtn').style.display = "none";
-                        document.getElementById('nextBtn').style.display = "block";
-                    }
-                }, 2500);
-            }
-        }
-
         function nextSentence() { currentIdx++; showQuiz(); }
-
         function showReport() {
-            document.getElementById('quiz-screen').classList.remove('active');
-            document.getElementById('report-screen').classList.add('active');
-            
+            document.getElementById('quiz-screen').classList.remove('active'); document.getElementById('report-screen').classList.add('active');
             const finalPercent = Math.round((score / sentences.length) * 100);
             document.getElementById('final-score').innerText = finalPercent + "점";
-            document.getElementById('report-date').innerText = new Date().toLocaleDateString() + " 학습 결과";
             document.getElementById('score-summary').innerText = `총 ${sentences.length}문장 중 ${score}문장 성공!`;
-
-            if(wrongAnswers.length > 0) {
-                document.getElementById('wrong-container').style.display = "block";
-                const itemDiv = document.getElementById('wrong-items');
-                itemDiv.innerHTML = "";
-                wrongAnswers.forEach(w => {
-                    itemDiv.innerHTML += `<p style="margin:5px 0;">• ${w.Korean}: <strong>${w.English}</strong></p>`;
-                });
-            }
         }
-
-        // 성적표 이미지 저장 기능
         function saveAsImg() {
             const area = document.getElementById('report-area');
             html2canvas(area).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'my_english_score.png';
-                link.href = canvas.toDataURL("image/png");
-                link.click();
+                const link = document.createElement('a'); link.download = 'report.png';
+                link.href = canvas.toDataURL("image/png"); link.click();
             });
         }
     </script>
