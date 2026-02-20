@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master Index - Full Select</title>
+    <style>
+        :root {
+            --primary: #4299E1;
+            --primary-light: #EBF8FF;
+            --secondary: #F687B3;
+            --text-main: #2D3748;
+            --text-sub: #718096;
+            --bg: #F7FAFC;
+        }
+        body { font-family: 'Pretendard', sans-serif; background: var(--bg); margin: 0; display: flex; justify-content: center; height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 20px; text-align: center; background: var(--primary); color: white; font-size: 1.2rem; font-weight: bold; }
+        .content { padding: 20px; overflow-y: auto; flex: 1; }
+        
+        .section-title { font-size: 0.9rem; color: var(--text-sub); margin: 20px 0 10px 5px; font-weight: bold; display: flex; align-items: center; }
+        .section-title::before { content: ''; width: 4px; height: 14px; background: var(--primary); margin-right: 8px; border-radius: 2px; }
+
+        .choice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 5px; }
+        .num-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+        .btn { padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 12px; background: white; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; font-weight: 600; color: var(--text-sub); }
+        .btn:active { transform: scale(0.95); }
+        
+        /* 선택되었을 때의 스타일 */
+        .btn.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        
+        /* 지문 번호 버튼 스타일 */
+        .btn-num { border-color: var(--secondary); color: var(--secondary); }
+        .btn-num:hover { background: #FFF5F7; }
+
+        .status-bar { background: #EDF2F7; padding: 10px 15px; font-size: 0.85rem; color: var(--text-main); font-weight: bold; border-radius: 8px; margin-bottom: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="header">English Master 메뉴</div>
+        
+        <div class="content">
+            <div id="selection-status" class="status-bar">선택된 정보: 고1 / 2025년 / 3월</div>
+
+            <div class="section-title">학년 선택</div>
+            <div class="choice-grid">
+                <button class="btn active" onclick="selectItem(this, 'grade', '고1')">고1</button>
+                <button class="btn" onclick="selectItem(this, 'grade', '고2')">고2</button>
+                <button class="btn" onclick="selectItem(this, 'grade', '고3')">고3</button>
+            </div>
+
+            <div class="section-title">시행 연도</div>
+            <div class="choice-grid">
+                <button class="btn active" onclick="selectItem(this, 'year', '2025년')">2025년</button>
+                <button class="btn" onclick="selectItem(this, 'year', '2024년')">2024년</button>
+                <button class="btn" onclick="selectItem(this, 'year', '2023년')">2023년</button>
+            </div>
+
+            <div class="section-title">시행 월</div>
+            <div class="choice-grid">
+                <button class="btn active" onclick="selectItem(this, 'month', '3월')">3월</button>
+                <button class="btn" onclick="selectItem(this, 'month', '6월') Bryan">6월</button>
+                <button class="btn" onclick="selectItem(this, 'month', '9월')">9월</button>
+            </div>
+
+            <div class="section-title">지문 번호 (선택 시 해당 파일로 이동)</div>
+            <div class="num-grid" id="number-buttons">
+                <button class="btn btn-num" onclick="goToExercise(20)">20번</button>
+                <button class="btn btn-num" onclick="goToExercise(21)">21번</button>
+                <button class="btn btn-num" onclick="goToExercise(22)">22번</button>
+                <button class="btn btn-num" onclick="goToExercise(23)">23번</button>
+                <button class="btn btn-num" onclick="goToExercise(29)">29번</button>
+                <button class="btn btn-num" onclick="goToExercise(30)">30번</button>
+                <button class="btn btn-num" onclick="goToExercise(31)">31번</button>
+                <button class="btn btn-num" onclick="goToExercise(40)">40번</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 현재 선택된 상태를 저장하는 변수
+        let currentGrade = "고1";
+        let currentYear = "2025년";
+        let currentMonth = "3월";
+
+        function selectItem(element, type, value) {
+            // 해당 그룹의 모든 버튼에서 active 클래스 제거
+            const parent = element.parentElement;
+            const buttons = parent.querySelectorAll('.btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // 클릭한 버튼에 active 클래스 추가
+            element.classList.add('active');
+
+            // 값 업데이트
+            if (type === 'grade') currentGrade = value;
+            if (type === 'year') currentYear = value;
+            if (type === 'month') currentMonth = value;
+
+            // 상태 표시줄 업데이트
+            document.getElementById('selection-status').innerText = `선택된 정보: ${currentGrade} / ${currentYear} / ${currentMonth}`;
+        }
+
+       function goToExercise(num) {
+            // 1. 현재 선택된 연도에서 '년' 글자 빼기 (예: 2023)
+            let yearNum = currentYear.replace("년", ""); 
+            
+            // 2. 학년을 숫자로 변환 (고1 -> 1, 고2 -> 2, 고3 -> 3)
+            let gradeNum = currentGrade === "고1" ? "1" : (currentGrade === "고2" ? "2" : "3");
+            
+            // 3. 월에서 '월' 글자 빼기 (예: 3)
+            let monthNum = currentMonth.replace("월", "");
+            
+            // 4. 선생님이 새로 정하신 규칙으로 파일명 완성!
+            // 결과 예시: 2023.1.3.20.html
+            let fileName = `${yearNum}.${gradeNum}.${monthNum}.${num}.html`;
+            
+            // 5. 해당 파일로 이동
+            location.href = fileName;
+        }
+    </script>
+</body>
+</html>

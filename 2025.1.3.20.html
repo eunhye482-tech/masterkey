@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master #20 Final</title>
+    <style>
+        :root {
+            --pink: #FFEDFA; --mint: #E6FFFA; --blue: #EBF8FF;
+            --point-pink: #F687B3; --point-mint: #38B2AC; --point-blue: #4299E1;
+            --text: #2D3748;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F7FAFC; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--point-blue); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
+        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+
+        /* [INTRO 영역] */
+        .intro-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #63B3ED 0%, #4299E1 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .main-title-card h1 { margin: 0; font-size: 1.5rem; }
+        .intro-summary { background: var(--blue); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid #BEE3F8; text-align: left; font-size: 0.92rem; line-height: 1.6; width: 100%; box-sizing: border-box; }
+        .intro-summary h3 { margin: 0 0 10px 0; color: #2C5282; border-bottom: 1px dashed #A7D7F5; padding-bottom: 5px; }
+        .intro-topic { background: #FFF5F7; padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #FED7E2; text-align: left; width: 100%; box-sizing: border-box; }
+        .topic-label { color: var(--point-pink); font-weight: bold; font-size: 0.8rem; display: block; margin-bottom: 5px; }
+        .btn-start { background: var(--point-blue); color: white; padding: 18px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        /* [고정 스타일] */
+        .sentence-box { background: var(--blue); padding: 25px; border-radius: 20px; font-size: 1.2rem; font-weight: 700; color: #2C5282; margin-bottom: 15px; border: 2px solid #BEE3F8; line-height: 1.5; }
+        .translation { font-size: 1.05rem; color: #4A5568; background: var(--pink); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--point-pink); line-height: 1.6; }
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: var(--mint); padding: 10px; border-radius: 10px; font-size: 0.9rem; border: 1px solid #B2F5EA; cursor: pointer; text-align: center; font-weight: 600; }
+        .voca-item.revealed { background: var(--point-mint); color: white; border-color: var(--point-mint); }
+        .grammar-box { background: #FFF5F7; padding: 15px; border-radius: 15px; border: 1px solid #FED7E2; font-size: 0.9rem; margin-bottom: 10px; }
+        .test-card { background: #fff; padding: 25px; border-radius: 20px; border: 2px dashed var(--point-pink); font-size: 1.3rem; line-height: 1.8; text-align: center; }
+        .blank { border-bottom: 3px solid var(--point-pink); color: transparent; cursor: pointer; margin: 0 3px; display: inline-block; min-width: 45px; }
+        .blank.revealed { color: var(--point-pink); font-weight: bold; border-bottom: 3px solid transparent; }
+        .order-box { background: #fff; border: 2px solid #E2E8F0; padding: 18px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; font-size: 0.95rem; position: relative; color: #4A5568; }
+        .order-box.selected { border-color: var(--point-mint); background: var(--mint); }
+        .order-num { position: absolute; right: 10px; top: 10px; background: var(--point-mint); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; display: none; }
+        .order-box.selected .order-num { display: flex; }
+        .drag-target-zone { background: #FFF9C4; border: 2px dashed #FBC02D; padding: 12px; border-radius: 12px; font-weight: bold; color: #827717; text-align: center; cursor: grab; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.4; touch-action: none; }
+        .passage-container { background: #fff; padding: 12px; border-radius: 15px; border: 1px solid #E2E8F0; line-height: 2.3; color: #4A5568; font-size: 0.85rem; }
+        .num-spot { display: inline-flex; width: 22px; height: 22px; background: #fff; border: 1.5px solid var(--point-blue); color: var(--point-blue); border-radius: 50%; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin: 0 8px; vertical-align: middle; cursor: pointer; }
+        .num-spot.drag-over { background: var(--point-blue); color: white; transform: scale(1.2); }
+        .num-spot.correct-spot { background: var(--point-mint); border-color: var(--point-mint); color: white; }
+        .num-spot.wrong-spot { background: #E53E3E; border-color: #E53E3E; color: white; }
+        
+        /* [Step 5] 영작 & 정밀교정 빨간펜 */
+        .writing-input { width: 100%; height: 100px; padding: 15px; border-radius: 15px; border: 2px solid #E2E8F0; font-size: 1.05rem; margin-bottom: 10px; box-sizing: border-box; outline: none; }
+        .correction-box { background: #fff; padding: 15px; border-radius: 15px; border: 1.5px solid #FEB2B2; margin-top: 5px; display: none; line-height: 1.6; font-size: 1.1rem; }
+        ins { color: #E53E3E; text-decoration: none; font-weight: 800; background: #FFF5F5; border-radius: 2px; padding: 0 1px; }
+
+        .feedback-overlay { padding: 10px; border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 10px; display: none; font-size: 0.9rem; }
+        .is-correct { background: #E6FFFA; color: #38B2AC; border: 1px solid #38B2AC; }
+        .is-wrong { background: #FFF5F5; color: #E53E3E; border: 1px solid #E53E3E; }
+        
+        /* [성적표 전용 스타일] */
+        .report-item { border-bottom: 1px dashed #cbd5e0; padding: 15px 0; }
+        .report-q { font-weight: bold; color: #2D3748; margin-bottom: 5px; }
+        .report-ans { font-size: 0.95rem; color: #718096; padding-left: 10px; border-left: 3px solid #CBD5E0; margin-bottom: 5px; }
+        .report-corr { font-size: 1rem; color: #E53E3E; font-weight: bold; padding-left: 10px; border-left: 3px solid #E53E3E; }
+
+        .nav-buttons { padding: 15px; background: white; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn-prev { background: #EDF2F7; color: #718096; }
+        .btn-next { background: var(--point-blue); color: white; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="mode-title">LOADING...</div>
+    <div id="display-area"></div>
+    <div class="nav-buttons" id="nav-btns" style="display:none;">
+        <button class="btn-prev" onclick="handlePrev()" id="prev-btn">PREV</button>
+        <button class="btn-next" onclick="handleNext()" id="next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { en: "Improving your gestural communication involves more than just knowing when to nod or shake hands.", ko: "제스처 의사소통을 개선하는 것은 단지 언제 고개를 끄덕이거나 악수를 해야 하는지를 아는 것 이상을 포함합니다.", voca: ["improve: 개선하다", "gestural: 몸짓의", "involve: 포함하다", "nod: 끄덕이다", "shake: 악수"], grammar: "동명사 주어 / 의문사+to부정사", test: "<span class='blank' onclick='reveal(this)'>Improving</span> your gestural communication <span class='blank' onclick='reveal(this)'>involves</span> more than just knowing <span class='blank' onclick='reveal(this)'>when to nod</span> or shake hands." },
+        { en: "It’s about using gestures to complement your spoken messages, adding layers of meaning to your words.", ko: "그것은 구어 메시지를 보완하기 위해 제스처를 사용하고, 당신의 말에 의미의 층을 더하는 것에 관한 것입니다.", voca: ["complement: 보완하다", "spoken: 구어의", "layer: 층", "meaning: 의미", "add: 더하다"], grammar: "전치사 뒤 동명사 / 분사구문", test: "It’s about using gestures to <span class='blank' onclick='reveal(this)'>complement</span> your spoken messages, <span class='blank' onclick='reveal(this)'>adding</span> layers of meaning to your words." },
+        { en: "Open-handed gestures, for example, can indicate honesty, creating an atmosphere of trust.", ko: "예를 들어, 손바닥을 펼친 제스처는 정직함을 나타내어 신뢰의 분위기를 조성할 수 있습니다.", voca: ["indicate: 나타내다", "honesty: 정직", "atmosphere: 분위기", "trust: 신뢰", "example: 예시"], grammar: "조동사 can / 결과의 분사구문", test: "Open-handed gestures can <span class='blank' onclick='reveal(this)'>indicate</span> honesty, <span class='blank' onclick='reveal(this)'>creating</span> an atmosphere of <span class='blank' onclick='reveal(this)'>trust</span>." },
+        { en: "You invite openness and collaboration when you speak with your palms facing up.", ko: "손바닥을 위로 향하고 말할 때 당신은 개방성과 협력을 유도합니다.", voca: ["invite: 유도하다", "openness: 개방성", "collaboration: 협력", "palm: 손바닥", "facing: ~향한"], grammar: "with + 목적어 + 분사 / 접속사 when", test: "You invite <span class='blank' onclick='reveal(this)'>openness</span> and collaboration when you speak with your <span class='blank' onclick='reveal(this)'>palms facing up</span>." },
+        { en: "This simple yet powerful gesture can make others feel more comfortable and willing to engage in conversation.", ko: "이 단순하지만 강력한 제스처는 다른 사람들이 더 편안함을 느끼고 기꺼이 대화에 참여하게 만들 수 있습니다.", voca: ["powerful: 강력한", "comfortable: 편안함", "willing to: 기꺼이", "engage in: 참여", "conversation: 대화"], grammar: "사역동사 make / 형용사 병렬", test: "This simple yet powerful gesture can <span class='blank' onclick='reveal(this)'>make others feel</span> more comfortable and <span class='blank' onclick='reveal(this)'>willing to</span> engage in conversation." },
+        { en: "But be careful of the trap of over-gesturing.", ko: "하지만 과도하게 제스처를 취하는 함정을 조심하세요.", voca: ["be careful: 조심", "trap: 함정", "over-gesturing: 과도한 몸짓", "but: 하지만", "caution: 주의"], grammar: "명령문 / 전치사 of", test: "But be <span class='blank' onclick='reveal(this)'>careful</span> of the <span class='blank' onclick='reveal(this)'>trap</span> of <span class='blank' onclick='reveal(this)'>over-gesturing</span>." },
+        { en: "Too many hand movements can distract from your message, drawing attention away from your words.", ko: "너무 많은 손 움직임은 메시지로부터 주의를 산만하게 하여, 당신의 단어로부터 관심을 멀어지게 할 수 있습니다.", voca: ["movement: 움직임", "distract: 산만하게 하다", "draw: 이끌다", "attention: 주의", "away: 멀리"], grammar: "수량형용사 / 분사구문", test: "Too many hand movements can <span class='blank' onclick='reveal(this)'>distract</span> from your message, <span class='blank' onclick='reveal(this)'>drawing</span> attention away from your words." },
+        { en: "Imagine a speaker whose hands move quickly like birds, their message lost in the chaos of their gestures.", ko: "손이 새처럼 빠르게 움직여서, 제스처의 혼란 속에서 메시지가 사라져 버리는 화자를 상상해 보세요.", voca: ["imagine: 상상하다", "speaker: 화자", "whose: ~의(소유관대)", "chaos: 혼란", "lost: 사라진"], grammar: "소유격 관계대명사 / 분사구문", test: "Imagine a speaker <span class='blank' onclick='reveal(this)'>whose</span> hands move quickly like birds, their message <span class='blank' onclick='reveal(this)'>lost</span> in the chaos of their gestures." },
+        { en: "Balance is key. Your gestures should highlight your words, not overshadow them.", ko: "균형이 핵심입니다. 당신의 제스처는 말을 가리는 것이 아니라 말을 강조해야 합니다.", voca: ["balance: 균형", "key: 핵심", "highlight: 강조하다", "overshadow: 가리다", "should: ~해야 한다"], grammar: "조동사 should / 상관 병렬구조", test: "Balance is <span class='blank' onclick='reveal(this)'>key</span>. Your gestures should <span class='blank' onclick='reveal(this)'>highlight</span> your words, not <span class='blank' onclick='reveal(this)'>overshadow</span> them." }
+    ];
+
+    const orderData = [
+        { id: 1, text: "Improving your gestural communication involves more than just knowing when to nod or shake hands. It’s about using gestures to complement your spoken messages, adding layers of meaning to your words." },
+        { id: 2, text: "Open-handed gestures, for example, can indicate honesty, creating an atmosphere of trust. You invite openness and collaboration when you speak with your palms facing up. This simple yet powerful gesture can make others feel more comfortable and willing to engage in conversation." },
+        { id: 3, text: "But be careful of the trap of over-gesturing. Too many hand movements can distract from your message, drawing attention away from your words." },
+        { id: 4, text: "Imagine a speaker whose hands move quickly like birds, their message lost in the chaos of their gestures. Balance is key. Your gestures should highlight your words, not overshadow them." }
+    ];
+
+    let currentIdx = 0, mode = 'INTRO', round = 1, userOrder = [], history = [], selectedDropIdx = -1, currentTargetIdx = -1, isCorrected = false, isActionDone = false;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area'), nextBtn = document.getElementById('next-btn'), prevBtn = document.getElementById('prev-btn'), title = document.getElementById('mode-title'), nav = document.getElementById('nav-btns');
+        area.innerHTML = ''; isActionDone = false;
+
+        if (mode === 'INTRO') {
+            title.innerText = "2025년 3월 고1 모의고사 20번"; nav.style.display = 'none';
+            area.innerHTML = `
+                <div class="intro-container">
+                    <div class="main-title-card"><h1>English Master #20</h1><p>몸짓 언어와 의사소통의 균형</p></div>
+                    <div class="intro-summary">
+                        <h3>📋 서론-본론-결론 요약</h3>
+                        <p><b>[서론]</b> 몸짓은 단순히 동작을 넘어 언어 메시지를 보완하는 핵심 도구임.</p>
+                        <p><b>[본론]</b> 손바닥을 보여주는 동작은 신뢰를 구축하나, 과도한 몸짓은 메시지를 가리는 함정이 됨.</p>
+                        <p><b>[결론]</b> 몸짓은 말을 가리는 것이 아니라 '강조'해야 하며 균형이 가장 중요함.</p>
+                    </div>
+                    <div class="intro-topic">
+                        <span class="topic-label">💡 핵심 주제문</span>
+                        <div class="topic-ko">몸짓 의사소통은 언어를 보완하고 강조하는 균형이 핵심이다.</div>
+                        <div class="topic-en">Gestural communication highlights and complements spoken words with balance.</div>
+                    </div>
+                    <button class="btn-start" onclick="startLearning()">학습 시작하기</button>
+                </div>`;
+        } else if (mode === 'STUDY') {
+            title.innerText = `STEP 1. STUDY (${currentIdx + 1}/9)`; nav.style.display = 'flex';
+            prevBtn.style.visibility = (currentIdx === 0) ? "hidden" : "visible";
+            area.innerHTML = `<div class="sentence-box">${data[currentIdx].en}</div><div class="translation">${data[currentIdx].ko}</div><div class="voca-grid">${data[currentIdx].voca.map(v => { const [eng, kor] = v.split(':'); return `<div class="voca-item" onclick="toggleVoca(this, '${kor.trim()}')">${eng.trim()}</div>`; }).join('')}</div><div class="grammar-box">✨ ${data[currentIdx].grammar}</div>`;
+            nextBtn.innerText = (currentIdx === 8) ? "START TEST" : "NEXT";
+            playVoice(data[currentIdx].en);
+        } else if (mode === 'TEST') {
+            title.innerText = `STEP 2. TEST (${currentIdx + 1}/9)`;
+            area.innerHTML = `<div class="test-card">${data[currentIdx].test}</div><div class="translation" style="margin-top:20px;">${data[currentIdx].ko}</div>`;
+            nextBtn.innerText = (currentIdx === 8) ? "START ORDERING" : "NEXT";
+        } else if (mode === 'ORDER') {
+            title.innerText = `STEP 3. ORDERING (ROUND ${round}/5)`;
+            if (userOrder.length === 0) this.shuffled = [...orderData].sort(() => Math.random() - 0.5);
+            area.innerHTML = `<div id="feedback" class="feedback-overlay"></div>` + this.shuffled.map(o => `<div class="order-box" onclick="selectOrder(this, ${o.id})">${o.text}<div class="order-num"></div></div>`).join('');
+            nextBtn.innerText = "CHECK";
+        } else if (mode === 'INSERT') {
+            title.innerText = `STEP 4. INSERTING (ROUND ${round}/5)`;
+            if (selectedDropIdx === -1) currentTargetIdx = Math.floor(Math.random() * 8) + 1;
+            let passageHtml = `<div id="feedback" class="feedback-overlay"></div><div class="drag-target-zone" id="drag-box" draggable="true">${data[currentTargetIdx].en}</div><div class="passage-container">`;
+            let spotCount = 1; const spotIndices = [1, 3, 5, 7, 8];
+            data.forEach((sent, idx) => { if (idx !== currentTargetIdx) { passageHtml += `<span>${sent.en} </span>`; if (idx === currentTargetIdx - 1 || spotIndices.includes(idx)) { passageHtml += `<span class="num-spot" data-idx="${idx + 1}">${spotCount++}</span> `; } } });
+            area.innerHTML = passageHtml + `</div>`; setupDragEvents(); nextBtn.style.display = 'none';
+        } else if (mode === 'WRITE') {
+            title.innerText = `STEP 5. WRITING (${currentIdx + 1}/9)`;
+            area.innerHTML = `<div class="translation">${data[currentIdx].ko}</div><div class="translation" style="background:var(--mint); border-left-color:var(--point-mint); font-size:0.9rem;"><b>Hints:</b> ${data[currentIdx].voca.map(v=>v.split(':')[0]).join(', ')} | <b>Grammar:</b> ${data[currentIdx].grammar}</div><textarea id="student-input" class="writing-input" placeholder="Type here..."></textarea><div id="correction-area" class="correction-box"></div>`;
+            nextBtn.innerText = "CHECK & CORRECT"; isCorrected = false;
+        } else if (mode === 'REPORT') {
+            title.innerText = "MASTER'S FINAL REPORT"; document.getElementById('nav-btns').style.display = 'none';
+            let reportHtml = `<div class="report-card" style="padding:10px;">` + history.map((h, i) => `<div class="report-item"><div class="report-q">${i+1}. ${h.ko}</div><div class="report-ans"><b>My Answer:</b> ${h.my || "(empty)"}</div><div class="report-corr"><b>Final Correction:</b> ${h.corr}</div></div>`).join('') + `</div><button onclick="location.reload()" style="margin-top:20px; background:var(--point-blue); color:white; width:100%; border:none; padding:18px; border-radius:15px; font-weight:bold;">COMPLETE & RESTART</button>`;
+            area.innerHTML = reportHtml;
+        }
+    }
+
+    function handleNext() {
+        const nextBtn = document.getElementById('next-btn');
+        if (mode === 'STUDY') { if (currentIdx < 8) { currentIdx++; render(); } else { mode = 'TEST'; currentIdx = 0; render(); } }
+        else if (mode === 'TEST') { if (currentIdx < 8) { currentIdx++; render(); } else { mode = 'ORDER'; round = 1; render(); } }
+        else if (mode === 'ORDER') {
+            if (!isActionDone) { isActionDone = true; const isCorrect = userOrder.join(',') === "1,2,3,4"; const f = document.getElementById('feedback'); f.style.display = 'block'; f.innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG"; nextBtn.innerText = (round < 5) ? "NEXT ROUND" : "GO TO INSERTING"; }
+            else { if (round < 5) { round++; userOrder = []; render(); } else { mode = 'INSERT'; round = 1; render(); } }
+        } else if (mode === 'INSERT') { if (round < 5) { round++; selectedDropIdx = -1; render(); } else { mode = 'WRITE'; currentIdx = 0; history = []; render(); } }
+        else if (mode === 'WRITE') {
+            if (!isCorrected) {
+                const input = document.getElementById('student-input'), corrArea = document.getElementById('correction-area'), corrText = data[currentIdx].en, studentVal = input.value.trim();
+                history.push({ ko: data[currentIdx].ko, my: studentVal, corr: corrText });
+                corrArea.style.display = 'block'; corrArea.innerHTML = `<small style="color:#E53E3E; display:block; font-weight:bold;">[RED PEN]</small>${getDiffHtml(corrText, studentVal)}`;
+                nextBtn.innerText = (currentIdx === 8) ? "VIEW REPORT" : "NEXT SENTENCE"; isCorrected = true;
+            } else { if (currentIdx < 8) { currentIdx++; render(); } else { mode = 'REPORT'; render(); } }
+        }
+    }
+
+    function getDiffHtml(correct, student) {
+        let result = ""; let cArr = correct.split(' '), sArr = student.split(' ');
+        cArr.forEach((word, idx) => {
+            if (sArr[idx] === word) result += word + " ";
+            else if (sArr[idx] === undefined) result += `<ins>${word}</ins> `;
+            else {
+                let wordDiff = ""; let charCorrect = word.split(''), charStudent = (sArr[idx] || "").split('');
+                charCorrect.forEach((c, cIdx) => { if (charStudent[cIdx] === c) wordDiff += c; else wordDiff += `<ins>${c}</ins>`; }); result += wordDiff + " ";
+            }
+        }); return result.trim();
+    }
+
+    function setupDragEvents() {
+        const dragBox = document.getElementById('drag-box'), spots = document.querySelectorAll('.num-spot');
+        dragBox.addEventListener('dragstart', (e) => e.dataTransfer.setData('text', 'drag'));
+        spots.forEach(spot => {
+            spot.addEventListener('dragover', (e) => e.preventDefault());
+            spot.addEventListener('drop', (e) => { e.preventDefault(); processInsertAnswer(parseInt(spot.dataset.idx), spot); });
+            spot.addEventListener('click', () => processInsertAnswer(parseInt(spot.dataset.idx), spot));
+        });
+    }
+
+    function processInsertAnswer(selectedIdx, el) { isActionDone = true; const isCorrect = selectedIdx === currentTargetIdx; el.classList.add(isCorrect ? 'correct-spot' : 'wrong-spot'); document.getElementById('feedback').style.display = 'block'; document.getElementById('feedback').innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG POSITION"; document.getElementById('next-btn').style.display = 'block'; }
+    function startLearning() { mode = 'STUDY'; currentIdx = 0; render(); }
+    function handlePrev() { if (currentIdx > 0) { currentIdx--; render(); } }
+    function toggleVoca(el, kor) { if (!el.classList.contains('revealed')) { el.dataset.eng = el.innerText; el.innerText = kor; el.classList.add('revealed'); } else { el.innerText = el.dataset.eng; el.classList.remove('revealed'); } }
+    function selectOrder(el, id) { if (isActionDone || el.classList.contains('selected')) return; userOrder.push(id); el.classList.add('selected'); el.querySelector('.order-num').innerText = userOrder.length; el.querySelector('.order-num').style.display = 'flex'; }
+    function reveal(el) { el.classList.add('revealed'); }
+    function playVoice(text) { synth.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.85; synth.speak(u); }
+
+    window.onload = render;
+</script>
+</body>
+</html>
