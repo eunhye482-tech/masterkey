@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master #29 Fixed Standard</title>
+    <style>
+        :root {
+            --pink: #FFEDFA; --mint: #E6FFFA; --blue: #EBF8FF;
+            --point-pink: #F687B3; --point-mint: #38B2AC; --point-blue: #4299E1;
+            --text: #2D3748;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F7FAFC; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--point-blue); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
+        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+
+        .intro-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #63B3ED 0%, #4299E1 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .main-title-card h1 { margin: 0; font-size: 1.5rem; }
+        .intro-summary { background: var(--blue); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid #BEE3F8; text-align: left; font-size: 0.92rem; line-height: 1.6; width: 100%; box-sizing: border-box; }
+        .intro-summary h3 { margin: 0 0 10px 0; color: #2C5282; border-bottom: 1px dashed #A7D7F5; padding-bottom: 5px; }
+        .intro-topic { background: #FFF5F7; padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #FED7E2; text-align: left; width: 100%; box-sizing: border-box; }
+        .topic-label { color: var(--point-pink); font-weight: bold; font-size: 0.8rem; display: block; margin-bottom: 5px; }
+        .btn-start { background: var(--point-blue); color: white; padding: 18px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        .sentence-box { background: var(--blue); padding: 25px; border-radius: 20px; font-size: 1.2rem; font-weight: 700; color: #2C5282; margin-bottom: 15px; border: 2px solid #BEE3F8; line-height: 1.5; }
+        .translation { font-size: 1.05rem; color: #4A5568; background: var(--pink); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--point-pink); line-height: 1.6; }
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: var(--mint); padding: 10px; border-radius: 10px; font-size: 0.85rem; border: 1px solid #B2F5EA; cursor: pointer; text-align: center; font-weight: 600; }
+        .voca-item.revealed { background: var(--point-mint); color: white; border-color: var(--point-mint); }
+        .grammar-box { background: #FFF5F7; padding: 15px; border-radius: 15px; border: 1px solid #FED7E2; font-size: 0.85rem; margin-bottom: 10px; }
+        .test-card { background: #fff; padding: 25px; border-radius: 20px; border: 2px dashed var(--point-pink); font-size: 1.3rem; line-height: 1.8; text-align: center; }
+        .blank { border-bottom: 3px solid var(--point-pink); color: transparent; cursor: pointer; margin: 0 3px; display: inline-block; min-width: 45px; }
+        .blank.revealed { color: var(--point-pink); font-weight: bold; border-bottom: 3px solid transparent; }
+        .order-box { background: #fff; border: 2px solid #E2E8F0; padding: 18px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; font-size: 0.95rem; position: relative; color: #4A5568; }
+        .order-box.selected { border-color: var(--point-mint); background: var(--mint); }
+        .order-num { position: absolute; right: 10px; top: 10px; background: var(--point-mint); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; display: none; }
+        .order-box.selected .order-num { display: flex; }
+        .drag-target-zone { background: #FFF9C4; border: 2px dashed #FBC02D; padding: 12px; border-radius: 12px; font-weight: bold; color: #827717; text-align: center; cursor: grab; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.4; touch-action: none; }
+        .passage-container { background: #fff; padding: 12px; border-radius: 15px; border: 1px solid #E2E8F0; line-height: 2.3; color: #4A5568; font-size: 0.85rem; }
+        .num-spot { display: inline-flex; width: 22px; height: 22px; background: #fff; border: 1.5px solid var(--point-blue); color: var(--point-blue); border-radius: 50%; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin: 0 8px; vertical-align: middle; cursor: pointer; }
+        .num-spot.correct-spot { background: var(--point-mint); border-color: var(--point-mint); color: white; }
+        .num-spot.wrong-spot { background: #E53E3E; border-color: #E53E3E; color: white; }
+
+        .writing-input { width: 100%; height: 100px; padding: 15px; border-radius: 15px; border: 2px solid #E2E8F0; font-size: 1.05rem; margin-bottom: 10px; box-sizing: border-box; outline: none; }
+        .correction-box { background: #fff; padding: 15px; border-radius: 15px; border: 1.5px solid #FEB2B2; margin-top: 5px; display: none; line-height: 1.6; font-size: 1.1rem; }
+        ins { color: #E53E3E; text-decoration: none; font-weight: 800; background: #FFF5F5; border-radius: 2px; padding: 0 1px; }
+
+        .feedback-overlay { padding: 10px; border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 10px; display: none; font-size: 0.9rem; }
+        .is-correct { background: #E6FFFA; color: #38B2AC; border: 1px solid #38B2AC; }
+        .is-wrong { background: #FFF5F5; color: #E53E3E; border: 1px solid #E53E3E; }
+        
+        .report-item { border-bottom: 1px dashed #cbd5e0; padding: 15px 0; }
+        .report-q { font-weight: bold; color: #2D3748; margin-bottom: 5px; }
+        .report-ans { font-size: 0.95rem; color: #718096; padding-left: 10px; border-left: 3px solid #CBD5E0; margin-bottom: 5px; }
+        .report-corr { font-size: 1rem; color: #E53E3E; font-weight: bold; padding-left: 10px; border-left: 3px solid #E53E3E; }
+
+        .nav-buttons { padding: 15px; background: white; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn-prev { background: #EDF2F7; color: #718096; }
+        .btn-next { background: var(--point-blue); color: white; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="mode-title">LOADING...</div>
+    <div id="display-area"></div>
+    <div class="nav-buttons" id="nav-btns" style="display:none;">
+        <button class="btn-prev" onclick="handlePrev()" id="prev-btn">PREV</button>
+        <button class="btn-next" onclick="handleNext()" id="next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { 
+            en: "Routines enable athletes to evaluate competition conditions.", 
+            ko: "루틴은 운동선수들이 경기 조건을 평가할 수 있게 해줍니다.", 
+            // 본문 실존 단어만 10개 추출
+            voca: ["routine:루틴", "enable:가능하게하다", "athlete:선수", "evaluate:평가하다", "competition:경기", "condition:조건", "athletes:선수들", "conditions:조건들", "to:할수있도록", "the:그"], 
+            grammar: ["5형식 문장 (enable + O + to-V)", "명사적 용법의 to부정사"], 
+            test: "Routines <span class='blank' onclick='reveal(this)'>enable athletes to evaluate</span> competition conditions." 
+        },
+        { 
+            en: "For example, bouncing a ball in a volleyball service routine supplies the server with information about the ball, the floor, and the state of her muscles.", 
+            ko: "예를 들어, 배구 서비스 루틴에서 공을 튀기는 것은 서버에게 공, 바닥, 그리고 근육 상태에 대한 정보를 제공합니다.", 
+            voca: ["bounce:튀기다", "supply:제공하다", "information:정보", "floor:바닥", "muscle:근육", "state:상태", "service:서비스", "server:서버", "volleyball:배구", "example:예시"], 
+            grammar: ["동명사 주어 (bouncing)", "supply A with B 구문"], 
+            test: "For example, <span class='blank' onclick='reveal(this)'>bouncing a ball</span> supplies the server with information about the <span class='blank' onclick='reveal(this)'>floor and muscles</span>." 
+        },
+        { 
+            en: "This information can then be used to properly prepare for her serve.", 
+            ko: "이 정보는 그 후 그녀의 서브를 적절하게 준비하는 데 사용될 수 있습니다.", 
+            voca: ["properly:적절하게", "prepare:준비하다", "serve:서브", "then:그후", "used:사용된", "information:정보", "this:이", "for:위해", "can:할수있다", "be:되다"], 
+            grammar: ["조동사 수동태 (can be used)", "to부정사의 부사적 용법 (목적)"], 
+            test: "This information can then <span class='blank' onclick='reveal(this)'>be used to properly prepare</span> for her serve." 
+        },
+        { 
+            en: "Routines also enable athletes to adjust and fine-tune their preparations based on those evaluations or in pursuit of a particular competitive goal.", 
+            ko: "루틴은 또한 선수들이 그러한 평가를 바탕으로, 또는 특정 경기 목표를 추구하면서 준비를 조절하고 미세하게 조정할 수 있게 해줍니다.", 
+            voca: ["adjust:조절하다", "fine-tune:미세조정하다", "preparation:준비", "pursuit:추구", "particular:특정한", "evaluation:평가", "competitive:경쟁적인", "goal:목표", "based on:~에기반해", "those:그러한"], 
+            grammar: ["to부정사의 병렬 구조 (adjust and fine-tune)", "과거분사구의 수식 (based on)"], 
+            test: "Routines also enable athletes to <span class='blank' onclick='reveal(this)'>adjust and fine-tune</span> their preparations <span class='blank' onclick='reveal(this)'>based on</span> evaluations." 
+        },
+        { 
+            en: "This adaptation can involve adjustment to the conditions, rivals, competitive situation, or internal influences what can affect performance.", 
+            ko: "이러한 적응은 조건, 경쟁자, 경기 상황, 또는 성적에 영향을 미칠 수 있는 내적 영향에 대한 조절을 포함할 수 있습니다.", 
+            voca: ["adaptation:적응", "involve:포함하다", "rival:경쟁자", "influence:영향", "affect:영향을미치다", "internal:내부의", "situation:상황", "rivals:경쟁자들", "condition:조건", "performance:기량"], 
+            grammar: ["관계사 what의 오용 (어법 포인트)", "조동사 can + 동사원형"], 
+            test: "This <span class='blank' onclick='reveal(this)'>adaptation</span> can involve adjustment to the conditions and <span class='blank' onclick='reveal(this)'>internal influences</span>." 
+        },
+        { 
+            en: "Just like adjusting a race-car engine to the conditions of the track, air temperature, and weather, routines adjust all competitive components to achieve proper performance.", 
+            ko: "마치 경주용 자동차 엔진을 트랙의 조건, 기온, 그리고 날씨에 맞게 조절하는 것과 같이, 루틴은 적절한 성과를 달성하기 위해 모든 경기 구성 요소들을 조절합니다.", 
+            voca: ["engine:엔진", "track:트랙", "component:구성요소", "achieve:달성하다", "proper:적절한", "weather:날씨", "temperature:온도", "adjusting:조절하기", "like:처럼", "all:모든"], 
+            grammar: ["전치사 like 뒤의 동명사", "부사적 용법의 to부정사 (목적)"], 
+            test: "Just like <span class='blank' onclick='reveal(this)'>adjusting a race-car engine</span>, routines adjust all competitive <span class='blank' onclick='reveal(this)'>components</span>." 
+        }
+    ];
+
+    const orderData = [
+        { id: 1, text: "Routines enable athletes to evaluate competition conditions, like a volleyball player bouncing the ball for info." },
+        { id: 2, text: "The gathered information about the ball, floor, and muscles is then used to prepare the serve properly." },
+        { id: 3, text: "Athletes can adjust and fine-tune their preparations based on evaluations or specific competitive goals." },
+        { id: 4, text: "Just like tuning a car engine, routines adjust all components to ensure the best possible performance." }
+    ];
+
+    let currentIdx = 0, mode = 'INTRO', round = 1, userOrder = [], history = [], selectedDropIdx = -1, currentTargetIdx = -1, isCorrected = false, isActionDone = false;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area'), nextBtn = document.getElementById('next-btn'), prevBtn = document.getElementById('prev-btn'), title = document.getElementById('mode-title'), nav = document.getElementById('nav-btns');
+        area.innerHTML = ''; isActionDone = false;
+
+        if (mode === 'INTRO') {
+            title.innerText = "2025년 3월 고1 모의고사 29번"; nav.style.display = 'none';
+            area.innerHTML = `
+                <div class="intro-container">
+                    <div class="main-title-card"><h1>English Master #29</h1><p>운동선수 루틴의 적응과 조절력</p></div>
+                    <div class="intro-summary">
+                        <h3>📋 서론-본론-결론 요약</h3>
+                        <p><b>[서론]</b> 루틴을 통해 선수는 경기 환경(바닥, 공 등)을 실시간으로 평가함.</p>
+                        <p><b>[본론]</b> 수집된 정보를 바탕으로 준비를 미세 조정하여 최적의 상태를 만듦.</p>
+                        <p><b>[결론]</b> 자동차 엔진을 트랙에 맞추듯, 루틴은 모든 요소를 성과에 맞게 조율함.</p>
+                    </div>
+                    <div class="intro-topic">
+                        <span class="topic-label">💡 핵심 주제문</span>
+                        <div class="topic-ko">운동 루틴은 경기 조건 평가를 통해 선수가 최상의 성과를 내도록 모든 요소를 조절하게 한다.</div>
+                        <div class="topic-en">Routines allow athletes to evaluate conditions and adjust components for optimal performance.</div>
+                    </div>
+                    <button class="btn-start" onclick="startLearning()">학습 시작하기</button>
+                </div>`;
+        } else if (mode === 'STUDY') {
+            title.innerText = `STEP 1. STUDY (${currentIdx + 1}/${data.length})`; nav.style.display = 'flex';
+            prevBtn.style.visibility = (currentIdx === 0) ? "hidden" : "visible";
+            area.innerHTML = `<div class="sentence-box">${data[currentIdx].en}</div><div class="translation">${data[currentIdx].ko}</div><div class="voca-grid">${data[currentIdx].voca.map(v => `<div class="voca-item" onclick="toggleVoca(this, '${v}')">${v.split(':')[0]}</div>`).join('')}</div><div class="grammar-box">✨ <b>Grammar:</b> ${data[currentIdx].grammar.join(' / ')}</div>`;
+            nextBtn.innerText = (currentIdx === data.length - 1) ? "START TEST" : "NEXT";
+            playVoice(data[currentIdx].en);
+        } else if (mode === 'TEST') {
+            title.innerText = `STEP 2. TEST (${currentIdx + 1}/${data.length})`;
+            area.innerHTML = `<div class="test-card">${data[currentIdx].test}</div><div class="translation" style="margin-top:20px;">${data[currentIdx].ko}</div>`;
+            nextBtn.innerText = (currentIdx === data.length - 1) ? "START ORDERING" : "NEXT";
+        } else if (mode === 'ORDER') {
+            title.innerText = `STEP 3. ORDERING (ROUND ${round}/5)`;
+            if (userOrder.length === 0) this.shuffled = [...orderData].sort(() => Math.random() - 0.5);
+            area.innerHTML = `<div id="feedback" class="feedback-overlay"></div>` + this.shuffled.map(o => `<div class="order-box" onclick="selectOrder(this, ${o.id})">${o.text}<div class="order-num"></div></div>`).join('');
+            nextBtn.innerText = "CHECK";
+        } else if (mode === 'INSERT') {
+            title.innerText = `STEP 4. INSERTING (ROUND ${round}/5)`;
+            if (selectedDropIdx === -1) currentTargetIdx = Math.floor(Math.random() * (data.length - 1)) + 1;
+            let passageHtml = `<div id="feedback" class="feedback-overlay"></div><div class="drag-target-zone" id="drag-box" draggable="true">${data[currentTargetIdx].en}</div><div class="passage-container">`;
+            
+            let spotCount = 1;
+            const otherSentences = data.filter((_, idx) => idx !== currentTargetIdx);
+            otherSentences.forEach((sent, idx) => {
+                passageHtml += `<span>${sent.en} </span>`;
+                if (spotCount <= 5) {
+                    passageHtml += `<span class="num-spot" data-idx="${spotCount}">${spotCount}</span> `;
+                    spotCount++;
+                }
+            });
+            area.innerHTML = passageHtml + `</div>`; setupDragEvents(); nextBtn.style.display = 'none';
+        } else if (mode === 'WRITE') {
+            title.innerText = `STEP 5. WRITING (${currentIdx + 1}/${data.length})`;
+            area.innerHTML = `<div class="translation">${data[currentIdx].ko}</div><div class="translation" style="background:var(--mint); border-left-color:var(--point-mint); font-size:0.85rem; line-height:1.4;"><b>Hints:</b> ${data[currentIdx].voca.slice(0,5).join(', ')} | <b>Grammar:</b> ${data[currentIdx].grammar[0]} / ${data[currentIdx].grammar[1]} / ${data[currentIdx].grammar[2] || "어순주의"}</div><textarea id="student-input" class="writing-input" placeholder="Type here..."></textarea><div id="correction-area" class="correction-box"></div>`;
+            nextBtn.innerText = "CHECK & CORRECT"; isCorrected = false;
+        } else if (mode === 'REPORT') {
+            title.innerText = "MASTER'S FINAL REPORT"; document.getElementById('nav-btns').style.display = 'none';
+            let reportHtml = `<div class="report-card" style="padding:10px;">` + history.map((h, i) => `<div class="report-item"><div class="report-q">${i+1}. ${h.ko}</div><div class="report-ans"><b>My Answer:</b> ${h.my || "(empty)"}</div><div class="report-corr"><b>Final Correction:</b> ${h.corr}</div></div>`).join('') + `</div><button onclick="location.reload()" style="margin-top:20px; background:var(--point-blue); color:white; width:100%; border:none; padding:18px; border-radius:15px; font-weight:bold;">COMPLETE & RESTART</button>`;
+            area.innerHTML = reportHtml;
+        }
+    }
+
+    function handleNext() {
+        const nextBtn = document.getElementById('next-btn');
+        if (mode === 'STUDY') { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'TEST'; currentIdx = 0; render(); } }
+        else if (mode === 'TEST') { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'ORDER'; round = 1; render(); } }
+        else if (mode === 'ORDER') {
+            if (!isActionDone) { isActionDone = true; const isCorrect = userOrder.join(',') === "1,2,3,4"; const f = document.getElementById('feedback'); f.style.display = 'block'; f.innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG"; f.className = `feedback-overlay ${isCorrect?'is-correct':'is-wrong'}`; nextBtn.innerText = (round < 5) ? "NEXT ROUND" : "GO TO INSERTING"; }
+            else { if (round < 5) { round++; userOrder = []; render(); } else { mode = 'INSERT'; round = 1; render(); } }
+        } else if (mode === 'INSERT') { if (round < 5) { round++; selectedDropIdx = -1; render(); } else { mode = 'WRITE'; currentIdx = 0; history = []; render(); } }
+        else if (mode === 'WRITE') {
+            if (!isCorrected) {
+                const input = document.getElementById('student-input'), corrArea = document.getElementById('correction-area'), corrText = data[currentIdx].en, studentVal = input.value.trim();
+                history.push({ ko: data[currentIdx].ko, my: studentVal, corr: corrText });
+                corrArea.style.display = 'block'; corrArea.innerHTML = `<small style="color:#E53E3E; display:block; font-weight:bold;">[RED PEN]</small>${getDiffHtml(corrText, studentVal)}`;
+                nextBtn.innerText = (currentIdx === data.length - 1) ? "VIEW REPORT" : "NEXT SENTENCE"; isCorrected = true;
+            } else { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'REPORT'; render(); } }
+        }
+    }
+
+    function getDiffHtml(correct, student) {
+        let result = ""; let cArr = correct.split(' '), sArr = student.split(' ');
+        cArr.forEach((word, idx) => {
+            if (sArr[idx] === word) result += word + " ";
+            else if (sArr[idx] === undefined) result += `<ins>${word}</ins> `;
+            else {
+                let wordDiff = ""; let charCorrect = word.split(''), charStudent = (sArr[idx] || "").split('');
+                charCorrect.forEach((c, cIdx) => { if (charStudent[cIdx] === c) wordDiff += c; else wordDiff += `<ins>${c}</ins>`; }); result += wordDiff + " ";
+            }
+        }); return result.trim();
+    }
+
+    function setupDragEvents() {
+        const dragBox = document.getElementById('drag-box'), spots = document.querySelectorAll('.num-spot');
+        dragBox.addEventListener('dragstart', (e) => e.dataTransfer.setData('text', 'drag'));
+        spots.forEach(spot => {
+            spot.addEventListener('dragover', (e) => e.preventDefault());
+            spot.addEventListener('drop', (e) => { e.preventDefault(); processInsertAnswer(parseInt(spot.dataset.idx), spot); });
+            spot.addEventListener('click', () => processInsertAnswer(parseInt(spot.dataset.idx), spot));
+        });
+    }
+
+    function processInsertAnswer(selectedIdx, el) { 
+        isActionDone = true; 
+        const isCorrect = (selectedIdx === currentTargetIdx) || (selectedIdx === currentTargetIdx + 1); 
+        el.classList.add(isCorrect ? 'correct-spot' : 'wrong-spot'); 
+        document.getElementById('feedback').style.display = 'block'; 
+        document.getElementById('feedback').innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG POSITION"; 
+        document.getElementById('feedback').className = `feedback-overlay ${isCorrect?'is-correct':'is-wrong'}`; 
+        document.getElementById('next-btn').style.display = 'block'; 
+    }
+    
+    function startLearning() { mode = 'STUDY'; currentIdx = 0; render(); }
+    function handlePrev() { if (currentIdx > 0) { currentIdx--; render(); } }
+    function toggleVoca(el, kor) { if (!el.classList.contains('revealed')) { el.innerText = kor; el.classList.add('revealed'); } else { el.innerText = el.innerText.split(':')[0]; el.classList.remove('revealed'); } }
+    function selectOrder(el, id) { if (isActionDone || el.classList.contains('selected')) return; userOrder.push(id); el.classList.add('selected'); el.querySelector('.order-num').innerText = userOrder.length; el.querySelector('.order-num').style.display = 'flex'; }
+    function reveal(el) { el.classList.add('revealed'); }
+    function playVoice(text) { synth.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.85; synth.speak(u); }
+
+    window.onload = render;
+</script>
+</body>
+</html>

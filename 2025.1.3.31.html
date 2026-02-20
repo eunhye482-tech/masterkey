@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master #31 Standard</title>
+    <style>
+        :root {
+            --pink: #FFEDFA; --mint: #E6FFFA; --blue: #EBF8FF;
+            --point-pink: #F687B3; --point-mint: #38B2AC; --point-blue: #4299E1;
+            --text: #2D3748;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F7FAFC; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--point-blue); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
+        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+
+        .intro-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #63B3ED 0%, #4299E1 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .main-title-card h1 { margin: 0; font-size: 1.5rem; }
+        .intro-summary { background: var(--blue); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid #BEE3F8; text-align: left; font-size: 0.92rem; line-height: 1.6; width: 100%; box-sizing: border-box; }
+        .intro-summary h3 { margin: 0 0 10px 0; color: #2C5282; border-bottom: 1px dashed #A7D7F5; padding-bottom: 5px; }
+        .intro-topic { background: #FFF5F7; padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #FED7E2; text-align: left; width: 100%; box-sizing: border-box; }
+        .topic-label { color: var(--point-pink); font-weight: bold; font-size: 0.8rem; display: block; margin-bottom: 5px; }
+        .btn-start { background: var(--point-blue); color: white; padding: 18px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        .sentence-box { background: var(--blue); padding: 25px; border-radius: 20px; font-size: 1.2rem; font-weight: 700; color: #2C5282; margin-bottom: 15px; border: 2px solid #BEE3F8; line-height: 1.5; }
+        .translation { font-size: 1.05rem; color: #4A5568; background: var(--pink); padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--point-pink); line-height: 1.6; }
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: var(--mint); padding: 10px; border-radius: 10px; font-size: 0.85rem; border: 1px solid #B2F5EA; cursor: pointer; text-align: center; font-weight: 600; }
+        .voca-item.revealed { background: var(--point-mint); color: white; border-color: var(--point-mint); }
+        .grammar-box { background: #FFF5F7; padding: 15px; border-radius: 15px; border: 1px solid #FED7E2; font-size: 0.85rem; margin-bottom: 10px; }
+        .test-card { background: #fff; padding: 25px; border-radius: 20px; border: 2px dashed var(--point-pink); font-size: 1.3rem; line-height: 1.8; text-align: center; }
+        .blank { border-bottom: 3px solid var(--point-pink); color: transparent; cursor: pointer; margin: 0 3px; display: inline-block; min-width: 45px; }
+        .blank.revealed { color: var(--point-pink); font-weight: bold; border-bottom: 3px solid transparent; }
+        .order-box { background: #fff; border: 2px solid #E2E8F0; padding: 18px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; font-size: 0.95rem; position: relative; color: #4A5568; }
+        .order-box.selected { border-color: var(--point-mint); background: var(--mint); }
+        .order-num { position: absolute; right: 10px; top: 10px; background: var(--point-mint); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; display: none; }
+        .order-box.selected .order-num { display: flex; }
+        .drag-target-zone { background: #FFF9C4; border: 2px dashed #FBC02D; padding: 12px; border-radius: 12px; font-weight: bold; color: #827717; text-align: center; cursor: grab; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.4; touch-action: none; }
+        .passage-container { background: #fff; padding: 12px; border-radius: 15px; border: 1px solid #E2E8F0; line-height: 2.3; color: #4A5568; font-size: 0.85rem; }
+        .num-spot { display: inline-flex; width: 22px; height: 22px; background: #fff; border: 1.5px solid var(--point-blue); color: var(--point-blue); border-radius: 50%; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; margin: 0 8px; vertical-align: middle; cursor: pointer; }
+        .num-spot.correct-spot { background: var(--point-mint); border-color: var(--point-mint); color: white; }
+        .num-spot.wrong-spot { background: #E53E3E; border-color: #E53E3E; color: white; }
+
+        .writing-input { width: 100%; height: 100px; padding: 15px; border-radius: 15px; border: 2px solid #E2E8F0; font-size: 1.05rem; margin-bottom: 10px; box-sizing: border-box; outline: none; }
+        .correction-box { background: #fff; padding: 15px; border-radius: 15px; border: 1.5px solid #FEB2B2; margin-top: 5px; display: none; line-height: 1.6; font-size: 1.1rem; }
+        ins { color: #E53E3E; text-decoration: none; font-weight: 800; background: #FFF5F5; border-radius: 2px; padding: 0 1px; }
+
+        .feedback-overlay { padding: 10px; border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 10px; display: none; font-size: 0.9rem; }
+        .is-correct { background: #E6FFFA; color: #38B2AC; border: 1px solid #38B2AC; }
+        .is-wrong { background: #FFF5F5; color: #E53E3E; border: 1px solid #E53E3E; }
+        
+        .report-item { border-bottom: 1px dashed #cbd5e0; padding: 15px 0; }
+        .report-q { font-weight: bold; color: #2D3748; margin-bottom: 5px; }
+        .report-ans { font-size: 0.95rem; color: #718096; padding-left: 10px; border-left: 3px solid #CBD5E0; margin-bottom: 5px; }
+        .report-corr { font-size: 1rem; color: #E53E3E; font-weight: bold; padding-left: 10px; border-left: 3px solid #E53E3E; }
+
+        .nav-buttons { padding: 15px; background: white; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn-prev { background: #EDF2F7; color: #718096; }
+        .btn-next { background: var(--point-blue); color: white; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="mode-title">LOADING...</div>
+    <div id="display-area"></div>
+    <div class="nav-buttons" id="nav-btns" style="display:none;">
+        <button class="btn-prev" onclick="handlePrev()" id="prev-btn">PREV</button>
+        <button class="btn-next" onclick="handleNext()" id="next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    /* ★★★ 선생님 수정 구역: 여기서 문법 조건을 자유롭게 고치세요 ★★★ */
+    const data = [
+        { 
+            en: "Plato argued that when you see something that strikes you as beautiful, you are really just seeing a partial reflection of true beauty, just as a painting or even a photograph only captures part of the real thing.", 
+            ko: "플라톤은 여러분이 아름답다고 느껴지는 무언가를 볼 때, 마치 그림이나 사진이 실제의 일부만을 담아내는 것처럼, 여러분은 실제로는 진정한 아름다움의 부분적인 반영만을 보고 있는 것이라고 주장했습니다.", 
+            voca: ["argue:주장하다", "strike:인상을주다", "partial:부분적인", "reflection:투영/반영", "capture:포착하다", "photograph:사진", "painting:그림", "real:실제의", "thing:물체", "just as:마치~처럼"], 
+            grammar: ["명사절 접속사 that", "주격 관계대명사 that"], 
+            test: "Plato argued that when you see <span class='blank' onclick='reveal(this)'>something that strikes you</span> as beautiful, you see a <span class='blank' onclick='reveal(this)'>partial reflection</span>." 
+        },
+        { 
+            en: "True beauty, or what Plato calls the Form of Beauty, has no particular color, shape, or size.", 
+            ko: "진정한 아름다움, 즉 플라톤이 ‘미의 형상’이라고 부르는 것은 특정한 색깔이나 모양, 또는 크기가 없습니다.", 
+            voca: ["form:형상", "particular:특정한", "shape:모양", "size:크기", "calls:부르다", "🍎", "🍎", "🍎", "🍎", "🍎"], 
+            grammar: ["관계대명사 what", "동격의 or"], 
+            test: "True beauty, or <span class='blank' onclick='reveal(this)'>what Plato calls</span> the Form of Beauty, has <span class='blank' onclick='reveal(this)'>no particular color</span>." 
+        },
+        { 
+            en: "Rather, it is an abstract idea, like the number five.", 
+            ko: "오히려 그것은 숫자 5와 같은 추상적인 관념입니다.", 
+            voca: ["rather:오히려", "abstract:추상적인", "idea:관념", "number:숫자", "five:다섯", "🍎", "🍎", "🍎", "🍎", "🍎"], 
+            grammar: ["전치사 like (~와 같은)", "지시 대명사 it"], 
+            test: "Rather, it is an <span class='blank' onclick='reveal(this)'>abstract idea</span>, like the <span class='blank' onclick='reveal(this)'>number five</span>." 
+        },
+        { 
+            en: "You can make drawings of the number five in blue or red ink, big or small, but the number five itself is none of those things.", 
+            ko: "여러분은 파란색이나 빨간색 잉크로, 크게 혹은 작게 숫자 5를 그릴 수 있지만, 숫자 5 자체는 그런 것들 중 어느 것도 아닙니다.", 
+            voca: ["drawing:그림", "ink:잉크", "itself:자체", "none:아무것도없음", "blue:파란색", "red:빨간색", "big:큰", "small:작은", "those:저러한", "things:것들"], 
+            grammar: ["재귀대명사의 강조 용법", "병렬 구조 (blue or red)"], 
+            test: "The number five <span class='blank' onclick='reveal(this)'>itself</span> is <span class='blank' onclick='reveal(this)'>none of those things</span>." 
+        },
+        { 
+            en: "It has no physical form. Think of the idea of a triangle, for example.", 
+            ko: "그것은 물리적 형태가 없습니다. 예를 들어 삼각형이라는 관념을 생각해 보십시오.", 
+            voca: ["physical:물리적인", "form:형태", "think of:생각하다", "triangle:삼각형", "example:예시", "🍎", "🍎", "🍎", "🍎", "🍎"], 
+            grammar: ["부정 형용사 no", "명령문 구조"], 
+            test: "It has <span class='blank' onclick='reveal(this)'>no physical form</span>. Think of the <span class='blank' onclick='reveal(this)'>idea of a triangle</span>." 
+        },
+        { 
+            en: "Although it has no particular color or size, it somehow lies within each and every triangle you see.", 
+            ko: "비록 그것이 특정한 색깔이나 크기를 가지고 있지는 않지만, 그것은 왠지 여러분이 보는 모든 삼각형 안에 존재합니다.", 
+            voca: ["although:비록~일지라도", "somehow:왠지", "lie within:내재하다", "each and every:모든하나하나", "see:보다", "🍎", "🍎", "🍎", "🍎", "🍎"], 
+            grammar: ["양보의 접속사 Although", "목적격 관계대명사 생략"], 
+            test: "It <span class='blank' onclick='reveal(this)'>somehow lies within</span> each and every <span class='blank' onclick='reveal(this)'>triangle you see</span>." 
+        },
+        { 
+            en: "Plato thought the same was true of beauty. The Form of Beauty somehow lies within each and every beautiful thing you see.", 
+            ko: "플라톤은 아름다움에 대해서도 마찬가지라고 생각했습니다. 미의 형상은 왠지 여러분이 보는 모든 아름다운 것들 안에 존재합니다.", 
+            voca: ["thought:생각했다", "true of:~에도해당되는", "beauty:아름다움", "beautiful:아름다운", "thing:것", "🍎", "🍎", "🍎", "🍎", "🍎"], 
+            grammar: ["접속사 that 생략", "be true of 구문"], 
+            test: "Plato thought the <span class='blank' onclick='reveal(this)'>same was true</span>. The Form somehow <span class='blank' onclick='reveal(this)'>lies within</span>." 
+        }
+    ];
+
+    const orderData = [
+        { id: 1, text: "Plato argued that beautiful things are just partial reflections of true beauty, like how a photo only captures part of a real object." },
+        { id: 2, text: "True beauty, or the 'Form of Beauty,' has no physical color or size; it is an abstract idea like the number five." },
+        { id: 3, text: "Just as the idea of a triangle exists within every triangle you see, beauty exists beyond its physical appearance." },
+        { id: 4, text: "Therefore, the Form of Beauty lies within each and every beautiful thing we observe in the world." }
+    ];
+
+    let currentIdx = 0, mode = 'INTRO', round = 1, userOrder = [], history = [], selectedDropIdx = -1, currentTargetIdx = -1, isCorrected = false, isActionDone = false;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area'), nextBtn = document.getElementById('next-btn'), prevBtn = document.getElementById('prev-btn'), title = document.getElementById('mode-title'), nav = document.getElementById('nav-btns');
+        area.innerHTML = ''; isActionDone = false;
+
+        if (mode === 'INTRO') {
+            title.innerText = "2025년 3월 고1 모의고사 31번"; nav.style.display = 'none';
+            area.innerHTML = `
+                <div class="intro-container">
+                    <div class="main-title-card"><h1>English Master #31</h1><p>플라톤의 이데아: 진정한 미의 형상</p></div>
+                    <div class="intro-summary">
+                        <h3>📋 서론-본론-결론 요약</h3>
+                        <p><b>[서론]</b> 우리가 보는 아름다움은 진정한 미의 부분적인 투영일 뿐임.</p>
+                        <p><b>[본론]</b> 미의 형상은 숫자 5나 삼각형처럼 물리적 형태가 없는 추상적 관념임.</p>
+                        <p><b>[결론]</b> 모든 아름다운 대상 안에는 보편적인 '미의 형상'이 내재되어 있음.</p>
+                    </div>
+                    <div class="intro-topic">
+                        <span class="topic-label">💡 핵심 주제문</span>
+                        <div class="topic-ko">진정한 아름다움은 물리적 형태를 넘어 모든 아름다운 것들에 내재하는 추상적 형상이다.</div>
+                        <div class="topic-en">True beauty is an abstract form that exists within every beautiful thing we see.</div>
+                    </div>
+                    <button class="btn-start" onclick="startLearning()">학습 시작하기</button>
+                </div>`;
+        } else if (mode === 'STUDY') {
+            title.innerText = `STEP 1. STUDY (${currentIdx + 1}/${data.length})`; nav.style.display = 'flex';
+            prevBtn.style.visibility = (currentIdx === 0) ? "hidden" : "visible";
+            area.innerHTML = `<div class="sentence-box">${data[currentIdx].en}</div><div class="translation">${data[currentIdx].ko}</div><div class="voca-grid">${data[currentIdx].voca.map(v => `<div class="voca-item" onclick="toggleVoca(this, '${v}')">${v.split(':')[0]}</div>`).join('')}</div><div class="grammar-box">✨ <b>Grammar:</b> ${data[currentIdx].grammar.join(' / ')}</div>`;
+            nextBtn.innerText = (currentIdx === data.length - 1) ? "START TEST" : "NEXT";
+            playVoice(data[currentIdx].en);
+        } else if (mode === 'TEST') {
+            title.innerText = `STEP 2. TEST (${currentIdx + 1}/${data.length})`;
+            area.innerHTML = `<div class="test-card">${data[currentIdx].test}</div><div class="translation" style="margin-top:20px;">${data[currentIdx].ko}</div>`;
+            nextBtn.innerText = (currentIdx === data.length - 1) ? "START ORDERING" : "NEXT";
+        } else if (mode === 'ORDER') {
+            title.innerText = `STEP 3. ORDERING (ROUND ${round}/5)`;
+            if (userOrder.length === 0) this.shuffled = [...orderData].sort(() => Math.random() - 0.5);
+            area.innerHTML = `<div id="feedback" class="feedback-overlay"></div>` + this.shuffled.map(o => `<div class="order-box" onclick="selectOrder(this, ${o.id})">${o.text}<div class="order-num"></div></div>`).join('');
+            nextBtn.innerText = "CHECK";
+        } else if (mode === 'INSERT') {
+            title.innerText = `STEP 4. INSERTING (ROUND ${round}/5)`;
+            if (selectedDropIdx === -1) currentTargetIdx = Math.floor(Math.random() * (data.length - 1)) + 1;
+            let passageHtml = `<div id="feedback" class="feedback-overlay"></div><div class="drag-target-zone" id="drag-box" draggable="true">${data[currentTargetIdx].en}</div><div class="passage-container">`;
+            let spotCount = 1;
+            const otherSentences = data.filter((_, idx) => idx !== currentTargetIdx);
+            otherSentences.forEach((sent, idx) => {
+                passageHtml += `<span>${sent.en} </span>`;
+                if (spotCount <= 5) {
+                    passageHtml += `<span class="num-spot" data-idx="${spotCount}">${spotCount}</span> `;
+                    spotCount++;
+                }
+            });
+            area.innerHTML = passageHtml + `</div>`; setupDragEvents(); nextBtn.style.display = 'none';
+        } else if (mode === 'WRITE') {
+            title.innerText = `STEP 5. WRITING (${currentIdx + 1}/${data.length})`;
+            area.innerHTML = `<div class="translation">${data[currentIdx].ko}</div><div class="translation" style="background:var(--mint); border-left-color:var(--point-mint); font-size:0.85rem; line-height:1.4;"><b>Hints:</b> ${data[currentIdx].voca.slice(0,5).map(v=>v.split(':')[0]).join(', ')} | <b>Grammar:</b> ${data[currentIdx].grammar[0]} / ${data[currentIdx].grammar[1]} / ${data[currentIdx].grammar[2] || "어순주의"}</div><textarea id="student-input" class="writing-input" placeholder="Type here..."></textarea><div id="correction-area" class="correction-box"></div>`;
+            nextBtn.innerText = "CHECK & CORRECT"; isCorrected = false;
+        } else if (mode === 'REPORT') {
+            title.innerText = "MASTER'S FINAL REPORT"; document.getElementById('nav-btns').style.display = 'none';
+            let reportHtml = `<div class="report-card" style="padding:10px;">` + history.map((h, i) => `<div class="report-item"><div class="report-q">${i+1}. ${h.ko}</div><div class="report-ans"><b>My Answer:</b> ${h.my || "(empty)"}</div><div class="report-corr"><b>Final Correction:</b> ${h.corr}</div></div>`).join('') + `</div><button onclick="location.reload()" style="margin-top:20px; background:var(--point-blue); color:white; width:100%; border:none; padding:18px; border-radius:15px; font-weight:bold;">COMPLETE & RESTART</button>`;
+            area.innerHTML = reportHtml;
+        }
+    }
+
+    function handleNext() {
+        const nextBtn = document.getElementById('next-btn');
+        if (mode === 'STUDY') { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'TEST'; currentIdx = 0; render(); } }
+        else if (mode === 'TEST') { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'ORDER'; round = 1; render(); } }
+        else if (mode === 'ORDER') {
+            if (!isActionDone) { isActionDone = true; const isCorrect = userOrder.join(',') === "1,2,3,4"; const f = document.getElementById('feedback'); f.style.display = 'block'; f.innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG"; f.className = `feedback-overlay ${isCorrect?'is-correct':'is-wrong'}`; nextBtn.innerText = (round < 5) ? "NEXT ROUND" : "GO TO INSERTING"; }
+            else { if (round < 5) { round++; userOrder = []; render(); } else { mode = 'INSERT'; round = 1; render(); } }
+        } else if (mode === 'INSERT') { if (round < 5) { round++; selectedDropIdx = -1; render(); } else { mode = 'WRITE'; currentIdx = 0; history = []; render(); } }
+        else if (mode === 'WRITE') {
+            if (!isCorrected) {
+                const input = document.getElementById('student-input'), corrArea = document.getElementById('correction-area'), corrText = data[currentIdx].en, studentVal = input.value.trim();
+                history.push({ ko: data[currentIdx].ko, my: studentVal, corr: corrText });
+                corrArea.style.display = 'block'; corrArea.innerHTML = `<small style="color:#E53E3E; display:block; font-weight:bold;">[RED PEN]</small>${getDiffHtml(corrText, studentVal)}`;
+                nextBtn.innerText = (currentIdx === data.length - 1) ? "VIEW REPORT" : "NEXT SENTENCE"; isCorrected = true;
+            } else { if (currentIdx < data.length - 1) { currentIdx++; render(); } else { mode = 'REPORT'; render(); } }
+        }
+    }
+
+    function getDiffHtml(correct, student) {
+        let result = ""; let cArr = correct.split(' '), sArr = student.split(' ');
+        cArr.forEach((word, idx) => {
+            if (sArr[idx] === word) result += word + " ";
+            else if (sArr[idx] === undefined) result += `<ins>${word}</ins> `;
+            else {
+                let wordDiff = ""; let charCorrect = word.split(''), charStudent = (sArr[idx] || "").split('');
+                charCorrect.forEach((c, cIdx) => { if (charStudent[cIdx] === c) wordDiff += c; else wordDiff += `<ins>${c}</ins>`; }); result += wordDiff + " ";
+            }
+        }); return result.trim();
+    }
+
+    function setupDragEvents() {
+        const dragBox = document.getElementById('drag-box'), spots = document.querySelectorAll('.num-spot');
+        dragBox.addEventListener('dragstart', (e) => e.dataTransfer.setData('text', 'drag'));
+        spots.forEach(spot => {
+            spot.addEventListener('dragover', (e) => e.preventDefault());
+            spot.addEventListener('drop', (e) => { e.preventDefault(); processInsertAnswer(parseInt(spot.dataset.idx), spot); });
+            spot.addEventListener('click', () => processInsertAnswer(parseInt(spot.dataset.idx), spot));
+        });
+    }
+
+    function processInsertAnswer(selectedIdx, el) { 
+        isActionDone = true; 
+        const isCorrect = (selectedIdx === currentTargetIdx) || (selectedIdx === currentTargetIdx + 1); 
+        el.classList.add(isCorrect ? 'correct-spot' : 'wrong-spot'); 
+        document.getElementById('feedback').style.display = 'block'; 
+        document.getElementById('feedback').innerText = isCorrect ? "🎉 CORRECT!" : "❌ WRONG POSITION"; 
+        document.getElementById('feedback').className = `feedback-overlay ${isCorrect?'is-correct':'is-wrong'}`; 
+        document.getElementById('next-btn').style.display = 'block'; 
+    }
+    
+    function startLearning() { mode = 'STUDY'; currentIdx = 0; render(); }
+    function handlePrev() { if (currentIdx > 0) { currentIdx--; render(); } }
+    function toggleVoca(el, kor) { if (!el.classList.contains('revealed')) { el.innerText = kor; el.classList.add('revealed'); } else { el.innerText = el.innerText.split(':')[0]; el.classList.remove('revealed'); } }
+    function selectOrder(el, id) { if (isActionDone || el.classList.contains('selected')) return; userOrder.push(id); el.classList.add('selected'); el.querySelector('.order-num').innerText = userOrder.length; el.querySelector('.order-num').style.display = 'flex'; }
+    function reveal(el) { el.classList.add('revealed'); }
+    function playVoice(text) { synth.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.85; synth.speak(u); }
+
+    window.onload = render;
+</script>
+</body>
+</html>
