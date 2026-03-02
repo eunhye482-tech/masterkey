@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master - Main Selection</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; border: 1px solid #eee; }
+        .header { padding: 15px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 2px solid var(--lavender-light); background: white; font-size: 1.1rem; }
+        .content { flex: 1; padding: 20px; overflow-y: auto; }
+        .section-label { font-size: 0.9rem; font-weight: bold; color: var(--purple-main); margin: 20px 0 10px 5px; display: block; }
+        .section-label:first-child { margin-top: 5px; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        button { 
+            border: 1.5px solid var(--purple-pale); 
+            background: white; 
+            border-radius: 12px; 
+            padding: 12px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s;
+            color: #555;
+        }
+        button:active, button.selected { 
+            background: var(--purple-main); 
+            color: white; 
+            border-color: var(--purple-main); 
+            box-shadow: 0 4px 8px rgba(149, 117, 205, 0.3);
+        }
+        .grade-btn { flex: 1; min-width: 80px; }
+        .year-btn { width: calc(33.33% - 6px); }
+        .month-btn { width: calc(50% - 4px); }
+        .num-btn { width: calc(20% - 7px); font-size: 0.85rem; padding: 10px 0; }
+        .footer { padding: 15px; background: white; border-top: 1px solid #eee; }
+        .btn-start-final { background: var(--purple-main); color: white; padding: 18px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header">English Master - 지문 선택</div>
+    <div class="content">
+        <span class="section-label">📍 학년 선택</span>
+        <div class="btn-group">
+            <button class="grade-btn" onclick="select(this, 'grade', 'Grade_1')">고1</button>
+            <button class="grade-btn" onclick="select(this, 'grade', 'Grade_2')">고2</button>
+            <button class="grade-btn" onclick="select(this, 'grade', 'Grade_3')">고3</button>
+        </div>
+
+        <span class="section-label">📅 연도 선택</span>
+        <div class="btn-group">
+            <button class="year-btn" onclick="select(this, 'year', '2022')">2022</button>
+            <button class="year-btn" onclick="select(this, 'year', '2023')">2023</button>
+            <button class="year-btn" onclick="select(this, 'year', '2024')">2024</button>
+            <button class="year-btn" onclick="select(this, 'year', '2025')">2025</button>
+            <button class="year-btn" onclick="select(this, 'year', '2026')">2026</button>
+        </div>
+
+        <span class="section-label">🗓️ 시행월 선택</span>
+        <div class="btn-group">
+            <button class="month-btn" onclick="select(this, 'month', 'month_3')">3월</button>
+            <button class="month-btn" onclick="select(this, 'month', 'month_6')">6월</button>
+            <button class="month-btn" onclick="select(this, 'month', 'month_9')">9월</button>
+            <button class="month-btn" onclick="select(this, 'month', 'month_11')">11월</button>
+        </div>
+
+        <span class="section-label">🔢 문항 번호 선택</span>
+        <div class="btn-group">
+            <button class="num-btn" onclick="select(this, 'num', '20')">20</button>
+            <button class="num-btn" onclick="select(this, 'num', '21')">21</button>
+            <button class="num-btn" onclick="select(this, 'num', '22')">22</button>
+            <button class="num-btn" onclick="select(this, 'num', '23')">23</button>
+            <button class="num-btn" onclick="select(this, 'num', '24')">24</button>
+            <button class="num-btn" onclick="select(this, 'num', '29')">29</button>
+            <button class="num-btn" onclick="select(this, 'num', '30')">30</button>
+            <button class="num-btn" onclick="select(this, 'num', '31')">31</button>
+            <button class="num-btn" onclick="select(this, 'num', '32')">32</button>
+            <button class="num-btn" onclick="select(this, 'num', '33')">33</button>
+            <button class="num-btn" onclick="select(this, 'num', '34')">34</button>
+            <button class="num-btn" onclick="select(this, 'num', '35')">35</button>
+            <button class="num-btn" onclick="select(this, 'num', '36')">36</button>
+            <button class="num-btn" onclick="select(this, 'num', '37')">37</button>
+            <button class="num-btn" onclick="select(this, 'num', '38')">38</button>
+            <button class="num-btn" onclick="select(this, 'num', '39')">39</button>
+            <button class="num-btn" onclick="select(this, 'num', '40')">40</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="btn-start-final" onclick="startLearning()">지문 학습 시작 ▶</button>
+    </div>
+</div>
+
+<script>
+    // 선택된 실제 폴더 경로 값을 저장하는 변수입니다
+    let selections = { grade: '', year: '', month: '', num: '' };
+
+    function select(el, type, folderName) {
+        const buttons = el.parentElement.querySelectorAll('button');
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        el.classList.add('selected');
+        
+        // 버튼 텍스트 대신 'Grade_1' 같은 실제 폴더명을 저장합니다
+        selections[type] = folderName || el.innerText;
+    }
+
+    function startLearning() {
+        if (!selections.grade || !selections.year || !selections.month || !selections.num) {
+            alert('모든 항목을 선택해 주세요!');
+            return;
+        }
+
+        // 사용자님의 컴퓨터 폴더 구조에 맞춰 경로를 생성합니다
+        // 예: ./Grade_1/2025/month_3/20.html
+        const targetPath = `./${selections.grade}/${selections.year}/${selections.month}/${selections.num}.html`;
+        
+        // 생성된 경로로 이동합니다
+        window.location.href = targetPath;
+    }
+</script>
+</body>
+</html>
