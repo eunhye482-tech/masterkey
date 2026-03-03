@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #39 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #39</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "A morally good person is one who does morally bad actions significantly less often than most and does morally good ones significantly more often than most.", ko: "도덕적으로 선한 사람은 대부분의 사람보다 도덕적으로 나쁜 행동을 훨씬 덜 자주 하고, 대부분의 사람보다 도덕적으로 선한 행동을 훨씬 더 자주 하는 사람입니다.", voca: ["morally:도덕적으로", "significantly:상당히/훨씬", "actions:행동", "often:자주", "less:더 적게", "more:더 많이", "person:사람", "ones:행동들", "most:대부분", "🍌"] },
+        { en: "In judging a person not only her actions but also her intentions and motives are relevant.", ko: "한 사람을 판단함에 있어 그녀의 행동뿐만 아니라 그녀의 의도와 동기 또한 관련이 있습니다.", voca: ["judging:판단하는 것", "intentions:의도", "motives:동기", "relevant:관련 있는", "not only A but also B:A뿐만 아니라 B도", "actions:행동들", "person:사람", "🍌", "🍌", "🍌"] },
+        { en: "A morally good person must intend to do morally good actions and intend to avoid morally bad ones.", ko: "도덕적으로 선한 사람은 도덕적으로 선한 행동을 할 의도를 가져야 하며, 도덕적으로 나쁜 행동을 피할 의도를 가져야 합니다.", voca: ["intend:의도하다", "avoid:피하다", "morally:도덕적으로", "good:선한", "bad:나쁜", "actions:행동들", "ones:행동들", "person:사람", "🍌", "🍌"] },
+        { en: "A person who unintentionally prevents harm to others and does not harm them simply because things do not turn out as she intends is not morally good.", ko: "자신의 의도와 달리 상황이 흘러가서 의도치 않게 타인에 대한 해를 방지하고 해를 끼치지 않은 사람은 도덕적으로 선한 것이 아닙니다.", voca: ["unintentionally:의도치 않게", "prevents:방지하다", "harm:해/피해", "others:타인들", "simply:단순히", "turn out:드러나다/흘러가다", "intends:의도하다", "not:아닌", "person:사람", "🍌"] },
+        { en: "Although this kind of situation generally occurs only in slapstick movies, it is worth mentioning to avoid the false impression that it is the actual consequences of a person's actions that count toward her being judged morally good or bad.", ko: "이런 상황은 일반적으로 슬랩스틱 영화에서나 일어나지만, 한 사람이 도덕적으로 선하거나 나쁘다고 판단되는 데 중요한 것은 행동의 실제 결과라는 잘못된 인상을 피하기 위해 언급할 가치가 있습니다.", voca: ["situation:상황", "generally:일반적으로", "slapstick:슬랩스틱", "worth:가치가 있는", "mentioning:언급하는 것", "false impression:잘못된 인상", "actual:실제의", "consequences:결과", "count:중요하다/세다", "🍌"] },
+        { en: "But actual consequences are important.", ko: "하지만 실제 결과도 중요합니다.", voca: ["But:하지만", "actual:실제의", "consequences:결과", "important:중요한", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "A person who always tries to prevent harm but never does, is not generally thought of as morally good.", ko: "항상 피해를 방지하려고 노력하지만 결코 그렇게 하지 못하는 사람은 일반적으로 도덕적으로 선하다고 생각되지 않습니다.", voca: ["tries:노력하다", "prevent:방지하다", "never:결코 ~않다", "generally:일반적으로", "thought of:~로 생각되는", "morally:도덕적으로", "good:선한", "harm:해/피해", "person:사람", "🍌"] },
+        { en: "Of such a person, it may be said that she means well; but, contrary to Kant, some results are necessary before she is regarded as morally good.", ko: "그런 사람에 대해 의도는 좋다고 말할 수 있겠지만, 칸트와는 반대로, 도덕적으로 선하다고 간주되기 위해서는 어느 정도의 결과가 필요합니다.", voca: ["means well:의도가 좋다", "contrary to:~와 반대로", "necessary:필요한", "regarded:~로 간주되는", "morally:도덕적으로", "good:선한", "results:결과", "before:~하기 전에", "Kant:칸트", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #39";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Definition of<br>a Morally Good Person</h1><p>2025년 9월 고1 모의고사 39번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 도덕적으로 선한 사람은 타인보다 선한 행동을 훨씬 많이 하고 나쁜 행동은 훨씬 적게 하는 사람임.</p>
+                    <p>• <b>📍 본론:</b> 도덕적 판단에는 행동뿐만 아니라 의도도 중요함. 의도치 않게 좋은 결과가 나온 것은 도덕적 선이라 보기 어려움.</p>
+                    <p>• <b>📍 결론:</b> 하지만 의도만 있고 결과가 따르지 않는 경우도 도덕적이라 인정받기 힘듦. 즉, 선한 의도와 실제적인 결과가 모두 중요함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 도덕적 선함을 판단하는 기준으로서의 의도와 결과의 상호 보완성</span>
+                    <span class="topic-eng">Topic: The Complementarity of Intentions and Consequences as Criteria for Judging Moral Goodness</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

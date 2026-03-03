@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - 11월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "While convenience and technology are crucial, they are not the only factors driving Gen Z’s financial decisions.", ko: "편리함과 기술이 매우 중요하지만, 그것들이 Z세대의 금융 결정을 이끄는 유일한 요인은 아닙니다.", voca: ["convenience:편리함", "crucial:중요한", "factors:요인들", "driving:이끄는", "Gen Z:Z세대", "financial:금융의", "decisions:결정", "While:~하지만", "only:오직", "🍌"] },
+        { en: "This generation is incredibly values-driven, and they want to bank with institutions that match their personal beliefs and values.", ko: "이 세대는 믿을 수 없을 정도로 가치 지향적이며, 자신들의 개인적인 신념 및 가치와 일치하는 기관과 거래하고 싶어 합니다.", voca: ["incredibly:믿을 수 없을 정도로", "values-driven:가치 지향적인", "institutions:기관", "match:일치하다", "beliefs:신념", "values:가치", "generation:세대", "bank:은행과 거래하다", "personal:개인적인", "🍌"] },
+        { en: "Transparency is vital.", ko: "투명성은 필수적입니다.", voca: ["Transparency:투명성", "vital:필수적인", "is:~이다", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "Gen Z is skeptical of large corporations and institutions that lack accountability.", ko: "Z세대는 책임감이 부족한 대기업과 기관에 대해 회의적입니다.", voca: ["skeptical:회의적인", "corporations:기업", "lack:부족하다", "accountability:책임/설명 책임", "large:거대한", "institutions:기관", "Gen Z:Z세대", "of:~에 대해", "that:~하는", "🍌"] },
+        { en: "They have grown up in a world where information is freely available, and they expect complete transparency from the brands they support.", ko: "그들은 정보를 자유롭게 이용할 수 있는 세상에서 자라났으며, 자신들이 지지하는 브랜드로부터 완전한 투명성을 기대합니다.", voca: ["grown up:자라난", "available:이용 가능한", "expect:기대하다", "complete:완전한", "transparency:투명성", "support:지지하다", "world:세상", "information:정보", "freely:자유롭게", "brands:브랜드"] },
+        { en: "Banks, for example, must clearly communicate fees, terms, and conditions, as well as how they handle customers’ data.", ko: "예를 들어, 은행은 고객의 데이터를 어떻게 처리하는지뿐만 아니라 수수료, 약관, 조건 등을 명확하게 전달해야 합니다.", voca: ["clearly:명확하게", "communicate:전달하다/소통하다", "fees:수수료", "terms and conditions:약관 및 조건", "handle:처리하다", "customers:고객", "as well as:~뿐만 아니라", "must:~해야 한다", "data:데이터", "🍌"] },
+        { en: "Moreover, ethical banking practices are more important than ever.", ko: "게다가, 윤리적인 은행 업무 관행이 그 어느 때보다 중요합니다.", voca: ["Moreover:게다가", "ethical:윤리적인", "practices:관행", "important:중요한", "than ever:어느 때보다", "banking:은행 업무", "more:더", "are:~이다", "🍌", "🍌"] },
+        { en: "Gen Z cares about the environment, social justice, and the ethical implications of their financial decisions.", ko: "Z세대는 환경, 사회 정의, 그리고 자신들의 금융 결정이 갖는 윤리적 함의에 관심을 가집니다.", voca: ["cares about:~에 관심을 갖다", "environment:환경", "social justice:사회 정의", "implications:함의/영향", "financial:금융의", "decisions:결정", "Gen Z:Z세대", "ethical:윤리적인", "and:그리고", "🍌"] },
+        { en: "They are interested in sustainable investing, supporting businesses that match their values, and ensuring that their money is not being used to fund harmful practices.", ko: "그들은 지속 가능한 투자, 자신들의 가치와 일치하는 기업을 지지하는 것, 그리고 자신들의 돈이 해로운 관행에 자금을 대는 데 사용되지 않도록 보장하는 것에 관심이 있습니다.", voca: ["sustainable:지속 가능한", "investing:투자", "ensuring:보장하는 것", "fund:자금을 대다", "harmful:해로운", "interested in:~에 관심 있는", "supporting:지지하는", "businesses:기업/사업", "match:일치하다", "practices:관행"] },
+        { en: "Banks that offer socially responsible investment opportunities and are committed to environmental sustainability will attract Gen Z’s attention.", ko: "사회적으로 책임 있는 투자 기회를 제공하고 환경적 지속 가능성에 헌신하는 은행들이 Z세대의 관심을 끌 것입니다.", voca: ["socially responsible:사회적으로 책임 있는", "opportunities:기회", "committed to:~에 헌신하는", "sustainability:지속 가능성", "attract:끌다", "attention:관심/주의", "offer:제공하다", "investment:투자", "environmental:환경적인", "will:~할 것이다"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Gen Z's Values-Driven<br>Banking</h1><p>2025년 11월 고1 모의고사 30번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> Z세대의 금융 결정은 단순한 기술적 편리함보다 개인적 신념과 가치에 기반함.</p>
+                    <p>• <b>📍 본론:</b> 정보가 투명한 세상에서 자란 이들은 기업의 책임감과 데이터 처리의 투명성을 강력히 요구함.</p>
+                    <p>• <b>📍 결론:</b> 윤리적 관행과 지속 가능한 투자 기회를 제공하는 은행만이 Z세대의 선택을 받을 수 있음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 가치 중심적이고 투명하며 윤리적인 금융 서비스를 추구하는 Z세대의 특징</span>
+                    <span class="topic-eng">Topic: Characteristics of Gen Z Seeking Value-Driven, Transparent, and Ethical Financial Services</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
