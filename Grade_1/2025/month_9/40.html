@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #35 - Official Version</title>
+    <title>English Master #40 - 9월 모의고사</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -46,7 +46,7 @@
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #35</div>
+    <div class="header" id="header-title">English Master #40</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,12 +56,16 @@
 
 <script>
     const fullData = [
-        { en: "In the 1930s, the British psychologist Sir Frederic Bartlett asked people to listen to folktales from other countries and then recall these stories at a later date.", ko: "1930년대에 영국의 심리학자 Sir Frederic Bartlett은 사람들에게 다른 나라의 민담을 듣게 하고 나중에 이 이야기들을 회상해 보라고 요청했습니다.", voca: ["psychologist:심리학자", "folktales:민담", "recall:회상하다", "later date:나중에", "asked:요청했다", "listen:듣다", "stories:이야기들", "countries:나라들", "British:영국의", "🍌"] },
-        { en: "As you might guess, unfamiliar stories were not remembered as well as familiar stories.", ko: "짐작하시겠지만, 생소한 이야기는 친숙한 이야기만큼 잘 기억되지 않았습니다.", voca: ["guess:짐작/추측하다", "unfamiliar:생소한", "remembered:기억된", "familiar:친숙한", "well:잘", "not as well as:~만큼잘안되는", "stories:이야기들", "might:~일지도모른다", "🍌", "🍌"] },
-        { en: "Surprisingly, however, errors in memory were not random.", ko: "하지만 놀랍게도 기억의 오류는 무작위가 아니었습니다.", voca: ["Surprisingly:놀랍게도", "however:하지만", "errors:오류", "memory:기억", "random:무작위의", "were:이었다", "not:아닌", "🍌", "🍌", "🍌"] },
-        { en: "Rather, subjects often rewrote similar parts of the stories in their own minds—particularly the parts that made the least sense to them.", ko: "오히려 실험 대상자들은 종종 자신의 마음속에서 이야기의 유사한 부분들을 다시 썼는데, 특히 자신들에게 가장 이해가 되지 않는 부분들을 그렇게 했습니다.", voca: ["subjects:피실험자/대상자", "rewrote:다시썼다", "similar:유사한", "minds:마음", "particularly:특히", "least:가장적은", "sense:의미/이해", "often:종종", "parts:부분들", "Rather:오히려"] },
-        { en: "Bartlett concluded that when facing problems, humans draw upon mental schemata, or shelves of stored knowledge in our brains, to fill in any minor gaps in our memories.", ko: "Bartlett은 인간이 문제에 직면했을 때 기억의 사소한 빈틈을 메우기 위해 정신적 도식, 즉 우리 뇌에 저장된 지식의 선반을 이용한다는 결론을 내렸습니다.", voca: ["concluded:결론내렸다", "facing:직면한", "draw upon:~을이용하다", "mental:정신적인", "schemata:도식", "stored:저장된", "knowledge:지식", "minor:사소한", "gaps:틈/공백", "memories:기억들"] },
-        { en: "Therefore, remembering is an imaginative process that involves building upon past experiences.", ko: "따라서 기억하는 것은 과거의 경험을 바탕으로 구축하는 것을 포함하는 상상력의 과정입니다.", voca: ["Therefore:따라서", "remembering:기억하는것", "imaginative:상상의", "process:과정", "involves:포함하다", "building upon:~을바탕으로구축하다", "past:과거의", "experiences:경험들", "is:~이다", "🍌"] }
+        { en: "Vision is influenced by our preconceptions about reality.", ko: "시각은 현실에 대한 우리의 선입견에 의해 영향을 받습니다.", voca: ["Vision:시각", "influenced:영향을 받는", "preconceptions:선입견", "reality:현실", "about:~에 대한", "by:~에 의해", "is:~이다", "🍌", "🍌", "🍌"] },
+        { en: "In viewing a scene, we establish unconscious hierarchies that reflect our functional relationship to objects and our momentary priorities.", ko: "장면을 볼 때, 우리는 대상과의 기능적 관계와 우리의 순간적인 우선순위를 반영하는 무의식적인 위계를 설정합니다.", voca: ["viewing:보는 것", "establish:설정/확립하다", "unconscious:무의식적인", "hierarchies:위계", "reflect:반영하다", "functional:기능적인", "relationship:관계", "objects:대상/물체", "momentary:순간적인", "priorities:우선순위"] },
+        { en: "For example, when visualizing a hammer in our mind's eye, we tend to 'see' it in profile or at some other 'ready for use' angle.", ko: "예를 들어, 마음속에서 망치를 시각화할 때, 우리는 그것을 옆모습이나 다른 '사용하기 편리한' 각도로 '보는' 경향이 있습니다.", voca: ["visualizing:시각화하는 것", "mind's eye:마음의 눈", "tend to:~하는 경향이 있다", "profile:옆모습", "angle:각도", "ready for use:사용 준비가 된", "hammer:망치", "example:예시", "some:어떤", "🍌"] },
+        { en: "One would probably not visualize a hammer as seen from the top so that the handle is hidden by the hammer's head.", ko: "사람들은 아마도 망치의 자루가 머리에 가려지도록 위에서 본 모습으로 망치를 시각화하지는 않을 것입니다.", voca: ["probably:아마도", "visualize:시각화하다", "seen from:~에서 본", "top:위", "handle:자루/손잡이", "hidden:숨겨진", "head:머리", "not:아닌", "would:~할 것이다", "🍌"] },
+        { en: "The functional relationship we have with objects creates visual expectations that interfere with our ability to see 'like a camera.'", ko: "우리가 사물과 맺는 기능적 관계는 '카메라처럼' 보는 우리의 능력을 방해하는 시각적 기대를 만들어냅니다.", voca: ["functional:기능적인", "creates:만들다", "visual:시각적인", "expectations:기대", "interfere with:~을 방해하다", "ability:능력", "objects:사물", "have:가지다", "like:~처럼", "🍌"] },
+        { en: "The camera, like the human eye, sees only shapes and colors.", ko: "카메라는 인간의 눈처럼 오직 형태와 색깔만을 봅니다.", voca: ["camera:카메라", "human eye:인간의 눈", "shapes:형태", "colors:색깔", "only:오직", "sees:보다", "like:~처럼", "the:그", "🍌", "🍌"] },
+        { en: "It documents the world impartially through a lens that is similar to the eye.", ko: "그것은 눈과 유사한 렌즈를 통해 세상을 공정하게 기록합니다.", voca: ["documents:기록하다", "impartially:공정하게", "through:~을 통해", "similar to:~와 유사한", "lens:렌즈", "world:세상", "eye:눈", "It:그것", "that:~하는", "is:~이다"] },
+        { en: "When we look at them carefully, photographs are often surprising because they don't interpret confusing details but simply serve them up to us with a mechanical indifference.", ko: "주의 깊게 살펴볼 때 사진은 종종 놀라운데, 이는 사진이 혼란스러운 세부 사항을 해석하지 않고 기계적인 무관심으로 우리에게 단순히 그것들을 제공하기 때문입니다.", voca: ["carefully:주의 깊게", "photographs:사진", "surprising:놀라운", "interpret:해석하다", "confusing:혼란스러운", "details:세부 사항", "serve up:제공하다", "mechanical:기계적인", "indifference:무관심", "often:종종"] },
+        { en: "And because of their flatness, photographs often contain areas that appear as unrecognizable colors and shapes.", ko: "그리고 사진의 평면성 때문에, 사진은 종종 인식할 수 없는 색깔과 형태처럼 보이는 영역을 포함합니다.", voca: ["flatness:평면성", "contain:포함하다", "areas:영역", "appear:~처럼 보이다", "unrecognizable:인식할 수 없는", "colors:색깔", "shapes:형태", "because of:~때문에", "often:종종", "🍌"] },
+        { en: "Our visual perception is shaped by an established hierarchy based on functional relationships, which interrupts our ability to see objects as they truly are, unlike the objective perspective of a camera.", ko: "우리의 시각적 인식은 기능적 관계에 기반한 기성 위계에 의해 형성되며, 이는 카메라의 객관적인 시각과는 달리 사물을 있는 그대로 보는 우리의 능력을 방해합니다.", voca: ["perception:인식", "established:기성의/확립된", "hierarchy:위계", "based on:~에 기반한", "interrupts:방해하다", "truly:정말로/있는 그대로", "objective:객관적인", "perspective:시각/관점", "unlike:~와 달리", "shaped:형성된"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,18 +79,19 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #35";
+            header.innerText = "English Master #40";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Memory as Construction:<br>Mental Schemata</h1><p>2025년 6월 고1 모의고사 35번</p></div>
+                <div class="main-title-card"><h1>Human Vision vs.<br>Camera Lens</h1><p>2025년 9월 고1 모의고사 40번</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 바틀렛은 낯선 민담을 기억할 때 사람들이 어떻게 오류를 범하는지 연구함.</p>
-                    <p>• <b>📍 본론:</b> 기억의 오류는 무작위가 아니며, 사람들은 이해되지 않는 부분을 자신의 상식에 맞춰 재구성함.</p>
-                    <p>• <b>📍 결론:</b> 기억은 단순히 정보를 꺼내는 것이 아니라, 뇌 속 지식 도식(Schemata)을 이용한 상상적 재구성 과정임.</p>
+                    <p>• <b>📍 서론:</b> 인간의 시각은 사물에 대한 선입견과 기능적 관계에 따라 영향을 받음.</p>
+                    <p>• <b>📍 본론:</b> 인간은 사물을 사용할 때의 각도(위계)로 보려 하지만, 카메라는 기계적인 무관심으로 형태와 색을 공정하게 기록함.</p>
+                    <p>• <b>📍 결론:</b> 이러한 인간의 주관적 위계 설정은 사물을 있는 그대로 보는 능력을 방해함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 정신적 도식을 활용한 기억의 재구성 과정</span>
-                    <span class="topic-eng">Topic: The Reconstructive Process of Memory Using Mental Schemata</span>
+                    <span class="topic-kor">주제: 기능적 관계에 기반한 인간의 주관적 시각과 카메라의 객관적 시각의 차이</span>
+                    <span class="topic-eng">Topic: The Difference Between Human Subjective Vision Based on Functional Relationships and the Objective Perspective of a Camera</span>
                 </div>
                 <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
                 <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>

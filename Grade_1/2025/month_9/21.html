@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #35 - Official Version</title>
+    <title>English Master #21 - 9월 모의고사</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -46,7 +46,7 @@
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #35</div>
+    <div class="header" id="header-title">English Master #21</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,12 +56,17 @@
 
 <script>
     const fullData = [
-        { en: "In the 1930s, the British psychologist Sir Frederic Bartlett asked people to listen to folktales from other countries and then recall these stories at a later date.", ko: "1930년대에 영국의 심리학자 Sir Frederic Bartlett은 사람들에게 다른 나라의 민담을 듣게 하고 나중에 이 이야기들을 회상해 보라고 요청했습니다.", voca: ["psychologist:심리학자", "folktales:민담", "recall:회상하다", "later date:나중에", "asked:요청했다", "listen:듣다", "stories:이야기들", "countries:나라들", "British:영국의", "🍌"] },
-        { en: "As you might guess, unfamiliar stories were not remembered as well as familiar stories.", ko: "짐작하시겠지만, 생소한 이야기는 친숙한 이야기만큼 잘 기억되지 않았습니다.", voca: ["guess:짐작/추측하다", "unfamiliar:생소한", "remembered:기억된", "familiar:친숙한", "well:잘", "not as well as:~만큼잘안되는", "stories:이야기들", "might:~일지도모른다", "🍌", "🍌"] },
-        { en: "Surprisingly, however, errors in memory were not random.", ko: "하지만 놀랍게도 기억의 오류는 무작위가 아니었습니다.", voca: ["Surprisingly:놀랍게도", "however:하지만", "errors:오류", "memory:기억", "random:무작위의", "were:이었다", "not:아닌", "🍌", "🍌", "🍌"] },
-        { en: "Rather, subjects often rewrote similar parts of the stories in their own minds—particularly the parts that made the least sense to them.", ko: "오히려 실험 대상자들은 종종 자신의 마음속에서 이야기의 유사한 부분들을 다시 썼는데, 특히 자신들에게 가장 이해가 되지 않는 부분들을 그렇게 했습니다.", voca: ["subjects:피실험자/대상자", "rewrote:다시썼다", "similar:유사한", "minds:마음", "particularly:특히", "least:가장적은", "sense:의미/이해", "often:종종", "parts:부분들", "Rather:오히려"] },
-        { en: "Bartlett concluded that when facing problems, humans draw upon mental schemata, or shelves of stored knowledge in our brains, to fill in any minor gaps in our memories.", ko: "Bartlett은 인간이 문제에 직면했을 때 기억의 사소한 빈틈을 메우기 위해 정신적 도식, 즉 우리 뇌에 저장된 지식의 선반을 이용한다는 결론을 내렸습니다.", voca: ["concluded:결론내렸다", "facing:직면한", "draw upon:~을이용하다", "mental:정신적인", "schemata:도식", "stored:저장된", "knowledge:지식", "minor:사소한", "gaps:틈/공백", "memories:기억들"] },
-        { en: "Therefore, remembering is an imaginative process that involves building upon past experiences.", ko: "따라서 기억하는 것은 과거의 경험을 바탕으로 구축하는 것을 포함하는 상상력의 과정입니다.", voca: ["Therefore:따라서", "remembering:기억하는것", "imaginative:상상의", "process:과정", "involves:포함하다", "building upon:~을바탕으로구축하다", "past:과거의", "experiences:경험들", "is:~이다", "🍌"] }
+        { en: "Many atoms in your body are nearly as old as the universe itself.", ko: "당신의 몸속에 있는 많은 원자들은 거의 우주 그 자체만큼이나 오래되었습니다.", voca: ["atoms:원자", "nearly:거의", "universe:우주", "itself:그 자체", "body:몸", "old:오래된", "many:많은", "as old as:~만큼 오래된", "🍌", "🍌"] },
+        { en: "When you breathe, for example, only some of the atoms that you inhale are exhaled in your next breath.", ko: "예를 들어, 당신이 숨을 쉴 때 당신이 들이마시는 원자들 중 일부만이 다음 호흡에서 내뱉어집니다.", voca: ["breathe:숨쉬다", "inhale:들이마시다", "exhale:내뱉다", "breath:호흡", "some:일부", "next:다음의", "only:오직", "example:예시", "🍌", "🍌"] },
+        { en: "The remaining atoms are taken into your body to become part of you, and they later leave your body by various means.", ko: "남은 원자들은 당신의 몸속으로 들어가 당신의 일부가 되고, 나중에 다양한 수단에 의해 당신의 몸을 떠납니다.", voca: ["remaining:남은", "taken into:~로 들어가다", "part:일부", "leave:떠나다", "various:다양한", "means:수단/방법", "later:나중에", "atoms:원자들", "body:몸", "become:되다"] },
+        { en: "You don’t 'own' the atoms that make up your body; you borrow them.", ko: "당신은 당신의 몸을 구성하는 원자들을 '소유'하는 것이 아니라, 그것들을 빌리는 것입니다.", voca: ["own:소유하다", "make up:구성하다", "borrow:빌리다", "atoms:원자들", "body:몸", "them:그것들", "not:아닌", "🍌", "🍌", "🍌"] },
+        { en: "We all share from the same atom pool because atoms forever travel around, within, and among us.", ko: "원자들은 영원히 우리 주변, 내부, 그리고 우리 사이를 여행하기 때문에 우리 모두는 같은 원자 풀을 공유합니다.", voca: ["share:공유하다", "pool:풀/저장고", "forever:영원히", "travel:여행하다/이동하다", "within:~내부에", "among:~사이에", "around:주변에", "same:같은", "because:~때문에", "atoms:원자들"] },
+        { en: "Atoms cycle from person to person as we breathe and as our sweat is evaporated.", ko: "우리가 숨을 쉬고 땀이 증발함에 따라 원자들은 사람에서 사람으로 순환합니다.", voca: ["cycle:순환하다", "sweat:땀", "evaporated:증발된", "person:사람", "breathe:숨쉬다", "atoms:원자들", "from:~로부터", "as:~함에 따라", "🍌", "🍌"] },
+        { en: "We recycle atoms on a grand scale.", ko: "우리는 거대한 규모로 원자들을 재활용합니다.", voca: ["recycle:재활용하다", "grand scale:거대한 규모", "atoms:원자들", "we:우리", "on:~으로", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "The origin of the lightest atoms goes back to the origin of the universe, and most heavier atoms are older than the Sun and Earth.", ko: "가장 가벼운 원자들의 기원은 우주의 기원으로 거슬러 올라가며, 대부분의 더 무거운 원자들은 태양과 지구보다 더 오래되었습니다.", voca: ["origin:기원", "lightest:가장 가벼운", "goes back:거슬러 올라가다", "heavier:더 무거운", "Sun:태양", "Earth:지구", "older:더 오래된", "most:대부분", "universe:우주", "atoms:원자들"] },
+        { en: "There are atoms in your body that have existed since the first moments of time, recycling throughout the universe among limitless forms, both nonliving and living.", ko: "당신의 몸속에는 시간의 첫 순간부터 존재해 온 원자들이 있으며, 생물과 무생물 모두를 포함한 무한한 형태들 사이에서 우주 전역을 재활용하며 순환하고 있습니다.", voca: ["existed:존재했다", "since:~이후로", "first moments:첫 순간", "throughout:~전역에", "limitless:무한한", "forms:형태들", "nonliving:무생물", "living:생물", "recycling:재활용하며", "atoms:원자들"] },
+        { en: "You’re the present caretaker of the atoms in your body.", ko: "당신은 당신 몸속에 있는 원자들의 현재 관리인입니다.", voca: ["present:현재의", "caretaker:관리인", "atoms:원자들", "body:몸", "your:당신의", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "There will be many who will follow you.", ko: "당신의 뒤를 이을 사람들이 많을 것입니다.", voca: ["follow:뒤를 잇다/따르다", "many:많은 사람들", "will:~할 것이다", "you:당신", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,18 +80,18 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #35";
+            header.innerText = "English Master #21";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Memory as Construction:<br>Mental Schemata</h1><p>2025년 6월 고1 모의고사 35번</p></div>
+                <div class="main-title-card"><h1>The Eternal Cycle<br>of Atoms</h1><p>2025년 9월 고1 모의고사 21번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 바틀렛은 낯선 민담을 기억할 때 사람들이 어떻게 오류를 범하는지 연구함.</p>
-                    <p>• <b>📍 본론:</b> 기억의 오류는 무작위가 아니며, 사람들은 이해되지 않는 부분을 자신의 상식에 맞춰 재구성함.</p>
-                    <p>• <b>📍 결론:</b> 기억은 단순히 정보를 꺼내는 것이 아니라, 뇌 속 지식 도식(Schemata)을 이용한 상상적 재구성 과정임.</p>
+                    <p>• <b>📍 서론:</b> 우리 몸의 원자들은 우주만큼이나 오래되었으며, 우리는 이를 잠시 빌려 쓰는 것임.</p>
+                    <p>• <b>📍 본론:</b> 원자들은 호흡과 증발을 통해 사람 사이를 끊임없이 이동하며 거대한 규모로 재활용됨.</p>
+                    <p>• <b>📍 결론:</b> 우리는 몸속 원자들의 현재 관리인일 뿐이며, 원자들은 무한한 형태를 거쳐 계속 순환할 것임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 정신적 도식을 활용한 기억의 재구성 과정</span>
-                    <span class="topic-eng">Topic: The Reconstructive Process of Memory Using Mental Schemata</span>
+                    <span class="topic-kor">주제: 우주적 규모에서 이루어지는 원자들의 영원한 순환과 재활용</span>
+                    <span class="topic-eng">Topic: The Eternal Cycling and Recycling of Atoms on a Cosmic Scale</span>
                 </div>
                 <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
                 <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
