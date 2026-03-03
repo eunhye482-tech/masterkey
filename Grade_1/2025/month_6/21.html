@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #21 - Zoomable Version</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #21</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "It is common sense that people’s inner beliefs may drive their external behavior.", ko: "사람들의 내면적인 신념이 외적 행동을 유도할 수도 있다는 것은 상식입니다.", voca: ["common sense:상식", "inner:내면적인", "beliefs:신념", "drive:유도하다", "external:외적인", "behavior:행동", "people:사람들", "may:~일수도있다", "🍌", "🍌"] },
+        { en: "If you’re attracted to a certain person, you should be more likely to socialize with that person.", ko: "만약 여러분이 어떤 사람에게 끌린다면, 여러분은 그 사람과 사귈 가능성이 더 높을 것입니다.", voca: ["attracted:끌리는", "certain:어떤/특정한", "likely to:~할것같은", "socialize:사귀다/교제하다", "person:사람", "should:~할것이다", "more:더", "with:~와함께", "🍌", "🍌"] },
+        { en: "If you favor a brand of toothpaste, you’re more likely to buy it.", ko: "만약 여러분이 어떤 브랜드의 치약을 선호한다면, 여러분은 그것을 살 가능성이 더 높습니다.", voca: ["favor:선호하다", "brand:브랜드", "toothpaste:치약", "likely to:~할것같은", "buy:사다", "more:더", "if:~라면", "🍌", "🍌", "🍌"] },
+        { en: "Of course, our internal thoughts don’t always predict our public behavior, but, overall, what we do obviously reflects what we think.", ko: "물론 우리의 내면적인 생각이 항상 우리의 공적 행동을 예측하는 것은 아니지만, 전반적으로 우리가 하는 일은 분명히 우리가 생각하는 것을 반영합니다.", voca: ["internal:내면적인", "predict:예측하다", "public:공적인", "overall:전반적으로", "obviously:분명히", "reflects:반영하다", "thoughts:생각", "always:항상", "what:것", "think:생각하다"] },
+        { en: "But beliefs and behaviors are also related in a more remarkable way.", ko: "하지만 신념과 행동은 또한 더 놀라운 방식으로 관련되어 있습니다.", voca: ["beliefs:신념", "behaviors:행동", "related:관련된", "remarkable:놀라운", "way:방식", "also:또한", "more:더", "🍌", "🍌", "🍌"] },
+        { en: "It turns out that the arrow is as likely to point in the reverse direction.", ko: "화살표가 반대 방향을 가리킬 가능성도 똑같다는 것이 밝혀졌습니다.", voca: ["turns out:밝혀지다", "arrow:화살표", "point:가리키다", "reverse:반대의", "direction:방향", "likely to:~할것같은", "reverse:반대", "🍌", "🍌", "🍌"] },
+        { en: "As social psychologist David Myers observes, 'If social psychology has taught us anything during the last 25 years, it is that we are likely not only to think ourselves into a way of acting but also to act ourselves into a way of thinking.'", ko: "사회심리학자 David Myers가 관찰한 바와 같이, '만약 사회심리학이 지난 25년 동안 우리에게 무엇인가를 가르쳤다면, 그것은 우리가 행동 방식에 따라 생각하게 될 뿐만 아니라 생각하는 방식에 따라 행동하게 될 가능성도 있다는 것입니다.'", voca: ["psychologist:심리학자", "observes:관찰하다", "taught:가르쳤다", "not only:A뿐만아니라", "but also:B도역시", "acting:행동하기", "thinking:생각하기", "likely to:~할것같은", "during:~동안", "way:방식"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #21";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Relationship Between<br>Beliefs and Behaviors</h1><p>2025년 6월 고1 모의고사 21번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 내면의 신념이 외적 행동을 유도하는 것은 상식적인 일임.</p>
+                    <p>• <b>📍 본론:</b> 반대로, 우리의 외적 행동이 내면의 사고 방식을 결정하기도 함.</p>
+                    <p>• <b>📍 결론:</b> 신념과 행동은 서로 양방향으로 영향을 주고받는 관계임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 신념과 행동 사이의 상호 유기적이고 양방향적인 관계</span>
+                    <span class="topic-eng">Topic: The Mutual and Bi-directional Relationship Between Beliefs and Behaviors</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
