@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #23 - 11월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Rome was said to have been a melting pot from the very start.", ko: "로마는 시작부터 용광로(인종과 문화의 화합지)였다고 전해집니다.", voca: ["Rome:로마", "melting pot:용광로", "start:시작", "was said:~라고 일컬어졌다", "from:~로부터", "very:바로 그/매우", "been:있었다", "🍌", "🍌", "🍌"] },
+        { en: "The historian Livy claimed the city’s original population was comprised of immigrants flooding in from all directions, attracted by Romulus’s deliberate policy of nondiscrimination.", ko: "역사학자 Livy는 로물루스의 의도적인 무차별 정책에 매료되어 사방에서 밀려든 이민자들로 도시의 원래 인구가 구성되었다고 주장했습니다.", voca: ["historian:역사학자", "claimed:주장했다", "original:원래의", "comprised of:~로 구성된", "immigrants:이민자", "flooding:밀려드는", "attracted:매료된", "deliberate:의도적인", "policy:정책", "nondiscrimination:무차별/비차별"] },
+        { en: "It was this initial openness, Livy asserts, that laid the foundations for the later strength and success of the city.", ko: "Livy가 주장하기를, 도시의 후기 강점과 성공의 토대를 마련한 것은 바로 이러한 초기의 개방성이었습니다.", voca: ["initial:초기의", "openness:개방성", "asserts:주장하다", "laid:마련하다/놓다", "foundations:토대/기초", "later:후기의", "strength:강점", "success:성공", "city:도시", "🍌"] },
+        { en: "Romans described their city as multicultural in the generations after its foundation.", ko: "로마인들은 건국 후 몇 세대 동안 자신들의 도시를 다문화적이라고 묘사했습니다.", voca: ["described:묘사했다", "multicultural:다문화적인", "generations:세대", "foundation:건국/기초", "city:도시", "after:~후에", "its:그것의", "🍌", "🍌", "🍌"] },
+        { en: "Tradition held that only a minority of the city’s legendary kings were Roman-born, with the others all arriving as immigrants before being chosen for the throne for their virtues and merits.", ko: "전통에 따르면 도시의 전설적인 왕들 중 극소수만이 로마 태생이었으며, 나머지는 모두 그들의 미덕과 공적으로 인해 왕좌에 오르기 전 이민자로 도착했습니다.", voca: ["Tradition:전통", "minority:소수", "legendary:전설적인", "Roman-born:로마 태생의", "arriving:도착하는", "immigrants:이민자", "chosen:선택된", "throne:왕좌", "virtues:미덕", "merits:공적/장점"] },
+        { en: "As the empire expanded across three continents, Rome eagerly adopted new cultural influences and absorbed incoming groups—perhaps a little too eagerly for some, who, like the poet Juvenal, complained about the rapid rate of cultural change.", ko: "제국이 3개 대륙으로 확장되면서, 로마는 새로운 문화적 영향을 열렬히 받아들였고 유입되는 집단들을 흡수했습니다. 아마도 시인 유베날리스처럼 급격한 문화적 변화 속도에 대해 불평했던 일부 사람들에게는 조금 지나치게 열렬했을지도 모릅니다.", voca: ["expanded:확장했다", "continents:대륙", "eagerly:열렬히", "adopted:채택했다/받아들였다", "absorbed:흡수했다", "incoming:유입되는", "perhaps:아마도", "complained:불평했다", "rapid:급격한", "cultural change:문화적 변화"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Rome: A Melting Pot<br>from the Start</h1><p>2025년 11월 고1 모의고사 23번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 로마는 건국 초기부터 이민자들이 모여든 '용광로(Melting Pot)' 같은 도시였음.</p>
+                    <p>• <b>📍 본론:</b> 로물루스의 무차별 정책 덕분에 다양한 이민자들이 유입되었으며, 전설적인 왕들조차 대다수가 이민자 출신이었음.</p>
+                    <p>• <b>📍 결론:</b> 이러한 초기의 개방성과 다문화적 성격이 로마 제국이 3대륙으로 뻗어 나가는 성공의 토대가 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 로마의 성공과 힘의 근간이 된 건국 초기의 개방성과 다문화적 성격</span>
+                    <span class="topic-eng">Topic: The Openness and Multicultural Character of Early Rome as the Foundation of Its Success and Strength</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
