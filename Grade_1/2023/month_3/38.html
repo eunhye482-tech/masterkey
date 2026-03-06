@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #38 - 23년 3월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #38</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "All carbohydrates are basically sugars.", ko: "모든 탄수화물은 기본적으로 당입니다.", voca: ["carbohydrates:탄수화물", "basically:기본적으로", "sugars:당/설탕", "All:모든", "are:이다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Complex carbohydrates are the good carbohydrates for your body.", ko: "복합 탄수화물은 여러분의 몸에 좋은 탄수화물입니다.", voca: ["Complex:복합적인", "carbohydrates:탄수화물", "good:좋은", "body:몸", "for:~을 위한", "are:이다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "These complex sugar compounds are very difficult to break down and can trap other nutrients like vitamins and minerals in their chains.", ko: "이러한 복합 당 화합물은 분해하기가 매우 어렵고 비타민과 미네랄 같은 다른 영양소들을 사슬 안에 가둘 수 있습니다.", voca: ["compounds:화합물", "difficult:어려운", "break down:분해하다", "trap:가두다", "nutrients:영양소", "vitamins:비타민", "minerals:미네랄", "chains:사슬", "very:매우", "🍎"] },
+        { en: "As they slowly break down, the other nutrients are also released into your body, and can provide you with fuel for a number of hours.", ko: "그것들이 천천히 분해되면서 다른 영양소들도 여러분의 몸으로 방출되고, 몇 시간 동안 연료(에너지)를 공급할 수 있습니다.", voca: ["slowly:천천히", "released:방출된", "provide:공급하다", "fuel:연료", "number of hours:몇 시간", "also:또한", "into:~로", "can:할 수 있다", "other:다른", "🍎"] },
+        { en: "Bad carbohydrates, on the other hand, are simple sugars.", ko: "반면에 나쁜 탄수화물은 단순 당입니다.", voca: ["on the other hand:반면에", "simple:단순한", "sugars:당", "Bad:나쁜", "carbohydrates:탄수화물", "are:이다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Because their structure is not complex, they are easy to break down and hold few nutrients for your body other than the sugars from which they are made.", ko: "그것들의 구조는 복잡하지 않기 때문에, 분해되기 쉽고 그것들이 만들어지는 당 외에는 몸을 위한 영양소를 거의 가지고 있지 않습니다.", voca: ["structure:구조", "easy:쉬운", "hold:가지다", "few:거의 없는", "other than:~ 외에", "complex:복잡한", "because:~때문에", "nutrients:영양소", "made:만들어진", "🍎"] },
+        { en: "Your body breaks down these carbohydrates rather quickly and what it cannot use is converted to fat and stored in the body.", ko: "여러분의 몸은 이러한 탄수화물을 꽤 빨리 분해하고 사용하지 못한 것은 지방으로 바뀌어 몸에 저장됩니다.", voca: ["rather:꽤/다소", "quickly:빨리", "cannot:할 수 없다", "converted:전환된/바뀐", "fat:지방", "stored:저장된", "breaks down:분해하다", "use:사용하다", "body:몸", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #38";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Good vs. Bad<br>Carbohydrates</h1><p>2023년 3월 고1 모의고사 38번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 모든 탄수화물은 기본적으로 당(sugar)이지만, 구조에 따라 몸에 미치는 영향이 다름.</p>
+                    <p>• <b>📍 본론:</b> 복합 탄수화물은 사슬 구조가 복잡해 분해가 어렵고 영양소를 가두고 있어, 천천히 분해되며 에너지를 오랫동안 공급함.</p>
+                    <p>• <b>📍 결론:</b> 단순 당인 나쁜 탄수화물은 구조가 단순해 빠르게 분해되며 영양소도 거의 없음. 사용되지 못한 과잉 당은 결국 지방으로 저장됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 탄수화물의 구조적 차이(복합 vs 단순)에 따른 분해 속도와 체내 에너지 공급 및 지방 저장의 원리</span>
+                    <span class="topic-eng">Topic: The principle of energy supply and fat storage based on the structural differences between complex and simple carbohydrates</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

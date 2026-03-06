@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #31 - 23년 6월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #31</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Individuals who perform at a high level in their profession often have instant credibility with others.", ko: "자신의 직업에서 높은 수준으로 성과를 내는 개인들은 종종 타인에게 즉각적인 신뢰를 얻습니다.", voca: ["perform:성과를 내다", "high level:높은 수준", "profession:직업", "instant:즉각적인", "credibility:신뢰도/신뢰성", "individuals:개인들", "others:타인들", "often:종종", "have:가지다", "🍎"] },
+        { en: "People admire them, they want to be like them, and they feel connected to them.", ko: "사람들은 그들을 감탄하고, 그들처럼 되고 싶어 하며, 그들과 연결되어 있다고 느낍니다.", voca: ["admire:감탄하다/존경하다", "connected:연결된", "want to:~하고 싶어 하다", "be like:~처럼 되다", "feel:느끼다", "them:그들", "People:사람들", "🍎", "🍎", "🍎"] },
+        { en: "When they speak, others listen—even if the area of their skill has nothing to do with the advice they give.", ko: "그들이 말할 때, 그들의 기술 분야가 그들이 주는 조언과 전혀 관련이 없을지라도 다른 사람들은 경청합니다.", voca: ["listen:경청하다", "area:분야", "skill:기술", "nothing to do with:~와 관련이 없는", "advice:조언", "even if:비록 ~일지라도", "speak:말하다", "others:다른 사람들", "When:~할 때", "🍎"] },
+        { en: "Think about a world-famous basketball player. He has made more money from endorsements than he ever did playing basketball.", ko: "세계적으로 유명한 농구 선수를 생각해 보십시오. 그는 농구를 해서 벌었던 것보다 광고 홍보로부터 더 많은 돈을 벌어왔습니다.", voca: ["world-famous:세계적으로 유명한", "basketball player:농구 선수", "made money:돈을 벌다", "endorsements:광고 홍보(지지)", "ever:지금껏", "playing:경기를 하는 것", "than:~보다", "Think about:~을 생각하다", "🍎", "🍎"] },
+        { en: "Is it because of his knowledge of the products he endorses? No. It’s because of what he can do with a basketball.", ko: "그것이 그가 홍보하는 제품에 대한 그의 지식 때문입니까? 아닙니다. 그것은 그가 농구공으로 할 수 있는 것 때문입니다.", voca: ["knowledge:지식", "products:제품들", "endorses:홍보하다/지지하다", "because of:~ 때문에", "No:아니오", "basketball:농구(공)", "what:~하는 것", "can:할 수 있다", "do:하다", "🍎"] },
+        { en: "The same can be said of an Olympic medalist swimmer. People listen to him because of what he can do in the pool.", ko: "올림픽 메달리스트 수영 선수에 대해서도 마찬가지입니다. 사람들은 그가 수영장에서 할 수 있는 것 때문에 그의 말을 듣습니다.", voca: ["medalist:메달리스트", "swimmer:수영 선수", "pool:수영장", "listen to:~의 말을 듣다", "The same:마찬가지", "can be said:~라고 말해질 수 있다", "of:~에 대해", "because of:~ 때문에", "🍎", "🍎"] },
+        { en: "And when an actor tells us we should drive a certain car, we don’t listen because of his expertise on engines.", ko: "그리고 한 배우가 우리에게 어떤 차를 운전해야 한다고 말할 때, 우리는 그의 엔진에 대한 전문 지식 때문에 듣는 것이 아닙니다.", voca: ["actor:배우", "certain:어떤/특정한", "expertise:전문 지식", "engines:엔진", "tells:말하다", "should:~해야 한다", "drive:운전하다", "listen:듣다", "because of:~ 때문에", "🍎"] },
+        { en: "We listen because we admire his talent. Excellence connects.", ko: "우리는 그의 재능을 감탄하기 때문에 듣습니다. 탁월함은 연결됩니다.", voca: ["admire:감탄하다", "talent:재능", "Excellence:탁월함", "connects:연결된다", "We:우리", "listen:듣다", "because:~때문에", "🍎", "🍎", "🍎"] },
+        { en: "If you possess a high level of ability in an area, others may desire to connect with you because of it.", ko: "만약 여러분이 한 분야에서 높은 수준의 능력을 갖추고 있다면, 다른 사람들은 그것 때문에 여러분과 연결되기를 원할지도 모릅니다.", voca: ["possess:갖추다/소유하다", "ability:능력", "desire:원하다/열망하다", "connect with:~와 연결되다", "high level:높은 수준", "area:분야", "others:다른 사람들", "because of:~ 때문에", "may:~일지도 모른다", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #31";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Connecting Power<br>of Excellence</h1><p>2023년 6월 고1 모의고사 31번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 특정 분야에서 뛰어난 성과를 내는 사람은 타인에게 즉각적인 신뢰를 얻으며, 사람들은 그들과 연결되고 싶어 함.</p>
+                    <p>• <b>📍 본론:</b> 농구 선수나 수영 선수, 배우가 자신의 전문 분야와 무관한 광고를 할 때 사람들이 경청하는 이유는 그들의 '지식'이 아닌 그들의 '탁월함'과 '재능'에 감탄하기 때문임.</p>
+                    <p>• <b>📍 결론:</b> 탁월함은 사람을 연결하는 힘이 있음. 한 분야에서 높은 능력을 갖추면 사람들은 그 능력 자체만으로도 당신과 연결되길 원하게 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 한 분야의 탁월함이 가져오는 즉각적인 신뢰도와 타인과의 연결 능력</span>
+                    <span class="topic-eng">Topic: The instant credibility and ability to connect with others brought by excellence in a specific area</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

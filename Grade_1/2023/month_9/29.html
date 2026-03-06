@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #29 - 23년 9월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #29</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "There is a reason the title “Monday Morning Quarterback” exists.", ko: "'Monday Morning Quarterback'이라는 명칭이 존재하는 이유가 있습니다.", voca: ["reason:이유", "title:명칭/제목", "exists:존재하다", "Monday:월요일", "Morning:아침", "Quarterback:쿼터백", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Fans believe they could play, coach, and manage sport teams more successfully than those on the field.", ko: "팬들은 자신들이 현장에 있는 사람들보다 더 성공적으로 스포츠 팀을 경기하고, 지도하고, 관리할 수 있다고 믿습니다.", voca: ["believe:믿다", "coach:지도하다", "manage:관리하다/운영하다", "successfully:성공적으로", "field:현장/경기장", "fans:팬들", "play:경기하다", "more:더", "🍎", "🍎"] },
+        { en: "This goes for the boardroom as well. Students and professionals find themselves being given advice from total strangers.", ko: "이것은 이사회실에서도 마찬가지입니다. 학생들과 전문가들은 전혀 모르는 사람들로부터 조언을 듣기도 합니다.", voca: ["boardroom:이사회실", "as well:또한/마찬가지로", "professionals:전문가들", "advice:조언", "strangers:낯선 사람/모르는 사람", "total:전혀/완전한", "find themselves:~임을 알게 되다", "🍎", "🍎", "🍎"] },
+        { en: "Executives in sport management have decades of knowledge and experience in their respective fields.", ko: "스포츠 경영 전문가들은 각자의 분야에서 수십 년의 지식과 경험을 가지고 있습니다.", voca: ["Executives:경영진/전문가", "management:경영/관리", "decades:수십 년", "knowledge:지식", "experience:경험", "respective:각자의", "fields:분야들", "🍎", "🍎", "🍎"] },
+        { en: "However, many of them face criticism from fans and community members telling them how to run their business.", ko: "하지만 그들 중 많은 이들이 사업을 어떻게 운영해야 하는지 말하는 팬들과 지역 사회 구성원들로부터 비판에 직면합니다.", voca: ["face:직면하다", "criticism:비판", "community:지역 사회", "run:운영하다", "business:사업", "telling:말하는", "However:하지만", "many:많은", "🍎", "🍎"] },
+        { en: "Very few people tell their doctor how to perform surgery or their accountant how to prepare their taxes.", ko: "의사에게 수술하는 법을 가르치거나 회계사에게 세무 보고 준비법을 가르치는 사람은 거의 없습니다.", voca: ["perform:수행하다", "surgery:수술", "accountant:회계사", "prepare:준비하다", "taxes:세금", "few:거의 없는", "doctor:의사", "tell:말하다", "🍎", "🍎"] },
+        { en: "But many people provide feedback on how sport organizations should be managed.", ko: "하지만 많은 사람들이 스포츠 조직이 어떻게 관리되어야 하는지에 대해 피드백을 제공합니다.", voca: ["provide:제공하다", "feedback:피드백", "organizations:조직들", "managed:관리되는", "should:~해야 한다", "But:하지만", "many:많은", "how:어떻게", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #29";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Monday Morning<br>Quarterback</h1><p>2023년 9월 고1 모의고사 29번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 스포츠 팬들 사이에는 경기가 끝난 뒤 전문가보다 더 잘할 수 있다고 믿는 'Monday Morning Quarterback' 현상이 존재함.</p>
+                    <p>• <b>📍 본론:</b> 이는 실무 현장에서도 마찬가지여서, 수십 년 경력의 스포츠 경영인들이 비전문가인 대중으로부터 사업 운영에 대한 훈수와 비판을 듣곤 함.</p>
+                    <p>• <b>📍 결론:</b> 의사나 회계사의 전문 영역에는 함부로 개입하지 않으면서도, 유독 스포츠 조직 관리에는 너나 할 것 없이 피드백을 던지는 모순적인 상황을 보여줌.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 스포츠 분야에서 전문가의 지식보다 비전문가의 의견이 더 빈번히 개입되는 현상</span>
+                    <span class="topic-eng">Topic: The phenomenon where non-experts frequently interfere with expert knowledge in the sports field</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

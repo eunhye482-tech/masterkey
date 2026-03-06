@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #40 - 23년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #40</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Early models of cultural evolution drew connections between culture and genes using population genetics.", ko: "초기 문화 진화 모델들은 집단 유전학을 사용하여 문화와 유전자 사이의 연결 고리를 끌어냈습니다.", voca: ["models:모델들", "cultural evolution:문화 진화", "connections:연결", "culture:문화", "genes:유전자", "population genetics:집단 유전학", "Early:초기의", "🍎", "🍎", "🍎"] },
+        { en: "Cultural patterns are conceptually likened to genetic processes of transmission, mutation, and selection.", ko: "문화적 양상들은 개념적으로 전파, 돌연변이, 그리고 선택이라는 유전적 과정에 비유됩니다.", voca: ["patterns:양상들", "conceptually:개념적으로", "likened to:~에 비유되는", "transmission:전파/전달", "mutation:돌연변이", "selection:선택", "genetic:유전의", "🍎", "🍎", "🍎"] },
+        { en: "However, these approaches had to be modified due to the differences between the two systems.", ko: "하지만 이러한 접근법들은 두 시스템 사이의 차이점 때문에 수정되어야만 했습니다.", voca: ["However:하지만", "approaches:접근법들", "modified:수정된", "due to:~ 때문에", "differences:차이점들", "systems:시스템들", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "A child is not necessarily equally likely to acquire the mother’s or father’s form of a cultural trait.", ko: "아이가 반드시 어머니나 아버지의 문화적 특성 형태를 똑같은 확률로 습득하는 것은 아닙니다.", voca: ["necessarily:반드시", "equally likely:똑같은 확률로/가능성으로", "acquire:습득하다", "trait:특성", "not necessarily:반드시 ~인 것은 아니다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "A child can acquire cultural traits not only from parents but also from nonparental adults and peers.", ko: "아이는 부모뿐만 아니라 부모가 아닌 성인이나 또래로부터도 문화적 특성을 습득할 수 있습니다.", voca: ["not only A but also B:A뿐만 아니라 B도", "nonparental:부모가 아닌", "adults:성인들", "peers:또래들", "acquire:습득하다", "traits:특성들", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The frequency of a trait in the population is relevant beyond just the probability of parental inheritance.", ko: "집단 내 형질의 빈도는 단순히 부모로부터 물려받을 확률 그 이상으로 중요합니다.", voca: ["frequency:빈도", "population:집단/인구", "relevant:관련 있는/중요한", "beyond:~ 너머에", "probability:확률", "parental inheritance:부모의 상속/유전", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Cultural transmission allows for more diverse factors than genetic transmission.", ko: "문화적 전파는 유전적 전파보다 더 다양한 요인들을 허용합니다.", voca: ["allows for:~을 허용하다", "diverse:다양한", "factors:요인들", "genetic:유전의", "transmission:전파", "than:~보다", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #40";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Culture vs. Genes<br>Transmission</h1><p>2023년 11월 고1 모의고사 40번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 초기 이론:</b> 문화 진화를 유전자의 전달, 돌연변이, 선택 과정에 빗대어 설명하려 함.</p>
+                    <p>• <b>📍 차이점 1:</b> 유전자는 부모의 형질을 일정 확률로 물려받지만, 문화는 부모 중 한쪽의 것을 선택적으로 혹은 아예 다르게 습득할 수 있음.</p>
+                    <p>• <b>📍 차이점 2:</b> 유전은 부모에게서만 오지만(수직 전달), 문화는 또래나 다른 성인 등 주변 환경 전체로부터 습득됨(수평/사선 전달).</p>
+                    <p>• <b>📍 결론:</b> 따라서 문화 진화 모델은 유전 모델보다 훨씬 더 다양한 사회적 요인과 집단 내 빈도를 고려하여 수정되어야 했음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 유전적 전달과 차별화되는 문화적 전달의 복잡성과 다양성</span>
+                    <span class="topic-eng">Topic: The complexity and diversity of cultural transmission as distinguished from genetic transmission</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

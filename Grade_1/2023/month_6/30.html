@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - 23년 6월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Advertisers often displayed considerable facility in adapting their claims to the market status of the goods they promoted.", ko: "광고주들은 종종 자신들이 홍보하는 상품의 시장 상황에 맞춰 그들의 주장을 조절하는 상당한 솜씨를 보여주었습니다.", voca: ["Advertisers:광고주", "considerable:상당한", "facility:솜씨/재주", "adapting:조절하는/적응시키는", "claims:주장", "status:상태/상황", "promoted:홍보된", "often:종종", "goods:상품", "🍎"] },
+        { en: "Fleischmann’s yeast, for instance, was used as an ingredient for cooking homemade bread.", ko: "예를 들어, Fleischmann의 효모는 집에서 만든 빵을 요리하는 재료로 사용되었습니다.", voca: ["yeast:효모", "for instance:예를 들어", "ingredient:재료", "homemade:집에서 만든", "bread:빵", "cooking:요리하는", "used as:~로 사용된", "🍎", "🍎", "🍎"] },
+        { en: "Yet more and more people in the early 20th century were buying their bread from stores or bakeries, so consumer demand for yeast declined.", ko: "하지만 20세기 초 점점 더 많은 사람들이 상점이나 빵집에서 빵을 사기 시작했고, 그래서 효모에 대한 소비자 수요가 감소했습니다.", voca: ["20th century:20세기", "bakeries:빵집", "consumer:소비자", "demand:수요", "declined:감소했다", "buying:사는 것", "stores:상점들", "Yet:하지만", "so:그래서", "🍎"] },
+        { en: "The producer of Fleischmann’s yeast hired the J. Walter Thompson advertising agency to come up with a different marketing strategy to boost sales.", ko: "Fleischmann 효모 생산자는 판매를 늘리기 위해 다른 마케팅 전략을 고안하려고 J. Walter Thompson 광고 대행사를 고용했습니다.", voca: ["producer:생산자", "hired:고용했다", "advertising agency:광고 대행사", "come up with:고안하다", "strategy:전략", "boost:늘리다/부양하다", "sales:판매", "different:다른", "marketing:마케팅", "🍎"] },
+        { en: "No longer the “Soul of Bread,” the Thompson agency first turned yeast into an important source of vitamins with significant health benefits.", ko: "더 이상 '빵의 영혼'이 아닌, Thompson 대행사는 먼저 효모를 상당한 건강상의 이점이 있는 비타민의 중요한 공급원으로 바꾸었습니다.", voca: ["No longer:더 이상 ~않다", "Soul:영혼", "source:공급원", "vitamins:비타민", "significant:상당한", "health benefits:건강상의 이점", "turned into:~로 바꾸다", "first:먼저", "important:중요한", "🍎"] },
+        { en: "Shortly thereafter, the advertising agency transformed yeast into a natural laxative. Repositioning yeast helped increase sales.", ko: "그 직후, 광고 대행사는 효모를 천연 변비약으로 변모시켰습니다. 효모의 이미지(위치)를 재정립하는 것이 판매 증가를 도왔습니다.", voca: ["thereafter:그 후에", "transformed:변모시켰다", "natural:천연의", "laxative:변비약(완하제)", "Repositioning:재정립/재포지셔닝", "increase:증가시키다", "helped:도왔다", "sales:판매", "Shortly:곧/직후", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Art of<br>Repositioning</h1><p>2023년 6월 고1 모의고사 30번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 유능한 광고주는 시장 상황의 변화에 맞춰 제품의 마케팅 포인트를 유연하게 조절함.</p>
+                    <p>• <b>📍 본론:</b> 집에서 빵을 굽지 않게 되자 수요가 줄어든 효모를 '건강 보조제(비타민)'로 홍보 전략을 변경함.</p>
+                    <p>• <b>📍 결론:</b> 이후 다시 '천연 변비약'으로 용도를 재정립(Repositioning)함으로써 위기에 처한 제품의 판매량을 다시 끌어올림.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 시장 상황에 따른 제품 이미지 재정립(Repositioning)과 마케팅 전략의 유연성</span>
+                    <span class="topic-eng">Topic: Product repositioning and flexibility of marketing strategies according to market status</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

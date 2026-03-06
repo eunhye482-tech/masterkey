@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #37 - 23년 9월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #37</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "When you pluck a guitar string it moves back and forth hundreds of times every second.", ko: "기타 줄을 뜯으면 그것은 매초 수백 번씩 앞뒤로 움직입니다.", voca: ["pluck:뜯다/퉁기다", "string:줄", "moves:움직이다", "back and forth:앞뒤로", "hundreds of:수백의", "every second:매초", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Naturally, this movement is so fast that you cannot see it; you just see the blurred outline.", ko: "당연히 이 움직임은 너무 빨라서 볼 수 없습니다; 여러분은 그저 흐릿한 윤곽만 보게 됩니다.", voca: ["Naturally:당연히", "movement:움직임", "so ~ that:너무 ~해서 ~하다", "cannot see:볼 수 없다", "blurred:흐릿한", "outline:윤곽", "just:그저", "🍎", "🍎", "🍎"] },
+        { en: "Strings vibrating on their own make hardly any noise because they are very thin.", ko: "줄이 스스로 진동할 때는 매우 가늘기 때문에 거의 소리가 나지 않습니다.", voca: ["vibrating:진동하는", "on their own:스스로", "hardly:거의 ~않다", "noise:소음/소리", "thin:가느다란", "because:~때문에", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "But if you attach a string to a big hollow box, then the vibration is amplified.", ko: "하지만 줄을 커다란 빈 상자에 연결하면 진동이 증폭됩니다.", voca: ["attach:연결하다/붙이다", "hollow:속이 빈", "box:상자", "vibration:진동", "amplified:증폭된", "if:만약", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The vibration of the string is passed on to the wooden panels, which vibrate at the same rate.", ko: "줄의 진동은 나무 판으로 전달되며, 이것은 같은 속도로 진동합니다.", voca: ["passed on:전달된", "wooden:나무의", "panels:판", "vibrate:진동하다", "at the same rate:같은 속도로", "which:그리고 그것은", "string:줄", "🍎", "🍎", "🍎"] },
+        { en: "The vibration of the wood creates more powerful waves in the air pressure.", ko: "나무의 진동은 공기 압력에 더 강력한 파동을 만들어냅니다.", voca: ["creates:창조하다/만들다", "powerful:강력한", "waves:파동/물결", "air pressure:공기 압력/기압", "wood:나무", "vibration:진동", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "When the waves reach your eardrums they flex in and out the same number of times as the string.", ko: "파동이 여러분의 고막에 도달하면, 고막은 원래의 줄과 같은 횟수만큼 안팎으로 굽어집니다.", voca: ["reach:도달하다", "eardrums:고막", "flex:굽히다/몸을 풀다", "in and out:안팎으로", "number of times:횟수", "original:원래의", "same ~ as:~와 같은 ~", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #37";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Physics of<br>Guitar Sound</h1><p>2023년 9월 고1 모의고사 37번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 기타 줄을 퉁기면 초당 수백 번 진동하며 흐릿한 윤곽만 보일 정도로 빠름.</p>
+                    <p>• <b>📍 본론:</b> 가느다란 줄 하나만으로는 공기를 많이 밀어내지 못해 소리가 작음. 하지만 이를 속이 빈 '울림통'에 연결하면 진동이 나무 판 전체로 전달됨.</p>
+                    <p>• <b>📍 결론:</b> 나무 판이 줄과 같은 속도로 진동하며 강력한 공기 파동을 만들고, 이 파동이 우리 고막에 전달되어 비로소 크고 선명한 소리를 듣게 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 기타 몸통(울림통)을 통한 현의 진동 증폭과 소리 전달의 원리</span>
+                    <span class="topic-eng">Topic: The principle of string vibration amplification and sound transmission through the guitar body</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

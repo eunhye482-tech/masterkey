@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #33 - 23년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #33</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Gregory Bateson suggests that we tend to understand the world by focusing in on particular features within it.", ko: "Gregory Bateson은 우리가 세상 속의 특정한 특징들에 초점을 맞춤으로써 세상을 이해하는 경향이 있다고 제안합니다.", voca: ["suggests:제안하다", "tend to:~하는 경향이 있다", "understand:이해하다", "focusing in on:~에 초점을 맞추다", "particular:특정한", "features:특징들", "world:세상", "🍎", "🍎", "🍎"] },
+        { en: "Take platypuses. We might zoom in so closely to their fur that each hair appears different.", ko: "오리너구리를 예로 들어봅시다. 우리는 그들의 털을 아주 밀접하게 확대하여 각 머리카락이 다르게 보이게 할 수도 있습니다.", voca: ["platypuses:오리너구리", "zoom in:확대하다", "closely:밀접하게", "fur:털", "hair:머리카락", "appears:보이다", "different:다른", "🍎", "🍎", "🍎"] },
+        { en: "We might also zoom out to the extent where it appears as a single, uniform object.", ko: "우리는 또한 그것이 단일하고 균일한 대상으로 보이는 정도까지 확대해서 볼 수도(축소할 수도) 있습니다.", voca: ["zoom out:축소하다/멀리서 보다", "extent:정도", "single:단일한", "uniform:균일한", "object:대상/물체", "also:또한", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We might take the platypus as an individual, or as part of a larger unit such as a species or an ecosystem.", ko: "우리는 오리너구리를 하나의 개체로 볼 수도 있고, 종이나 생태계와 같은 더 큰 단위의 일부로 취급할 수도 있습니다.", voca: ["individual:개체", "larger unit:더 큰 단위", "species:종", "ecosystem:생태계", "part of:~의 일부", "such as:~와 같은", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Crucially, however, we can only take up one perspective at a time.", ko: "그러나 결정적으로, 우리는 한 번에 하나의 관점만 취할 수 있습니다.", voca: ["Crucially:결정적으로", "however:그러나", "perspective:관점", "at a time:한 번에", "only:오직", "take up:취하다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Every possible perspective involves emphasizing certain aspects and ignoring others.", ko: "모든 가능한 관점은 특정 측면을 강조하고 다른 측면들은 무시하는 것을 포함합니다.", voca: ["possible:가능한", "involves:포함하다", "emphasizing:강조하는 것", "certain aspects:특정 측면들", "ignoring:무시하는 것", "others:다른 것들", "perspective:관점", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #33";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Focus of<br>Perspectives</h1><p>2023년 11월 고1 모의고사 33번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 핵심 개념:</b> 우리는 세상을 이해할 때 특정 특징에 초점을 맞추며, 이 '초점'은 확대하거나 축소할 수 있음.</p>
+                    <p>• <b>📍 사례 (오리너구리):</b> 털 한 올의 미세한 차이에 집중할 수도 있고, 개체 전체를 하나의 덩어리로 볼 수도 있으며, 더 넓게 종이나 생태계 전체의 일부로 볼 수도 있음.</p>
+                    <p>• <b>📍 한계와 특성:</b> 다양한 관점 사이를 이동하는 것은 가능하지만, 중요한 것은 '한 번에 단 하나의 관점'만 가질 수 있다는 점임.</p>
+                    <p>• <b>📍 결론:</b> 어떤 관점을 선택한다는 것은 필연적으로 특정 부분을 강조하고 그 외의 부분은 보지 않기로(무시하기로) 결정하는 것과 같음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 관점의 선택에 따라 강조되는 정보와 무시되는 정보가 결정되는 인지적 특성</span>
+                    <span class="topic-eng">Topic: The cognitive characteristic where information is emphasized or ignored based on the choice of perspective</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
