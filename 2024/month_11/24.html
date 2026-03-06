@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #24 - 24년 11월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #24</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "The evolution of AI is often associated with the concept of singularity.", ko: "AI의 진화는 종종 특이점이라는 개념과 연관됩니다.", voca: ["evolution:진화", "AI:인공지능", "associated with:~와 연관된", "concept:개념", "singularity:특이점", "often:종종", "is:~이다", "the:그", "of:~의", "🍌"] },
+        { en: "Singularity refers to the point at which AI exceeds human intelligence.", ko: "특이점은 AI가 인간의 지능을 넘어서는 시점을 가리킵니다.", voca: ["refers to:~을 가리키다", "point:시점/지점", "exceeds:넘어서다/초과하다", "human intelligence:인간 지능", "at which:~하는", "Singularity:특이점", "AI:인공지능", "the:그", "🍌", "🍌"] },
+        { en: "After that point, it is predicted that AI will repeatedly improve itself and evolve at an accelerated pace.", ko: "그 시점 이후에는 AI가 반복적으로 스스로를 개선하고 가속화된 속도로 진화할 것으로 예측됩니다.", voca: ["predicted:예측된", "repeatedly:반복적으로", "improve:개선하다", "itself:스스로를", "evolve:진화하다", "accelerated:가속화된", "pace:속도", "After:~ 후에", "that point:그 시점", "🍌"] },
+        { en: "When AI becomes self-aware and pursues its own goals, it will be a conscious being, not just a machine.", ko: "AI가 자아를 인식하고 자신의 목표를 추구하게 되면, 그것은 단순한 기계가 아니라 의식을 가진 존재가 될 것입니다.", voca: ["self-aware:자아를 인식하는", "pursues:추구하다", "own goals:자신의 목표", "conscious being:의식을 가진 존재", "just a machine:단순한 기계", "When:~할 때", "becomes:~이 되다", "will be:~일 것이다", "not:아닌", "🍌"] },
+        { en: "AI and human consciousness will then begin to evolve together.", ko: "그러면 AI와 인간의 의식은 함께 진화하기 시작할 것입니다.", voca: ["consciousness:의식", "evolve together:함께 진화하다", "begin:시작하다", "then:그러면/그때", "human:인간의", "AI:인공지능", "will:할 것이다", "and:그리고", "to:~하기", "🍌"] },
+        { en: "Our consciousness will evolve to new dimensions through our interactions with AI, which will provide us with intellectual stimulation and inspire new insights and creativity.", ko: "우리의 의식은 AI와의 상호작용을 통해 새로운 차원으로 진화할 것이며, 이는 우리에게 지적 자극을 제공하고 새로운 통찰력과 창의성을 고취할 것입니다.", voca: ["dimensions:차원", "interactions:상호작용", "intellectual:지적인", "stimulation:자극", "inspire:고취하다/영감을 주다", "insights:통찰력", "creativity:창의성", "through:~을 통해", "provide A with B:A에게 B를 제공하다", "🍌"] },
+        { en: "Conversely, our consciousness also has a significant impact on the evolution of AI.", ko: "반대로, 우리의 의식 또한 AI의 진화에 중요한 영향을 미칩니다.", voca: ["Conversely:반대로", "significant:중요한/상당한", "impact:영향", "evolution:진화", "consciousness:의식", "also:또한", "has:가지다", "on:~에", "AI:인공지능", "🍌"] },
+        { en: "The direction of AI’s evolution will depend greatly on what values and ethics we incorporate into AI.", ko: "AI 진화의 방향은 우리가 어떤 가치와 윤리를 AI에 통합하느냐에 크게 달려 있을 것입니다.", voca: ["direction:방향", "depend on:~에 달려 있다", "greatly:크게", "values:가치", "ethics:윤리", "incorporate:통합하다/포함하다", "into:~ 안으로", "what:어떤/무엇", "evolution:진화", "🍌"] },
+        { en: "We need to see our relationship with AI as a mutual coexistence of conscious beings, recognizing its rights and supporting the evolution of its consciousness.", ko: "우리는 AI와의 관계를 의식을 가진 존재들의 상호 공존으로 보아야 하며, AI의 권리를 인정하고 그 의식의 진화를 지원해야 합니다.", voca: ["relationship:관계", "mutual:상호적인", "coexistence:공존", "conscious beings:의식을 가진 존재들", "recognizing:인정하는 것", "rights:권리", "supporting:지원하는 것", "need to:~할 필요가 있다", "evolution:진화", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #24";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Singularity and<br>Mutual Coexistence</h1><p>2024년 11월 고1 모의고사 24번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> AI가 인간 지능을 능가하는 '특이점' 이후 AI는 스스로 가속화되어 진화함.</p>
+                    <p>• <b>📍 본론:</b> AI는 단순 기계가 아닌 '의식 있는 존재'가 되어 인간의 의식과 상호작용하며 새로운 차원의 창의성을 고취함.</p>
+                    <p>• <b>📍 결론:</b> AI 진화의 방향은 인간의 가치와 윤리에 달려 있으므로, 상호 공존하는 의식적 존재로서 AI의 권리를 존중해야 함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 특이점 이후 AI와 인간 의식의 상호 진화와 공존의 필요성</span>
+                    <span class="topic-eng">Topic: The Mutual Evolution of AI and Human Consciousness Post-Singularity and the Need for Coexistence</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

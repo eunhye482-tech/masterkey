@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #23 - 24년 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "By improving accessibility of the workplace for workers that are typically at a disadvantage in the labour market, AI can improve inclusiveness in the workplace.", ko: "노동 시장에서 보통 불리한 위치에 있는 근로자들을 위해 직장의 접근성을 개선함으로써, AI는 직장의 포용성을 향상시킬 수 있습니다.", voca: ["accessibility:접근성", "workplace:직장", "typically:보통", "disadvantage:불리한 위치", "labour market:노동 시장", "inclusiveness:포용성", "improve:향상시키다", "workers:근로자들", "AI:인공지능", "🍌"] },
+        { en: "AI-powered assistive devices to aid workers with visual, speech or hearing difficulties are becoming more widespread, improving the access to, and the quality of work for people with disabilities.", ko: "시각, 언어 또는 청각 장애가 있는 근로자를 돕기 위한 AI 기반 보조 장치가 더욱 널리 보급되어, 장애가 있는 사람들의 업무 접근성과 질을 개선하고 있습니다.", voca: ["assistive devices:보조 장치", "aid:돕다", "visual:시각의", "speech:언어의", "hearing:청각의", "difficulties:어려움/장애", "widespread:널리 보급된", "disabilities:장애", "quality:질", "🍌"] },
+        { en: "For example, speech recognition solutions for people with dysarthric voices, or live captioning systems for deaf and hard of hearing people can facilitate communication with colleagues and access to jobs where inter-personal communication is necessary.", ko: "예를 들어, 마비성 구음 장애가 있는 사람들을 위한 음성 인식 솔루션이나 청각 장애인을 위한 실시간 자막 시스템은 동료와의 의사소통 및 대인 커뮤니케이션이 필요한 직업으로의 접근을 용이하게 할 수 있습니다.", voca: ["speech recognition:음성 인식", "dysarthric:마비성 구음 장애의", "live captioning:실시간 자막", "facilitate:용이하게 하다", "communication:의사소통", "colleagues:동료들", "inter-personal:대인의", "necessary:필요한", "deaf:청각 장애가 있는", "🍌"] },
+        { en: "AI can also enhance the capabilities of low-skilled workers, with potentially positive effects on their wages and career prospects.", ko: "AI는 또한 저숙련 근로자의 능력을 향상시킬 수 있으며, 이는 그들의 임금과 경력 전망에 잠재적으로 긍정적인 영향을 미칩니다.", voca: ["enhance:향상시키다", "capabilities:능력", "low-skilled:저숙련의", "potentially:잠재적으로", "positive effects:긍정적인 영향", "wages:임금", "prospects:전망", "career:경력", "also:또한", "🍌"] },
+        { en: "For example, AI’s capacity to translate written and spoken word in real-time can improve the performance of non-native speakers in the workplace.", ko: "예를 들어, 문자 및 음성 언어를 실시간으로 번역하는 AI의 능력은 직장에서 모국어가 아닌 사용자의 업무 수행 능력을 향상시킬 수 있습니다.", voca: ["capacity:능력", "translate:번역하다", "real-time:실시간", "performance:업무 수행/성능", "non-native:모국어가 아닌", "speakers:사용자/화자", "written:문자의", "spoken:음성의", "improve:향상시키다", "🍌"] },
+        { en: "Moreover, recent developments in AI-powered text generators can instantly improve the performance of lower-skilled individuals in domains such as writing, coding or customer service.", ko: "게다가, AI 기반 텍스트 생성기의 최근 발전은 글쓰기, 코딩 또는 고객 서비스와 같은 영역에서 저숙련 개인의 업무 수행 능력을 즉각적으로 향상시킬 수 있습니다.", voca: ["Moreover:게다가", "developments:발전", "text generators:텍스트 생성기", "instantly:즉각적으로", "domains:영역/분야", "customer service:고객 서비스", "writing:글쓰기", "coding:코딩", "lower-skilled:저숙련의", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>AI for Workplace<br>Inclusiveness</h1><p>2024년 9월 고1 모의고사 23번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> AI는 노동 시장의 약자들을 위한 접근성을 개선하여 직장의 포용성을 높일 수 있음.</p>
+                    <p>• <b>📍 본론 1:</b> 시청각 보조 장치, 음성 인식, 실시간 자막 등을 통해 장애인의 업무 수행과 동료와의 소통을 지원함.</p>
+                    <p>• <b>📍 본론 2:</b> 실시간 번역 및 텍스트 생성 기술은 저숙련 근로자나 비모국어 사용자의 능력을 보완하여 임금과 경력에 긍정적 영향을 줌.</p>
+                    <p>• <b>📍 결론:</b> AI의 발전은 다양한 배경과 능력을 가진 사람들이 직장에서 공정하게 성과를 낼 수 있는 환경을 조성함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 인공지능(AI)을 통한 직장 내 포용성 향상과 소외 계층의 역량 강화</span>
+                    <span class="topic-eng">Topic: Improving Workplace Inclusiveness and Empowering Disadvantaged Groups through Artificial Intelligence (AI)</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

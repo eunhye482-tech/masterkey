@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #38 - 24년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #38</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "The common accounts of human nature that float around in society are generally a mixture of assumptions, tales and sometimes plain silliness. However, psychology is different.", ko: "사회에 떠도는 인간 본성에 대한 일반적인 설명들은 대개 가정, 꾸며낸 이야기, 그리고 때로는 순전한 어리석음의 혼합물입니다. 하지만 심리학은 다릅니다.", voca: ["accounts:설명", "human nature:인간 본성", "float around:떠돌다", "mixture:혼합물", "assumptions:가정", "tales:이야기", "silliness:어리석음", "psychology:심리학", "different:다른", "🍎"] },
+        { en: "It is the branch of science that is devoted to understanding people: how and why we act as we do; why we see things as we do; and how we interact with one another.", ko: "그것은 사람들을 이해하는 데 전념하는 과학의 분야입니다. 즉, 우리가 어떻게 그리고 왜 그렇게 행동하는지, 왜 사물을 그렇게 보는지, 그리고 우리가 서로 어떻게 상호작용하는지를 연구합니다.", voca: ["branch:분야/가지", "science:과학", "devoted to:~에 전념하는", "understanding:이해", "interact:상호작용하다", "one another:서로", "act:행동하다", "things:사물/상황", "why:왜", "🍎"] },
+        { en: "The key word here is ‘science.’ Psychologists don’t depend on opinions and hearsay, or the generally accepted views of society at the time, or even the considered opinions of deep thinkers.", ko: "여기서 핵심 단어는 '과학'입니다. 심리학자들은 의견이나 소문, 그 시대 사회의 일반적인 통념, 심지어 깊은 사상가들의 숙고된 의견에조차 의존하지 않습니다.", voca: ["key word:핵심 단어", "depend on:~에 의존하다", "hearsay:소문", "generally accepted:일반적으로 통용되는", "views:관점/통념", "considered:숙고된", "deep thinkers:깊은 사상가", "opinions:의견", "society:사회", "🍎"] },
+        { en: "Instead, they look for evidence, to make sure that psychological ideas are firmly based, and not just derived from generally held beliefs or assumptions.", ko: "대신에, 그들은 심리학적 아이디어들이 확실한 근거를 갖도록 증거를 찾으며, 단지 일반적으로 유지되는 믿음이나 가정에서 파생되지 않도록 합니다.", voca: ["evidence:증거", "firmly based:확실한 근거를 둔", "derived from:~에서 파생된", "beliefs:믿음", "assumptions:가정", "make sure:확실히 하다", "instead:대신에", "psychological:심리학적인", "just:단지", "🍎"] },
+        { en: "In addition to this evidence-based approach, psychology deals with fundamental processes and principles that generate our rich cultural and social diversity, as well as those shared by all human beings.", ko: "이러한 증거 기반 접근법 외에도, 심리학은 모든 인간이 공유하는 것뿐만 아니라 우리의 풍부한 문화적, 사회적 다양성을 생성하는 근본적인 과정과 원리를 다룹니다.", voca: ["evidence-based:증거 기반의", "approach:접근법", "fundamental:근본적인", "principles:원리", "generate:생성하다", "diversity:다양성", "human beings:인간", "shared:공유되는", "deals with:~을 다루다", "🍎"] },
+        { en: "These are what modern psychology is all about.", ko: "이것들이 바로 현대 심리학이 지향하는 모든 것입니다.", voca: ["modern:현대의", "psychology:심리학", "is all about:~이 핵심이다", "These:이것들", "what:~하는 것", "🍎", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #38";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Psychology as a<br>Rigorous Science</h1><p>2024년 11월 고1 모의고사 38번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 사회의 일반적인 인간 본성 설명은 가정과 소문의 혼합이지만, 심리학은 과학적 접근을 취함.</p>
+                    <p>• <b>📍 본론:</b> 심리학자들은 단순히 통념이나 사상가의 의견에 의존하지 않고, 확실한 '증거'를 바탕으로 인간의 행동과 상호작용을 연구함.</p>
+                    <p>• <b>📍 결론:</b> 현대 심리학은 증거 기반 접근을 통해 인간의 보편적 원리뿐만 아니라 사회문화적 다양성을 만드는 근본 과정을 탐구함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 막연한 통념을 넘어 증거와 과학적 원리를 바탕으로 인간을 탐구하는 심리학의 본질</span>
+                    <span class="topic-eng">Topic: The Essence of Psychology Exploring Humans Based on Evidence and Scientific Principles Beyond Vague Notions</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

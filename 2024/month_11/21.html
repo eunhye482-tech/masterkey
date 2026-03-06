@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #21 - 24년 11월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #21</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "When we see something, we naturally and automatically break it up into shapes, colors, and concepts that we have learned through education.", ko: "우리가 무언가를 볼 때, 우리는 교육을 통해 배운 모양, 색상, 그리고 개념으로 그것을 자연스럽고 자동적으로 분해합니다.", voca: ["naturally:자연스럽게", "automatically:자동적으로", "break up:분해하다", "shapes:모양들", "concepts:개념들", "education:교육", "through:~을 통해", "When:~할 때", "something:무언가", "🍌"] },
+        { en: "We recode what we see through the lens of everything we know.", ko: "우리는 우리가 아는 모든 것의 렌즈를 통해 우리가 보는 것을 재부호화합니다.", voca: ["recode:재부호화하다", "lens:렌즈", "everything:모든 것", "know:알다", "through:~을 통해", "what we see:우리가 보는 것", "We:우리", "of:~의", "🍌", "🍌"] },
+        { en: "We reconstruct memories rather than retrieving the video from memory.", ko: "우리는 기억에서 비디오를 불러오기보다는 기억을 재구성합니다.", voca: ["reconstruct:재구성하다", "retrieving:불러오기/회수하기", "rather than:~보다 오히려", "memories:기억들", "video:비디오", "from:~로부터", "We:우리", "memory:기억", "🍌", "🍌"] },
+        { en: "This is a useful trait.", ko: "이것은 유용한 특성입니다.", voca: ["useful:유용한", "trait:특성", "This:이것", "is:~이다", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "It’s a more efficient way to store information—a bit like an optimal image compression algorithm such as JPG, rather than storing a raw bitmap image file.", ko: "그것은 정보를 저장하는 더 효율적인 방법인데, 가공되지 않은 비트맵 이미지 파일을 저장하기보다는 JPG와 같은 최적의 이미지 압축 알고리즘과 약간 비슷합니다.", voca: ["efficient:효율적인", "store:저장하다", "information:정보", "optimal:최적의", "compression:압축", "algorithm:알고리즘", "raw:가공되지 않은", "bitmap:비트맵", "way:방법", "🍌"] },
+        { en: "People who lack this ability and remember everything in perfect detail struggle to generalize, learn, and make connections between what they have learned.", ko: "이 능력이 부족하여 모든 것을 완벽한 세부 사항까지 기억하는 사람들은 일반화하고, 배우고, 배운 것들 사이의 연결 고리를 만드는 데 어려움을 겪습니다.", voca: ["lack:부족하다", "perfect detail:완벽한 세부 사항", "struggle:어려움을 겪다", "generalize:일반화하다", "connections:연결 고리", "between:~ 사이에", "ability:능력", "remember:기억하다", "learned:배운", "🍌"] },
+        { en: "But representing the world as abstract ideas and features comes at a cost of seeing the world as it is.", ko: "하지만 세상을 추상적인 관념과 특징으로 표현하는 것은 세상을 있는 그대로 보는 것을 희생시키게 됩니다.", voca: ["representing:표현하는 것", "abstract:추상적인", "features:특징들", "at a cost of:~을 희생하여", "as it is:있는 그대로", "world:세상", "ideas:관념/생각", "seeing:보는 것", "But:하지만", "🍌"] },
+        { en: "Instead, we see the world through our assumptions, motivations, and past experiences.", ko: "대신에, 우리는 우리의 가제, 동기, 그리고 과거의 경험을 통해 세상을 봅니다.", voca: ["Instead:대신에", "assumptions:가정", "motivations:동기", "past experiences:과거의 경험", "through:~을 통해", "world:세상", "see:보다", "our:우리의", "🍌", "🍌"] },
+        { en: "The discovery that our memories are reconstructed through abstract representations rather than played back like a movie completely undermined the legal primacy of eyewitness testimony.", ko: "우리의 기억이 영화처럼 재생되기보다는 추상적인 표현을 통해 재구성된다는 발견은 목격자 증언의 법적 우위성을 완전히 약화시켰습니다.", voca: ["discovery:발견", "reconstructed:재구성된", "representations:표현", "played back:재생된", "completely:완전히", "undermined:약화시켰다", "legal primacy:법적 우위성", "eyewitness:목격자", "testimony:증언", "🍌"] },
+        { en: "Seeing is not believing.", ko: "보는 것이 믿는 것은 아닙니다(보는 대로 믿어서는 안 됩니다).", voca: ["Seeing:보는 것", "believing:믿는 것", "is not:~이 아니다", "not:아닌", "is:~이다", "🍌", "🍌", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #21";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Memory as<br>Compression</h1><p>2024년 11월 고1 모의고사 21번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 인간은 사물을 볼 때 자신이 배운 지식을 바탕으로 자동적으로 형태와 개념을 분해하여 인식함.</p>
+                    <p>• <b>📍 본론:</b> 기억은 비디오 재생이 아닌 '재구성' 과정이며, 이는 JPG 압축처럼 효율적이지만 세상을 있는 그대로 보는 것을 방해함.</p>
+                    <p>• <b>📍 결론:</b> 기억의 재구성적 특성 때문에 법적 증거로서 목격자 증언의 절대적 신뢰도는 무너졌으며, "보는 것이 믿는 것"이라는 말은 더 이상 진실이 아님.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 기억의 재구성적 특성과 효율성, 그리고 그로 인한 인식의 한계</span>
+                    <span class="topic-eng">Topic: The Reconstructive Nature and Efficiency of Memory and Its Resulting Perceptual Limitations</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

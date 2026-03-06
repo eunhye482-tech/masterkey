@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #39 - 24년 6월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #39</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Spending time as children allows animals to learn about their environment.", ko: "어린 시절로 시간을 보내는 것은 동물들이 그들의 환경에 대해 배울 수 있게 해줍니다.", voca: ["children:어린 시절", "allows:허용하다", "learn:배우다", "environment:환경", "Spending:보내는 것", "animals:동물들", "about:~에 대해", "time:시간", "🍌", "🍌"] },
+        { en: "Without childhood, animals must rely more fully on hardware, and therefore be less flexible.", ko: "어린 시절이 없다면, 동물들은 하드웨어(본능)에 더 전적으로 의존해야 하며, 따라서 덜 유연해질 것입니다.", voca: ["childhood:어린 시절", "rely on:~에 의존하다", "fully:전적으로", "hardware:하드웨어/본능", "therefore:따라서", "flexible:유연한", "less:덜", "must:~해야 한다", "without:~없이", "🍌"] },
+        { en: "Among migratory bird species, those that are born knowing how, when, and where to migrate—those that are migrating entirely with instructions they were born with—sometimes have very inefficient migration routes.", ko: "철새 종들 중에서, 어떻게, 언제, 어디로 이동해야 하는지 알고 태어난 개체들, 즉 태어날 때 가지고 나온 지침에만 전적으로 의존해 이동하는 개체들은 때때로 매우 비효율적인 이동 경로를 가집니다.", voca: ["migratory:이주하는/철새의", "migrate:이동하다", "entirely:전적으로", "instructions:지침", "inefficient:비효율적인", "routes:경로", "born knowing:알고 태어난", "sometimes:때때로", "among:~ 중에", "🍌"] },
+        { en: "These birds, born knowing how to migrate, don’t adapt easily.", ko: "어떻게 이동하는지 알고 태어난 이 새들은 쉽게 적응하지 못합니다.", voca: ["adapt:적응하다", "easily:쉽게", "migrate:이동하다", "born:태어난", "knowing:알고 있는", "how to:~하는 방법", "birds:새들", "don't:하지 않는다", "these:이", "🍌"] },
+        { en: "So when lakes dry up, forest becomes farmland, or climate change pushes breeding grounds farther north, those birds that are born knowing how to migrate keep flying by the old rules and maps.", ko: "그래서 호수가 마르거나 숲이 농경지가 되거나 기후 변화가 번식지를 더 북쪽으로 밀어낼 때, 이동 방법을 알고 태어난 새들은 계속해서 옛 규칙과 지도에 따라 날아갑니다.", voca: ["dry up:마르다", "farmland:농경지", "breeding grounds:번식지", "farther:더 멀리", "rules:규칙", "maps:지도", "climate change:기후 변화", "pushes:밀어내다", "keep flying:계속 날다", "🍌"] },
+        { en: "By comparison, birds with the longest childhoods, and those that migrate with their parents, tend to have the most efficient migration routes.", ko: "대조적으로, 가장 긴 어린 시절을 보내는 새들과 부모와 함께 이동하는 새들은 가장 효율적인 이동 경로를 갖는 경향이 있습니다.", voca: ["comparison:대조/비교", "longest:가장 긴", "parents:부모", "tend to:~하는 경향이 있다", "efficient:효율적인", "migration:이동", "routes:경로", "most:가장", "with:~와 함께", "🍌"] },
+        { en: "Childhood facilitates the passing on of cultural information, and culture can evolve faster than genes.", ko: "어린 시절은 문화적 정보의 전달을 용이하게 하며, 문화는 유전자보다 더 빠르게 진화할 수 있습니다.", voca: ["facilitates:용이하게 하다", "passing on:전달", "cultural:문화적인", "information:정보", "evolve:진화하다", "genes:유전자", "faster:더 빠르게", "than:~보다", "culture:문화", "🍌"] },
+        { en: "Childhood gives flexibility in a changing world.", ko: "어린 시절은 변화하는 세상에서 유연성을 제공합니다.", voca: ["flexibility:유연성", "changing:변화하는", "world:세상", "gives:주다", "childhood:어린 시절", "in:~에서", "a:한", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #39";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Childhood and<br>Flexibility</h1><p>2024년 6월 고1 모의고사 39번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 동물의 어린 시절은 환경에 대해 배우고 적응하는 중요한 기간임.</p>
+                    <p>• <b>📍 본론:</b> 본능(하드웨어)에만 의존하는 새들은 환경 변화에 적응하지 못하고 옛 방식만 고수하여 비효율적인 경로를 택함.</p>
+                    <p>• <b>📍 결론:</b> 어린 시절이 길고 부모에게 배우는 동물은 유전자보다 빠른 문화적 진화를 통해 변화하는 세상에서 더 큰 유연성을 가짐.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 변화하는 환경에 대한 유연성과 문화 전달을 가능케 하는 어린 시절의 중요성</span>
+                    <span class="topic-eng">Topic: The Importance of Childhood in Enabling Flexibility and Cultural Transmission in a Changing Environment</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
