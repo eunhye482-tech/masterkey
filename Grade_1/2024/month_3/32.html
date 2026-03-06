@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #32 - 24년 3월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #32</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "No respectable boss would say, 'I make it a point to discourage my staff from speaking up, and I maintain a culture that prevents disagreeing viewpoints from ever getting aired.'", ko: "어떤 존경받을 만한 상사도 '나는 내 직원들이 자유롭게 의견을 내는 것을 의도적으로 막고, 반대 의견이 발표되는 것을 방지하는 문화를 유지한다'라고 말하지 않을 것입니다.", voca: ["respectable:존경받을 만한", "discourage:막다/의욕을 꺾다", "speaking up:의견을 내다", "maintain:유지하다", "viewpoints:관점", "aired:발표되다/방영되다", "prevents:방지하다", "make it a point:의도적으로 ~하다", "disagreeing:반대하는", "🍌"] },
+        { en: "If anything, most bosses even say that they are pro-dissent.", ko: "오히려, 대부분의 상사들은 자신들이 반대 의견에 찬성한다고까지 말합니다.", voca: ["If anything:오히려", "pro-dissent:반대 의견에 찬성하는", "say:말하다", "most:대부분의", "bosses:상사들", "even:심지어", "that:~라고", "they:그들", "are:~이다", "🍌"] },
+        { en: "This idea can be found throughout the series of conversations with corporate, university, and nonprofit leaders, published weekly in the business sections of newspapers.", ko: "이러한 생각은 신문의 비즈니스 섹션에 매주 발행되는 기업, 대학, 그리고 비영리 단체 리더들과의 일련의 대화 전체에서 찾아볼 수 있습니다.", voca: ["corporate:기업의", "nonprofit:비영리적인", "published:발행된", "weekly:매주", "conversations:대화", "sections:섹션", "throughout:~전체에", "found:발견된", "leaders:리더들", "series:일련의"] },
+        { en: "In the interviews, the featured leaders are asked about their management techniques, and regularly claim to continually encourage internal protest from more junior staffers.", ko: "인터뷰에서, 특집으로 다뤄진 리더들은 자신의 관리 기법에 대해 질문을 받고, 더 직급이 낮은 직원들의 내부적인 반대를 계속해서 장려한다고 정기적으로 주장합니다.", voca: ["featured:특집의", "management:관리", "techniques:기법", "regularly:정기적으로", "claim:주장하다", "encourage:장려하다", "internal:내부의", "protest:반대", "junior:직급이 낮은", "staffers:직원들"] },
+        { en: "As Bot Pittman remarked in one of these conversations: 'I want us to listen to these dissenters because they may intend to tell you why we can’t do something, but if you listen hard, what they’re really telling you is what you must do to get something done.'", ko: "Bot Pittman이 이 대화 중 하나에서 언급했듯이: '나는 우리가 이 반대자들의 말을 듣기를 원합니다. 왜냐하면 그들은 우리가 왜 무언가를 할 수 없는지 말하려고 할 수도 있지만, 만약 주의 깊게 듣는다면, 그들이 실제로 여러분에게 말하고 있는 것은 무언가를 완수하기 위해 여러분이 무엇을 해야만 하는가이기 때문입니다.'", voca: ["remarked:언급했다", "dissenters:반대자들", "intend:의도하다", "listen hard:주의 깊게 듣다", "get something done:무언가를 완수하다", "dissent:반대", "must:해야만 한다", "because:~때문에", "really:실제로", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #32";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Value of<br>Listening to Dissent</h1><p>2024년 3월 고1 모의고사 32번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 어떤 리더도 겉으로는 직원의 반대 의견을 막는다고 말하지 않으며, 오히려 장려한다고 주장함.</p>
+                    <p>• <b>📍 본론:</b> 여러 인터뷰에서 리더들은 관리 기법으로 하급자들의 내부적인 반대 목소리를 계속해서 독려한다고 말함.</p>
+                    <p>• <b>📍 결론:</b> 반대자들은 겉으로 '안 되는 이유'를 말하는 것 같지만, 주의 깊게 들으면 '일을 되게 하기 위해 해야 할 일'을 알려주는 소중한 정보를 제공함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 반대 의견에 귀를 기울임으로써 문제 해결의 실마리를 찾는 것의 중요성</span>
+                    <span class="topic-eng">Topic: The Importance of Finding Clues to Problem-Solving by Listening to Dissent</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

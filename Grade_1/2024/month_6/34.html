@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #34 - 24년 6월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #34</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "To find the hidden potential in teams, instead of brainstorming, we’re better off shifting to a process called brainwriting.", ko: "팀의 숨겨진 잠재력을 찾기 위해, 브레인스토밍 대신 브레인라이팅이라고 불리는 과정으로 전환하는 것이 더 낫습니다.", voca: ["hidden potential:숨겨진 잠재력", "instead of:~ 대신에", "shifting:전환하는 것", "process:과정", "brainwriting:브레인라이팅", "better off:~하는 것이 더 나은", "teams:팀들", "find:찾다", "called:~라고 불리는", "🍌"] },
+        { en: "The initial steps are solo.", ko: "첫 단계는 혼자 하는 것입니다.", voca: ["initial:초기의/첫", "steps:단계들", "solo:혼자의/단독의", "are:~이다", "the:그", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "You start by asking everyone to generate ideas separately.", ko: "여러분은 모든 사람에게 아이디어를 개별적으로 생성하도록 요청함으로써 시작합니다.", voca: ["generate:생성하다", "separately:개별적으로", "asking:요청하는 것", "everyone:모든 사람", "ideas:아이디어들", "start:시작하다", "by:~함으로써", "you:당신", "🍌", "🍌"] },
+        { en: "Next, you pool them and share them anonymously among the group.", ko: "다음으로, 여러분은 그것들을 모아서 그룹 내에서 익명으로 공유합니다.", voca: ["pool:모으다", "share:공유하다", "anonymously:익명으로", "among:~ 사이에서", "group:그룹", "Next:다음으로", "them:그것들", "you:당신", "🍌", "🍌"] },
+        { en: "To preserve independent judgment, each member evaluates them on their own.", ko: "독립적인 판단을 보존하기 위해, 각 구성원은 스스로 그것들을 평가합니다.", voca: ["preserve:보존하다", "independent:독립적인", "judgment:판단", "member:구성원", "evaluates:평가하다", "on their own:스스로/단독으로", "each:각각의", "To:~하기 위해", "them:그것들", "🍌"] },
+        { en: "Only then does the team come together to select and refine the most promising options.", ko: "오직 그러고 나서야 팀이 모여 가장 유망한 선택지들을 선택하고 다듬습니다.", voca: ["refine:다듬다/정교하게 하다", "promising:유망한", "options:선택지들", "select:선택하다", "Only then:오직 그러고 나서야", "come together:모이다", "team:팀", "the:그", "🍌", "🍌"] },
+        { en: "By developing and assessing ideas individually before choosing and elaborating them, teams can surface and advance possibilities that might not get attention otherwise.", ko: "아이디어를 선택하고 정교하게 다듬기 전에 개별적으로 아이디어를 발전시키고 평가함으로써, 팀은 그렇지 않으면 주목받지 못했을 가능성들을 표면화하고 진전시킬 수 있습니다.", voca: ["assessing:평가하는 것", "individually:개별적으로", "elaborating:정교하게 다듬는 것", "surface:표면화하다", "advance:진전시키다", "possibilities:가능성들", "attention:주목/관심", "otherwise:그렇지 않으면", "developing:발전시키는 것", "🍌"] },
+        { en: "This brainwriting process makes sure that all ideas are brought to the table and all voices are brought into the conversation.", ko: "이 브레인라이팅 과정은 모든 아이디어가 논의 테이블에 오르고 모든 목소리가 대화에 포함되도록 확실히 합니다.", voca: ["makes sure:확실히 하다", "brought to the table:논의에 부쳐지다", "voices:목소리들", "conversation:대화", "all:모든", "ideas:아이디어들", "process:과정", "brainwriting:브레인라이팅", "into:~ 안으로", "🍌"] },
+        { en: "It is especially effective in groups that struggle to achieve collective intelligence.", ko: "그것은 집단 지성을 달성하기 위해 애쓰는 그룹에서 특히 효과적입니다.", voca: ["especially:특히", "effective:효과적인", "struggle:애쓰다/고군분투하다", "achieve:달성하다", "collective intelligence:집단 지성", "groups:그룹들", "It:그것", "is:~이다", "that:~하는", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #34";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Brainwriting<br>Process</h1><p>2024년 6월 고1 모의고사 34번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 팀의 잠재력을 끌어내기 위해 브레인스토밍보다 '브레인라이팅' 과정이 더 효과적일 수 있음.</p>
+                    <p>• <b>📍 본론:</b> 개별적 아이디어 생성, 익명 공유, 독립적 평가를 거쳐 팀이 최종적으로 모여 가장 유망한 안을 선택함.</p>
+                    <p>• <b>📍 결론:</b> 이 과정은 모든 아이디어와 목소리를 반영하게 하며, 특히 집단 지성 발휘가 어려운 팀에 유용함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 집단 지성을 극대화하기 위한 브레인라이팅 과정의 절차와 장점</span>
+                    <span class="topic-eng">Topic: The Procedure and Advantages of the Brainwriting Process for Maximizing Collective Intelligence</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
