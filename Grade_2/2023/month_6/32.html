@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #32 - 23년 6월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #32</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Think of the brain as a city.", ko: "뇌를 하나의 도시라고 생각해 보십시오.", voca: ["Think of:생각해 보다", "brain:뇌", "city:도시", "as:~로서", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If you were to look out over a city and ask “where is the economy located?” you’d see there’s no good answer to the question.", ko: "만약 여러분이 도시를 내다보며 '경제는 어디에 위치해 있나요?'라고 묻는다면, 그 질문에 대한 좋은 답변이 없다는 것을 알게 될 것입니다.", voca: ["look out:내다보다", "economy:경제", "located:위치한", "answer:답변", "question:질문", "If:만약", "ask:묻다", "see:알다/보다", "no good:좋지 않은", "🍎"] },
+        { en: "Instead, the economy emerges from the interaction of all the elements—from the stores and the banks to the merchants and the customers.", ko: "대신에, 경제는 상점과 은행에서 상인과 고객에 이르기까지 모든 요소의 상호작용으로부터 나타납니다.", voca: ["Instead:대신에", "emerges:나타나다/출현하다", "interaction:상호작용", "elements:요소들", "merchants:상인들", "customers:고객들", "from A to B:A에서 B까지", "all:모든", "🍎", "🍎"] },
+        { en: "And so it is with the brain’s operation: it doesn’t happen in one spot.", ko: "뇌의 작동도 마찬가지입니다: 그것은 한 곳에서 일어나지 않습니다.", voca: ["operation:작동/운영", "happen:일어나다", "one spot:한 곳", "so it is:~도 마찬가지다", "brain:뇌", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Just as in a city, no neighborhood of the brain operates in isolation.", ko: "도시에서처럼, 뇌의 어떤 구역도 고립되어 작동하지 않습니다.", voca: ["Just as:~처럼", "neighborhood:구역/이웃", "operates:작동하다", "isolation:고립", "no:어떤 ~도 않는", "brain:뇌", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In brains and in cities, everything emerges from the interaction between residents, at all scales, locally and distantly.", ko: "뇌와 도시에서, 모든 것은 국지적으로나 원거리에서나 모든 규모의 거주자들 사이의 상호작용으로부터 나타납니다.", voca: ["residents:거주자들", "scales:규모", "locally:국지적으로", "distantly:원거리에서", "between:~ 사이에", "emerges:나타나다", "everything:모든 것", "🍎", "🍎", "🍎"] },
+        { en: "Just as trains bring materials and textiles into a city, which become processed into the economy, so the raw electrochemical signals from sensory organs are transported along superhighways of neurons.", ko: "기차가 재료와 직물을 도시로 가져오고 그것이 경제로 가공되는 것처럼, 감각 기관으로부터 온 가공되지 않은 전기화학적 신호들은 뉴런이라는 고속도로를 따라 운송됩니다.", voca: ["materials:재료", "textiles:직물", "processed:가공된", "raw:가공되지 않은", "electrochemical:전기화학적인", "sensory organs:감각 기관", "transported:운송된", "neurons:뉴런", "superhighways:고속도로", "🍎"] },
+        { en: "There the signals undergo processing and transformation into our conscious reality.", ko: "그곳에서 그 신호들은 우리의 의식적인 현실로 가공되고 변형되는 과정을 거칩니다.", voca: ["undergo:거치다/겪다", "processing:가공/처리", "transformation:변형", "conscious reality:의식적인 현실", "signals:신호들", "into:~로", "There:그곳에서", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #32";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Brain as<br>a Living City</h1><p>2023년 6월 고1 모의고사 32번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 뇌의 작동 원리는 도시의 경제 시스템과 매우 유사함.</p>
+                    <p>• <b>📍 본론:</b> 경제가 특정 장소가 아닌 모든 구성원의 상호작용에서 나오듯, 뇌의 작용도 고립된 구역이 아닌 전체 네트워크의 상호작용에서 발생함.</p>
+                    <p>• <b>📍 결론:</b> 기차가 물자를 실어 나르듯 감각 신호가 뉴런을 통해 전달되고, 이 복합적인 처리 과정을 통해 우리의 의식적 현실이 만들어짐.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 개별 부위가 아닌 네트워크 상호작용을 통해 의식을 형성하는 뇌의 작동 원리</span>
+                    <span class="topic-eng">Topic: The brain's operation through network interaction rather than isolated spots</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

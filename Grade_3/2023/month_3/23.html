@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #23 - 23년 3월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "As the social and economic situation of countries got better, wage levels and working conditions improved.", ko: "국가들의 사회적, 경제적 상황이 좋아지면서, 임금 수준과 근로 조건이 개선되었습니다.", voca: ["social:사회적인", "economic:경제적인", "wage levels:임금 수준", "working conditions:근로 조건", "improved:개선된", "situation:상황", "countries:국가들", "better:더 좋은", "got:되다", "🍎"] },
+        { en: "Gradually people were given more time off.", ko: "점차 사람들에게 더 많은 휴가 시간이 주어졌습니다.", voca: ["Gradually:점차", "time off:휴가/쉬는 시간", "given:주어진", "people:사람들", "more:더 많은", "were:이었다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "At the same time, forms of transport improved and it became faster and cheaper to get to places.", ko: "동시에, 운송 수단이 개선되었고 장소들에 도달하는 것이 더 빠르고 더 저렴해졌습니다.", voca: ["at the same time:동시에", "forms:형태", "transport:운송/교통", "improved:개선된", "cheaper:더 저렴한", "places:장소들", "became:되었다", "faster:더 빠른", "get to:~에 도달하다", "🍎"] },
+        { en: "England’s industrial revolution led to many of these changes.", ko: "영국의 산업 혁명이 이러한 변화들 중 많은 것을 이끌었습니다.", voca: ["industrial revolution:산업 혁명", "led to:~을 이끌다", "changes:변화들", "many:많은", "these:이러한", "England:영국", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Railways, in the nineteenth century, opened up now famous seaside resorts such as Blackpool and Brighton.", ko: "19세기에 철도는 Blackpool과 Brighton 같은 현재 유명한 해안 리조트들을 가능하게 했습니다.", voca: ["Railways:철도", "nineteenth century:19세기", "opened up:가능하게 하다/열다", "seaside resorts:해안 리조트", "famous:유명한", "such as:~와 같은", "now:지금/현재", "🍎", "🍎", "🍎"] },
+        { en: "With the railways came many large hotels.", ko: "철도와 함께 많은 대형 호텔들이 생겨났습니다.", voca: ["railways:철도", "came:왔다/생겨났다", "large:대형의", "hotels:호텔들", "many:많은", "with:~와 함께", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In Canada, for example, the new coast-to-coast railway system made possible the building of such famous hotels as Banff Springs and Chateau Lake Louise in the Rockies.", ko: "예를 들어 캐나다에서는, 새로운 대륙 횡단 철도 시스템이 로키산맥의 Banff Springs와 Chateau Lake Louise 같은 유명한 호텔들의 건설을 가능하게 했습니다.", voca: ["coast-to-coast:대륙 횡단의", "railway system:철도 시스템", "made possible:가능하게 만들었다", "building:건설/건물", "Rockies:로키산맥", "famous:유명한", "example:예시", "such as:~와 같은", "🍎", "🍎"] },
+        { en: "Later, the arrival of air transport opened up more of the world and led to tourism growth.", ko: "나중에, 항공 운송의 출현은 세계의 더 많은 곳을 열어주었고 관광 산업의 성장으로 이어졌습니다.", voca: ["arrival:출현/도착", "air transport:항공 운송", "opened up:열어주다", "tourism growth:관광 산업 성장", "led to:~으로 이어지다", "Later:나중에", "world:세계", "more:더 많은", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Evolution of<br>Modern Tourism</h1><p>2023년 3월 고1 모의고사 23번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 경제 상황이 좋아지며 노동자들의 임금이 오르고 휴가 시간이 늘어남.</p>
+                    <p>• <b>📍 본론:</b> 산업 혁명과 철도의 발달로 인해 해안 리조트와 대형 호텔들이 건설되었으며, 캐나다의 대륙 횡단 철도는 로키산맥의 유명 호텔 탄생을 가능케 함.</p>
+                    <p>• <b>📍 결론:</b> 이후 항공 운송의 등장은 전 세계를 연결하며 현대 관광 산업의 폭발적인 성장을 이끔.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 경제적 여건 개선과 교통수단의 발달이 이끈 관광 산업의 성장</span>
+                    <span class="topic-eng">Topic: The growth of the tourism industry driven by improved economic conditions and advances in transport</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

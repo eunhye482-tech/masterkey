@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #23 - 24년 6월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "We often try to make cuts in our challenges and take the easy route.", ko: "우리는 종종 우리의 도전에서 지름길을 택하고 쉬운 경로를 택하려고 노력합니다.", voca: ["make cuts:지름길로 가다/줄이다", "challenges:도전들", "easy route:쉬운 경로", "often:종종", "try:노력하다", "take:택하다", "our:우리의", "🍌", "🍌", "🍌"] },
+        { en: "When taking the quick exit, we fail to acquire the strength to compete.", ko: "빠른 퇴로(쉬운 길)를 택할 때, 우리는 경쟁할 힘을 얻는 데 실패합니다.", voca: ["quick exit:빠른 퇴로", "fail:실패하다", "acquire:얻다/습득하다", "strength:힘", "compete:경쟁하다", "taking:택하는 것", "we:우리", "to:~하기 위한", "🍌", "🍌"] },
+        { en: "We often take the easy route to improve our skills.", ko: "우리는 종종 우리의 기술을 향상시키기 위해 쉬운 경로를 택합니다.", voca: ["improve:향상시키다", "skills:기술들", "easy route:쉬운 경로", "often:종종", "take:택하다", "our:우리의", "to:~하기 위해", "🍌", "🍌", "🍌"] },
+        { en: "Many of us never really work to achieve mastery in the key areas of life.", ko: "우리 중 많은 사람들은 인생의 핵심 영역에서 숙달을 달성하기 위해 진정으로 노력하지 않습니다.", voca: ["achieve:달성하다", "mastery:숙달/정통", "key areas:핵심 영역", "never:결코 ~않다", "really:진정으로", "work:노력하다/일하다", "life:인생", "Many of us:우리 중 다수", "🍌", "🍌"] },
+        { en: "These skills are key tools that can be useful to our career, health, and prosperity.", ko: "이러한 기술들은 우리의 경력, 건강, 그리고 번영에 유용할 수 있는 핵심 도구들입니다.", voca: ["tools:도구들", "useful:유용한", "career:경력", "health:건강", "prosperity:번영", "skills:기술들", "can:~할 수 있다", "be:~이다", "🍌", "🍌"] },
+        { en: "Highly successful athletes don’t win because of better equipment; they win by facing hardship to gain strength and skill.", ko: "매우 성공적인 운동선수들은 더 좋은 장비 때문에 이기는 것이 아닙니다. 그들은 힘과 기술을 얻기 위해 고난에 맞섬으로써 이깁니다.", voca: ["athletes:운동선수들", "equipment:장비", "facing:맞서는 것", "hardship:고난/시련", "gain:얻다", "successful:성공적인", "because of:~때문에", "don't win:이기지 않는다", "🍌", "🍌"] },
+        { en: "They win through preparation.", ko: "그들은 준비를 통해 이깁니다.", voca: ["win:이기다", "through:~을 통해", "preparation:준비", "They:그들", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "It’s the mental preparation, winning mindset, strategy, and skill that set them apart.", ko: "그들을 돋보이게 만드는 것은 바로 정신적 준비, 승리하는 사고방식, 전략, 그리고 기술입니다.", voca: ["mental:정신적인", "winning mindset:승리하는 사고방식", "strategy:전략", "set apart:돋보이게 하다/구별하다", "preparation:준비", "skill:기술", "them:그들", "🍌", "🍌", "🍌"] },
+        { en: "Strength comes from struggle, not from taking the path of least resistance.", ko: "힘은 저항이 가장 적은 경로를 택하는 것이 아니라 투쟁(고군분투)에서 나옵니다.", voca: ["struggle:투쟁/고군분투", "path:경로", "least resistance:최소 저항", "comes from:~에서 나오다", "not A from B:B가 아니라 A에서", "strength:힘", "taking:택하는 것", "🍌", "🍌", "🍌"] },
+        { en: "Hardship is not just a lesson for the next time in front of us.", ko: "고난은 단지 우리 앞에 있는 다음번을 위한 교훈만이 아닙니다.", voca: ["lesson:교훈", "next time:다음번", "in front of:~ 앞에", "hardship:고난", "is not:~이 아니다", "just:단지", "us:우리", "🍌", "🍌", "🍌"] },
+        { en: "Hardship will be the greatest teacher we will ever have in life.", ko: "고난은 우리가 인생에서 가질 가장 위대한 스승이 될 것입니다.", voca: ["greatest:가장 위대한", "teacher:선생님/스승", "ever:지금까지/언젠가", "have:가지다", "life:인생", "hardship:고난", "will be:~이 될 것이다", "we:우리", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Strength Comes<br>From Struggle</h1><p>2024년 6월 고1 모의고사 23번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 우리는 종종 문제 해결을 위해 지름길이나 쉬운 길을 택하려 하지만, 이는 실력 향상에 도움이 되지 않음.</p>
+                    <p>• <b>📍 본론:</b> 성공한 운동선수들처럼 진짜 실력은 좋은 장비가 아니라 고난을 마주하고 정신적으로 준비하는 과정에서 얻어짐.</p>
+                    <p>• <b>📍 결론:</b> 진정한 힘은 저항이 없는 편안함이 아닌 '고군분투'에서 나오며, 고난이야말로 인생 최고의 스승임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 진정한 실력과 힘을 얻기 위해 고난과 투쟁을 마주해야 하는 이유</span>
+                    <span class="topic-eng">Topic: Why We Must Face Hardship and Struggle to Gain True Skill and Strength</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

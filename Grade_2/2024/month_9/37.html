@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #37 - 24년 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #37</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Have you ever been surprised to hear a recording of your own voice?", ko: "자신의 목소리 녹음을 듣고 놀란 적이 있나요?", voca: ["recording:녹음", "surprised:놀란", "own voice:자신의 목소리", "Have you ever:본 적/적 있는가", "hear:듣다", "of:~의", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "You might have thought, 'Is that really what my voice sounds like?'", ko: "여러분은 '이게 정말 내 목소리일까?'라고 생각했을지도 모릅니다.", voca: ["thought:생각했다", "really:정말", "sounds like:~처럼 들리다", "might have:~했을지도 모른다", "what:~하는 것", "voice:목소리", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "Maybe your accent is more pronounced in the recording than you realized, or your voice is higher than it seems to your own ears.", ko: "아마도 녹음에서는 여러분의 억양이 깨달았던 것보다 더 두드러지거나, 여러분의 목소리가 자신의 귀에 들리는 것보다 더 높을 수도 있습니다.", voca: ["accent:억양", "pronounced:두드러진/확연한", "realized:깨달은", "higher:더 높은", "seems:~처럼 보이다/들리다", "recording:녹음", "Maybe:아마도", "than:~보다", "ears:귀", "🍌"] },
+        { en: "This is of course quite a common experience.", ko: "이것은 물론 꽤 흔한 경험입니다.", voca: ["of course:물론", "quite:꽤", "common:흔한", "experience:경험", "This:이것", "is:~이다", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "The explanation is actually fairly simple.", ko: "그 설명은 사실 상당히 간단합니다.", voca: ["explanation:설명", "actually:사실", "fairly:상당히", "simple:간단한", "The:그", "is:~이다", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "There are two pathways through which we perceive our own voice when we speak.", ko: "우리가 말할 때 우리 자신의 목소리를 인식하는 두 가지 경로가 있습니다.", voca: ["pathways:경로", "perceive:인식하다", "speak:말하다", "through which:~을 통과하는", "two:둘/두 가지", "There are:있다", "own:자신의", "voice:목소리", "🍌", "🍌"] },
+        { en: "One is the route through which we perceive most external sounds, like waves that travel from the air through the outer, middle and inner ear.", ko: "하나는 공기를 통해 외이, 중이, 내이를 거쳐 이동하는 파동처럼 우리가 대부분의 외부 소리를 인식하는 경로입니다.", voca: ["external sounds:외부 소리", "waves:파동", "travel:이동하다", "outer ear:외이", "middle ear:중이", "inner ear:내이", "perceive:인식하다", "route:경로", "through:~을 통해", "🍌"] },
+        { en: "But because our vocal cords vibrate when we speak, there is a second internal path.", ko: "하지만 우리가 말할 때 성대가 진동하기 때문에, 두 번째 내부 경로가 있습니다.", voca: ["vocal cords:성대", "vibrate:진동하다", "internal path:내부 경로", "second:두 번째", "because:~때문에", "when:~할 때", "speak:말하다", "there is:있다", "🍌", "🍌"] },
+        { en: "Vibrations are conducted through our bones and stimulate our inner ears directly.", ko: "진동이 우리의 뼈를 통해 전도되어 우리의 내이를 직접 자극합니다.", voca: ["Vibrations:진동", "conducted:전도된", "bones:뼈", "stimulate:자극하다", "directly:직접", "through:~을 통해", "inner ears:내이", "our:우리의", "🍌", "🍌"] },
+        { en: "Lower frequencies are emphasized along this pathway.", ko: "이 경로를 따라 낮은 주파수가 강조됩니다.", voca: ["Lower:더 낮은", "frequencies:주파수/진동수", "emphasized:강조된", "pathway:경로", "along:~을 따라", "this:이", "are:~이다", "🍌", "🍌", "🍌"] },
+        { en: "That makes your voice sound deeper and richer to yourself than it may sound to other people.", ko: "그것이 여러분의 목소리를 다른 사람들에게 들리는 것보다 여러분 자신에게 더 낮고 풍부하게 들리게 만듭니다.", voca: ["deeper:더 낮은/깊은", "richer:더 풍부한", "yourself:당신 자신", "other people:다른 사람들", "makes:만들다", "voice:목소리", "sound:들리다", "than:~보다", "may:~일지도 모른다", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #37";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Why Your Voice<br>Sounds Different</h1><p>2024년 9월 고1 모의고사 37번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 녹음된 자신의 목소리를 듣고 생소하거나 높게 느껴 놀라는 경험은 매우 흔한 일임.</p>
+                    <p>• <b>📍 본론:</b> 목소리 인식에는 공기를 통한 '외부 경로'와 성대의 진동이 뼈를 타고 전해지는 '내부 경로' 두 가지가 있음.</p>
+                    <p>• <b>📍 결론:</b> 뼈를 통한 내부 경로는 낮은 주파수를 강조하기 때문에, 남들이 듣는 것보다 내 목소리가 더 낮고 풍부하게 들리는 것임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 공기 전도와 골전도라는 두 가지 경로로 인한 목소리 인식의 차이</span>
+                    <span class="topic-eng">Topic: The Difference in Voice Perception Caused by Two Pathways: Air Conduction and Bone Conduction</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

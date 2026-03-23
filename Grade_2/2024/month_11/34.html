@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #34 - 24년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #34</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "On-screen, climate disaster is everywhere you look, but the scope of the world’s climate transformation may just as quickly eliminate the climate-fiction genre—indeed eliminate any effort to tell the story of warming, which could grow too large and too obvious even for Hollywood.", ko: "화면상에서 기후 재앙은 어디에나 있지만, 세계 기후 변화의 범위는 기후 픽션 장르를 그만큼 빠르게 없애버릴 수도 있습니다. 실제로 온난화 이야기를 전하려는 어떠한 노력도 없애버릴 수 있는데, 이는 할리우드조차 감당하기에 너무 거대하고 너무 명백해질 수 있기 때문입니다.", voca: ["On-screen:화면상에서", "disaster:재앙", "transformation:변화/변형", "eliminate:없애다/제거하다", "obvious:명백한", "warming:온난화", "indeed:실제로", "scope:범위", "genre:장르", "🍎"] },
+        { en: "You can tell stories ‘about’ climate change while it still seems a marginal feature of human life.", ko: "기후 변화가 여전히 인간 삶의 지엽적인 특징처럼 보일 때에는 기후 변화에 '관해' 이야기를 할 수 있습니다.", voca: ["marginal:지엽적인/가장자리의", "feature:특징", "human life:인간 삶", "tell stories:이야기하다", "while:~하는 동안/반면에", "still:여전히", "seems:~처럼 보이다", "climate change:기후 변화", "about:~에 관해", "🍎"] },
+        { en: "But when the temperature rises by three or four more degrees, hardly anyone will be able to feel isolated from its impacts.", ko: "하지만 온도가 3~4도 더 오르면, 그 영향으로부터 소외되었다고 느낄 수 있는 사람은 거의 없을 것입니다.", voca: ["temperature:온도", "rises:오르다", "hardly:거의 ~않다", "isolated:소외된/고립된", "impacts:영향", "anyone:누구든", "feel:느끼다", "degrees:도(온도)", "from:~로부터", "🍎"] },
+        { en: "And so as climate change expands across the horizon, it may cease to be a story.", ko: "그리하여 기후 변화가 지평선 너머로 확장됨에 따라, 그것은 더 이상 이야기가 아니게 될 수도 있습니다.", voca: ["expands:확장되다", "across:가로질러", "horizon:지평선", "cease:그만두다/중단하다", "story:이야기", "as:~함에 따라", "may:~일지도 모른다", "it:그것", "be:되다", "🍎"] },
+        { en: "Why watch or read climate fiction about the world you can see plainly out your own window?", ko: "자신의 창밖으로 평범하게 볼 수 있는 세상에 대한 기후 픽션을 왜 보고 읽겠습니까?", voca: ["plainly:평범하게/분명히", "window:창문", "watch:보다", "read:읽다", "world:세상", "own:자신의", "about:~에 대한", "fiction:픽션/소설", "out:밖으로", "🍎"] },
+        { en: "At the moment, stories illustrating global warming can still offer an escapist pleasure, even if that pleasure often comes in the form of horror.", ko: "현재로서는 지구 온난화를 묘사하는 이야기들이 비록 그 즐거움이 흔히 공포의 형태로 올지라도 여전히 도피주의적인 즐거움을 제공할 수 있습니다.", voca: ["illustrating:묘사하는", "escapist:도피주의적인", "pleasure:즐거움", "horror:공포", "At the moment:현재로서는", "still:여전히", "offer:제공하다", "even if:비록 ~일지라도", "form:형태", "🍎"] },
+        { en: "But when we can no longer pretend that climate suffering is distant—in time or in place—we will stop pretending about it and start pretending within it.", ko: "하지만 기후로 인한 고통이 시간적으로나 장소적으로 멀리 떨어져 있다고 더 이상 치부할 수 없게 되면, 우리는 그것에 대해 '척하는 것'을 멈추고 그 안에서 '척하기' 시작할 것입니다.", voca: ["no longer:더 이상 ~않다", "pretend:척하다/치부하다", "distant:먼/떨어진", "suffering:고통", "place:장소", "stop:멈추다", "start:시작하다", "within:~ 내에서", "about:~에 대해", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #34";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The End of<br>Climate Fiction</h1><p>2024년 11월 고1 모의고사 34번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 기후 재앙이 일상이 되면, 할리우드가 기후 변화를 '이야기'로 다루려는 시도 자체가 무의미해질 수 있음.</p>
+                    <p>• <b>📍 본론:</b> 현재는 기후 변화가 남의 일처럼 느껴져 공포 영화처럼 즐길 수 있지만, 온도가 더 오르면 누구도 그 영향에서 벗어날 수 없음.</p>
+                    <p>• <b>📍 결론:</b> 기후 고통이 현실이 되는 순간, 우리는 그것을 관찰하는 제3자가 아니라 그 재앙 속에서 살아가는 당사자가 될 것임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 기후 변화가 일상의 현실이 됨에 따라 사라지게 될 기후 픽션 장르</span>
+                    <span class="topic-eng">Topic: The Disappearance of the Climate Fiction Genre as Climate Change Becomes an Everyday Reality</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

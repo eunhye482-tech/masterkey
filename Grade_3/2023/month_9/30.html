@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - 23년 9월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "While moving is difficult for everyone, it is particularly stressful for children.", ko: "이사는 누구에게나 힘들지만, 아이들에게는 특히 스트레스가 많은 일입니다.", voca: ["moving:이사", "difficult:어려운/힘든", "particularly:특히", "stressful:스트레스가 많은", "children:아이들", "everyone:모든 사람", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "They lose their sense of security and may feel disoriented when their routine is disrupted.", ko: "그들은 안정감을 잃고 일상이 중단될 때 혼란스러움을 느낄 수도 있습니다.", voca: ["sense:감각", "security:안정/안보", "disoriented:혼란스러운", "routine:일상", "disrupted:중단된", "lose:잃다", "feel:느끼다", "when:~할 때", "🍎", "🍎"] },
+        { en: "Young children, ages 3-6, are particularly affected by a move. Their understanding is quite literal.", ko: "3세에서 6세 사이의 어린아이들은 이사에 특히 영향을 받습니다. 그들의 이해는 상당히 문자 그대로입니다.", voca: ["affected:영향을 받는", "understanding:이해", "quite:상당히", "literal:문자 그대로의", "ages 3-6:3~6세", "particularly:특히", "move:이사", "🍎", "🍎", "🍎"] },
+        { en: "It is difficult for them to imagine beforehand a new home and their new room.", ko: "그들이 새로운 집과 새로운 방을 사전에 상상하는 것은 어렵습니다.", voca: ["difficult:어려운", "imagine:상상하다", "beforehand:사전에", "new home:새로운 집", "new room:새로운 방", "for them:그들에게", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Young children may have worries such as “Will I still be me in the new place?”", ko: "어린아이들은 “새로운 곳에서도 여전히 나일까?”와 같은 걱정을 할 수도 있습니다.", voca: ["worries:걱정들", "still:여전히", "new place:새로운 곳", "such as:~와 같은", "may:~일지도 모른다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It is important to establish a balance between validating past experiences and helping them adjust.", ko: "과거의 경험을 인정해주는 것과 적응하도록 돕는 것 사이의 균형을 잡는 것이 중요합니다.", voca: ["establish:확립하다", "balance:균형", "validating:인정하는/확인하는", "past experiences:과거 경험", "adjust:적응하다", "helping:돕는 것", "between A and B:A와 B 사이에", "important:중요한", "🍎", "🍎"] },
+        { en: "Children need to share their backgrounds in a way that respects their past as an part of who they are.", ko: "아이들은 과거를 자신의 중요한 일부로 존중하는 방식으로 자신의 배경을 공유할 기회가 필요합니다.", voca: ["share:공유하다", "backgrounds:배경", "respects:존중하다", "past:과거", "part:일부", "who they are:자신의 정체성", "way:방식", "need to:~할 필요가 있다", "🍎", "🍎"] },
+        { en: "This contributes to building a sense of community, which is essential for all children in transition.", ko: "이것은 공동체 의식을 형성하는 데 기여하며, 이는 변화를 겪는 모든 아이에게 필수적입니다.", voca: ["contributes to:~에 기여하다", "building:형성/구축", "sense of community:공동체 의식", "essential:필수적인", "transition:변화/전이", "all:모든", "which:그리고 그것은", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Helping Children<br>Adjust to Moving</h1><p>2023년 9월 고1 모의고사 30번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 이사는 아이들에게 매우 스트레스가 큰 사건이며, 특히 일상의 변화는 안정감을 앗아감.</p>
+                    <p>• <b>📍 본론:</b> 3~6세 아이들은 사고가 매우 직관적이라 미래의 방을 상상하기 어렵고, 자기 정체성이나 물건에 대한 원초적인 걱정을 함.</p>
+                    <p>• <b>📍 결론:</b> 부모는 아이의 과거 경험을 충분히 존중해줌과 동시에 새로운 환경에 적응하도록 돕는 균형을 유지해야 함. 이를 통해 아이는 변화 속에서도 공동체 의식을 형성할 수 있음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 이사하는 아이들의 심리적 불안 해소를 위한 과거 존중과 새로운 적응 사이의 균형</span>
+                    <span class="topic-eng">Topic: The balance between respecting the past and aiding adjustment for children moving to a new home</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #22 - 23년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #22</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "When writing a novel, research for information needs to be done.", ko: "소설을 쓸 때, 정보를 위한 조사가 수행되어야 합니다.", voca: ["writing:쓰는 것", "novel:소설", "research:조사/연구", "information:정보", "needs to:~할 필요가 있다", "done:수행된", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Some kinds of fiction demand a higher level of detail: crime fiction or scientific thrillers.", ko: "어떤 종류의 소설은 더 높은 수준의 세부 사항을 요구합니다: 예를 들어 범죄 소설이나 과학 스릴러처럼요.", voca: ["fiction:소설", "demand:요구하다", "higher level:더 높은 수준", "detail:세부 사항", "crime fiction:범죄 소설", "scientific:과학적인", "thrillers:스릴러", "🍎", "🍎", "🍎"] },
+        { en: "The information is never hard to find; crime writers can even visit police stations to get it right.", ko: "정보는 찾기 결코 어렵지 않습니다; 범죄 소설 작가들은 정확하게 쓰기 위해 경찰서를 방문할 수도 있습니다.", voca: ["hard to find:찾기 어려운", "never:결코 ~않다", "writers:작가들", "visit:방문하다", "get it right:정확하게 하다", "even:심지어", "police stations:경찰서", "🍎", "🍎", "🍎"] },
+        { en: "Often, a polite letter will earn you permission to visit a location and record all the details.", ko: "종종 공중한 편지 한 통이면 특정 장소를 방문하여 필요한 모든 세부 사항을 기록할 허가를 얻을 수 있습니다.", voca: ["polite:공손한", "letter:편지", "earn:얻다/벌다", "permission:허가", "location:장소", "record:기록하다", "Often:종종", "details:세부 사항들", "🍎", "🍎"] },
+        { en: "But remember that you will drive readers to boredom if you pack everything you discover into your work.", ko: "하지만 여러분이 발견한 모든 것을 작품에 채워 넣어야 한다고 생각하면 독자들을 지루하게 만들 것임을 기억하세요.", voca: ["remember:기억하다", "drive:몰아가다/만들다", "boredom:지루함", "pack:채워 넣다", "everything:모든 것", "discover:발견하다", "work:작품", "if:만약", "🍎", "🍎"] },
+        { en: "The details that matter are those that reveal the human experience.", ko: "중요한 세부 사항은 인간의 경험을 드러내는 것들입니다.", voca: ["matter:중요하다", "reveal:드러내다", "human experience:인간의 경험", "details:세부 사항들", "those:것들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The crucial thing is telling a story, characters, and conflict—not the building blueprint.", ko: "중요한 것은 이야기, 캐릭터, 그리고 갈등을 말하는 것이지, 건물의 청사진이 아닙니다.", voca: ["crucial:중요한/결정적인", "telling:말하는 것", "characters:등장인물", "conflict:갈등", "blueprint:청사진", "not:~이 아니라", "story:이야기", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #22";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Story Over<br>Information</h1><p>2023년 11월 고1 모의고사 22번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 소설, 특히 범죄 소설이나 과학 스릴러는 전문적인 조사를 통한 세부 정보가 필수적임.</p>
+                    <p>• <b>📍 본론:</b> 웹사이트나 직접 방문 등을 통해 정보를 얻는 것은 어렵지 않으나, 조사한 모든 것을 작품에 담으려 하면 독자는 지루함을 느낌.</p>
+                    <p>• <b>📍 결론:</b> 소설에서 진짜 중요한 것은 '인간의 경험'을 드러내는 디테일임. 독자가 원하는 것은 건물의 청사진이 아니라 살아있는 이야기와 갈등임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 소설 집필 시 과도한 정보 나열을 경계하고 인간의 경험과 스토리에 집중해야 할 필요성</span>
+                    <span class="topic-eng">Topic: The need to focus on human experience and storytelling rather than overloading a novel with researched information</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

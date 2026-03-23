@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #34 - 23년 3월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #34</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Everything in the world around us was finished in the mind of its creator before it was started.", ko: "우리 주변 세상의 모든 것은 시작되기 전에 그것을 만든 사람의 마음속에서 완성되었습니다.", voca: ["finished:완성된", "mind:마음", "creator:창조자/만든 사람", "started:시작된", "around us:우리 주변의", "everything:모든 것", "world:세상", "in:~에서", "before:~ 전에", "🍎"] },
+        { en: "The houses we live in, the cars we drive, and our clothing—all of these began with an idea.", ko: "우리가 사는 집, 우리가 운전하는 자동차, 그리고 우리의 옷—이 모든 것은 아이디어에서 시작되었습니다.", voca: ["houses:집들", "drive:운전하다", "clothing:옷/의류", "began:시작되었다", "idea:아이디어", "live in:~에 살다", "all of these:이 모든 것", "with:~와 함께", "🍎", "🍎"] },
+        { en: "Each idea was then studied, refined and perfected before the first nail was driven or the first piece of cloth was cut.", ko: "각각의 아이디어는 첫 번째 못이 박히거나 첫 번째 천 조각이 잘리기 전에 연구되고, 다듬어지고, 완성되었습니다.", voca: ["studied:연구된", "refined:다듬어진", "perfected:완성된", "nail:못", "driven:(못이) 박힌", "cloth:천", "cut:잘린", "each:각각의", "before:~ 전에", "🍎"] },
+        { en: "Long before the idea was turned into a physical reality, the mind had clearly pictured the finished product.", ko: "아이디어가 물리적인 실체로 변하기 훨씬 전에, 마음은 이미 완성된 제품을 분명하게 그렸습니다.", voca: ["Long before:훨씬 전에", "turned into:~로 변하다", "physical reality:물리적 실체", "clearly:분명하게", "pictured:그렸다/묘사했다", "finished product:완성된 제품", "mind:마음", "had:이미 ~했다", "🍎", "🍎"] },
+        { en: "The human being designs his or her own future through much the same process.", ko: "인간은 거의 똑같은 과정을 통해 자기 자신의 미래를 설계합니다.", voca: ["designs:설계하다", "own future:자신의 미래", "through:~을 통해", "process:과정", "human being:인간", "much the same:거의 똑같은", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We begin with an idea about how the future will be.", ko: "우리는 미래가 어떠할지에 대한 아이디어로 시작합니다.", voca: ["begin:시작하다", "about:~에 대한", "future:미래", "will be:~일 것이다", "idea:아이디어", "how:어떻게", "with:~와 함께", "🍎", "🍎", "🍎"] },
+        { en: "Over a period of time we refine and perfect the vision.", ko: "얼마간의 시간에 걸쳐 우리는 그 비전을 다듬고 완성합니다.", voca: ["period of time:얼마간의 시간", "refine:다듬다", "perfect:완성하다", "vision:비전", "Over:~에 걸쳐", "we:우리", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Before long, our every thought, decision and activity are all working in harmony to bring into existence what we have mentally concluded about the future.", ko: "머지않아, 우리의 모든 생각, 결정, 그리고 활동은 우리가 미래에 대해 정신적으로 결론 내린 것을 실재하게 하려고 모두 조화롭게 작용합니다.", voca: ["Before long:머지않아", "decision:결정", "activity:활동", "in harmony:조화롭게", "bring into existence:실재하게 하다", "mentally:정신적으로", "concluded:결론 내린", "thought:생각", "working:작용하는", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #34";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Blueprint of<br>Your Future</h1><p>2023년 3월 고1 모의고사 34번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 우리 주변의 모든 물건(집, 차, 옷)은 물리적으로 만들어지기 전, 누군가의 마음속에서 먼저 완성된 것임.</p>
+                    <p>• <b>📍 본론:</b> 아이디어는 실행에 옮겨지기 전까지 끊임없이 연구되고 다듬어지며, 마음속에는 이미 완성된 모습이 그려져 있음.</p>
+                    <p>• <b>📍 결론:</b> 인간의 미래도 이와 같음. 우리가 미래에 대해 머릿속으로 내린 결론(비전)이 결국 우리의 모든 생각과 행동을 조화시켜 그 미래를 실재하게 만듦.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 정신적 완성(비전)이 물리적 현실을 창조하는 과정과 미래 설계의 원리</span>
+                    <span class="topic-eng">Topic: The process where mental completion creates physical reality and the principle of designing the future</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

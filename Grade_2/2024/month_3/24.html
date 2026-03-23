@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #24 - 24년 3월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #24</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Working around the whole painting, rather than concentrating on one area at a time, will mean you can stop at any point and the painting can be considered 'finished.'", ko: "한 번에 한 부분에 집중하기보다 그림 전체를 작업하는 것은, 어느 지점에서든 멈출 수 있고 그 그림이 '완성된' 것으로 간주될 수 있음을 의미할 것입니다.", voca: ["painting:그림", "rather than:~보다", "concentrating:집중하는", "area:부분/영역", "at a time:한 번에", "considered:간주되는", "finished:완성된", "whole:전체의", "mean:의미하다", "🍌"] },
+        { en: "Artists often find it difficult to know when to stop painting, and it can be tempting to keep on adding more to your work.", ko: "예술가들은 종종 언제 그림 그리기를 멈춰야 할지 아는 것을 어려워하며, 작품에 계속 더 많은 것을 추가하고 싶은 유혹을 느낄 수 있습니다.", voca: ["difficult:어려운", "tempting:유혹적인", "adding:추가하는 것", "often:종종", "stop:멈추다", "know:알다", "work:작품", "keep on:계속하다", "find:알게 되다", "🍌"] },
+        { en: "It is important to take a few steps back from the painting from time to time to assess your progress.", ko: "진행 상황을 평가하기 위해 때때로 그림에서 몇 걸음 뒤로 물러나 보는 것이 중요합니다.", voca: ["important:중요한", "steps back:뒤로 물러나다", "from time to time:때때로", "assess:평가하다", "progress:진행 상황", "few:몇몇의", "take:취하다", "🍌", "🍌", "🍌"] },
+        { en: "Putting too much into a painting can spoil its impact and leave it looking overworked.", ko: "그림에 너무 많은 것을 담는 것은 그것의 영향력을 망칠 수 있고 그림이 과하게 작업 된 것처럼 보이게 할 수 있습니다.", voca: ["spoil:망치다", "impact:영향력", "overworked:과하게 작업된", "Putting:담는 것/넣는 것", "too much:너무 많이", "leave:남기다/하게 하다", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "If you find yourself struggling to decide whether you have finished, take a break and come back to it later with fresh eyes.", ko: "만약 여러분이 완성을 했는지 결정하는 데 어려움을 겪고 있다면, 휴식을 취하고 나중에 신선한 눈으로 다시 돌아와 보십시오.", voca: ["struggling:어려움을 겪는", "decide:결정하다", "whether:~인지 아닌지", "break:휴식", "fresh eyes:새로운 눈", "find:발견하다", "later:나중에", "come back:돌아오다", "🍌", "🍌"] },
+        { en: "Then you can decide whether any areas of your painting would benefit from further refinement.", ko: "그러면 여러분은 그림의 어느 부분이라도 추가적인 다듬기 작업을 통해 이득을 얻을 수(더 나아질 수) 있을지 결정할 수 있습니다.", voca: ["benefit:이득을 얻다", "further:추가적인", "refinement:다듬기/정제", "areas:부분들", "decide:결정하다", "Then:그러면", "can:할 수 있다", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #24";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Knowing When to Stop</h1><p>2024년 3월 고1 모의고사 24번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 한 부분에만 집중하지 말고 그림 전체를 골고루 작업하면 어느 시점에서도 완성된 느낌을 줄 수 있음.</p>
+                    <p>• <b>📍 본론:</b> 예술가는 종종 과하게 덧칠하려는 유혹을 받는데, 때때로 뒤로 물러나 진행 상황을 객관적으로 평가해야 함.</p>
+                    <p>• <b>📍 결론:</b> 결정이 어려울 땐 휴식을 취한 뒤 '새로운 눈'으로 다시 보며 추가적인 다듬기가 필요한지 판단해야 함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 과도한 작업을 피하기 위해 그림 전체를 살피며 작업하는 것의 중요성</span>
+                    <span class="topic-eng">Topic: The Importance of Working on the Whole Painting to Avoid Overworking</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #29 - 23년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #29</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Some countries have proposed tougher guidelines for determining brain death when organ transplantation is under consideration.", ko: "일부 국가들은 장기 이식이 고려될 때 뇌사를 결정하기 위한 더 엄격한 가이드라인을 제안해 왔습니다.", voca: ["proposed:제안했다", "tougher:더 엄격한", "guidelines:가이드라인", "determining:결정하는", "brain death:뇌사", "transplantation:이식", "consideration:고려", "🍎", "🍎", "🍎"] },
+        { en: "Legal requirements specify that a whole team of doctors must agree over the diagnosis of death for a potential donor.", ko: "법적 요구 사항들은 잠재적 기증자의 사망 진단에 대해 의사 팀 전체가 합의해야 함을 명시합니다.", voca: ["Legal:법적인", "requirements:요구 사항", "specify:명시하다", "diagnosis:진단", "potential:잠재적인", "donor:기증자", "must agree:합의해야 한다", "🍎", "🍎", "🍎"] },
+        { en: "The reason for these strict regulations is to ease public fears of a premature diagnosis for obtaining organs.", ko: "이러한 엄격한 규정의 이유는 장기 적출을 위한 조기 사망 진단에 대한 대중의 두려움을 완화하기 위함입니다.", voca: ["strict:엄격한", "regulations:규정", "ease:완화하다", "public fears:대중의 두려움", "premature:조급한/조기의", "obtaining:얻는 것", "organs:장기", "🍎", "🍎", "🍎"] },
+        { en: "But it is questionable whether these requirements reduce public suspicions as much as they create them.", ko: "하지만 이러한 요구 사항들이 의심을 만들어내는 것만큼이나 대중의 의심을 줄여주는지는 의문입니다.", voca: ["questionable:의문이 드는", "whether:~인지 아닌지", "reduce:줄이다", "suspicions:의심", "create:만들어내다", "as much as:~만큼", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "They certainly maintain mistaken beliefs that diagnosing brain death is an unreliable process lacking precision.", ko: "그것들은 뇌사 진단이 정밀함이 부족하고 신뢰할 수 없는 과정이라는 잘못된 믿음을 확실히 유지시킵니다.", voca: ["maintain:유지시키다", "mistaken beliefs:잘못된 믿음", "diagnosing:진단하는 것", "unreliable:신뢰할 수 없는", "lacking:부족한", "precision:정밀함", "certainly:확실히", "🍎", "🍎", "🍎"] },
+        { en: "Criteria for diagnosing the deaths of organ donors should be exactly the same as for everyone else.", ko: "장기 기증자의 사망을 진단하는 기준은 다른 모든 사람들과 정확히 같아야 합니다.", voca: ["Criteria:기준", "diagnosing:진단하는 것", "organ donors:장기 기증자", "exactly:정확히", "the same as:~와 같은", "everyone else:다른 모든 사람", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #29";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Dilemma of<br>Brain Death Criteria</h1><p>2023년 11월 고1 모의고사 29번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 배경:</b> 장기 기증 예정자의 뇌사 판정 시, 일부 국가는 의사 여러 명의 합의를 요구하는 등 더 엄격한 기준을 적용함.</p>
+                    <p>• <b>📍 목적:</b> 이는 장기 확보를 위해 성급하게 사망 판정을 내릴지 모른다는 대중의 공포를 달래기 위함임.</p>
+                    <p>• <b>📍 문제점:</b> 그러나 역설적으로 이런 과도한 절차는 '뇌사 진단이 원래 불확실한 것인가?'라는 의구심과 잘못된 믿음을 강화할 수 있음.</p>
+                    <p>• <b>📍 결론:</b> 일관성을 위해 기증자든 아니든 모든 죽음의 진단 기준은 동일하게 적용되어야 함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 장기 기증 상황에서 뇌사 판정 기준의 일관성 유지 필요성</span>
+                    <span class="topic-eng">Topic: The necessity of maintaining consistency in brain death criteria for organ donors</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

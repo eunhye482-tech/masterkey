@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "For a species born in a time when resources were limited and dangers were great, our natural tendency to share and cooperate is complicated when resources are plenty and outside dangers are few.", ko: "자원이 제한되고 위험이 컸던 시대에 태어난 종으로서, 우리의 자연스러운 공유 및 협력 경향은 자원이 풍부하고 외부 위험이 적을 때 복잡해집니다.", voca: ["species:종", "resources:자원", "limited:제한된", "tendency:경향", "cooperate:협력하다", "complicated:복잡한", "plenty:풍부한", "dangers:위험", "natural:자연스러운", "born:태어난"] },
+        { en: "When we have less, we tend to be more open to sharing what we have.", ko: "우리가 가진 것이 적을 때, 우리는 우리가 가진 것을 나누는 데 더 개방적인 경향이 있습니다.", voca: ["less:더 적은", "tend to:~하는 경향이 있다", "open:개방적인", "sharing:공유하는 것", "what we have:가진 것", "when:~할 때", "more:더", "we:우리", "have:가지다", "🍌"] },
+        { en: "Certain nomadic tribes don’t have much, yet they are happy to share because it is in their interest to do so.", ko: "어떤 유목 부족들은 가진 것이 많지 않지만, 그렇게 하는 것이 그들에게 이익이 되기 때문에 기꺼이 나눕니다.", voca: ["nomadic:유목의", "tribes:부족", "interest:이익/관심", "share:공유하다", "happy:기꺼이 ~하는", "yet:하지만", "certain:어떤", "much:많은 것", "because:~때문에", "🍌"] },
+        { en: "If you happen upon them in your travels, they will open up their homes and give you their food and hospitality.", ko: "만약 당신이 여행 중에 그들을 우연히 만난다면, 그들은 집을 열어주고 음식과 환대를 제공할 것입니다.", voca: ["happen upon:우연히 마주치다", "travels:여행", "hospitality:환대", "open up:열다", "homes:집", "food:음식", "give:주다", "will:~할 것이다", "them:그들", "🍌"] },
+        { en: "It’s not just because they are nice people; it’s because their survival depends on sharing, for they know that they may be the travelers in need of food and shelter another day.", ko: "그것은 단지 그들이 좋은 사람들이기 때문만은 아닙니다. 그것은 그들의 생존이 공유에 달려 있기 때문이며, 그들은 언젠가 자신들도 음식과 숙소가 필요한 여행자가 될 수 있다는 것을 알고 있기 때문입니다.", voca: ["survival:생존", "depends on:~에 달려 있다", "sharing:공유", "travelers:여행자", "shelter:숙소/피난처", "another day:언젠가/다른 날", "need:필요", "know:알다", "because:~때문에", "just:단지"] },
+        { en: "Ironically, the more we have, the bigger our fences, the more sophisticated our security to keep people away and the less we want to share.", ko: "반어적으로, 우리가 더 많이 가질수록 우리의 울타리는 더 커지고, 사람들을 멀리하기 위한 보안은 더 정교해지며, 우리는 덜 나누고 싶어 합니다.", voca: ["Ironically:반어적으로/역설적으로", "fences:울타리", "sophisticated:정교한", "security:보안", "keep away:멀리하다", "share:나누다", "more:더 많이", "bigger:더 큰", "less:더 적게", "want:원하다"] },
+        { en: "Our desire for more, combined with our reduced physical interaction with the 'common folk,' starts to create a disconnection or blindness to reality.", ko: "더 많은 것에 대한 우리의 욕구는 '평범한 사람들'과의 줄어든 물리적 상호 작용과 결합하여, 현실에 대한 단절이나 맹목을 만들기 시작합니다.", voca: ["desire:욕구", "combined with:~와 결합된", "reduced:줄어든", "interaction:상호 작용", "common folk:평범한 사람들", "disconnection:단절", "blindness:맹목", "reality:현실", "create:만들다", "starts:시작하다"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Paradox<br>of Plenty</h1><p>2025년 9월 고1 모의고사 30번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 척박한 환경에서 진화한 인간의 공유 본능은 자원이 풍부해지면 오히려 복잡해짐.</p>
+                    <p>• <b>📍 본론:</b> 유목 부족은 생존을 위해 기꺼이 나누지만, 현대인은 가질수록 보안을 높이고 나눔을 꺼림.</p>
+                    <p>• <b>📍 결론:</b> 소유욕과 타인과의 교류 감소는 결국 현실로부터의 단절과 소외를 초래함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 풍요로움이 인간의 공유 본능과 사회적 연결에 미치는 역설적 영향</span>
+                    <span class="topic-eng">Topic: The Paradoxical Impact of Abundance on Human Sharing Instincts and Social Connection</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #21 - 24년 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #21</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "One valuable technique for getting out of helplessness, depression, and situations which are predominantly being run by the thought, 'I can’t,' is to choose to be with other persons who have resolved the problem with which we struggle.", ko: "무력감, 우울함, 그리고 '나는 할 수 없다'는 생각에 주로 지배당하는 상황에서 벗어나기 위한 한 가지 가치 있는 기술은 우리가 고군분투하는 그 문제를 해결한 다른 사람들과 함께하기를 선택하는 것입니다.", voca: ["valuable:가치 있는", "technique:기술/기법", "helplessness:무력감", "predominantly:주로/대부분", "resolved:해결한", "struggle:고군분투하다", "depression:우울함", "getting out of:~에서 벗어나기", "thought:생각", "🍌"] },
+        { en: "This is one of the great powers of self-help groups.", ko: "이것이 자기 돕기 그룹(자조 집단)이 가진 위대한 힘 중 하나입니다.", voca: ["self-help groups:자기 돕기 그룹", "great:위대한/큰", "powers:힘들", "one of:~ 중 하나", "this:이것", "is:~이다", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "When we are in a negative state, we have given a lot of energy to negative thought forms, and the positive thought forms are weak.", ko: "우리가 부정적인 상태에 있을 때, 우리는 부정적인 사고 형태에 많은 에너지를 주게 되고, 긍정적인 사고 형태는 약해집니다.", voca: ["negative state:부정적인 상태", "thought forms:사고 형태", "positive:긍정적인", "weak:약한", "given:주었다", "a lot of:많은", "energy:에너지", "when:~할 때", "🍌", "🍌"] },
+        { en: "Those who are in a higher vibration are free of the energy from their negative thoughts and have energized positive thought forms.", ko: "더 높은 진동(긍정적 에너지) 속에 있는 사람들은 부정적인 생각으로부터 오는 에너지에서 자유롭고 활기찬 긍정적 사고 형태를 가지고 있습니다.", voca: ["higher vibration:더 높은 진동", "free of:~에서 자유로운", "energized:활기찬/에너지가 넘치는", "negative:부정적인", "thoughts:생각들", "positive:긍정적인", "have:가지다", "their:그들의", "🍌", "🍌"] },
+        { en: "Merely to be in their presence is beneficial.", ko: "단지 그들의 곁에 있는 것만으로도 이롭습니다.", voca: ["Merely:단지/그저", "presence:존재/곁", "beneficial:이로운/유익한", "to be:있는 것", "their:그들의", "is:~이다", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "In some self-help groups, this is called 'hanging out with the winners.'", ko: "일부 자기 돕기 그룹에서는 이것을 '승자들과 어울리기'라고 부릅니다.", voca: ["hanging out with:~와 어울리다", "winners:승자들", "called:~라고 불리는", "self-help:자기 돕기", "groups:그룹들", "this:이것", "is:~이다", "🍌", "🍌", "🍌"] },
+        { en: "The benefit here is on the psychic level of consciousness, and there is a transfer of positive energy and relighting of one’s own latent positive thought forms.", ko: "여기서 얻는 이익은 의식의 심리적 차원에 있으며, 긍정적 에너지의 전달과 자기 자신의 잠재된 긍정적 사고 형태를 다시 밝히는 일이 일어납니다.", voca: ["psychic:심리적인/정신적인", "consciousness:의식", "transfer:전달/전이", "relighting:다시 밝히는 것", "latent:잠재된", "benefit:이익/혜택", "positive energy:긍정적 에너지", "own:자신의", "level:차원/수준", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #21";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Hanging Out<br>with the Winners</h1><p>2024년 9월 고1 모의고사 21번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 무력감과 "나는 안 돼"라는 생각에서 벗어나는 방법은 같은 문제를 해결한 사람들과 함께하는 것임.</p>
+                    <p>• <b>📍 본론:</b> 부정적인 상태에서는 긍정적 사고가 약해지지만, 높은 에너지 상태에 있는 사람들의 곁에 있는 것만으로도 긍정적 에너지를 얻을 수 있음.</p>
+                    <p>• <b>📍 결론:</b> 이른바 "승자들과 어울리기"는 심리적 차원에서 긍정적 에너지를 전수받아 자신의 잠재된 긍정적 사고를 일깨우는 효과가 있음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 무력감 극복을 위해 긍정적 에너지를 가진 사람들과 어울리는 것의 중요성</span>
+                    <span class="topic-eng">Topic: The Importance of Associating with Positively Energized People to Overcome Helplessness</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

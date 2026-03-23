@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - 23년 11월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "The term minimalism gives a negative impression to some who think it’s about sacrificing possessions.", ko: "미니멀리즘이라는 용어는 그것이 소유물을 희생하는 것에 관한 것이라고 생각하는 일부 사람들에게 부정적인 인상을 줍니다.", voca: ["term:용어", "minimalism:미니멀리즘", "negative:부정적인", "impression:인상", "sacrificing:희생하는 것", "possessions:소유물", "think:생각하다", "🍎", "🍎", "🍎"] },
+        { en: "This insecurity stems from their attachment to their possessions.", ko: "이러한 불안함은 그들의 소유물에 대한 애착에서 비롯됩니다.", voca: ["insecurity:불안함", "stems from:~에서 비롯되다", "attachment:애착", "possessions:소유물", "their:그들의", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It is difficult to distance oneself from something that has been around for quite some time.", ko: "꽤 오랫동안 주변에 있었던 무언가와 거리를 두는 것은 어렵습니다.", voca: ["difficult:어려운", "distance:거리를 두다", "around:주변에", "quite:꽤", "some time:어느 정도의 시간", "oneself:자신", "something:무언가", "🍎", "🍎", "🍎"] },
+        { en: "Being emotional animals, human beings give meaning to the things around them.", ko: "감정적인 동물인 인간은 주변의 사물들에 의미를 부여합니다.", voca: ["emotional:감정적인", "human beings:인간", "give meaning:의미를 부여하다", "things:사물들", "around them:그들 주변의", "animals:동물들", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Minimalism does not hurt emotions. The joy of clarity will overcome the sadness of getting rid of items.", ko: "미니멀리즘은 감정을 상하게 하지 않습니다. 명료함의 기쁨이 물건을 치우는 슬픔을 극복할 것입니다.", voca: ["hurt:상하게 하다", "emotions:감정", "joy:기쁨", "clarity:명료함/맑음", "overcome:극복하다", "getting rid of:~을 제거하는 것", "sadness:슬픔", "items:물건들", "🍎", "🍎"] },
+        { en: "Minimalists never argue that you should leave every convenience of the modern era.", ko: "미니멀리스트들은 현대 시대의 모든 편의를 버려야 한다고 결코 주장하지 않습니다.", voca: ["argue:주장하다", "leave:버리다/떠나다", "convenience:편의", "modern era:현대 시대", "every:모든", "never:결코 ~않다", "should:~해야 한다", "🍎", "🍎", "🍎"] },
+        { en: "They believe you only need to eliminate stuff that is unused or not going to be used soon.", ko: "그들은 사용되지 않거나 곧 사용되지 않을 물건들만 제거하면 된다고 믿습니다.", voca: ["believe:믿다", "eliminate:제거하다", "stuff:물건", "unused:사용되지 않는", "not going to:~하지 않을 것인", "soon:곧", "only:오직", "need to:~할 필요가 있다", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The True Meaning<br>of Minimalism</h1><p>2023년 11월 고1 모의고사 30번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 오해:</b> 미니멀리즘은 소중한 소유물을 억지로 희생하는 것이라는 부정적 인식이 있음. 이는 사물에 의미를 부여하는 인간의 애착 본능 때문임.</p>
+                    <p>• <b>📍 진실:</b> 미니멀리즘은 감정을 해치려는 것이 아님. 물건을 비울 때 잠시 슬플 수 있으나, 곧 공간과 마음이 비워지는 '명료함의 기쁨'이 이를 압도함.</p>
+                    <p>• <b>📍 핵심:</b> 현대 문명의 모든 편의를 포기하라는 것이 아니라, 오직 '사용하지 않는' 불필요한 것들을 솎아내어 삶을 가볍게 만드는 것이 본질임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 미니멀리즘에 대한 오해 바로잡기: 불필요한 것의 제거를 통한 명료함의 추구</span>
+                    <span class="topic-eng">Topic: Correcting misconceptions about minimalism: seeking clarity through the elimination of the unnecessary</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

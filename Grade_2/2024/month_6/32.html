@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #32 - 24년 6월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #32</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "There’s a lot of scientific evidence demonstrating that focused attention leads to the reshaping of the brain.", ko: "집중된 주의력이 뇌의 재형성으로 이어진다는 것을 보여주는 많은 과학적 증거가 있습니다.", voca: ["scientific:과학적인", "evidence:증거", "demonstrating:보여주는", "focused:집중된", "attention:주의력", "leads to:~로 이어지다", "reshaping:재형성", "brain:뇌", "a lot of:많은", "🍌"] },
+        { en: "In animals rewarded for noticing sound (to hunt or to avoid being hunted for example), we find much larger auditory centers in the brain.", ko: "소리를 알아차리는 것에 대해 보상을 받는 동물들(예를 들어 사냥하거나 사냥당하는 것을 피하기 위해)의 경우, 우리는 뇌에서 훨씬 더 큰 청각 센터를 발견합니다.", voca: ["rewarded:보상을 받은", "noticing:알아차리는 것", "avoid:피하다", "auditory:청각의", "centers:센터/중심", "hunt:사냥하다", "hunted:사냥당하다", "find:발견하다", "much:훨씬", "🍌"] },
+        { en: "In animals rewarded for sharp eyesight, the visual areas are larger.", ko: "날카로운 시력에 대해 보상을 받는 동물들의 경우, 시각 영역이 더 큽니다.", voca: ["sharp:날카로운", "eyesight:시력", "visual areas:시각 영역", "larger:더 큰", "animals:동물들", "rewarded:보상받는", "the:그", "are:~이다", "🍌", "🍌"] },
+        { en: "Brain scans of violinists provide more evidence, showing dramatic growth and expansion in regions of the cortex that represent the left hand, which has to finger the strings precisely, often at very high speed.", ko: "바이올린 연주자들의 뇌 스캔은 더 많은 증거를 제공하는데, 종종 매우 높은 속도로 현을 정확하게 짚어야 하는 왼손을 담당하는 피질 부위의 극적인 성장과 확장을 보여줍니다.", voca: ["scans:스캔", "provide:제공하다", "dramatic:극적인", "expansion:확장", "regions:부위", "cortex:피질", "represent:담당하다", "precisely:정확하게", "strings:현/줄", "finger:짚다"] },
+        { en: "Other studies have shown that the hippocampus, which is vital for spatial memory, is enlarged in taxi drivers.", ko: "다른 연구들은 공간 기억에 필수적인 해마가 택시 운전사들에게서 확대되어 있다는 것을 보여주었습니다.", voca: ["hippocampus:해마", "vital:필수적인", "spatial:공간의", "memory:기억", "enlarged:확대된/커진", "taxi drivers:택시 운전사", "shown:보여주다", "is:~이다", "which:~하는", "🍌"] },
+        { en: "The point is that the physical architecture of the brain changes according to where we direct our attention and what we practice doing.", ko: "핵심은 뇌의 물리적 구조가 우리가 어디에 주의를 기울이고 무엇을 연습하느냐에 따라 변한다는 것입니다.", voca: ["physical:물리적인", "architecture:구조", "changes:변하다", "according to:~에 따라", "direct:기울이다/향하다", "attention:주의", "practice:연습하다", "point:핵심", "brain:뇌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #32";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Reshaping<br>Brain</h1><p>2024년 6월 고1 모의고사 32번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 과학적 증거에 따르면 집중된 주의력은 뇌의 물리적 구조를 재형성함.</p>
+                    <p>• <b>📍 본론:</b> 생존을 위해 시각이나 청각을 쓰는 동물, 왼손을 많이 쓰는 바이올리니스트, 공간 기억을 쓰는 택시 기사 모두 관련 뇌 부위가 발달함.</p>
+                    <p>• <b>📍 결론:</b> 뇌의 물리적 구조는 우리가 무엇에 주의를 기울이고 무엇을 반복 연습하느냐에 따라 변화함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 주의력과 연습에 따라 뇌의 물리적 구조가 변하는 뇌 가소성</span>
+                    <span class="topic-eng">Topic: Neuroplasticity Where the Physical Architecture of the Brain Changes Based on Attention and Practice</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

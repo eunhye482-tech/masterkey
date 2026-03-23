@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #22 - 23년 6월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #22</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "The promise of a computerized society, we were told, was that it would pass to machines all of the repetitive drudgery of work, allowing us humans to pursue higher purposes and to have more leisure time.", ko: "우리가 듣기로 컴퓨터화된 사회의 약속은 모든 반복적인 고된 일을 기계에 넘겨, 우리 인간들이 더 높은 목적을 추구하고 더 많은 여가 시간을 갖게 해준다는 것이었습니다.", voca: ["promise:약속", "computerized:컴퓨터화된", "repetitive:반복적인", "drudgery:고된 일", "pursue:추구하다", "leisure time:여가 시간", "machines:기계들", "allowing:허용하면서", "higher:더 높은", "🍎"] },
+        { en: "It didn’t work out this way. Instead of more time, most of us have less.", ko: "그것은 이런 방식으로 돌아가지 않았습니다. 더 많은 시간 대신에, 우리들 대부분은 더 적은 시간을 가집니다.", voca: ["work out:진행되다/풀리다", "instead of:~ 대신에", "most:대부분", "less:더 적은", "this way:이런 방식으로", "time:시간", "have:가지다", "us:우리", "🍎", "🍎"] },
+        { en: "Companies large and small have off-loaded work onto the backs of consumers.", ko: "크고 작은 회사들이 업무를 소비자들의 등 위로 떠넘겼습니다.", voca: ["off-loaded:떠넘기다", "consumers:소비자들", "backs:등", "onto:~ 위로", "Companies:회사들", "large:큰", "small:작은", "work:업무", "🍎", "🍎"] },
+        { en: "Things that used to be done for us, as part of the value-added service of working with a company, we are now expected to do ourselves.", ko: "회사와 거래하는 부가가치 서비스의 일환으로 우리를 위해 행해지던 일들을 이제는 우리 스스로 하도록 요구받습니다.", voca: ["value-added:부가가치의", "expected:예상되는/요구되는", "ourselves:우리 스스로", "used to:~하곤 했다", "part of:~의 일환", "service:서비스", "working with:거래하는/일하는", "company:회사", "now:이제", "🍎"] },
+        { en: "With air travel, we’re now expected to complete our own reservations and check-in, jobs that used to be done by airline employees or travel agents.", ko: "항공 여행의 경우, 예전에는 항공사 직원이나 여행사 직원이 하던 일인 예약과 체크인을 이제는 우리 스스로 완료하도록 요구받습니다.", voca: ["complete:완료하다", "reservations:예약", "check-in:체크인", "employees:직원들", "travel agents:여행사 직원", "airline:항공사", "jobs:일들", "used to:~하곤 했다", "own:자신의", "🍎"] },
+        { en: "At the grocery store, we’re expected to bag our own groceries and, in some supermarkets, to scan our own purchases.", ko: "식료품점에서는 우리 자신의 식료품을 봉지에 담고, 일부 슈퍼마켓에서는 우리 자신의 구매품을 스캔하도록 요구받습니다.", voca: ["grocery store:식료품점", "bag:봉지에 담다", "groceries:식료품", "scan:스캔하다", "purchases:구매품", "some:일부의", "expected:요구되는", "own:자신의", "at:~에서", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #22";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Paradox of<br>Automation</h1><p>2023년 6월 고1 모의고사 22번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 과거에 컴퓨터 사회는 기계가 고된 일을 대신해 인간에게 더 많은 여가를 줄 것이라 약속함.</p>
+                    <p>• <b>📍 본론:</b> 하지만 현실은 정반대로, 기업들이 비용 절감을 위해 하던 일들을 소비자에게 떠넘기면서 우리는 더 바빠짐.</p>
+                    <p>• <b>📍 결론:</b> 항공 예약, 체크인, 마트 계산 등 과거 전문가의 서비스 영역이 이제는 소비자의 '직접 노동'으로 바뀌어 여가를 뺏고 있음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 컴퓨터화된 사회에서 기업의 업무가 소비자에게 전가되어 여가 시간이 줄어드는 역설</span>
+                    <span class="topic-eng">Topic: The paradox of decreasing leisure time as tasks are shifted to consumers in a computerized society</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

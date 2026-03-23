@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Master #23 - Official Version</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
+        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) [cite: 2026-02-20] */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "There is a wealth of evidence that when parents, teachers, supervisors, and coaches are perceived as involved and caring, people feel happier and more motivated.", ko: "부모, 교사, 관리자, 코치가 참여적이고 자상하다고 인식될 때 사람들이 더 행복하고 더 동기 부여가 된다는 풍부한 증거가 있습니다.", voca: ["wealth:풍부함", "evidence:증거", "perceived:인식되는", "involved:참여적인", "caring:자상한", "motivated:동기부여된", "supervisors:관리자", "coaches:코치", "happier:더 행복한", "parents:부모"] },
+        { en: "And it is not just those people with power—we need to feel valued and respected by peers and coworkers.", ko: "그리고 그것은 단지 권력을 가진 사람들뿐만 아니라, 우리는 동료와 직장 동료들로부터 가치 있게 여겨지고 존중받는다고 느낄 필요가 있습니다.", voca: ["power:권력", "valued:가치있는", "respected:존중받는", "peers:동료", "coworkers:직장동료", "need to:~할 필요가있다", "feel:느끼다", "just:단지", "those:사람들", "people:사람들"] },
+        { en: "Thus, when the need for relatedness is met, motivation and internalization are fueled, provided that support for autonomy and competence are also there.", ko: "따라서 관계에 대한 욕구가 충족될 때, 자율성과 유능함에 대한 지지도 있다면 동기 부여와 내면화가 활성화됩니다.", voca: ["relatedness:관계성", "met:충족된", "internalization:내면화", "fueled:활성화된", "provided that:~라면", "autonomy:자율성", "competence:유능함", "support:지지", "motivation:동기부여", "thus:따라서"] },
+        { en: "If we are trying to motivate others, a caring relationship is a crucial basis from which to begin.", ko: "만약 우리가 다른 사람들에게 동기를 부여하려고 한다면, 자상한 관계는 시작하기 위한 중요한 토대입니다.", voca: ["motivate:동기부여하다", "others:다른사람들", "relationship:관계", "crucial:중요한", "basis:토대", "begin:시작하다", "trying:노력하는", "caring:자상한", "which:그것", "from:~로부터"] },
+        { en: "And when we are trying to motivate ourselves, doing things to enhance a sense of connectedness to others can be crucial to long-term persistence.", ko: "그리고 우리 자신에게 동기를 부여하려고 할 때, 타인과의 연결감을 높이는 일을 하는 것은 장기적인 지속에 결정적일 수 있습니다.", voca: ["ourselves:우리자신", "enhance:향상시키다", "connectedness:연결감", "long-term:장기적인", "persistence:지속", "doing:하는것", "things:일들", "crucial:결정적인", "sense:감각", "to others:타인에게"] },
+        { en: "So exercise with a friend, call someone when you have a difficult decision to make, and be there as a support for others as they take on challenges.", ko: "그러니 친구와 함께 운동하고, 어려운 결정을 내려야 할 때 누군가에게 전화하며, 다른 사람들이 도전에 임할 때 지지자가 되어 주십시오.", voca: ["exercise:운동하다", "decision:결정", "difficult:어려운", "support:지지자", "challenges:도전", "take on:임하다/맡다", "friend:친구", "someone:누군가", "call:전화하다", "there:거기"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Power of<br>Relatedness & Motivation</h1><p>2025년 3월 고1 모의고사 23번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 타인의 관심과 배려를 느낄 때 인간은 더 행복하고 동기 부여됨. [cite: 2026-02-20]</p>
+                    <p>• <b>📍 본론:</b> 관계의 욕구 충족은 자율성 및 유능함과 함께 동기 부여의 연료가 됨. [cite: 2026-02-20]</p>
+                    <p>• <b>📍 결론:</b> 타인과의 연결감 강화는 장기적인 지속성과 동기 부여의 핵심임. [cite: 2026-02-20]</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 동기 부여와 지속성을 위한 관계 형성의 중요성 [cite: 2026-02-20]</span>
+                    <span class="topic-eng">Topic: The Importance of Building Relationships for Motivation and Persistence [cite: 2026-02-20]</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

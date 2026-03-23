@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #32 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #32</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Although you may put off going to sleep in order to squeeze more activities into your day, eventually your need for sleep becomes overwhelming and you are forced to get some sleep.", ko: "비록 하루에 더 많은 활동을 끼워 넣기 위해 잠자리에 드는 것을 미룰 수도 있지만, 결국 수면에 대한 욕구가 압도적이 되어 어쩔 수 없이 잠을 자게 됩니다.", voca: ["put off:미루다", "squeeze:끼워넣다", "activities:활동들", "eventually:결국", "overwhelming:압도적인", "forced:강요된/어쩔 수 없는", "get sleep:잠을 자다", "order to:~하기 위해", "need:욕구/필요", "🍌"] },
+        { en: "This daily drive for sleep appears to be due, in part, to a compound known as adenosine.", ko: "이러한 매일의 수면 욕구는 부분적으로 아데노신이라고 알려진 화합물 때문인 것으로 보입니다.", voca: ["drive:충동/욕구", "appears:~인 것으로 보이다", "due to:~때문에", "compound:화합물", "known as:~로 알려진", "adenosine:아데노신", "in part:부분적으로", "daily:매일의", "sleep:수면", "🍌"] },
+        { en: "This natural chemical builds up in your blood as time awake increases.", ko: "이 천연 화학 물질은 깨어 있는 시간이 증가함에 따라 혈액 속에 축적됩니다.", voca: ["natural:천연의/자연적인", "chemical:화학 물질", "builds up:축적되다", "blood:혈액", "awake:깨어 있는", "increases:증가하다", "time:시간", "as:~함에 따라", "this:이것", "🍌"] },
+        { en: "While you sleep, your body breaks down the adenosine.", ko: "잠을 자는 동안, 신체는 아데노신을 분해합니다.", voca: ["While:~하는 동안", "sleep:잠을 자다", "body:신체", "breaks down:분해하다", "adenosine:아데노신", "your:당신의", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "Thus, this molecule may be what your body uses to keep track of lost sleep and to trigger sleep when needed.", ko: "따라서, 이 분자는 신체가 부족한 수명을 추적하고 필요할 때 수면을 유발하기 위해 사용하는 것일 수 있습니다.", voca: ["Thus:따라서", "molecule:분자", "keep track of:~을 추적하다", "lost:부족한/잃어버린", "trigger:유발하다", "needed:필요한", "uses:사용하다", "body:신체", "may:일지도 모른다", "🍌"] },
+        { en: "An accumulation of adenosine and other factors might explain why, after several nights of less than optimal amounts of sleep, you build up a sleep debt that you must make up by sleeping longer than normal.", ko: "아데노신의 축적과 다른 요인들은 왜 최적의 수면 양보다 적게 자는 밤이 며칠 지난 후에, 평소보다 더 오래 잠으로써 보충해야만 하는 수면 부채가 쌓이는지를 설명해 줄 수 있습니다.", voca: ["accumulation:축적", "factors:요인들", "explain:설명하다", "optimal:최적의", "amounts:양", "sleep debt:수면 부채", "make up:보충하다", "normal:평소/정상", "longer:더 길게", "must:~해야 한다"] },
+        { en: "Because of such built-in molecular feedback, you can't become accustomed to getting less sleep than your body needs.", ko: "그러한 내장된 분자 피드백 때문에, 당신은 신체가 필요로 하는 것보다 적은 잠을 자는 것에 익숙해질 수 없습니다.", voca: ["built-in:내장된", "molecular:분자의", "feedback:피드백", "accustomed to:~에 익숙해진", "getting:자는 것/얻는 것", "needs:필요로 하다", "because of:~때문에", "less:더 적은", "than:~보다", "🍌"] },
+        { en: "Eventually, a lack of sleep catches up with you.", ko: "결국 수면 부족은 당신의 발목을 잡습니다(감당해야 할 결과가 찾아옵니다).", voca: ["Eventually:결국", "lack:부족", "catches up with:~의 발목을 잡다", "sleep:수면", "of:~의", "you:당신", "🍌", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #32";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Biological Clock:<br>Adenosine & Sleep Debt</h1><p>2025년 9월 고1 모의고사 32번</p></div>
+                [Image illustrating Adenosine buildup during wakefulness and breakdown during sleep]
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 수면 욕구는 참으려 해도 결국 우리를 압도하며, 이는 '아데노신'이라는 물질 때문임.</p>
+                    <p>• <b>📍 본론:</b> 아데노신은 깨어 있는 동안 혈액에 쌓이고 잠자는 동안 분해되며 수면 부채를 관리함.</p>
+                    <p>• <b>📍 결론:</b> 이러한 생체 시스템 때문에 우리는 수면 부족에 결코 익숙해질 수 없으며 결국 대가를 치르게 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 아데노신 축적에 따른 수면 욕구 조절과 수면 부채의 원리</span>
+                    <span class="topic-eng">Topic: The Mechanism of Sleep Drive Regulation and Sleep Debt through Adenosine Accumulation</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

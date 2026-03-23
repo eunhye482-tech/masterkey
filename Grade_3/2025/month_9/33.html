@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #33 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #33</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "One of the things that makes uncertainty difficult for members of the public to appreciate is that the significance of uncertainty is relative.", ko: "대중이 불확실성을 이해하기 어렵게 만드는 것 중 하나는 불확실성의 중요성이 상대적이라는 점입니다.", voca: ["uncertainty:불확실성", "appreciate:이해하다/감상하다", "significance:중요성", "relative:상대적인", "difficult:어려운", "members:구성원", "public:대중", "makes:만들다", "one:하나", "🍌"] },
+        { en: "Take, for example, the distance between Earth and the sun: 1.49597 x 10⁸ km, as measured at one point during the year.", ko: "예를 들어, 일 년 중 한 지점에서 측정한 지구와 태양 사이의 거리인 1.49597 x 10⁸ km를 예로 들어 봅시다.", voca: ["distance:거리", "measured:측정된", "point:지점/시점", "Earth:지구", "sun:태양", "between:~사이에", "during:~동안", "year:년", "example:예시", "🍌"] },
+        { en: "This seems relatively precise; after all, using six significant digits means I know the distance to an accuracy of one part in a million or so.", ko: "이것은 비교적 정확해 보입니다. 결국, 6개의 유효 숫자를 사용한다는 것은 백만 분의 일 정도의 정확도로 거리를 알고 있다는 것을 의미하기 때문입니다.", voca: ["relatively:비교적", "precise:정확한", "significant digits:유효 숫자", "accuracy:정확도/정밀도", "million:백만", "means:의미하다", "distance:거리", "using:사용하는 것", "after all:결국", "🍌"] },
+        { en: "However, if the next digit is uncertain, that means the uncertainty in knowing the precise Earth-sun distance is larger than the distance between New York and Chicago!", ko: "하지만, 만약 다음 숫자가 불확실하다면, 그것은 정확한 지구-태양 거리를 아는 데 있어서의 불확실성이 뉴욕과 시카고 사이의 거리보다 더 크다는 것을 의미합니다!", voca: ["However:하지만", "digit:숫자", "uncertain:불확실한", "precise:정확한", "larger:더 큰", "distance:거리", "between:~사이에", "knowing:아는 것", "means:의미하다", "🍌"] },
+        { en: "Whether or not the quoted number is 'precise' therefore depends on what I'm intending to do with it.", ko: "따라서 인용된 숫자가 '정확한지' 여부는 내가 그것으로 무엇을 하려고 하는지에 달려 있습니다.", voca: ["quoted:인용된", "precise:정확한", "therefore:따라서", "depends on:~에 달려 있다", "intending:의도하는", "number:숫자", "Whether or not:~인지 아닌지", "do:하다", "with:~을 가지고", "🍌"] },
+        { en: "If I care only about what minute the sun will rise tomorrow, then the number quoted here is fine.", ko: "만약 내일 해가 몇 분에 뜰지에 대해서만 신경을 쓴다면, 여기에 인용된 숫자는 괜찮습니다.", voca: ["care:신경 쓰다", "minute:분", "rise:뜨다", "tomorrow:내일", "fine:괜찮은", "only:오직", "about:~에 대해", "number:숫자", "quoted:인용된", "🍌"] },
+        { en: "If I want to send a satellite to orbit just above the sun, however, then I would need to know distances more accurately.", ko: "하지만, 만약 태양 바로 위의 궤도에 위성을 보내고 싶다면, 나는 거리를 더 정확하게 알 필요가 있을 것입니다.", voca: ["satellite:위성", "orbit:궤도/궤도를 돌다", "accurately:정확하게", "need:필요하다", "distances:거리들", "above:~ 위에", "want:원하다", "send:보내다", "however:하지만", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #33";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Relativity of<br>Scientific Uncertainty</h1><p>2025년 9월 고1 모의고사 33번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 과학적 불확실성의 중요성은 고정된 것이 아니라 상황에 따라 상대적임.</p>
+                    <p>• <b>📍 본론:</b> 지구-태양 거리는 일상적으로는 정확해 보이지만, 아주 미세한 불확실성도 도시 간 거리보다 클 수 있음.</p>
+                    <p>• <b>📍 결론:</b> 숫자의 '정확성'은 일출 시간을 아는 것인지 위성을 쏘는 것인지 등 그 용도에 따라 결정됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 상황과 목적에 따라 달라지는 불확실성의 상대적 의미</span>
+                    <span class="topic-eng">Topic: The Relative Meaning of Uncertainty Depending on Context and Purpose</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

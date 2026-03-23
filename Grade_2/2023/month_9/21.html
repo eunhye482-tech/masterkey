@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #21 - 23년 9월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #21</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Most people have no doubt heard this question: If a tree falls in the forest and there is no one there to hear it fall, does it make a sound?", ko: "대부분의 사람들은 의심할 여지 없이 이 질문을 들어봤을 것입니다: 만약 숲에서 나무가 쓰러지고 그것이 쓰러지는 소리를 들을 사람이 아무도 없다면, 소리가 나는 것일까?", voca: ["no doubt:의심할 여지 없이", "forest:숲", "falls:쓰러지다/떨어지다", "sound:소리", "question:질문", "heard:들었다", "no one:아무도 없는", "if:만약", "🍎", "🍎"] },
+        { en: "The correct answer is no. Sound is more than pressure waves, and indeed there can be no sound without a hearer.", ko: "정답은 '아니오'입니다. 소리는 압력파 이상이며, 실제로 듣는 사람이 없다면 소리가 있을 수 없습니다.", voca: ["correct:정확한/맞는", "answer:대답", "pressure waves:압력파", "indeed:정말로/실제로", "without:~ 없이", "hearer:듣는 사람", "more than:~ 이상", "🍎", "🍎", "🍎"] },
+        { en: "And similarly, scientific communication is a two-way process.", ko: "마찬가지로, 과학적 의사소통은 양방향 과정입니다.", voca: ["similarly:마찬가지로", "scientific:과학적인", "communication:의사소통", "two-way:양방향의", "process:과정", "And:그리고", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Just as a signal is useless unless it is perceived, a published scientific paper is useless unless it is both received and understood.", ko: "신호가 감지되지 않으면 쓸모가 없는 것과 마찬가지로, 출판된 과학 논문도 수신되고 이해되지 않으면 쓸모가 없습니다.", voca: ["signal:신호", "useless:쓸모없는", "unless:~하지 않으면", "perceived:감지된/인지된", "published:출판된", "understood:이해된", "received:수신된", "both A and B:A와 B 둘 다", "🍎", "🍎"] },
+        { en: "Thus we can restate the axiom of science as follows: A scientific experiment is not complete until the results have been published and understood.", ko: "따라서 우리는 과학의 자명한 이치를 다음과 같이 재진술할 수 있습니다: 과학 실험은 결과가 출판되고 이해될 때까지 완성된 것이 아니다.", voca: ["restate:재진술하다", "axiom:자명한 이치/원리", "experiment:실험", "complete:완성된", "results:결과", "until:~할 때까지", "published:출판된", "as follows:다음과 같이", "🍎", "🍎"] },
+        { en: "Publication is no more than pressure waves unless the published paper is understood.", ko: "출판된 논문이 이해되지 않는다면 출판은 압력파에 지나지 않습니다.", voca: ["Publication:출판", "no more than:~에 지나지 않는", "pressure waves:압력파", "unless:~하지 않으면", "understood:이해된", "paper:논문", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Too many scientific papers fall silently in the woods.", ko: "너무나 많은 과학 논문들이 숲속에서 소리 없이 쓰러집니다.", voca: ["silently:소리 없이", "woods:숲", "scientific papers:과학 논문들", "fall:쓰러지다", "too many:너무 많은", "🍎", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #21";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Paradox of<br>Scientific Papers</h1><p>2023년 9월 고1 모의고사 21번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 들을 사람이 없는 숲속의 나무 쓰러지는 소리는 진정한 의미의 '소리'가 아님. 소리는 인지자가 있어야 존재함.</p>
+                    <p>• <b>📍 본론:</b> 과학도 이와 같음. 논문 출판(신호)은 독자에게 전달되고 '이해'될 때만 가치가 있으며, 이해되지 못한 논문은 단순한 압력파와 같음.</p>
+                    <p>• <b>📍 결론:</b> 과학 실험의 진정한 완성은 결과의 출판을 넘어, 그 내용이 독자에게 명확히 전달되고 이해되는 단계까지 포함함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 독자의 이해를 통해 완성되는 과학적 의사소통의 본질</span>
+                    <span class="topic-eng">Topic: The essence of scientific communication completed through the reader's understanding</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

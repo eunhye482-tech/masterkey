@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #38 - Official Version</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #38</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "To monitor our surroundings is to focus on what’s outside of ourselves: what we see, hear, smell, feel, and perhaps even taste.", ko: "우리의 주변을 관찰하는 것은 우리 외부에 있는 것, 즉 우리가 보고, 듣고, 냄새 맡고, 느끼고, 아마도 심지어 맛보는 것에 집중하는 것입니다.", voca: ["monitor:관찰/감시하다", "surroundings:주변 환경", "focus on:~에 집중하다", "outside:외부", "perhaps:아마도", "taste:맛보다", "smell:냄새맡다", "ourselves:우리 자신", "hear:듣다", "see:보다"] },
+        { en: "But sometimes what really marks a place is something less specific—a feeling within us.", ko: "하지만 때때로 어떤 장소를 정말로 특징짓는 것은 덜 구체적인 것, 즉 우리 내면의 감정입니다.", voca: ["sometimes:때때로", "marks:특징짓다/표시하다", "specific:구체적인", "feeling:감정", "within:~내부의", "less:덜", "place:장소", "really:정말로", "🍌", "🍌"] },
+        { en: "An interesting example emerged from a study of subway passenger behavior.", ko: "지하철 승객 행동 연구에서 흥미로운 사례가 나타났습니다.", voca: ["emerged:나타나다/출현하다", "study:연구", "subway:지하철", "passenger:승객", "behavior:행동", "interesting:흥미로운", "example:사례", "🍌", "🍌", "🍌"] },
+        { en: "Researchers trying to understand why people sit where they sit or stand where they stand in subway and metro trains examined the factors that shape the way riders used and navigated that space in different situations.", ko: "지하철과 메트로 열차에서 사람들이 왜 그 자리에 앉는지 또는 그 자리에 서 있는지를 이해하려는 연구원들은 승객들이 다양한 상황에서 그 공간을 사용하고 이동하는 방식을 형성하는 요인들을 조사했습니다.", voca: ["examined:조사하다", "factors:요인들", "shape:형성하다", "navigated:이동하다/길을찾다", "space:공간", "situations:상황들", "understand:이해하다", "riders:승객/타는사람", "different:다른", "metro:메트로"] },
+        { en: "One of their findings involved the reasons many riders like to plant themselves close to the train’s doors.", ko: "그들의 발견 중 하나는 많은 승객이 열차 문 근처에 자리를 잡고 싶어 하는 이유와 관련이 있었습니다.", voca: ["findings:발견(물)", "involved:관련되다/포함하다", "reasons:이유들", "plant oneself:자리를 잡다", "close to:~에 가까이", "doors:문들", "riders:승객들", "train:열차", "like:좋아하다", "🍌"] },
+        { en: "Partly this was the obvious convenience of being able to exit more quickly.", ko: "부분적으로 이것은 더 빨리 내릴 수 있다는 분명한 편리함 때문이었습니다.", voca: ["Partly:부분적으로", "obvious:분명한", "convenience:편리함", "exit:나가다/내리다", "quickly:빨리", "being able to:~할 수 있음", "this:이것", "more:더", "🍌", "🍌"] },
+        { en: "But it was shaped partly by a more abstract sensation—the desire to avoid the sometimes uncomfortable feeling of accidentally making eye contact with seated passengers.", ko: "하지만 그것은 부분적으로 더 추상적인 느낌, 즉 앉아 있는 승객들과 우연히 눈이 마주치는 때때로 불편한 기분을 피하고 싶은 욕구에 의해 형성되었습니다.", voca: ["abstract:추상적인", "sensation:느낌/감각", "desire:욕구", "avoid:피하다", "uncomfortable:불편한", "accidentally:우연히", "eye contact:눈맞춤", "seated:앉아 있는", "passengers:승객들", "feeling:기분"] },
+        { en: "We can’t see feelings—but they’re very real, and they influence our experience of the world.", ko: "우리는 감정을 볼 수는 없지만, 그것들은 매우 실제적이며 우리가 세상을 경험하는 데 영향을 미칩니다.", voca: ["influence:영향을 주다", "experience:경험", "real:실제적인", "world:세상", "feelings:감정들", "very:매우", "they:그것들", "see:보다", "can't:할 수 없다", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #38";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Inside the Mind:<br>Feelings Shape Experience</h1><p>2025년 6월 고1 모의고사 38번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 주변 관찰은 외부 자극에 집중하는 것이지만, 내면의 감정이 장소를 특징짓기도 함.</p>
+                    <p>• <b>📍 본론:</b> 지하철 승객들이 문 근처에 서는 이유는 편리함 외에도 승객과의 눈맞춤을 피하려는 심리적 요인이 큼.</p>
+                    <p>• <b>📍 결론:</b> 감정은 눈에 보이지 않지만 매우 실제적이며 우리가 세상을 경험하는 방식에 큰 영향을 미침.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 보이지 않는 내면의 감정이 공간 이용과 경험에 미치는 영향</span>
+                    <span class="topic-eng">Topic: How Invisible Internal Feelings Influence Spatial Use and World Experience</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

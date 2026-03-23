@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #34 - 24년 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #34</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "While social media attention is potentially an instrument to achieve ends like elite celebrity, some content creators desire ordinary fame as a social end in itself.", ko: "소셜 미디어의 관심은 잠재적으로 엘리트 유명인과 같은 목적을 달성하기 위한 도구이지만, 일부 콘텐츠 제작자들은 그 자체로 사회적 목적인 평범한 명성을 원합니다.", voca: ["instrument:도구/수단", "achieve:달성하다", "ends:목적", "celebrity:유명인", "desire:원하다", "ordinary:평범한", "fame:명성", "in itself:그 자체로", "content:콘텐츠", "🍌"] },
+        { en: "Not unlike reality television stars, social media celebrities are often criticized for not having skills and talents associated with traditional, elite celebrity, such as acting or singing ability.", ko: "리얼리티 TV 스타들과 마찬가지로, 소셜 미디어 유명인들은 종종 연기나 노래 실력과 같은 전통적인 엘리트 유명인과 관련된 기술과 재능이 없다는 비판을 받습니다.", voca: ["criticized:비판받는", "talents:재능", "associated with:~와 관련된", "traditional:전통적인", "acting:연기", "ability:능력", "stars:스타들", "often:종종", "skills:기술들", "🍌"] },
+        { en: "This criticism highlights the fact that digital content creators face real barriers to crossing over to the sphere of elite celebrity.", ko: "이러한 비판은 디지털 콘텐츠 제작자들이 엘리트 유명인의 영역으로 넘어가는 데 실질적인 장벽에 직면해 있다는 사실을 강조합니다.", voca: ["highlights:강조하다", "barriers:장벽", "crossing over:넘어가는 것", "sphere:영역", "face:직면하다", "fact:사실", "digital:디지털", "real:실질적인", "🍌", "🍌"] },
+        { en: "However, the criticism also misses the point that the phenomenon of ordinary celebrity reconstructs the meaning of fame.", ko: "하지만, 그 비판은 평범한 유명인이라는 현상이 명성의 의미를 재구성한다는 점을 간과하고 있습니다.", voca: ["misses:간과하다/놓치다", "phenomenon:현상", "reconstructs:재구성하다", "meaning:의미", "fame:명성", "point:요점", "celebrity:유명인", "also:또한", "However:하지만", "🍌"] },
+        { en: "The elite celebrity is symbolized by the metaphor of the star, characterized by mystery and hierarchical distance and associated with naturalized qualities of talent and class.", ko: "엘리트 유명인은 별이라는 은유로 상징되며, 신비로움과 계층적 거리감이 특징이고 재능 및 계급이라는 선천적인 자질과 관련이 있습니다.", voca: ["symbolized:상징되는", "metaphor:은유", "characterized:특징지어지는", "mystery:신비로움", "hierarchical:계층적인", "distance:거리감", "qualities:자질", "talent:재능", "class:계급", "🍌"] },
+        { en: "The ordinary celebrity attracts attention through regular and frequent interactions with other ordinary people.", ko: "평범한 유명인은 다른 평범한 사람들과의 규칙적이고 빈번한 상호작용을 통해 관심을 끕니다.", voca: ["attracts:끌다", "attention:관심", "regular:규칙적인", "frequent:빈번한", "interactions:상호작용", "ordinary:평범한", "people:사람들", "through:~을 통해", "other:다른", "🍌"] },
+        { en: "Achieving ordinary fame as a social media celebrity is like doing well at a game, because in this sphere, fame is nothing more nor less than relatively high scores on attention scales, the metrics of subscribers, followers, Likes, or clicks built into social media applications.", ko: "소셜 미디어 유명인으로서 평범한 명성을 얻는 것은 게임을 잘하는 것과 같습니다. 왜냐하면 이 영역에서 명성은 소셜 미디어 애플리케이션에 내장된 구독자 수, 팔로워, '좋아요', 또는 클릭 수라는 지표, 즉 관심 척도에서의 상대적으로 높은 점수 그 이상도 이하도 아니기 때문입니다.", voca: ["relatively:상대적으로", "scales:척도", "metrics:지표", "subscribers:구독자", "followers:팔로워", "built into:내장된", "applications:애플리케이션", "nothing more nor less:그 이상도 이하도 아닌", "fame:명성", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #34";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The New Meaning<br>of Fame</h1><p>2024년 9월 고1 모의고사 34번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 소셜 미디어 제작자들은 전통적인 스타가 되기 위한 수단뿐만 아니라, 그 자체로 '평범한 명성'을 얻는 것을 목적으로 함.</p>
+                    <p>• <b>📍 본론:</b> 엘리트 유명인이 신비로움과 선천적 재능으로 상징된다면, 평범한 유명인은 타인과의 빈번한 상호작용을 통해 대중의 관심을 끂.</p>
+                    <p>• <b>📍 결론:</b> 소셜 미디어에서의 명성은 구독자, 좋아요 등 '관심 지표'라는 게임 점수와 같으며, 이는 명성의 의미를 새롭게 재구성하고 있음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 소셜 미디어 지표를 통해 재구성되는 '평범한 유명인'과 명성의 새로운 의미</span>
+                    <span class="topic-eng">Topic: 'Ordinary Celebrity' and the New Meaning of Fame Reconstructed through Social Media Metrics</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

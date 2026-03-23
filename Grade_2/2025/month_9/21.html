@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #21 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #21</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Many atoms in your body are nearly as old as the universe itself.", ko: "당신의 몸속에 있는 많은 원자들은 거의 우주 그 자체만큼이나 오래되었습니다.", voca: ["atoms:원자", "nearly:거의", "universe:우주", "itself:그 자체", "body:몸", "old:오래된", "many:많은", "as old as:~만큼 오래된", "🍌", "🍌"] },
+        { en: "When you breathe, for example, only some of the atoms that you inhale are exhaled in your next breath.", ko: "예를 들어, 당신이 숨을 쉴 때 당신이 들이마시는 원자들 중 일부만이 다음 호흡에서 내뱉어집니다.", voca: ["breathe:숨쉬다", "inhale:들이마시다", "exhale:내뱉다", "breath:호흡", "some:일부", "next:다음의", "only:오직", "example:예시", "🍌", "🍌"] },
+        { en: "The remaining atoms are taken into your body to become part of you, and they later leave your body by various means.", ko: "남은 원자들은 당신의 몸속으로 들어가 당신의 일부가 되고, 나중에 다양한 수단에 의해 당신의 몸을 떠납니다.", voca: ["remaining:남은", "taken into:~로 들어가다", "part:일부", "leave:떠나다", "various:다양한", "means:수단/방법", "later:나중에", "atoms:원자들", "body:몸", "become:되다"] },
+        { en: "You don’t 'own' the atoms that make up your body; you borrow them.", ko: "당신은 당신의 몸을 구성하는 원자들을 '소유'하는 것이 아니라, 그것들을 빌리는 것입니다.", voca: ["own:소유하다", "make up:구성하다", "borrow:빌리다", "atoms:원자들", "body:몸", "them:그것들", "not:아닌", "🍌", "🍌", "🍌"] },
+        { en: "We all share from the same atom pool because atoms forever travel around, within, and among us.", ko: "원자들은 영원히 우리 주변, 내부, 그리고 우리 사이를 여행하기 때문에 우리 모두는 같은 원자 풀을 공유합니다.", voca: ["share:공유하다", "pool:풀/저장고", "forever:영원히", "travel:여행하다/이동하다", "within:~내부에", "among:~사이에", "around:주변에", "same:같은", "because:~때문에", "atoms:원자들"] },
+        { en: "Atoms cycle from person to person as we breathe and as our sweat is evaporated.", ko: "우리가 숨을 쉬고 땀이 증발함에 따라 원자들은 사람에서 사람으로 순환합니다.", voca: ["cycle:순환하다", "sweat:땀", "evaporated:증발된", "person:사람", "breathe:숨쉬다", "atoms:원자들", "from:~로부터", "as:~함에 따라", "🍌", "🍌"] },
+        { en: "We recycle atoms on a grand scale.", ko: "우리는 거대한 규모로 원자들을 재활용합니다.", voca: ["recycle:재활용하다", "grand scale:거대한 규모", "atoms:원자들", "we:우리", "on:~으로", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "The origin of the lightest atoms goes back to the origin of the universe, and most heavier atoms are older than the Sun and Earth.", ko: "가장 가벼운 원자들의 기원은 우주의 기원으로 거슬러 올라가며, 대부분의 더 무거운 원자들은 태양과 지구보다 더 오래되었습니다.", voca: ["origin:기원", "lightest:가장 가벼운", "goes back:거슬러 올라가다", "heavier:더 무거운", "Sun:태양", "Earth:지구", "older:더 오래된", "most:대부분", "universe:우주", "atoms:원자들"] },
+        { en: "There are atoms in your body that have existed since the first moments of time, recycling throughout the universe among limitless forms, both nonliving and living.", ko: "당신의 몸속에는 시간의 첫 순간부터 존재해 온 원자들이 있으며, 생물과 무생물 모두를 포함한 무한한 형태들 사이에서 우주 전역을 재활용하며 순환하고 있습니다.", voca: ["existed:존재했다", "since:~이후로", "first moments:첫 순간", "throughout:~전역에", "limitless:무한한", "forms:형태들", "nonliving:무생물", "living:생물", "recycling:재활용하며", "atoms:원자들"] },
+        { en: "You’re the present caretaker of the atoms in your body.", ko: "당신은 당신 몸속에 있는 원자들의 현재 관리인입니다.", voca: ["present:현재의", "caretaker:관리인", "atoms:원자들", "body:몸", "your:당신의", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "There will be many who will follow you.", ko: "당신의 뒤를 이을 사람들이 많을 것입니다.", voca: ["follow:뒤를 잇다/따르다", "many:많은 사람들", "will:~할 것이다", "you:당신", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #21";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Eternal Cycle<br>of Atoms</h1><p>2025년 9월 고1 모의고사 21번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 우리 몸의 원자들은 우주만큼이나 오래되었으며, 우리는 이를 잠시 빌려 쓰는 것임.</p>
+                    <p>• <b>📍 본론:</b> 원자들은 호흡과 증발을 통해 사람 사이를 끊임없이 이동하며 거대한 규모로 재활용됨.</p>
+                    <p>• <b>📍 결론:</b> 우리는 몸속 원자들의 현재 관리인일 뿐이며, 원자들은 무한한 형태를 거쳐 계속 순환할 것임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 우주적 규모에서 이루어지는 원자들의 영원한 순환과 재활용</span>
+                    <span class="topic-eng">Topic: The Eternal Cycling and Recycling of Atoms on a Cosmic Scale</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

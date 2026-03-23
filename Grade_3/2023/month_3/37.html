@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #37 - 23년 3월 고1 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #37</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Natural processes form minerals in many ways.", ko: "자연적인 과정은 여러 방식으로 광물을 형성합니다.", voca: ["Natural:자연적인", "processes:과정들", "form:형성하다", "minerals:광물들", "many ways:여러 방식", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For example, hot melted rock material, called magma, cools when it reaches the Earth’s surface, or even if it’s trapped below the surface.", ko: "예를 들어, 마그마라고 불리는 뜨거운 용융 암석 물질은 지구 표면에 도달할 때, 또는 심지어 표면 아래에 갇혀 있을 때도 식습니다.", voca: ["melted:용융된/녹은", "material:물질", "magma:마그마", "cools:식다", "reaches:도달하다", "surface:표면", "trapped:갇힌", "below:~ 아래에", "rock:암석", "🍎"] },
+        { en: "As magma cools, its atoms lose heat energy, move closer together, and begin to combine into compounds.", ko: "마그마가 식으면서 원자들은 열에너지를 잃고, 서로 더 가까이 이동하며, 결합하여 화합물을 만들기 시작합니다.", voca: ["atoms:원자들", "lose:잃다", "heat energy:열에너지", "closer:더 가까이", "combine:결합하다", "compounds:화합물", "begin:시작하다", "move:이동하다", "into:~로", "🍎"] },
+        { en: "During this process, atoms of the different compounds arrange themselves into orderly, repeating patterns.", ko: "이 과정 동안, 서로 다른 화합물의 원자들은 질서 있고 반복적인 패턴으로 스스로를 배열합니다.", voca: ["process:과정", "arrange:배열하다", "orderly:질서 있는", "repeating:반복적인", "patterns:패턴들", "different:서로 다른", "themselves:스스로를", "During:~ 동안", "🍎", "🍎"] },
+        { en: "The type and amount of elements present in a magma partly determine which minerals will form.", ko: "마그마에 존재하는 원소의 종류와 양이 어떤 광물이 형성될지를 부분적으로 결정합니다.", voca: ["elements:원소들", "present:존재하는", "partly:부분적으로", "determine:결정하다", "minerals:광물들", "type:종류", "amount:양", "form:형성되다", "which:어떤", "🍎"] },
+        { en: "Also, the size of the crystals that form depends partly on how rapidly the magma cools.", ko: "또한, 형성되는 결정의 크기는 부분적으로 마그마가 얼마나 빨리 식느냐에 달려 있습니다.", voca: ["size:크기", "crystals:결정들", "depends on:~에 달려 있다", "rapidly:빨리/급속히", "cools:식다", "how:얼마나", "Also:또한", "partly:부분적으로", "🍎", "🍎"] },
+        { en: "When magma cools slowly, the crystals that form are generally large enough to see with the unaided eye.", ko: "마그마가 천천히 식으면, 형성되는 결정은 일반적으로 육안으로 볼 수 있을 만큼 충분히 큽니다.", voca: ["slowly:천천히", "generally:일반적으로", "enough to:~할 만큼 충분히", "unaided eye:육안(도움을 받지 않은 눈)", "large:큰", "see:보다", "When:~할 때", "crystals:결정들", "🍎", "🍎"] },
+        { en: "This is because the atoms have enough time to move together and form into larger crystals.", ko: "이것은 원자들이 함께 이동하여 더 큰 결정을 형성할 충분한 시간을 갖기 때문입니다.", voca: ["because:~때문에", "enough time:충분한 시간", "move together:함께 이동하다", "form into:~으로 형성되다", "larger:더 큰", "atoms:원자들", "have:가지다", "🍎", "🍎", "🍎"] },
+        { en: "When magma cools rapidly, the crystals that form will be small. In such cases, you can’t easily see individual mineral crystals.", ko: "마그마가 급격히 식으면, 형성되는 결정은 작을 것입니다. 그런 경우에는 개별 광물 결정을 쉽게 볼 수 없습니다.", voca: ["rapidly:급격히", "small:작은", "cases:경우들", "easily:쉽게", "individual:개별적인", "mineral crystals:광물 결정들", "can't:할 수 없다", "see:보다", "such:그런", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #37";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Formation of<br>Mineral Crystals</h1><p>2023년 3월 고1 모의고사 37번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 광물은 마그마가 지표면이나 지하에서 식으면서 형성됨.</p>
+                    <p>• <b>📍 본론:</b> 마그마가 식으면 원자들이 결합하여 질서 있는 패턴을 만들며, 마그마 속 원소의 종류와 냉각 속도가 광물의 특성을 결정함.</p>
+                    <p>• <b>📍 결론:</b> 냉각 속도가 결정 크기의 핵심임. 천천히 식으면 원자들이 모일 시간이 충분해 육안으로 보일 만큼 큰 결정이 생기고, 빨리 식으면 작은 결정이 형성됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 마그마의 냉각 과정과 냉각 속도에 따른 광물 결정 크기의 형성 원리</span>
+                    <span class="topic-eng">Topic: The process of magma cooling and the principle of mineral crystal size formation based on cooling rate</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+    function fillBlanks(sentence) {
+        const container = document.getElementById('blank-area');
+        sentence.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; span.innerText = word;
+            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
+            container.appendChild(span);
+        });
+    }
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
