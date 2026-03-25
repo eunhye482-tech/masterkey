@@ -57,8 +57,10 @@
 </div>
 
 <script>
-    const prepositions = ["after", "of", "during", "into", "as", "to", "with", "over", "not", "on"];
+    const prepositions = ["behind", "in", "before", "with", "than", "after", "of", "during", "into", "to", "over", "as"];
     const fullData = [
+        { en: "We first need to understand the short but hidden history behind the plastics industry and how it became deeply rooted in our daily lives.", ko: "우리는 먼저 플라스틱 산업 뒤에 숨겨진 짧지만 숨겨진 역사와 그것이 어떻게 우리 일상 생활에 깊이 뿌리내리게 되었는지 이해해야 합니다.", voca: ["hidden:숨겨진", "history:역사", "behind:~ 뒤에", "deeply:깊이", "rooted:뿌리내린", "understand:이해하다", "lives:삶들", "🍎", "🍎", "🍎"] },
+        { en: "Before plastic, people lived more sustainably, with far fewer waste problems than we face today.", ko: "플라스틱이 생기기 전, 사람들은 오늘날 우리가 직면한 것보다 훨씬 적은 쓰레기 문제와 함께 더 지속 가능하게 살았습니다.", voca: ["Before:이전에", "sustainably:지속 가능하게", "fewer:더 적은", "waste:쓰레기", "face:직면하다", "problems:문제들", "today:오늘날", "🍎", "🍎", "🍎"] },
         { en: "However, after the invention of plastic, its rapid adoption during World War II, and its explosion into consumer goods, plastic was everywhere.", ko: "하지만 플라스틱의 발명, 제2차 세계대전 동안의 빠른 채택, 그리고 소비재로의 폭발적 보급 이후 플라스틱은 어디에나 있었습니다.", voca: ["invention:발명", "adoption:채택", "explosion:폭발/급증", "consumer goods:소비재", "everywhere:어디에나", "rapid:빠른", "However:하지만", "🍎", "🍎", "🍎"] },
         { en: "The growing industry came to symbolize the convenience and prosperity of the American dream.", ko: "성장하는 산업은 미국식 장밋빛 인생의 편리함과 번영을 상징하게 되었습니다.", voca: ["symbolize:상징하다", "convenience:편리함", "prosperity:번영", "growing:성장하는", "industry:산업", "dream:꿈", "🍎", "🍎", "🍎", "🍎"] },
         { en: "This dream came with a price. Over time, people began to notice the environmental impact, and the early seeds of today’s environmental movement were planted.", ko: "이 꿈에는 대가가 따랐습니다. 시간이 흐르면서 사람들은 환경적 영향을 알아차리기 시작했고, 오늘날 환경 운동의 초기 씨앗이 심어졌습니다.", voca: ["price:대가/가격", "impact:영향", "environmental:환경적인", "movement:운동", "planted:심겨진", "notice:알아차리다", "🍎", "🍎", "🍎", "🍎"] },
@@ -80,15 +82,15 @@
             header.innerText = "English Master #37";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Paradox of<br>Plastic Recycling</h1><p>2026년 3월 고1 37번</p></div>
+                <div class="main-title-card"><h1>The Hidden History<br>of Plastic</h1><p>2026년 3월 고1 37번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 2차 대전 이후 플라스틱은 편리함의 상징으로 우리 삶의 모든 곳에 보급됨.</p>
+                    <p>• <b>📍 서론:</b> 플라스틱 보급 전 인류는 더 지속 가능한 삶을 살았으나, 2차 대전 이후 편리함의 상징으로 어디에나 존재하게 됨.</p>
                     <p>• <b>📍 본론:</b> 환경 오염에 대한 우려가 커지자, 플라스틱 업계는 '재활용'이라는 해결책을 내세우며 대응함.</p>
                     <p>• <b>📍 결론:</b> 이는 환경 오염의 책임을 기업이 아닌 소비자에게 전가하려는 교묘한 전략이었음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 환경 오염 책임을 소비자에게 전가하려는 플라스틱 업계의 재활용 캠페인</span>
-                    <span class="topic-eng">Topic: The plastic industry's recycling campaigns to shift pollution responsibility to consumers</span>
+                    <span class="topic-kor">주제: 플라스틱 산업의 역사와 환경 오염 책임을 소비자에게 전가하려는 기업의 전략</span>
+                    <span class="topic-eng">Topic: The history of the plastic industry and corporate strategies to shift pollution responsibility</span>
                 </div>
                 <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
                 <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
