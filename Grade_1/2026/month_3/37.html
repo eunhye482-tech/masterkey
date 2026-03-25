@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #37 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #37</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["after", "of", "during", "into", "as", "to", "with", "over", "not", "on"];
+    const fullData = [
+        { en: "However, after the invention of plastic, its rapid adoption during World War II, and its explosion into consumer goods, plastic was everywhere.", ko: "하지만 플라스틱의 발명, 제2차 세계대전 동안의 빠른 채택, 그리고 소비재로의 폭발적 보급 이후 플라스틱은 어디에나 있었습니다.", voca: ["invention:발명", "adoption:채택", "explosion:폭발/급증", "consumer goods:소비재", "everywhere:어디에나", "rapid:빠른", "However:하지만", "🍎", "🍎", "🍎"] },
+        { en: "The growing industry came to symbolize the convenience and prosperity of the American dream.", ko: "성장하는 산업은 미국식 장밋빛 인생의 편리함과 번영을 상징하게 되었습니다.", voca: ["symbolize:상징하다", "convenience:편리함", "prosperity:번영", "growing:성장하는", "industry:산업", "dream:꿈", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This dream came with a price. Over time, people began to notice the environmental impact, and the early seeds of today’s environmental movement were planted.", ko: "이 꿈에는 대가가 따랐습니다. 시간이 흐르면서 사람들은 환경적 영향을 알아차리기 시작했고, 오늘날 환경 운동의 초기 씨앗이 심어졌습니다.", voca: ["price:대가/가격", "impact:영향", "environmental:환경적인", "movement:운동", "planted:심겨진", "notice:알아차리다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "However, the plastics industry was quick to counter these concerns, launching campaigns that presented recycling as the solution to all our problems.", ko: "하지만 플라스틱 업계는 이러한 우려에 빠르게 대응하여, 재활용을 우리 모든 문제의 해결책으로 제시하는 캠페인을 시작했습니다.", voca: ["counter:대응하다/반격하다", "concerns:우려", "launching:시작하는", "presented:제시했다", "solution:해결책", "recycling:재활용", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "They pushed the idea that pollution was the fault of consumers, not the corporations flooding the market with plastic.", ko: "그들은 오염이 플라스틱으로 시장을 넘쳐나게 만드는 기업이 아니라 소비자의 잘못이라는 생각을 밀어붙였습니다.", voca: ["pollution:오염", "fault:잘못", "consumers:소비자", "corporations:기업들", "flooding:범람시키는", "market:시장", "idea:생각", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #37";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Paradox of<br>Plastic Recycling</h1><p>2026년 3월 고1 37번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 2차 대전 이후 플라스틱은 편리함의 상징으로 우리 삶의 모든 곳에 보급됨.</p>
+                    <p>• <b>📍 본론:</b> 환경 오염에 대한 우려가 커지자, 플라스틱 업계는 '재활용'이라는 해결책을 내세우며 대응함.</p>
+                    <p>• <b>📍 결론:</b> 이는 환경 오염의 책임을 기업이 아닌 소비자에게 전가하려는 교묘한 전략이었음.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 환경 오염 책임을 소비자에게 전가하려는 플라스틱 업계의 재활용 캠페인</span>
+                    <span class="topic-eng">Topic: The plastic industry's recycling campaigns to shift pollution responsibility to consumers</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

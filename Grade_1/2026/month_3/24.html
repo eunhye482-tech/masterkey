@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #24 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #24</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["in", "on", "at", "by", "with", "for", "to", "from", "of", "about", "as", "into", "through", "while"];
+    const fullData = [
+        { en: "Habits aren’t bad. We need them to survive. Understanding how the brain uses habits, and how you can work with them, is essential for business.", ko: "습관은 나쁜 것이 아닙니다. 우리는 생존하기 위해 그것들이 필요합니다. 뇌가 습관을 어떻게 사용하는지, 그리고 여러분이 그것들을 어떻게 활용할 수 있는지 이해하는 것은 비즈니스에 필수적입니다.", voca: ["Habits:습관", "survive:생존하다", "brain:뇌", "essential:필수적인", "business:비즈니스", "uses:사용하다", "Understanding:이해하는 것", "🍎", "🍎", "🍎"] },
+        { en: "One question to ask is, are you really trying to break a habit, or would you do better by attaching to another one (known as temptation bundling)?", ko: "물어볼 한 가지 질문은, 여러분이 정말로 습관을 깨려고 노력하고 있는지, 아니면 다른 습관에 덧붙임으로써(유혹 묶음으로 알려진) 더 잘할 수 있는지입니다.", voca: ["break:깨다/중단하다", "attaching:덧붙이는 것", "temptation:유혹", "bundling:묶음", "question:질문", "better:더 잘/더 나은", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Wharton professor Katy Milkman led a research project called Holding the Hunger Games Hostage at the Gym, where participants could only have access to their audio devices while at the gym.", ko: "Wharton의 Katy Milkman 교수는 '체육관에서 헝거 게임 인질로 잡기'라는 연구 프로젝트를 이끌었는데, 그곳에서 참가자들은 체육관에 있을 때만 오디오 장치에 접근할 수 있었습니다.", voca: ["professor:교수", "research:연구", "hostage:인질", "participants:참가자들", "access:접근", "devices:장치들", "while:~하는 동안", "🍎", "🍎", "🍎"] },
+        { en: "This uses a tempting habit — listening to that awesome audiobook — and combines it with a habit people would like to build, but may otherwise feel forced to put off, like exercising.", ko: "이것은 유혹적인 습관 — 그 멋진 오디오북을 듣는 것 — 을 사람들이 형성하고 싶어 하지만 그렇지 않으면 운동처럼 미루도록 강요받는다고 느낄 수 있는 습관과 결합합니다.", voca: ["tempting:유혹적인", "awesome:멋진", "combines:결합하다", "otherwise:그렇지 않으면", "forced:강요된", "put off:미루다", "exercising:운동하기", "🍎", "🍎", "🍎"] },
+        { en: "The participants whose devices were “held hostage” were 51 percent more likely to visit the gym.", ko: "장치가 “인질로 잡힌” 참가자들은 체육관을 방문할 가능성이 51% 더 높았습니다.", voca: ["percent:퍼센트", "likely:가능성이 있는", "visit:방문하다", "gym:체육관", "devices:장치들", "more:더", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "And the really amazing thing is what happened after it was over: nearly two-thirds opted to pay to have gym-only access for their devices!", ko: "그리고 정말 놀라운 점은 그것이 끝난 후에 일어난 일입니다: 거의 3분의 2가 자신의 장치에 대해 체육관 전용 액세스 권한을 갖기 위해 돈을 지불하기로 선택했습니다!", voca: ["amazing:놀라운", "happened:일어났다", "over:끝난", "nearly:거의", "two-thirds:3분의 2", "opted:선택했다", "pay:지불하다", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #24";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Temptation<br>Bundling</h1><p>2026년 3월 고1 24번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 습관은 생존과 비즈니스에 필수적이며, 습관을 깨는 것보다 새로운 습관을 덧붙이는 것이 효과적일 수 있음.</p>
+                    <p>• <b>📍 본론:</b> '유혹 묶음' 연구에 따르면, 즐거운 일(오디오북)을 해야 할 일(운동)과 결합했을 때 실천율이 급격히 올라감.</p>
+                    <p>• <b>📍 결과:</b> 실험 후 참가자의 3분의 2가 돈을 내고서라도 이 '묶음' 시스템을 유지하고 싶어 할 정도로 강력한 효과를 보임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 유혹 묶음(Temptation Bundling)을 통한 효율적인 습관 형성 전략</span>
+                    <span class="topic-eng">Topic: Effective habit-building strategies through temptation bundling</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

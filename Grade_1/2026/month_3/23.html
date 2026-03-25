@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #23 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #23</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["in", "on", "at", "by", "with", "for", "to", "from", "of", "about", "as", "into", "through", "across", "against"];
+    const fullData = [
+        { en: "Conformity in the teenage years has been studied by putting young people in situations where they are asked to make a choice or decision where that appears to go against what everyone else in the group is saying.", ko: "청소년기의 동조는 집단의 다른 모든 사람들이 말하는 것과 반대되는 것처럼 보이는 선택이나 결정을 하도록 요구받는 상황에 젊은이들을 놓이게 함으로써 연구되어 왔습니다.", voca: ["Conformity:동조", "studied:연구된", "situations:상황들", "choice:선택", "decision:결정", "against:~에 반대하여", "group:집단", "🍎", "🍎", "🍎"] },
+        { en: "The fascinating thing about the results of these studies is that conformity is not spread equally across all age groups.", ko: "이러한 연구 결과에 대한 흥미로운 점은 동조가 모든 연령대에서 똑같이 퍼져 있지 않다는 것입니다.", voca: ["fascinating:흥미로운", "results:결과", "studies:연구들", "spread:퍼지다", "equally:똑같이", "across:~에 걸쳐", "age groups:연령대", "🍎", "🍎", "🍎"] },
+        { en: "Thus, the willingness to go along with others reaches a peak around the age of 14.", ko: "따라서, 타인과 함께 가려는 의지는 14세 전후에 정점에 도달합니다.", voca: ["willingness:의지", "go along with:~에 동조하다", "reaches:도달하다", "peak:정점", "around:~ 주변에", "others:타인들", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "After that, this tendency decreases, so that by 16 or 17, young people are much more able to disagree with the group and to stand up for their own opinion.", ko: "그 후에, 이 성향은 감소하여 16세나 17세가 되면, 젊은이들은 집단에 반대하고 자신의 의견을 옹호할 수 있는 능력이 훨씬 더 커집니다.", voca: ["tendency:성향/경향", "decreases:감소하다", "disagree:반대하다", "stand up for:~을 옹호하다", "opinion:의견", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This is an important finding. It demonstrates that the influence of the peer group is not the same across all ages.", ko: "이것은 중요한 발견입니다. 그것은 또래 집단의 영향력이 모든 연령대에서 동일하지 않다는 것을 입증합니다.", voca: ["finding:발견", "demonstrates:입증하다", "influence:영향력", "peer group:또래 집단", "same:동일한", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "As young people mature, they become more resilient, and more able to defend their opinions as individuals.", ko: "청소년들이 성숙해짐에 따라, 그들은 더 회복력이 생기고 개인으로서 자신의 의견을 방어할 수 있는 능력이 더 커집니다.", voca: ["mature:성숙해지다", "resilient:회복력 있는", "defend:방어하다", "individuals:개인들", "become:되다", "🍎", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #23";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Teenage<br>Conformity</h1><p>2026년 3월 고1 23번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 청소년기의 동조 현상은 집단 의견과 반대되는 선택을 해야 하는 실험을 통해 연구됨.</p>
+                    <p>• <b>📍 본론:</b> 동조 성향은 14세에 정점을 찍고 이후 점차 감소하며, 16~17세에는 독자적 의견을 내는 능력이 강화됨.</p>
+                    <p>• <b>📍 결론:</b> 성숙해질수록 청소년들은 또래 집단의 영향에서 벗어나 개인으로서 자신의 의견을 방어하는 회복력을 갖춤.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 청소년기 연령에 따른 동조 성향의 변화와 독립성 발달</span>
+                    <span class="topic-eng">Topic: Changes in conformity tendencies and the development of independence by age in adolescence</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

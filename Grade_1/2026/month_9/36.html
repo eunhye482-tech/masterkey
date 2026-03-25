@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #36 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #36</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "The desert tortoise has a simple solution for coping with Death Valley's extreme heat: It avoids it.", ko: "사막 거북은 데스밸리의 극한의 열기에 대처하는 간단한 해결책을 가지고 있습니다. 바로 그것을 피하는 것입니다.", voca: ["tortoise:거북(육지)", "solution:해결책", "coping with:~에 대처하다", "extreme:극한의", "heat:열기/더위", "avoids:피하다", "simple:간단한", "desert:사막", "🍌", "🍌"] },
+        { en: "The slow-moving creature hibernates during the winter and stays in its tunnel for much of the summer, meaning that it spends more than 90 percent of its life immobile.", ko: "이 느리게 움직이는 생물은 겨울 동안 동면하고 여름의 대부분을 터널 속에서 지내는데, 이는 일생의 90% 이상을 움직이지 않고 보낸다는 것을 의미합니다.", voca: ["creature:생물", "hibernates:동면하다", "during:~ 동안", "tunnel:터널/굴", "meaning:의미하는", "percent:퍼센트", "immobile:움직이지 않는", "spends:보내다", "life:일생", "stays:머무르다"] },
+        { en: "In fact, the tortoise usually only surfaces after a good rain.", ko: "사실, 이 거북은 대개 충분한 비가 내린 후에만 지면으로 나옵니다.", voca: ["In fact:사실", "usually:대개", "surfaces:지면으로 나오다/표면", "after:~ 후에", "good rain:충분한 비", "only:오직", "tortoise:거북", "🍌", "🍌", "🍌"] },
+        { en: "Then, it gets to work.", ko: "그러고 나서, 그것은 일을 시작합니다.", voca: ["gets to work:일을 시작하다", "Then:그러고 나서", "it:그것", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "The tortoise stocks up on water by eating plants and digging holes to collect rain.", ko: "거북은 식물을 먹고 비를 모으기 위해 구멍을 파서 물을 비축합니다.", voca: ["stocks up on:~을 비축하다", "plants:식물", "digging:파는 것", "holes:구멍", "collect:모으다", "rain:비", "eating:먹는 것", "by:~함으로써", "tortoise:거북", "🍌"] },
+        { en: "But to stay supplied with water through its extended hibernation, the reptile relies on something else—its highly sophisticated bladder.", ko: "하지만 긴 동면 동안 물을 계속 공급받기 위해, 이 파충류는 다른 것, 즉 매우 정교한 방광에 의존합니다.", voca: ["supplied:공급된", "extended:긴/연장된", "hibernation:동면", "reptile:파충류", "relies on:~에 의존하다", "highly:매우", "sophisticated:정교한", "bladder:방광", "through:~을 통해", "stay:유지하다"] },
+        { en: "Unlike most animals, the tortoise's bladder acts as a holding tank, allowing it to reabsorb water back into its body.", ko: "대부분의 동물과 달리, 거북의 방광은 저장 탱크 역할을 하여 물을 다시 몸속으로 재흡수할 수 있게 해줍니다.", voca: ["Unlike:~와 달리", "acts as:~의 역할을 하다", "holding tank:저장 탱크", "allowing:허용하는", "reabsorb:재흡수하다", "body:몸", "water:물", "back into:~로 다시", "most:대부분의", "🍌"] },
+        { en: "Incredibly, a desert tortoise can go a full year without taking in any freshwater at all.", ko: "놀랍게도, 사막 거북은 민물을 전혀 섭취하지 않고도 일 년 전체를 버틸 수 있습니다.", voca: ["Incredibly:놀랍게도", "full year:일 년 전체", "without:~ 없이", "taking in:섭취하다", "freshwater:민물", "at all:전혀", "can:할 수 있다", "desert:사막", "tortoise:거북", "🍌"] },
+        { en: "And because its bladder is so important to a tortoise's survival, park rangers often remind visitors not to stop and help the slow-movers across the road.", ko: "그리고 방광이 거북의 생존에 매우 중요하기 때문에, 공원 관리인들은 종종 방문객들에게 길을 건너는 이 느림보들을 멈춰서 돕지 말라고 상기시킵니다.", voca: ["survival:생존", "park rangers:공원 관리인", "remind:상기시키다", "visitors:방문객", "across:건너서", "road:길", "important:중요한", "often:종종", "stop:멈추다", "help:돕다"] },
+        { en: "Tortoises become so terrified when people pick them up that they empty their bladders, losing their precious water reserves.", ko: "거북은 사람들이 그들을 집어 올릴 때 너무 겁에 질려 방광을 비워버리고, 그들의 소중한 수분 비축량을 잃게 됩니다.", voca: ["terrified:겁에 질린", "pick up:집어 올리다", "empty:비우다", "precious:소중한", "reserves:비축량", "losing:잃는 것", "bladders:방광", "people:사람들", "when:~할 때", "become:되다"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #36";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Desert Tortoise:<br>Masters of Survival</h1><p>2025년 9월 고1 모의고사 36번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 사막 거북은 극한의 열기를 피해 인생의 90%를 움직이지 않고 보냄.</p>
+                    <p>• <b>📍 본론:</b> 비가 올 때 물을 비축하며, 특히 정교한 '방광'을 저장 탱크로 사용하여 수분을 재흡수함.</p>
+                    <p>• <b>📍 결론:</b> 생존에 필수적인 방광 속 수분을 잃지 않도록, 길 위의 거북을 함부로 만져선 안 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 사막 거북의 독특한 수분 보존 기제와 생존 전략</span>
+                    <span class="topic-eng">Topic: The Unique Water Conservation Mechanism and Survival Strategy of the Desert Tortoise</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+// 수정된 Step 3 빈칸 생성 로직
+function fillBlanks(s) {
+    const c = document.getElementById('blank-area');
+    
+    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
+    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+
+    s.split(' ').forEach(w => {
+        const sp = document.createElement('span');
+        sp.className = 'word-blank';
+        sp.innerText = w;
+        
+        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
+        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
+        
+        if (prepositions.includes(pureWord)) {
+            // 전치사라면 처음부터 보여주고 밑줄 제거
+            sp.classList.add('revealed');
+            sp.style.borderBottomColor = 'transparent'; 
+        }
+
+        // 클릭하면 정답이 보이게 하는 기능
+        sp.onclick = function() {
+            this.classList.add('revealed');
+            this.style.borderBottomColor = 'transparent';
+            playTTS(w.replace(/[.,'"]/g, ""));
+        };
+        c.appendChild(sp);
+    });
+}
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

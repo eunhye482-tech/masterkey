@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #36 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #36</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["in", "that", "than", "often", "even", "behind", "from", "about", "at", "over", "into", "of"];
+    const fullData = [
+        { en: "First mentioned in Robert Browning’s poem “Andrea del Sarto,” it suggests that everything simple is better and more beautiful than the complex and tangled.", ko: "로버트 브라우닝의 시 “Andrea del Sarto”에서 처음 언급된 그것은 모든 단순한 것이 복잡하고 뒤엉킨 것보다 더 낫고 더 아름답다는 것을 시사합니다.", voca: ["mentioned:언급된", "suggests:시사하다", "simple:단순한", "beautiful:아름다운", "complex:복잡한", "tangled:뒤엉킨", "poem:시", "🍎", "🍎", "🍎"] },
+        { en: "Nowadays this phrase is heard often — maybe even too often.", ko: "오늘날 이 구절은 자주 들립니다 — 어쩌면 너무 자주일지도 모릅니다.", voca: ["Nowadays:오늘날", "phrase:구절", "heard:들리는", "often:자주", "maybe:어쩌면", "even:심지어", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "But it’s important to recognize that the way of thinking that lies behind these words slowly extinguishes certain habits from our daily life.", ko: "하지만 이 말 뒤에 놓여 있는 사고방식이 우리 일상생활에서 특정한 습관들을 서서히 소멸시킨다는 점을 인식하는 것이 중요합니다.", voca: ["important:중요한", "recognize:인식하다", "behind:~ 뒤에", "extinguishes:소멸시키다", "certain:특정한", "habits:습관들", "daily life:일상생활", "🍎", "🍎", "🍎"] },
+        { en: "For example, think about the heavy, massive radio receivers that existed back in the day.", ko: "예를 들어, 옛날에 존재했던 무겁고 거대한 라디오 수신기를 생각해 보십시오.", voca: ["heavy:무거운", "massive:거대한", "receivers:수신기", "existed:존재했던", "example:예시", "back in the day:옛날에", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Over time, many of their buttons became viewed as “extra” and were removed, and with each reduction these devices eventually developed into the phones in our pockets.", ko: "시간이 흐르면서, 그것들의 많은 버튼은 “여분”으로 간주되어 제거되었고, 각 감소를 통해 이 장치들은 결국 우리 주머니 속의 전화기로 발전했습니다.", voca: ["Over time:시간이 흘러", "extra:여분의", "removed:제거된", "reduction:감소", "eventually:결국", "developed:발전했다", "devices:장치들", "🍎", "🍎", "🍎"] },
+        { en: "The scale of the object became smaller, and the functions of the buttons got lost in the three-dot menus and multilayered folders of our phones.", ko: "물체의 규모는 더 작아졌고, 버튼의 기능은 우리 전화기의 점 세 개 메뉴와 다층 구조의 폴더 속으로 사라졌습니다.", voca: ["scale:규모", "object:물체", "smaller:더 작은", "functions:기능", "lost:사라진/잃어버린", "multilayered:다층의", "folders:폴더", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #36";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Simplicity<br>and Habits</h1><p>2026년 3월 고1 36번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> '단순한 것이 더 낫다'는 생각은 오늘날 매우 흔한 구절이 되었음.</p>
+                    <p>• <b>📍 본론:</b> 하지만 이러한 사고방식은 거대한 라디오의 물리적 버튼들을 '여분'으로 여겨 제거하게 만들었음.</p>
+                    <p>• <b>📍 결론:</b> 결국 기기는 작아졌지만, 과거의 직관적인 버튼 기능들은 스마트폰의 복잡한 메뉴와 폴더 속으로 숨어버리게 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 단순함을 지향하는 사고방식이 일상의 도구와 습관에 미치는 영향</span>
+                    <span class="topic-eng">Topic: The impact of a simplicity-oriented mindset on daily tools and habits</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #30 - Official Version</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #30</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "It is natural for people to observe happenings and then seek explanations for why those happenings occurred.", ko: "사람들이 일어난 일을 관찰하고 그 일이 왜 일어났는지에 대한 설명을 찾는 것은 자연스러운 일입니다.", voca: ["natural:자연스러운", "observe:관찰하다", "happenings:일어난일들", "seek:찾다", "explanations:설명", "occurred:일어났다", "people:사람들", "why:왜", "those:그러한", "🍌"] },
+        { en: "But sometimes the reasoning is wrong because of one or more misconceptions.", ko: "하지만 때때로 하나 이상의 오해 때문에 그 추론이 틀릴 수도 있습니다.", voca: ["reasoning:추론", "wrong:틀린", "misconceptions:오해", "because of:~때문에", "sometimes:때때로", "more:더많은", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "One of these is the ecological fallacy, where an argument claims that there is a causal relationship between two things merely because they occur together.", ko: "이 중 하나는 생태학적 오류로, 단순히 두 가지가 함께 발생한다는 이유만으로 인과 관계가 있다고 주장하는 것입니다.", voca: ["ecological:생태학적", "fallacy:오류", "argument:주장", "claims:주장하다", "causal:인과의", "relationship:관계", "merely:단순히", "occur:발생하다", "together:함께", "between:~사이에"] },
+        { en: "For example, in the 1950s it was found that crime rates were the highest in neighborhoods where immigrants were most numerous.", ko: "예를 들어, 1950년대에 이민자가 가장 많은 동네에서 범죄율이 가장 높다는 사실이 밝혀졌습니다.", voca: ["example:예시", "found:발견된", "crime rates:범죄율", "highest:가장높은", "neighborhoods:이웃/동네", "immigrants:이민자", "most:가장", "numerous:수많은", "where:~한곳", "🍌"] },
+        { en: "Some people used this 'co-occurrence' to argue that immigrants were a cause of crime.", ko: "어떤 사람들은 이 '공존'을 이민자가 범죄의 원인이라고 주장하는 데 사용했습니다.", voca: ["used:사용했다", "co-occurrence:공존", "argue:주장하다", "immigrants:이민자", "cause:원인", "crime:범죄", "Some:어떤", "this:이것", "🍌", "🍌"] },
+        { en: "But a careful analysis of this situation revealed that immigrants were forced to live in neighborhoods where crime rates were already high; they could not afford more expensive housing in safer neighborhoods.", ko: "하지만 이 상황을 주의 깊게 분석한 결과, 이민자들은 범죄율이 이미 높은 지역에 살도록 강요받았다는 사실이 드러났습니다. 그들은 더 안전한 동네의 비싼 집값을 감당할 수 없었기 때문입니다.", voca: ["careful:주의깊은", "analysis:분석", "revealed:드러냈다", "forced:강요받은", "already:이미", "afford:~할여유가되다", "expensive:비싼", "housing:주택", "safer:더안전한", "situation:상황"] },
+        { en: "Immigrants themselves committed very few of the crimes.", ko: "이민자들 스스로가 저지른 범죄는 극히 적었습니다.", voca: ["themselves:그들스스로", "committed:저질렀다", "very few:극히적은", "crimes:범죄들", "Immigrants:이민자들", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "Unless you analyze the claim carefully, you would misinterpret the relationship and thereby construct a faulty belief.", ko: "주장을 주의 깊게 분석하지 않으면 관계를 오해하여 잘못된 믿음을 형성하게 될 것입니다.", voca: ["Unless:~하지않으면", "analyze:분석하다", "claim:주장", "misinterpret:오해하다", "relationship:관계", "thereby:그로인해", "construct:형성하다", "faulty:잘못된", "belief:믿음", "carefully:주의깊게"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #30";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Avoiding Logical Errors:<br>Ecological Fallacy</h1><p>2025년 6월 고1 모의고사 30번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 사람들은 어떤 현상을 관찰한 뒤 원인을 찾으려 하지만, 오해로 인해 잘못된 추론을 하기도 함.</p>
+                    <p>• <b>📍 본론:</b> 단순히 함께 발생한다고 인과관계로 단정 짓는 '생태학적 오류'가 대표적인 예임.</p>
+                    <p>• <b>📍 결론:</b> 면밀한 분석 없이 상관관계를 인과관계로 오해하면 잘못된 믿음을 형성하게 됨.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 생태학적 오류와 인과관계 분석의 중요성</span>
+                    <span class="topic-eng">Topic: The Ecological Fallacy and the Importance of Analyzing Causal Relationships</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+ 
+// 수정된 Step 3 빈칸 생성 로직
+function fillBlanks(s) {
+    const c = document.getElementById('blank-area');
+    
+    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
+    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+
+    s.split(' ').forEach(w => {
+        const sp = document.createElement('span');
+        sp.className = 'word-blank';
+        sp.innerText = w;
+        
+        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
+        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
+        
+        if (prepositions.includes(pureWord)) {
+            // 전치사라면 처음부터 보여주고 밑줄 제거
+            sp.classList.add('revealed');
+            sp.style.borderBottomColor = 'transparent'; 
+        }
+
+        // 클릭하면 정답이 보이게 하는 기능
+        sp.onclick = function() {
+            this.classList.add('revealed');
+            this.style.borderBottomColor = 'transparent';
+            playTTS(w.replace(/[.,'"]/g, ""));
+        };
+        c.appendChild(sp);
+    });
+}
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

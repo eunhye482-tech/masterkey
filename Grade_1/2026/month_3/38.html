@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #38 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #38</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["about", "within", "of", "to", "from", "into", "at", "for", "before"];
+    const fullData = [
+        { en: "As Kuhn proposed, our propositions about the world are embedded within paradigms, roughly a network of interrelated commitments to a particular theory, a conception of a subject matter, and methodological practices.", ko: "쿤이 제안했듯이, 세상에 대한 우리의 명제들은 패러다임 안에 내재되어 있는데, 이는 대략 특정 이론에 대한 상호 연관된 약속, 주제에 대한 개념, 그리고 방법론적 관행들의 네트워크입니다.", voca: ["proposed:제안했다", "propositions:명제", "embedded:내재된", "paradigms:패러다임", "interrelated:상호 연관된", "methodological:방법론적인", "roughly:대략", "commitments:약속/헌신", "🍎", "🍎"] },
+        { en: "Thus, when scientists undertake research, they do so from within a specific paradigm.", ko: "따라서 과학자들이 연구를 수행할 때, 그들은 특정 패러다임 안에서 그렇게 합니다.", voca: ["undertake:수행하다", "research:연구", "specific:특정한", "within:~ 안에서", "scientists:과학자들", "Thus:따라서", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Even the most exacting measurements are only sensible from within that paradigm.", ko: "가장 정밀한 측정조차도 오직 그 패러다임 안에서만 의미가 있습니다.", voca: ["exacting:정밀한/까다로운", "measurements:측정", "sensible:의미 있는/합리적인", "Even:심지어", "within:~ 안에서", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For example, a look into a microscope tells you nothing unless you are already informed about the nature of the instrument and what you are supposed to be looking at.", ko: "예를 들어, 현미경의 구조와 무엇을 보아야 하는지에 대해 이미 알고 있지 않다면 현미경을 들여다보는 것은 아무것도 알려주지 않습니다.", voca: ["microscope:현미경", "unless:~하지 않는다면", "informed:알고 있는", "nature:본질/구조", "instrument:도구/기구", "supposed to:~하기로 되어 있는", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Thus, what we call major progress in science is not a movement from a less to a more accurate paradigm.", ko: "따라서 우리가 과학에서 주요한 진보라고 부르는 것은 덜 정확한 패러다임에서 더 정확한 패러다임으로의 이동이 아닙니다.", voca: ["major progress:주요 진보", "movement:이동", "accurate:정확한", "science:과학", "call:부르다", "Thus:따라서", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Rather, it is a horizontal shift from one ‘way of seeing the world’ to another.", ko: "오히려 그것은 세상을 바라보는 한 가지 ‘방식’에서 다른 방식으로의 수평적 이동입니다.", voca: ["horizontal:수평적인", "shift:이동/변화", "Rather:오히려", "way:방식", "seeing:바라보는 것", "another:다른 것", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For Kuhn, ‘the scientist with a new paradigm sees differently from the way he had seen before.’", ko: "쿤에게 있어, ‘새로운 패러다임을 가진 과학자는 이전에 보았던 방식과는 다르게 봅니다.’", voca: ["differently:다르게", "before:이전에", "new:새로운", "scientist:과학자", "way:방식", "🍎", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #38";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Paradigm Shift</h1><p>2026년 3월 고1 38번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 모든 과학적 명제와 연구는 특정한 '패러다임'이라는 네트워크 안에서 수행됨.</p>
+                    <p>• <b>📍 본론:</b> 정밀한 측정이나 도구(현미경) 사용도 패러다임에 대한 지식이 없으면 아무런 의미가 없음.</p>
+                    <p>• <b>📍 결론:</b> 과학적 진보는 수직적인 정확성 향상이 아니라, 세상을 보는 관점 자체가 바뀌는 '수평적 이동'임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 토마스 쿤의 패러다임 이론을 통한 과학적 진보의 본질 이해</span>
+                    <span class="topic-eng">Topic: Understanding the nature of scientific progress through Kuhn's paradigm theory</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

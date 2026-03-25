@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #31 - Official Version</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #31</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "In everyday life, we use previous experience to predict where we should pay attention.", ko: "일상생활에서 우리는 이전의 경험을 사용하여 어디에 주의를 기울여야 할지 예측합니다.", voca: ["everyday life:일상생활", "previous:이전의", "experience:경험", "predict:예측하다", "pay attention:주의를기울이다", "where:어디에", "should:~해야한다", "use:사용하다", "🍌", "🍌"] },
+        { en: "Different environments create different expectations.", ko: "서로 다른 환경은 서로 다른 기대를 만듭니다.", voca: ["Different:다른", "environments:환경", "create:만들다", "expectations:기대", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "This was profoundly illustrated by the scientist Jared Diamond in his book Guns, Germs, and Steel.", ko: "이것은 과학자 Jared Diamond에 의해 그의 저서 '총, 균, 쇠'에서 깊이 있게 설명되었습니다.", voca: ["profoundly:깊이있게", "illustrated:설명된/그려진", "scientist:과학자", "Guns:총", "Germs:균", "Steel:쇠", "book:책", "🍌", "🍌", "🍌"] },
+        { en: "He describes an adventure wandering through the New Guinea jungle with native New Guineans.", ko: "그는 뉴기니 원주민들과 함께 뉴기니 정글을 헤매는 모험을 묘사합니다.", voca: ["describes:묘사하다", "adventure:모험", "wandering:헤매는", "through:~을통해", "native:원주민", "jungle:정글", "with:~와함께", "🍌", "🍌", "🍌"] },
+        { en: "He relates that these natives tend to perform poorly at tasks Westerners have been trained to do since childhood.", ko: "그는 이 원주민들이 서구인들이 어린 시절부터 하도록 훈련받아온 과업에서 서투른 성과를 내는 경향이 있다고 이야기합니다.", voca: ["relates:이야기하다", "tend to:~하는경향이있다", "perform:수행하다", "poorly:서투르게/형편없이", "tasks:과업/일", "Westerners:서구인들", "trained:훈련된", "since:~이후로", "childhood:어린시절", "natives:원주민들"] },
+        { en: "But they are hardly stupid.", ko: "하지만 그들은 결코 어리석지 않습니다.", voca: ["hardly:결코~않다", "stupid:어리석은", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
+        { en: "They can detect the most subtle changes in the jungle, good for following the tracks of a predator or for finding the way back home.", ko: "그들은 정글의 가장 미묘한 변화를 감지할 수 있는데, 이는 포식자의 흔적을 따라가거나 집으로 돌아가는 길을 찾는 데 유용합니다.", voca: ["detect:감지하다", "subtle:미묘한", "changes:변화들", "following:따라가는것", "tracks:흔적/자국", "predator:포식자", "finding:찾는것", "way back:돌아오는길", "good for:~에좋은", "jungle:정글"] },
+        { en: "They know which insects to leave alone, know where food exists, can build and tear down shelters with ease.", ko: "그들은 어떤 곤충을 건드리지 말아야 할지 알고, 음식이 어디에 있는지 알며, 숙소를 쉽게 짓고 허물 수 있습니다.", voca: ["insects:곤충", "leave alone:내버려두다", "exists:존재하다", "build:짓다", "tear down:허물다", "shelters:숙소/은신처", "with ease:쉽게", "know:알다", "where:어디에", "🍌"] },
+        { en: "Diamond, who had never spent time in such places, has no ability to pay attention to these things.", ko: "그런 장소에서 시간을 보낸 적이 없는 Diamond는 이러한 것들에 주의를 기울일 능력이 없습니다.", voca: ["spent time:시간을보내다", "such:그런", "places:장소들", "ability:능력", "pay attention:주의를기울이다", "things:것들", "never:결코~않은", "Diamond:다이아몬드", "🍌", "🍌"] },
+        { en: "Were he to be tested on such tasks, he also would perform poorly.", ko: "만약 그가 그런 과업으로 테스트를 받는다면, 그 또한 서투른 성과를 낼 것입니다.", voca: ["tested:테스트받는", "tasks:과업", "perform:수행하다", "poorly:서투르게", "also:또한", "such:그런", "🍌", "🍌", "🍌", "🍌"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #31";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Environment and<br>Attention Expectations</h1><p>2025년 6월 고1 모의고사 31번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 일상에서 우리는 이전 경험을 바탕으로 주의를 기울일 곳을 예측함.</p>
+                    <p>• <b>📍 본론:</b> 뉴기니 원주민들은 서구적 과업엔 서툴지만, 정글의 미묘한 변화를 읽는 데는 탁월함.</p>
+                    <p>• <b>📍 결론:</b> 능력은 지능의 문제가 아니라, 각자가 처한 환경과 훈련된 경험에 따라 달라짐.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 환경과 경험에 따른 주의 집중 영역과 능력의 차이</span>
+                    <span class="topic-eng">Topic: Differences in Areas of Attention and Ability Based on Environment and Experience</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+ 
+// 수정된 Step 3 빈칸 생성 로직
+function fillBlanks(s) {
+    const c = document.getElementById('blank-area');
+    
+    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
+    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+
+    s.split(' ').forEach(w => {
+        const sp = document.createElement('span');
+        sp.className = 'word-blank';
+        sp.innerText = w;
+        
+        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
+        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
+        
+        if (prepositions.includes(pureWord)) {
+            // 전치사라면 처음부터 보여주고 밑줄 제거
+            sp.classList.add('revealed');
+            sp.style.borderBottomColor = 'transparent'; 
+        }
+
+        // 클릭하면 정답이 보이게 하는 기능
+        sp.onclick = function() {
+            this.classList.add('revealed');
+            this.style.borderBottomColor = 'transparent';
+            playTTS(w.replace(/[.,'"]/g, ""));
+        };
+        c.appendChild(sp);
+    });
+}
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #34 - 26년 3월 고1</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #34</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const prepositions = ["from", "on", "of", "while", "in", "to", "by", "under", "in order to", "for"];
+    const fullData = [
+        { en: "The emphasis on learning from the ingroup takes little account of individuals.", ko: "내 집단으로부터 배우는 것에 대한 강조는 개개인을 거의 고려하지 않습니다.", voca: ["emphasis:강조", "ingroup:내 집단", "account:고려", "individuals:개인들", "learning:배우는 것", "takes:가지다", "little:거의 없는", "🍎", "🍎", "🍎"] },
+        { en: "Amazingly, while we may dislike some of the people in our ingroup, we still copy them.", ko: "놀랍게도, 우리가 내 집단의 사람들 중 일부를 싫어할 수도 있지만, 우리는 여전히 그들을 모방합니다.", voca: ["Amazingly:놀랍게도", "dislike:싫어하다", "copy:모방하다/복사하다", "still:여전히", "people:사람들", "some:일부", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Wilks, Kirby, and Nielsen studied copying behavior in the context of observing how to open a puzzle box.", ko: "Wilks, Kirby, Nielsen은 퍼즐 박스를 여는 방법을 관찰하는 맥락에서 모방 행동을 연구했습니다.", voca: ["behavior:행동", "context:맥락", "observing:관찰하는 것", "studied:연구했다", "copying:모방", "puzzle box:퍼즐 박스", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Ingroups and outgroups were distinguished in a minimal way, using simple color coding of wristbands.", ko: "내 집단과 외 집단은 손목 밴드의 단순한 색상 코딩을 사용하는 최소한의 방식으로 구별되었습니다.", voca: ["distinguished:구별된", "minimal:최소한의", "coding:코딩/부호화", "wristbands:손목 밴드", "color:색상", "simple:단순한", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The children did not simply like all members of their ingroup; they disliked those who behaved in an antisocial fashion.", ko: "아이들이 단순히 자신의 내 집단 구성원 모두를 좋아한 것은 아니었습니다. 그들은 반사회적인 방식으로 행동하는 사람들을 싫어했습니다.", voca: ["members:구성원들", "behaved:행동했다", "antisocial:반사회적인", "fashion:방식", "disliked:싫어했다", "simply:단순히", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Indeed, they liked these antisocial ingroup members less than the prosocial members of an outgroup.", ko: "실제로, 그들은 이러한 반사회적인 내 집단 구성원들을 외 집단의 친사회적인 구성원들보다 덜 좋아했습니다.", voca: ["Indeed:실제로/참으로", "prosocial:친사회적인", "outgroup:외 집단", "less:덜", "members:구성원들", "liked:좋아했다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Still, their dislike did not affect their tendency to copy ingroup behavior more closely than outgroup behavior.", ko: "그럼에도 불구하고, 그들의 싫어함은 외 집단 행동보다 내 집단 행동을 더 밀접하게 모방하려는 경향에 영향을 미치지 않았습니다.", voca: ["affect:영향을 미치다", "tendency:경향", "closely:밀접하게", "dislike:싫어함", "behavior:행동", "Still:그럼에도 불구하고", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This overimitation reveals that we are not copying in order to learn how to open a box most efficiently.", ko: "이러한 과잉 모방은 우리가 상자를 가장 효율적으로 여는 방법을 배우기 위해 모방하는 것이 아님을 드러냅니다.", voca: ["overimitation:과잉 모방", "reveals:드러내다", "efficiently:효율적으로", "learn:배우다", "copying:모방하는 것", "open:열다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We want to learn how to do it in the proper way — in other words, conforming to the rules and conventions of the ingroup.", ko: "우리는 그것을 적절한 방식으로 하는 법을 배우기를 원합니다. 다시 말해, 내 집단의 규칙과 관습에 따르는 것입니다.", voca: ["proper:적절한", "In other words:다시 말해", "conforming:따르는/순응하는", "conventions:관습", "rules:규칙", "want:원하다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This will be appropriately demonstrated even by antisocial ingroup members.", ko: "이것은 반사회적인 내 집단 구성원들에 의해서조차 적절하게 입증될 것입니다.", voca: ["appropriately:적절하게", "demonstrated:입증된/보여진", "antisocial:반사회적인", "members:구성원들", "even:심지어", "will:할 것이다", "🍎", "🍎", "🍎", "🍎"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #34";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>The Power of<br>Overimitation</h1><p>2026년 3월 고1 34번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 우리는 내 집단 구성원을 개인적으로 싫어하더라도 여전히 그들의 행동을 모방하는 경향이 있음.</p>
+                    <p>• <b>📍 본론:</b> 실험 결과, 아이들은 외 집단의 착한 사람보다 내 집단의 못된 사람을 덜 좋아하면서도, 행동 모방은 내 집단 쪽을 훨씬 더 많이 함.</p>
+                    <p>• <b>📍 결론:</b> 이는 효율적인 학습이 목적이 아니라, 내 집단의 규칙과 관습을 따르는 '적절한 방식'을 배우고자 하는 본능 때문임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 내 집단의 관습에 순응하기 위한 사회적 모방(과잉 모방)의 특성</span>
+                    <span class="topic-eng">Topic: Characteristics of social imitation (overimitation) to conform to ingroup conventions</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
+            } else {
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
+            }
+            area.appendChild(div);
+        }
+    }
+
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
+        });
+    }
+
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>

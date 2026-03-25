@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #40 - 9월 모의고사</title>
+    <style>
+        :root { 
+            --lavender-light: #F3E5F5; 
+            --purple-pale: #E1BEE7; 
+            --purple-main: #9575CD; 
+            --purple-dark: #673AB7;
+            --pink-soft: #FFF0F6;
+        }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        
+        .hidden { display: none !important; }
+        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+
+        /* STEP 1: 인트로 (서론/본론/결론 명시) */
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+
+        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
+        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
+        
+        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item.revealed { background: var(--purple-main); color: white; }
+        
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+    </style>
+</head>
+<body>
+<div class="phone-container">
+    <div class="header" id="header-title">English Master #40</div>
+    <div id="display-area"></div>
+    <div id="nav-area" class="nav-btns-fixed hidden">
+        <button class="btn-prev" onclick="prevSentence()">PREV</button>
+        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+    </div>
+</div>
+
+<script>
+    const fullData = [
+        { en: "Vision is influenced by our preconceptions about reality.", ko: "시각은 현실에 대한 우리의 선입견에 의해 영향을 받습니다.", voca: ["Vision:시각", "influenced:영향을 받는", "preconceptions:선입견", "reality:현실", "about:~에 대한", "by:~에 의해", "is:~이다", "🍌", "🍌", "🍌"] },
+        { en: "In viewing a scene, we establish unconscious hierarchies that reflect our functional relationship to objects and our momentary priorities.", ko: "장면을 볼 때, 우리는 대상과의 기능적 관계와 우리의 순간적인 우선순위를 반영하는 무의식적인 위계를 설정합니다.", voca: ["viewing:보는 것", "establish:설정/확립하다", "unconscious:무의식적인", "hierarchies:위계", "reflect:반영하다", "functional:기능적인", "relationship:관계", "objects:대상/물체", "momentary:순간적인", "priorities:우선순위"] },
+        { en: "For example, when visualizing a hammer in our mind's eye, we tend to 'see' it in profile or at some other 'ready for use' angle.", ko: "예를 들어, 마음속에서 망치를 시각화할 때, 우리는 그것을 옆모습이나 다른 '사용하기 편리한' 각도로 '보는' 경향이 있습니다.", voca: ["visualizing:시각화하는 것", "mind's eye:마음의 눈", "tend to:~하는 경향이 있다", "profile:옆모습", "angle:각도", "ready for use:사용 준비가 된", "hammer:망치", "example:예시", "some:어떤", "🍌"] },
+        { en: "One would probably not visualize a hammer as seen from the top so that the handle is hidden by the hammer's head.", ko: "사람들은 아마도 망치의 자루가 머리에 가려지도록 위에서 본 모습으로 망치를 시각화하지는 않을 것입니다.", voca: ["probably:아마도", "visualize:시각화하다", "seen from:~에서 본", "top:위", "handle:자루/손잡이", "hidden:숨겨진", "head:머리", "not:아닌", "would:~할 것이다", "🍌"] },
+        { en: "The functional relationship we have with objects creates visual expectations that interfere with our ability to see 'like a camera.'", ko: "우리가 사물과 맺는 기능적 관계는 '카메라처럼' 보는 우리의 능력을 방해하는 시각적 기대를 만들어냅니다.", voca: ["functional:기능적인", "creates:만들다", "visual:시각적인", "expectations:기대", "interfere with:~을 방해하다", "ability:능력", "objects:사물", "have:가지다", "like:~처럼", "🍌"] },
+        { en: "The camera, like the human eye, sees only shapes and colors.", ko: "카메라는 인간의 눈처럼 오직 형태와 색깔만을 봅니다.", voca: ["camera:카메라", "human eye:인간의 눈", "shapes:형태", "colors:색깔", "only:오직", "sees:보다", "like:~처럼", "the:그", "🍌", "🍌"] },
+        { en: "It documents the world impartially through a lens that is similar to the eye.", ko: "그것은 눈과 유사한 렌즈를 통해 세상을 공정하게 기록합니다.", voca: ["documents:기록하다", "impartially:공정하게", "through:~을 통해", "similar to:~와 유사한", "lens:렌즈", "world:세상", "eye:눈", "It:그것", "that:~하는", "is:~이다"] },
+        { en: "When we look at them carefully, photographs are often surprising because they don't interpret confusing details but simply serve them up to us with a mechanical indifference.", ko: "주의 깊게 살펴볼 때 사진은 종종 놀라운데, 이는 사진이 혼란스러운 세부 사항을 해석하지 않고 기계적인 무관심으로 우리에게 단순히 그것들을 제공하기 때문입니다.", voca: ["carefully:주의 깊게", "photographs:사진", "surprising:놀라운", "interpret:해석하다", "confusing:혼란스러운", "details:세부 사항", "serve up:제공하다", "mechanical:기계적인", "indifference:무관심", "often:종종"] },
+        { en: "And because of their flatness, photographs often contain areas that appear as unrecognizable colors and shapes.", ko: "그리고 사진의 평면성 때문에, 사진은 종종 인식할 수 없는 색깔과 형태처럼 보이는 영역을 포함합니다.", voca: ["flatness:평면성", "contain:포함하다", "areas:영역", "appear:~처럼 보이다", "unrecognizable:인식할 수 없는", "colors:색깔", "shapes:형태", "because of:~때문에", "often:종종", "🍌"] },
+        { en: "Our visual perception is shaped by an established hierarchy based on functional relationships, which interrupts our ability to see objects as they truly are, unlike the objective perspective of a camera.", ko: "우리의 시각적 인식은 기능적 관계에 기반한 기성 위계에 의해 형성되며, 이는 카메라의 객관적인 시각과는 달리 사물을 있는 그대로 보는 우리의 능력을 방해합니다.", voca: ["perception:인식", "established:기성의/확립된", "hierarchy:위계", "based on:~에 기반한", "interrupts:방해하다", "truly:정말로/있는 그대로", "objective:객관적인", "perspective:시각/관점", "unlike:~와 달리", "shaped:형성된"] }
+    ];
+
+    let currentMode = 'INTRO';
+    let currentIdx = 0;
+    const synth = window.speechSynthesis;
+
+    function render() {
+        const area = document.getElementById('display-area');
+        const nav = document.getElementById('nav-area');
+        const header = document.getElementById('header-title');
+        area.innerHTML = '';
+
+        if (currentMode === 'INTRO') {
+            header.innerText = "English Master #40";
+            nav.classList.add('hidden');
+            area.innerHTML = `
+                <div class="main-title-card"><h1>Human Vision vs.<br>Camera Lens</h1><p>2025년 9월 고1 모의고사 40번</p></div>
+                
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 인간의 시각은 사물에 대한 선입견과 기능적 관계에 따라 영향을 받음.</p>
+                    <p>• <b>📍 본론:</b> 인간은 사물을 사용할 때의 각도(위계)로 보려 하지만, 카메라는 기계적인 무관심으로 형태와 색을 공정하게 기록함.</p>
+                    <p>• <b>📍 결론:</b> 이러한 인간의 주관적 위계 설정은 사물을 있는 그대로 보는 능력을 방해함.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 기능적 관계에 기반한 인간의 주관적 시각과 카메라의 객관적 시각의 차이</span>
+                    <span class="topic-eng">Topic: The Difference Between Human Subjective Vision Based on Functional Relationships and the Objective Perspective of a Camera</span>
+                </div>
+                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+            `;
+        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            nav.classList.remove('hidden');
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
+            
+            const item = fullData[currentIdx];
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `
+                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.ko}</div>
+                `;
+                fillVoca(item.voca, '🍌', "#FFD600");
+            } else {
+                area.innerHTML = `
+                    <div class="kor-box">${item.ko}</div>
+                    <div class="blank-area" id="blank-area"></div>
+                    <div class="voca-grid" id="voca-area"></div>
+                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
+                    <div id="trans-area" class="trans-content">${item.en}</div>
+                `;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
+        }
+    }
+
+    function fillVoca(vocaList, emoji, emojiColor) {
+        const container = document.getElementById('voca-area');
+        for (let i = 0; i < 10; i++) {
+            const div = document.createElement('div');
+            div.className = 'voca-item';
+            if (vocaList[i]) {
+                const [eng, kor] = vocaList[i].split(':');
+                div.innerText = eng;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            } else {
+                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+            }
+            container.appendChild(div);
+        }
+    }
+
+// 수정된 Step 3 빈칸 생성 로직
+function fillBlanks(s) {
+    const c = document.getElementById('blank-area');
+    
+    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
+    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+
+    s.split(' ').forEach(w => {
+        const sp = document.createElement('span');
+        sp.className = 'word-blank';
+        sp.innerText = w;
+        
+        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
+        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
+        
+        if (prepositions.includes(pureWord)) {
+            // 전치사라면 처음부터 보여주고 밑줄 제거
+            sp.classList.add('revealed');
+            sp.style.borderBottomColor = 'transparent'; 
+        }
+
+        // 클릭하면 정답이 보이게 하는 기능
+        sp.onclick = function() {
+            this.classList.add('revealed');
+            this.style.borderBottomColor = 'transparent';
+            playTTS(w.replace(/[.,'"]/g, ""));
+        };
+        c.appendChild(sp);
+    });
+}
+
+    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    window.onload = render;
+</script>
+</body>
+</html>
