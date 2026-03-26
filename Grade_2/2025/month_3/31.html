@@ -1,161 +1,249 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #31 - Official Version</title>
-    <style>
-        :root { 
-            --lavender-light: #F3E5F5; 
-            --purple-pale: #E1BEE7; 
-            --purple-main: #9575CD; 
-            --purple-dark: #673AB7;
-            --pink-soft: #FFF0F6;
-        }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
-        
-        .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Master - Popular Music</title>
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
-        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
-        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
-        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
-        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
+<style>
+:root { 
+    --lavender-light: #F3E5F5; 
+    --purple-pale: #E1BEE7; 
+    --purple-main: #9575CD; 
+    --purple-dark: #673AB7;
+    --pink-soft: #FFF0F6;
+}
+body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; }
+.phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; }
+.header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; }
+#display-area { flex: 1; padding: 20px; }
 
-        .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
-        .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
-        
-        .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-        .voca-item.revealed { background: var(--purple-main); color: white; }
-        
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
-        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+.hidden { display: none !important; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
-    </style>
+.btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+
+.main-title-card { background: linear-gradient(135deg, #B39DDB, #9575CD); padding: 30px; border-radius: 20px; color: white; text-align: center; margin-bottom: 20px; }
+
+.sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-weight: bold; color: var(--purple-dark); margin-bottom: 15px; text-align: center; }
+.kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-weight: bold; color: #D81B60; margin-bottom: 15px; text-align: center; }
+
+.voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.voca-item { background: white; padding: 10px; border-radius: 10px; border: 1px solid var(--purple-pale); text-align: center; cursor: pointer; }
+
+.voca-item.revealed { background: var(--purple-main); color: white; }
+
+.blank-area { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 15px; }
+.word-blank { border-bottom: 2px solid var(--purple-main); cursor: pointer; color: transparent; }
+.word-blank.revealed { color: var(--purple-dark); font-weight: bold; border: none; }
+
+.btn-check { margin-top: 10px; padding: 10px; width: 100%; border-radius: 10px; border: none; cursor: pointer; }
+
+.trans-content { display: none; margin-top: 10px; }
+
+.nav-btns-fixed { display: flex; gap: 10px; padding: 10px; border-top: 1px solid #eee; }
+.btn-prev, .btn-next { flex: 1; padding: 12px; border-radius: 10px; border: none; cursor: pointer; }
+.btn-next { background: var(--purple-main); color: white; }
+</style>
 </head>
+
 <body>
+
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #31</div>
-    <div id="display-area"></div>
-    <div id="nav-area" class="nav-btns-fixed hidden">
-        <button class="btn-prev" onclick="prevSentence()">PREV</button>
-        <button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
-    </div>
+<div class="header" id="header-title">English Master</div>
+<div id="display-area"></div>
+
+<div id="nav-area" class="nav-btns-fixed hidden">
+<button class="btn-prev" onclick="prevSentence()">PREV</button>
+<button class="btn-next" onclick="nextSentence()" id="main-next-btn">NEXT</button>
+</div>
 </div>
 
 <script>
-    const fullData = [
-        { en: "Plato argued that when you see something that strikes you as beautiful, you are really just seeing a partial reflection of true beauty, just as a painting or even a photograph only captures part of the real thing.", ko: "플라톤은 여러분이 아름답다고 생각되는 무언가를 볼 때, 그림이나 심지어 사진이 실제 사물의 일부만을 담아내는 것과 마찬가지로, 여러분은 실제로는 진정한 아름다움의 부분적인 반영만을 보고 있는 것이라고 주장했습니다.", voca: ["argued:주장했다", "strikes:생각나게하다", "beautiful:아름다운", "reflection:반영/투영", "true:진정한", "captures:담아내다", "real:실제의", "partial:부분적인", "photograph:사진", "painting:그림"] },
-        { en: "True beauty, or what Plato calls the Form of Beauty, has no particular color, shape, or size.", ko: "진정한 아름다움, 즉 플라톤이 아름다움의 '형상'이라고 부르는 것은 특정한 색깔, 모양, 또는 크기를 가지고 있지 않습니다.", voca: ["calls:부르다", "Form:형상", "particular:특정한", "color:색깔", "shape:모양", "size:크기", "beauty:아름다움", "has no:~이없다", "🍌", "🍌"] },
-        { en: "Rather, it is an abstract idea, like the number five.", ko: "오히려 그것은 숫자 5와 같은 추상적인 관념입니다.", voca: ["Rather:오히려", "abstract:추상적인", "idea:관념/아이디어", "number:숫자", "five:다섯", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "You can make drawings of the number five in blue or red ink, big or small, but the number five itself is none of those things.", ko: "여러분은 숫자 5를 파란색이나 빨간색 잉크로, 크게 혹은 작게 그릴 수 있지만, 숫자 5 그 자체는 그러한 것들 중 어느 것도 아닙니다.", voca: ["drawings:그림", "ink:잉크", "itself:그 자체", "none:아무것도없음", "those:그러한것들", "blue:파란색", "red:빨간색", "big:큰", "small:작은", "make:만들다"] },
-        { en: "It has no physical form.", ko: "그것은 물리적인 형태가 없습니다.", voca: ["physical:물리적인", "form:형태", "has no:~이없다", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Think of the idea of a triangle, for example.", ko: "예를 들어, 삼각형이라는 관념을 생각해 보십시오.", voca: ["Think of:~을생각하다", "triangle:삼각형", "example:예시", "idea:관념", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Although it has no particular color or size, it somehow lies within each and every triangle you see.", ko: "그것이 특정한 색깔이나 크기를 가지고 있지 않음에도 불구하고, 그것은 왠지 여러분이 보는 모든 각각의 삼각형 안에 존재합니다.", voca: ["Although:~에도불구하고", "particular:특정한", "somehow:왠지/어떻게든", "lies within:~안에존재하다", "each:각각의", "every:모든", "triangle:삼각형", "see:보다", "color:색깔", "size:크기"] },
-        { en: "Plato thought the same was true of beauty.", ko: "플라톤은 아름다움에 대해서도 마찬가지라고 생각했습니다.", voca: ["thought:생각했다", "same:같은것", "true of:~에해당하는", "beauty:아름다움", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "The Form of Beauty somehow lies within each and every beautiful thing you see.", ko: "아름다움의 형상은 여러분이 보는 각각의 모든 아름다운 것 안에 왠지 존재합니다.", voca: ["Form:형상", "somehow:왠지", "lies within:~안에있다", "each:각각의", "every:모든", "beautiful:아름다운", "thing:것", "see:보다", "beauty:아름다움", "within:~안에"] }
-    ];
 
-    let currentMode = 'INTRO';
-    let currentIdx = 0;
-    const synth = window.speechSynthesis;
+const prepositions = ["in","on","at","to","for","with","by","from","of","through","after"];
 
-    function render() {
-        const area = document.getElementById('display-area');
-        const nav = document.getElementById('nav-area');
-        const header = document.getElementById('header-title');
-        area.innerHTML = '';
+const fullData = [
 
-        if (currentMode === 'INTRO') {
-            header.innerText = "English Master #31";
-            nav.classList.add('hidden');
-            area.innerHTML = `
-                <div class="main-title-card"><h1>Plato's Philosophy:<br>The Form of Beauty</h1><p>2025년 3월 고1 모의고사 31번</p></div>
-                
-                <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 우리가 보는 아름다운 것들은 진정한 아름다움의 부분적인 반영임.</p>
-                    <p>• <b>📍 본론:</b> 진정한 아름다움(형상)은 물리적 형태가 없는 추상적인 관념임.</p>
-                    <p>• <b>📍 결론:</b> 형상은 숫자나 도형의 관념처럼 모든 개별적인 것들 안에 존재함.</p>
-                </div>
-                <div class="intro-topic">
-                    <span class="topic-kor">주제: 개별 사물 속에 존재하는 추상적이고 진정한 아름다움의 형상</span>
-                    <span class="topic-eng">Topic: The Abstract Form of Beauty Residing within All Beautiful Things</span>
-                </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
-            `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
-            const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
-            nav.classList.remove('hidden');
-            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
-            
-            const item = fullData[currentIdx];
-            if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
-            } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
-                fillBlanks(item.en);
-                fillVoca(item.voca, '🍇', "#9C27B0");
-            }
-        }
-    }
+{
+en: "The explosion of popular music in the second half of the twentieth century as well as the global circulation and dissemination of music by the creative industries propelled a new understanding of accessibility in relation to music.",
+ko: "창작 산업계의 전 세계적 음악 유통과 보급뿐만 아니라 20세기 후반의 대중음악의 폭발적 증가는 음악과 관련된 접근성에 대한 새로운 이해를 촉진했다.",
+voca: ["explosion:폭발","circulation:유통","dissemination:보급","propelled:촉진했다","accessibility:접근성","creative industries:창작 산업","relation:관련","global:전 세계적","understanding:이해","🍎"]
+},
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
-        for (let i = 0; i < 10; i++) {
-            const div = document.createElement('div');
-            div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
-            } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
-            }
-            container.appendChild(div);
-        }
-    }
+{
+en: "Suddenly, in the 1950s, anyone could pick up spoons, a couple of pans, a second-hand guitar and start a band.",
+ko: "갑자기, 1950년대에, 누구나 숟가락, 냄비 몇 개, 중고 기타를 집어 들고 밴드를 시작할 수 있었다.",
+voca: ["pick up:집어 들다","a couple of:몇 개의","second-hand:중고의","start:시작하다","band:밴드","anyone:누구나","suddenly:갑자기","guitar:기타","pans:냄비","🍎"]
+},
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
-            const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
-        });
-    }
+{
+en: "This led to specific genres such as skiffle, but also, more generally, reflected a much more relaxed and inclusive attitude to music making.",
+ko: "이는 스키플과 같은 특정 장르로 이어졌을 뿐만 아니라, 더 일반적으로는 음악 제작에 대한 훨씬 더 여유롭고 포용적인 태도를 반영했다.",
+voca: ["genre:장르","skiffle:스키플","reflected:반영했다","inclusive:포용적인","attitude:태도","relaxed:여유로운","generally:일반적으로","music making:음악 제작","specific:특정한","🍎"]
+},
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
-    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
-    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
-    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
-    window.onload = render;
+{
+en: "While ordinary people had always sung and made music, the popular music movement was driven by a spirit of rebellion and freedom.",
+ko: "평범한 사람들이 항상 노래를 부르고 음악을 만들어 왔었지만, 대중음악 운동은 저항과 자유의 정신에 의해 촉진되었다.",
+voca: ["ordinary:평범한","movement:운동","driven:이끌린","rebellion:저항","freedom:자유","spirit:정신","while:~이지만","always:항상","made music:음악을 만들다","🍎"]
+},
+
+{
+en: "This approach led to the punk movement, whose musicians even made it a condition for their music to be non-virtuosic and accessible to all in the 1970s.",
+ko: "이러한 접근 방식은 펑크 운동으로 이어졌으며, 1970년대에 이 음악가들은 자신들의 음악이 전문성이 높지 않고 누구나 접근할 수 있는 것을 조건으로 삼았다.",
+voca: ["approach:접근","punk:펑크","condition:조건","non-virtuosic:비전문적인","accessible:접근 가능한","musicians:음악가들","even:심지어","movement:운동","1970s:1970년대","🍎"]
+},
+
+{
+en: "Groups who had been entirely excluded from music revelled in opportunities to create.",
+ko: "음악에서 완전히 배제되었던 집단들이 창작의 기회를 만끽했다.",
+voca: ["excluded:배제된","revelled:만끽했다","opportunity:기회","create:창작하다","entirely:완전히","group:집단","music:음악","who:~하는","had been:~되어왔다","🍎"]
+},
+
+{
+en: "This led to a sense of novelty and empowerment in and beyond the music sphere.",
+ko: "이는 음악계 안팎에서 참신성과 자율성이라는 인식으로 이어졌다.",
+voca: ["novelty:참신성","empowerment:자율성","sphere:영역","beyond:넘어서","sense:감각","led to:이어졌다","music:음악","in and beyond:안팎에서","this:이것","🍎"]
+}
+
+];
+
+let currentMode = 'INTRO';
+let currentIdx = 0;
+
+function render() {
+const area = document.getElementById('display-area');
+const nav = document.getElementById('nav-area');
+const header = document.getElementById('header-title');
+
+area.innerHTML = '';
+
+<!-- INTRO 부분만 교체하면 됨 -->
+
+if (currentMode === 'INTRO') {
+    header.innerText = "English Master";
+    nav.classList.add('hidden');
+
+    area.innerHTML = `
+        <div class="main-title-card">
+            <h1>Popular Music<br>Accessibility</h1>
+            <p>대중음악과 접근성</p>
+        </div>
+
+        <div class="intro-summary">
+            <p>• <b>📍 서론:</b> 대중음악의 확산과 창작 산업의 발전은 음악 접근성에 대한 새로운 인식을 형성함.</p>
+            <p>• <b>📍 본론:</b> 누구나 악기를 들고 음악을 만들 수 있게 되면서 포용적이고 자유로운 음악 문화가 형성되고, 펑크 운동으로 이어짐.</p>
+            <p>• <b>📍 결론:</b> 소외된 집단까지 창작에 참여하게 되며 음악 안팎에서 자율성과 새로운 가능성이 확대됨.</p>
+        </div>
+
+        <div class="intro-topic">
+            <span class="topic-kor">
+            주제: 대중음악의 확산이 누구나 참여 가능한 음악 환경을 만들고 창의성과 자율성을 확장시킨 과정
+            </span>
+            <span class="topic-eng">
+            Topic: The expansion of popular music creating accessible, inclusive, and empowering musical participation
+            </span>
+        </div>
+
+        <button class="btn-intro-step" onclick="startStep(2)">
+            STEP 2: 문장 학습 시작 ▶
+        </button>
+
+        <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">
+            STEP 3: 영작 연습 시작 ▶
+        </button>
+    `;
+}
+
+ else {
+nav.classList.remove('hidden');
+
+const item = fullData[currentIdx];
+
+if (currentMode === 'STEP2') {
+area.innerHTML = `
+<div class="sentence-box">${item.en}</div>
+<div class="voca-grid" id="voca-area"></div>
+<button class="btn-check" onclick="toggleView()">해석 확인</button>
+<div class="trans-content" id="trans">${item.ko}</div>
+`;
+fillVoca(item.voca);
+} else {
+area.innerHTML = `
+<div class="kor-box">${item.ko}</div>
+<div class="blank-area" id="blank-area"></div>
+<div class="voca-grid" id="voca-area"></div>
+<button class="btn-check" onclick="toggleView()">정답 확인</button>
+<div class="trans-content" id="trans">${item.en}</div>
+`;
+fillBlanks(item.en);
+fillVoca(item.voca);
+}
+}
+}
+
+function fillVoca(list) {
+const area = document.getElementById('voca-area');
+list.forEach(v => {
+const div = document.createElement('div');
+div.className = 'voca-item';
+if (v.includes(":")) {
+let [en, ko] = v.split(":");
+div.innerText = en;
+div.onclick = () => {
+div.classList.toggle('revealed');
+div.innerText = div.classList.contains('revealed') ? ko : en;
+};
+} else {
+div.innerText = v;
+}
+area.appendChild(div);
+});
+}
+
+function fillBlanks(s) {
+const area = document.getElementById('blank-area');
+s.split(' ').forEach(w => {
+const span = document.createElement('span');
+if (prepositions.includes(w.toLowerCase())) {
+span.innerText = w;
+} else {
+span.className = 'word-blank';
+span.innerText = w;
+span.onclick = () => span.classList.add('revealed');
+}
+area.appendChild(span);
+});
+}
+
+function toggleView() {
+const t = document.getElementById('trans');
+t.style.display = t.style.display === 'block' ? 'none' : 'block';
+}
+
+function startStep(n) {
+currentMode = 'STEP' + n;
+currentIdx = 0;
+render();
+}
+
+function nextSentence() {
+if (currentIdx < fullData.length - 1) {
+currentIdx++;
+render();
+}
+}
+
+function prevSentence() {
+if (currentIdx > 0) {
+currentIdx--;
+render();
+}
+}
+
+window.onload = render;
+
 </script>
+
 </body>
 </html>

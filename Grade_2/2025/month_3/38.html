@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #38 - Official Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #38 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -12,18 +12,17 @@
             --purple-dark: #673AB7;
             --pink-soft: #FFF0F6;
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718086; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,15 @@
 </div>
 
 <script>
+    const prepositions = ["through", "after", "against", "under", "before", "around", "of", "to", "by", "in", "into", "for", "with"];
     const fullData = [
-        { en: "Piaget put the same amount of water into two different glasses: a tall narrow glass and a wide glass, then asked kids to compare two glasses.", ko: "피아제는 같은 양의 물을 두 개의 다른 유리잔, 즉 높고 좁은 유리잔과 넓은 유리잔에 넣은 다음, 아이들에게 두 유리잔을 비교해 보라고 요청했습니다.", voca: ["amount:양", "narrow:좁은", "glasses:유리잔", "compare:비교하다", "different:다른", "tall:높은", "wide:넓은", "asked:요청했다", "water:물", "same:같은"] },
-        { en: "Kids younger than six or seven usually say that the tall narrow glass now holds more water, because the level is higher.", ko: "6~7세보다 어린 아이들은 대개 높고 좁은 유리잔이 이제 더 많은 물을 담고 있다고 말하는데, 그 이유는 수위가 더 높기 때문입니다.", voca: ["younger:더어린", "usually:대개", "holds:담고있다", "level:수위/높이", "higher:더높은", "because:때문에", "narrow:좁은", "glass:유리잔", "seven:일곱", "six:여섯"] },
-        { en: "And when they are ready, they figure out the conservation of volume for themselves just by playing with cups of water.", ko: "그리고 준비가 되면, 아이들은 단지 물컵을 가지고 노는 것만으로 부피 보존 법칙을 스스로 깨닫게 됩니다.", voca: ["ready:준비된", "figure out:깨닫다/이해하다", "conservation:보존", "volume:부피", "themselves:스스로", "playing:노는것", "cups:컵들", "just:단지", "water:물", "when:때"] },
-        { en: "Piaget argued that children’s understanding of morality is like their understanding of those water glasses: we can’t say that it is innate or kids learn it directly from adults.", ko: "피아제는 아이들의 도덕성에 대한 이해가 그 유리잔들에 대한 이해와 같다고 주장했습니다. 즉 그것이 타고난 것이라거나 아이들이 어른들로부터 직접 배운다고 말할 수 없다는 것입니다.", voca: ["argued:주장했다", "understanding:이해", "morality:도덕성", "innate:타고난", "directly:직접적으로", "adults:어른들", "learn:배우다", "children:아이들", "say:말하다", "like:~와같은"] },
-        { en: "Rather, it is self-constructed as kids play with other kids.", ko: "오히려, 그것은 아이들이 다른 아이들과 함께 놀면서 스스로 구성됩니다.", voca: ["Rather:오히려", "self-constructed:스스로구성된", "play:놀다", "other:다른", "kids:아이들", "as:~하면서", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Taking turns in a game is like pouring water back and forth between glasses.", ko: "게임에서 차례를 지키는 것은 유리잔 사이로 물을 앞뒤로 붓는 것과 같습니다.", voca: ["Taking turns:차례지키기", "pouring:붓는것", "back and forth:앞뒤로", "between:~사이에", "game:게임", "glasses:유리잔", "water:물", "like:~와같은", "🍌", "🍌"] },
-        { en: "Once kids have reached the age of five or six, then playing games and working things out together will help them learn about fairness far more effectively than any teaching from adults.", ko: "아이들이 5~6세에 이르면, 함께 게임을 하고 문제를 해결하는 것은 어른들의 어떤 가르침보다 훨씬 더 효과적으로 공정함에 대해 배우도록 도와줄 것입니다.", voca: ["reached:도달했다", "fairness:공정함", "effectively:효과적으로", "teaching:가르침", "working things out:문제를해결하다", "help:돕다", "together:함께", "playing:하는것", "adults:어른들", "age:나이"] }
+        { en: "It is important to recognize that although science is a rule-based procedure, it is very much a creative process.", ko: "과학은 규칙에 기반한 절차이지만, 매우 창의적인 과정임을 인식하는 것이 중요하다.", voca: ["recognize:인식하다", "rule-based:규칙 기반의", "procedure:절차", "creative:창의적인", "process:과정", "important:중요한", "although:~임에도 불구하고", "🍎", "🍎", "🍎"] },
+        { en: "A conjecture is a philosophical invention, cooked up rather mystically by the mind through the mental computation we call careful contemplation.", ko: "추론은 철학적 발명으로, 우리가 신중한 숙고라 부르는 머릿속 계산을 거쳐 사고를 통해 다소 신비롭게 만들어진 것이다.", voca: ["conjecture:추론/추측", "philosophical:철학적인", "mystically:신비롭게", "mental computation:머릿속 계산", "contemplation:숙고", "invention:발명", "cooked up:조작된/만들어진", "🍎", "🍎", "🍎"] },
+        { en: "However, until the hypothesis is tested against reality, it is not yet truly knowledge; it is just information that represents speculation.", ko: "그러나, 가설이 현실에 비추어 검증되기 전에는, 그것은 아직 진정한 지식이 아니며, 그것은 단지 추측을 나타내는 정보에 불과하다.", voca: ["hypothesis:가설", "against:~에 대조하여", "reality:현실", "knowledge:지식", "represents:나타내다", "speculation:추측", "truly:진정으로", "🍎", "🍎", "🍎"] },
+        { en: "Knowledge is information that has demonstrated its usefulness.", ko: "지식은 자신의 유용성을 입증한 정보이다.", voca: ["demonstrated:입증한", "usefulness:유용성", "Knowledge:지식", "information:정보", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It is what is left over after cycles of experimental testing have eliminated false theories.", ko: "그것(지식)은 수차례의 실험적 검증을 통해 잘못된 이론들을 제거한 후 남은 것이다.", voca: ["left over:남겨진", "cycles:순환/차례", "experimental:실험적인", "eliminated:제거했다", "false theories:잘못된 이론들", "testing:검증/테스트", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "As scientists continually test their hypotheses and modify their models to account for new and surprising data, a kind of “learning loop” emerges that statisticians call Bayesian updating.", ko: "과학자들이 끊임없이 가설을 검증하고 새롭고 놀라운 데이터를 설명하기 위해 모델을 수정함에 따라, 통계학자들이 ‘베이지안 업데이팅’이라고 부르는 일종의 ‘학습 루프’가 나타난다.", voca: ["continually:끊임없이", "modify:수정하다", "account for:설명하다", "learning loop:학습 루프", "emerges:나타나다", "statisticians:통계학자들", "surprising:놀라운", "🍎", "🍎", "🍎"] },
+        { en: "Based on Bayes’ Rule, developed by eighteenth-century English statistician and philosopher Thomas Bayes, Bayesian updating refers to a mathematical process whereby an accepted theory or predictive model gets increasingly accurate through the repetitive testing of competing variants of that theory.", ko: "Thomas Bayes가 개발한 베이즈 정리에 기초하여, 베이지안 업데이팅은 수용된 이론이나 예측 모델이 반복적인 검증 과정을 통해 점점 더 정확해지는 수학적 과정을 일컫는다.", voca: ["Bayesian updating:베이지안 업데이팅", "refers to:~을 일컫다", "mathematical:수학적인", "predictive model:예측 모델", "accurate:정확한", "repetitive:반복적인", "competing:경합하는", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +82,69 @@
             header.innerText = "English Master #38";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Cognitive and Moral<br>Development of Children</h1><p>2025년 3월 고1 모의고사 38번</p></div>
+                <div class="main-title-card"><h1>The Bayesian<br>Learning Loop</h1><p>2025년 3월 고2 38번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 아이들은 놀이를 통해 스스로 부피 보존의 법칙을 깨닫게 됨.</p>
-                    <p>• <b>📍 본론:</b> 도덕성 발달 또한 부피 이해와 같아서, 어른에게 배우기보다 아이들끼리의 놀이를 통해 스스로 형성됨.</p>
-                    <p>• <b>📍 결론:</b> 또래와의 게임과 상호작용은 가르침보다 공정함을 배우는 데 훨씬 효과적임.</p>
+                    <p>• <b>📍 서론:</b> 과학은 창의적인 숙고를 통해 가설(추론)을 만드는 것에서 시작됨.</p>
+                    <p>• <b>📍 본론:</b> 가설이 현실에서 검증되어 유용성이 입증될 때 비로소 '지식'이 되며, 실패한 이론은 제거됨.</p>
+                    <p>• <b>📍 결론:</b> 끊임없는 검증과 수정을 통해 모델이 점점 정확해지는 '베이지안 업데이팅'은 과학의 핵심적인 학습 루프임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 또래와의 놀이를 통한 자발적인 도덕성 및 인지적 구성</span>
-                    <span class="topic-eng">Topic: Self-Constructed Moral and Cognitive Development Through Peer Play</span>
+                    <span class="topic-kor">주제: 가설 검증과 수정을 통해 지식이 정교해지는 과학의 창의적 루프와 베이지안 업데이팅</span>
+                    <span class="topic-eng">Topic: The creative scientific process and Bayesian updating through repetitive hypothesis testing</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

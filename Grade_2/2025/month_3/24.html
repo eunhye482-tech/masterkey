@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #24 - Official Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #24 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -12,18 +12,17 @@
             --purple-dark: #673AB7;
             --pink-soft: #FFF0F6;
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,12 +57,13 @@
 </div>
 
 <script>
+    const prepositions = ["in", "through", "of", "to", "than", "for", "from", "at", "by", "as"];
     const fullData = [
-        { en: "Modern brain-scanning techniques such as fMRI (functional Magnetic Resonance Imaging) have revealed that reading aloud lights up many areas of the brain.", ko: "fMRI(기능적 자기 공명 영상)와 같은 현대의 뇌 스캔 기술은 소리 내어 읽기가 뇌의 많은 영역을 활성화한다는 것을 밝혀냈습니다.", voca: ["Modern:현대의", "scanning:스캔", "techniques:기술", "revealed:밝혀냈다", "reading aloud:소리내어읽기", "lights up:활성화하다", "functional:기능적인", "Magnetic:자기의", "Resonance:공명", "Imaging:영상"] },
-        { en: "There is intense activity in areas associated with pronunciation and hearing the sound of the spoken response, which strengthens the connective structures of your brain cells for more brainpower.", ko: "발음 및 구어 반응의 소리를 듣는 것과 관련된 영역에서 강렬한 활동이 있으며, 이는 더 많은 지적 능력을 위해 뇌세포의 연결 구조를 강화합니다.", voca: ["intense:강렬한", "associated with:~와관련된", "pronunciation:발음", "strengthens:강화하다", "connective:연결의", "structures:구조", "brain cells:뇌세포", "brainpower:지적 능력", "spoken:말하는/구어의", "activity:활동"] },
-        { en: "This leads to an overall improvement in concentration.", ko: "이것은 집중력의 전반적인 향상으로 이어집니다.", voca: ["leads to:~로이어지다", "overall:전반적인", "improvement:향상", "concentration:집중력", "leads:이끌다", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Reading aloud is also a good way to develop your public speaking skills because it forces you to read each and every word—something people don’t often do when reading quickly, or reading in silence.", ko: "소리 내어 읽기는 또한 대중 연설 기술을 개발하는 좋은 방법인데, 왜냐하면 그것이 여러분에게 모든 단어를 하나하나 읽도록 강제하기 때문이며, 이는 사람들이 빨리 읽거나 조용히 읽을 때 자주 하지 않는 일입니다.", voca: ["develop:개발하다", "public speaking:대중연설", "forces:강제하다", "often:자주", "silence:침묵", "quickly:빨리", "each:각각", "every:모든", "word:단어", "skills:기술"] },
-        { en: "Children, in particular, should be encouraged to read aloud because the brain is wired for learning through connections that are created by positive stimulation, such as singing, touching, and reading aloud.", ko: "특히 아이들은 소리 내어 읽도록 권장되어야 하는데, 왜냐하면 뇌는 노래하기, 만지기, 소리 내어 읽기와 같은 긍정적인 자극에 의해 만들어진 연결을 통해 학습하도록 배선되어 있기 때문입니다.", voca: ["in particular:특히", "encouraged:권장되는", "wired:배선된", "positive:긍정적인", "stimulation:자극", "singing:노래하기", "touching:만지기", "connections:연결", "created:창조된", "learning:학습"] }
+        { en: "Since their start in the early 1950s U.S. television sitcoms have charted many of the social conflicts in U.S. society: civil rights, women’s rights in the home and in the workplace, children’s rights, immigration and multiculturalism, as well as evolving conceptions of the family.", ko: "1950년대 초반에 시작된 이래로, 미국의 텔레비전 시트콤은 진화하는 가족 개념뿐만 아니라 시민권, 여성 권리, 아동권, 이민과 다문화주의와 같은 미국 사회의 많은 갈등을 보여 주어 왔다.", voca: ["charted:보여주다/기록하다", "conflicts:갈등", "civil rights:시민권", "multiculturalism:다문화주의", "evolving:진화하는", "conceptions:개념", "workplace:직장", "🍎", "🍎", "🍎"] },
+        { en: "Each of these issues has been addressed through humour in a way that has helped to make more progressive values more acceptable than previously.", ko: "이 각각의 쟁점은 유머를 통해 보다 진보적인 가치들이 이전보다 더 수용 가능하도록 하는 데 도움을 주는 방식으로 다루어져 왔다.", voca: ["addressed:다루어지다", "progressive:진보적인", "acceptable:수용 가능한", "previously:이전에", "humour:유머", "helped:도움을 주다", "values:가치", "🍎", "🍎", "🍎"] },
+        { en: "Often a character, usually someone marked as a bigot, resisted one or more of these developments and was then made to appear ridiculous.", ko: "종종 등장인물 한 명, 대개는 편견이 아주 심한 사람이라고 특징지어졌던 누군가가 이러한 발전 중 하나 이상에 저항하고 나서 어리석어 보이게 되었다.", voca: ["character:등장인물", "bigot:편견이 심한 사람", "resisted:저항했다", "appear:보이다", "ridiculous:어리석은/웃기는", "developments:발전", "marked:특징지어진", "🍎", "🍎", "🍎"] },
+        { en: "They were cut down either through their own stupidity, a brief scolding from others, or both.", ko: "이들은 자신의 어리석음이나 다른 사람들의 짧은 비난, 또는 이 두 가지 모두에 의해 배제되었다.", voca: ["cut down:배제되다/깎아내려지다", "stupidity:어리석음", "brief:짧은", "scolding:비난/꾸짖음", "others:다른 사람들", "either:둘 중 하나", "through:~을 통해", "🍎", "🍎", "🍎"] },
+        { en: "In this way, the humour of sitcoms acted as a cost-effective means to encourage acceptance of a more pluralistic and tolerant society.", ko: "이러한 방식으로, 시트콤의 유머는 더 다원적이고 관용적인 사회의 수용을 장려하는 비용 효율적인 수단으로 작용했다.", voca: ["cost-effective:비용 효율적인", "means:수단", "encourage:장려하다/격려하다", "pluralistic:다원적인", "tolerant:관용적인", "acceptance:수용", "acted:작용하다", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -77,78 +80,68 @@
             header.innerText = "English Master #24";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Benefits of<br>Reading Aloud</h1><p>2025년 3월 고1 모의고사 24번</p></div>
+                <div class="main-title-card"><h1>Sitcoms as<br>Social Tools</h1><p>2025년 3월 고2 24번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 뇌 스캔 기술은 소리 내어 읽기가 뇌의 여러 부위를 활성화함을 보여줌.</p>
-                    <p>• <b>📍 본론:</b> 소리 내어 읽기는 집중력을 높이고 뇌세포 연결 구조를 강화함.</p>
-                    <p>• <b>📍 결론:</b> 긍정적 자극인 소리 내어 읽기는 특히 어린이의 학습 발달에 중요함.</p>
+                    <p>• <b>📍 서론:</b> 1950년대 이후 미 시트콤은 인권, 이민, 가족관 등 사회적 갈등을 유연하게 다루어 왔음.</p>
+                    <p>• <b>📍 본론:</b> 유머를 활용해 진보적 가치를 자연스럽게 전파하고, 변화에 저항하는 보수적 캐릭터를 어리석게 묘사하여 배제함.</p>
+                    <p>• <b>📍 결론:</b> 시트콤 유머는 사회적 관용과 다원주의를 장려하는 매우 효율적인 문화적 수단으로 기능함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 뇌 강화와 연설 능력 향상을 위한 소리 내어 읽기의 효과</span>
-                    <span class="topic-eng">Topic: Effects of Reading Aloud on Brain Power and Speaking Skills</span>
+                    <span class="topic-kor">주제: 사회적 가치 변화와 관용을 장려하는 도구로서의 시트콤 유머의 역할</span>
+                    <span class="topic-eng">Topic: The role of sitcom humor as a tool for encouraging social value changes and tolerance</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

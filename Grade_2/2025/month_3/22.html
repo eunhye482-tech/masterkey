@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #22 - Official Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #22 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -12,18 +12,17 @@
             --purple-dark: #673AB7;
             --pink-soft: #FFF0F6;
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,12 +57,14 @@
 </div>
 
 <script>
+    const prepositions = ["of", "together", "in", "afterwards", "for", "to", "at", "upon", "as", "by", "with", "around"];
     const fullData = [
-        { en: "The science we learn in grade school is a collection of certainties about the natural world—the earth goes around the sun, DNA carries the information of an organism, and so on.", ko: "우리가 초등학교에서 배우는 과학은 지구가 태양 주위를 돌고, DNA가 유기체의 정보를 전달한다는 등 자연계에 대한 확실성들의 집합입니다.", voca: ["collection:집합/모음", "certainties:확실성", "natural:자연의", "organism:유기체", "carries:전달하다", "science:과학", "grade school:초등학교", "information:정보", "around:주위를", "earth:지구"] },
-        { en: "Only when you start to learn the practice of science do you realize that each of these 'facts' was hard won through a succession of logical inferences based upon many observations or experiments.", ko: "과학의 실천을 배우기 시작할 때 비로소 여러분은 이러한 '사실'들 각각이 많은 관찰이나 실험에 기초한 일련의 논리적 추론을 통해 힘들게 얻어졌다는 것을 깨닫게 됩니다.", voca: ["practice:실천/연습", "realize:깨닫다", "succession:연속/일련", "logical:논리적인", "inferences:추론", "observations:관찰", "experiments:실험", "hard won:힘들게얻은", "based upon:~에기초한", "facts:사실들"] },
-        { en: "The process of science is less about collecting pieces of knowledge than it is about reducing the uncertainties in what we know.", ko: "과학의 과정은 지식의 조각들을 모으는 것이라기보다는 우리가 알고 있는 것의 불확실성을 줄이는 것에 관한 것입니다.", voca: ["process:과정", "collecting:모으는 것", "knowledge:지식", "reducing:줄이는 것", "uncertainties:불확실성", "less about:덜~한", "than:~보다", "pieces:조각들", "science:과학", "know:알다"] },
-        { en: "Our uncertainties can be greater or lesser for any given piece of knowledge depending upon where we are in that process.", ko: "우리의 불확실성은 우리가 그 과정의 어디에 있느냐에 따라 어떤 특정한 지식에 대해 더 클 수도 있고 더 작을 수도 있습니다.", voca: ["greater:더 큰", "lesser:더 작은", "given:특정한", "depending upon:~에따라", "process:과정", "uncertainties:불확실성", "knowledge:지식", "piece:조각", "where:어디에", "any:어떤"] },
-        { en: "Today we are quite certain of how an apple will fall from a tree, but our understanding of the turbulent fluid flow remains a work in progress after more than a century of effort.", ko: "오늘날 우리는 사과가 나무에서 어떻게 떨어질지에 대해 꽤 확신하지만, 난류 유체 흐름에 대한 우리의 이해는 1세기가 넘는 노력 후에도 여전히 진행 중인 작업으로 남아 있습니다.", voca: ["certain:확신하는", "turbulent:난류의", "fluid flow:유체 흐름", "remains:남아있다", "century:1세기", "effort:노력", "quite:꽤", "fall:떨어지다", "understanding:이해", "progress:진행"] }
+        { en: "Commitment is the glue holding together characteristically human forms of social life.", ko: "약속은 사회생활에서의 인간 특유의 형태를 결속하는 접착제이다.", voca: ["Commitment:약속/전념", "glue:접착제", "holding together:결속하는", "characteristically:특유하게", "social life:사회생활", "forms:형태들", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Commitments make individuals’ behavior predictable in the face of fluctuations in their desires and interests, thereby facilitating the planning and coordination of joint actions involving multiple agents.", ko: "약속은 개인의 욕망과 관심이 동요하는 상황에서 그들의 행동을 예측 가능하게 만들고, 그렇게 함으로써 여러 주체가 참여하는 공동 행동의 계획과 조정을 용이하게 한다.", voca: ["predictable:예측 가능한", "fluctuations:동요/변동", "desires:욕망", "facilitating:용이하게 함", "coordination:조정", "multiple agents:여러 주체", "thereby:그렇게 함으로써", "🍎", "🍎", "🍎"] },
+        { en: "Moreover, commitments make people willing to perform actions that they would not otherwise perform.", ko: "게다가, 약속은 사람들이 그렇지 않으면 수행하지 않을 행동을 기꺼이 수행하도록 만든다.", voca: ["willing:기꺼이 하는", "perform:수행하다", "otherwise:그렇지 않으면", "actions:행동들", "Moreover:게다가", "make:만들다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For example, a taxi driver picks up his clients and transports them to their desired destination because they are committed to paying him afterwards for the service, and a construction worker performs her job every day because her employer has made a credible commitment to pay her at the end of the month.", ko: "예를 들어, 택시 기사는 고객이 나중에 서비스에 대해 비용을 지불하겠다고 약속했기 때문에 고객을 태워 원하는 목적지로 운송하고, 건설 노동자는 고용주가 월말에 급여를 지불하겠다는 신뢰할 만한 약속을 했기 때문에 매일 업무를 수행한다.", voca: ["transports:운송하다", "destination:목적지", "afterwards:나중에", "credible:신뢰할 만한", "employer:고용주", "service:서비스", "construction:건설", "🍎", "🍎", "🍎"] },
+        { en: "Indeed, the taxi driver and the construction worker are willing to accept money as payment only because a network of other agents (notably the central bank) is committed to taking various measures to sustain the currency in question.", ko: "사실, 택시 기사와 건설 노동자가 돈을 보수로 기꺼이 받아들이는 것은 오로지 다른 주체(특히 중앙은행)들의 네트워크가 해당 통화를 유지하기 위한 다양한 조치를 취할 것을 약속했기 때문이다.", voca: ["Indeed:사실/참으로", "payment:보수/지불", "notably:특히", "various measures:다양한 조치", "sustain:유지하다", "currency:통화", "network:네트워크", "🍎", "🍎", "🍎"] },
+        { en: "Thus, social objects and institutions such as jobs, money, government, scientific collaborations and marriage depend for their origin and stability upon the credibility of commitments.", ko: "따라서 일자리, 돈, 정부, 과학적 협력, 그리고 결혼과 같은 사회적 대상(객체)과 제도는 그 시작과 안정성을 위해 약속의 신뢰성에 의존한다.", voca: ["institutions:제도", "collaborations:협력", "origin:기원/시작", "stability:안정성", "credibility:신뢰성", "marriage:결혼", "Thus:따라서", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -77,78 +81,68 @@
             header.innerText = "English Master #22";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Nature of Science:<br>Reducing Uncertainties</h1><p>2025년 3월 고1 모의고사 22번</p></div>
+                <div class="main-title-card"><h1>The Glue of<br>Society</h1><p>2025년 3월 고2 22번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 학교에서 배우는 과학은 확실한 사실들의 집합으로 보임.</p>
-                    <p>• <b>📍 본론:</b> 과학은 지식을 모으기보다 불확실성을 줄여가는 과정임.</p>
-                    <p>• <b>📍 결론:</b> 지식의 확신 정도는 과학적 탐구 과정의 단계에 따라 달라짐.</p>
+                    <p>• <b>📍 서론:</b> 약속(Commitment)은 인간의 사회생활을 결속하는 '접착제'와 같은 역할을 함.</p>
+                    <p>• <b>📍 본론:</b> 약속은 인간의 변덕스러운 욕망 속에서도 행동을 예측 가능하게 하며, 돈거래나 노동처럼 혼자서는 하지 않을 행동을 가능하게 함.</p>
+                    <p>• <b>📍 결론:</b> 돈, 정부, 결혼 등 사회의 모든 주요 제도는 결국 약속의 '신뢰성'에 기반하여 유지됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 불확실성을 줄여나가는 과학적 탐구의 본질</span>
-                    <span class="topic-eng">Topic: The essence of science as a process of reducing uncertainties</span>
+                    <span class="topic-kor">주제: 사회적 협력과 제도를 지탱하는 근간으로서의 약속의 신뢰성</span>
+                    <span class="topic-eng">Topic: The credibility of commitment as the foundation for social cooperation and institutions</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

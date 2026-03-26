@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #20 - Official Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master #20 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -12,38 +12,38 @@
             --purple-dark: #673AB7;
             --pink-soft: #FFF0F6;
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
-        /* 공통 스타일 */
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
-        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; box-shadow: 0 4px 10px rgba(149,117,205,0.3); }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
-        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; }
+        .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
+        .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
+        .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
+        .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
 
-        /* 학습 카드 스타일 */
         .sentence-box { background: var(--lavender-light); padding: 20px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 15px; border: 2px solid var(--purple-pale); text-align: center; cursor: pointer; line-height: 1.5; }
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
-        /* 단어 그리드 */
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        /* STEP 3 전용: 빈칸 스타일 */
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -57,18 +57,12 @@
 </div>
 
 <script>
-    //
+    const prepositions = ["to", "from", "about", "for", "as", "into", "by", "even", "in", "without", "with", "at"];
     const fullData = [
-        { en: "Improving your gestural communication involves more than just knowing when to nod or shake hands.", ko: "몸짓을 사용하는 의사소통을 개선하는 것은 단순히 고개를 끄덕이거나 악수를 해야 할 때를 아는 것 이상을 포함한다.", voca: ["Improving:개선하는 것", "gestural:몸짓의", "communication:의사소통", "involves:포함하다", "more than:~이상", "just:단순히", "knowing:아는 것", "nod:끄덕이다", "shake hands:악수하다"] },
-        { en: "It’s about using gestures to complement your spoken messages, adding layers of meaning to your words.", ko: "이는 여러분의 말로 전하는 메시지를 보완하기 위해 여러분의 말에 여러 겹의 의미를 더하면서 몸짓을 사용하는 것에 대한 것이다.", voca: ["complement:보완하다", "layers:여러 겹", "gestures:몸짓", "spoken:말로 전하는", "meaning:의미", "adding:더하면서", "words:말", "using:사용하는"] },
-        { en: "Open-handed gestures, for example, can indicate honesty, creating an atmosphere of trust.", ko: "예를 들어 손바닥을 보이는 동작은 정직함을 나타내어 신뢰의 분위기를 만든다.", voca: ["Open-handed:손바닥을보이는", "indicate:나타내다", "honesty:정직함", "atmosphere:분위기", "trust:신뢰", "example:예시", "creating:만드는"] },
-        { en: "You invite openness and collaboration when you speak with your palms facing up.", ko: "손바닥을 위로 향한 채로 이야기할 때 여러분은 개방성과 협력을 끌어낸다.", voca: ["invite:끌어내다", "openness:개방성", "collaboration:협력", "palms:손바닥", "facing up:위로향한", "speak:말하다"] },
-        { en: "This simple yet powerful gesture can make others feel more comfortable and willing to engage in conversation.", ko: "이 간단하지만 강력한 몸짓은 상대방이 더 편안함을 느끼고 대화에 더 기꺼이 참여하고 싶도록 만들 수 있다.", voca: ["powerful:강력한", "comfortable:편안한", "willing to:기꺼이~하는", "engage in:참여하다", "conversation:대화"] },
-        { en: "But be careful of the trap of over-gesturing.", ko: "하지만 과도한 몸짓의 함정에 주의하라.", voca: ["careful:주의하는", "trap:함정", "over-gesturing:과도한몸짓"] },
-        { en: "Too many hand movements can distract from your message, drawing attention away from your words.", ko: "너무 많은 손동작은 여러분의 말로부터 관심을 돌리게 해서 여러분의 메시지에 집중이 안 되게 한다.", voca: ["movements:동작", "distract from:~을산만하게하다", "attention:주의", "away from:~로부터멀리", "drawing:끄는"] },
-        { en: "Imagine a speaker whose hands move quickly like birds, their message lost in the chaos of their gestures.", ko: "손이 마치 새처럼 빠르게 움직여서 자신의 메시지가 몸짓의 혼돈 속에 사라져 버린 발표자를 상상해 보라.", voca: ["Imagine:상상하다", "whose:그의", "quickly:빠르게", "chaos:혼돈", "lost:사라진", "speaker:발표자"] },
-        { en: "Balance is key.", ko: "균형이 핵심이다.", voca: ["Balance:균형", "key:핵심"] },
-        { en: "Your gestures should highlight your words, not overshadow them.", ko: "여러분의 몸짓은 여러분의 말을 강조해야지, 말을 가려서는 안 된다.", voca: ["highlight:강조하다", "overshadow:무색하게하다", "should:~해야한다"] }
+        { en: "Fans who are inclined to spend a lot of time thinking about what athletes owe them as fans should also think about the corresponding obligations that fans might have as fans.", ko: "팬인 자신에게 선수가 무엇을 해 주어야 하는지 생각하는 데 많은 시간을 보내는 성향이 있는 팬은 ‘팬으로서’ 가지고 있는 상응하는 의무에 대해서도 생각해야 한다.", voca: ["inclined:~하는 성향이 있는", "athletes:선수들", "owe:~에게 빚지다/해 주어야 한다", "corresponding:상응하는", "obligations:의무", "spend time:시간을 보내다", "thinking:생각하는 것", "🍎", "🍎", "🍎"] },
+        { en: "One who thinks only about what they are entitled to receive from their friends without ever giving a moment’s thought to what they owe their friends is, to put it mildly, not a very good friend.", ko: "자신이 친구에게 무엇을 해 주어야 하는지에 대해서는 잠시도 생각하지 않고 친구로부터 무엇을 받을 자격이 있는지에 대해서만 생각하는 사람은, 부드럽게 말하자면, 그리 좋은 친구가 아니다.", voca: ["entitled:자격이 있는", "receive:받다", "mildly:부드럽게/약하게", "a moment’s thought:잠시의 생각", "without:~없이", "thinks:생각한다", "friend:친구", "🍎", "🍎", "🍎"] },
+        { en: "Similarly, fans who only think about what athletes owe them without ever thinking about what they owe to athletes have failed to take the fan/athlete relationship all that seriously.", ko: "마찬가지로, 자신이 선수에게 무엇을 해 주어야 하는지에 대해서는 전혀 생각하지 않으면서 선수가 자신에게 무엇을 해 주어야 하는지에 대해서만 생각하는 팬은 팬-선수의 관계를 그다지 진지하게 받아들이지 못한 것이다.", voca: ["Similarly:마찬가지로", "failed:실패했다", "relationship:관계", "seriously:진지하게", "athletes:선수들", "think:생각하다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "As in nearly every other area of human life, whatever special rights fans may possess are limited by a corresponding set of obligations, and fans who never think about how they can be better fans even as they confidently opine about what athletes owe them are hardly fulfilling their end of the bargain.", ko: "인간의 삶의 거의 모든 다른 영역에서처럼, 팬이 가질 수 있는 어떠한 특별한 권리도 상응하는 일련의 의무에 의해 제한되며, 선수가 자신에게 무엇을 해 주어야 하는지는 확신에 차 말하면서도 자신이 어떻게 더 나은 팬이 될 수 있는지에 대해서는 전혀 생각하지 않는 팬은 자신의 의무를 다하고 있다고 하기 어렵다.", voca: ["possess:소유하다", "limited:제한된", "confidently:확신에 차서", "opine:의견을 말하다", "fulfilling:이행하는/다하는", "bargain:거래/계약", "nearly:거의", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -85,114 +79,69 @@
             header.innerText = "English Master #20";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Beyond Words:<br>Gestural Communication</h1><p>2025년 3월 고1 모의고사 20번</p></div>
-                <div class="intro-summary"><h3>📋 지문 요약</h3><p>• 몸짓은 메시지 보완의 도구<br>• 개방적 동작의 신뢰 형성<br>• 과도한 동작 지양 및 균형 강조</p></div>
-                <div class="intro-topic"><span class="topic-label">💡 Topic Sentence</span><p style="font-size:0.85rem; font-weight:600;">Gestures must balance with words to highlight, not overshadow, the message.</p></div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <div class="main-title-card"><h1>The Fan's<br>Obligations</h1><p>2025년 3월 고2 20번</p></div>
+                <div class="intro-summary">
+                    <p>• <b>📍 서론:</b> 팬들은 선수가 자신에게 무엇을 해 주어야 하는지만 생각할 게 아니라, 팬으로서의 의무도 생각해야 함.</p>
+                    <p>• <b>📍 본론:</b> 받기만 바라고 주지 않는 사람은 나쁜 친구인 것처럼, 의무를 외면하는 팬은 선수와의 관계를 진지하게 여기지 않는 것임.</p>
+                    <p>• <b>📍 결론:</b> 모든 권리에는 상응하는 의무가 따르며, 더 나은 팬이 되려는 노력 없이 권리만 주장하는 것은 팬의 역할을 다하지 않는 것임.</p>
+                </div>
+                <div class="intro-topic">
+                    <span class="topic-kor">주제: 선수에 대한 권리 주장만큼이나 중요한 팬으로서의 상응하는 의무와 태도</span>
+                    <span class="topic-eng">Topic: The corresponding obligations and attitudes of fans as much as their rights from athletes</span>
+                </div>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2') {
-            header.innerText = `STEP 2. 문장 학습 (${currentIdx + 1}/10)`;
+        } else {
+            const stepNum = currentMode === 'STEP2' ? 2 : 3;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
-            document.getElementById('main-next-btn').innerText = (currentIdx === 9) ? "FINISH" : "NEXT";
+            document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
-            area.innerHTML = `
-                <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                <div class="voca-grid" id="voca-area"></div>
-                <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                <div id="trans-area" class="trans-content">${item.ko}</div>
-            `;
-            fillVoca(item.voca, '🍌', "#FFD600");
-        } else if (currentMode === 'STEP3') {
-            header.innerText = `STEP 3. 영작 연습 (${currentIdx + 1}/10)`;
-            nav.classList.remove('hidden');
-            document.getElementById('main-next-btn').innerText = (currentIdx === 9) ? "FINISH" : "NEXT";
-
-            const item = fullData[currentIdx];
-            area.innerHTML = `
-                <div class="kor-box">${item.ko}</div>
-                <div class="blank-area" id="blank-area"></div>
-                <div class="voca-grid" id="voca-area"></div>
-                <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                <div id="trans-area" class="trans-content">${item.en}</div>
-            `;
-            fillBlanks(item.en);
-            fillVoca(item.voca, '🍇', "#9C27B0");
+            if (currentMode === 'STEP2') {
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
+            } else {
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
+                fillBlanks(item.en);
+                fillVoca(item.voca, '🍇', "#9C27B0");
+            }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() {
-                    this.classList.toggle('revealed');
-                    this.innerText = this.classList.contains('revealed') ? kor : eng;
-                };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji;
-                div.style.color = emojiColor;
-                div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank';
-            span.innerText = word;
-            span.onclick = function() {
-                this.classList.add('revealed');
-                playTTS(word.replace(/[.,]/g, ""));
-            };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'"]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'"]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) {
-        currentMode = 'STEP' + step;
-        currentIdx = 0;
-        render();
-    }
-
-    function nextSentence() {
-        if (currentIdx < 9) {
-            currentIdx++;
-            render();
-        } else {
-            currentMode = 'INTRO';
-            render();
-        }
-    }
-
-    function prevSentence() {
-        if (currentIdx > 0) {
-            currentIdx--;
-            render();
-        }
-    }
-
-    function playTTS(text) {
-        synth.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9;
-        synth.speak(utterance);
-    }
-
-    function toggleView(id) {
-        const el = document.getElementById(id);
-        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-    }
-
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
+    function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
+    function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
+    function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>
 </body>
