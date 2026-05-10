@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #35 - 23년 6월 고1 모의고사</title>
+    <title>English Master #Brain - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #35</div>
+    <div class="header" id="header-title">English Master #Brain</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,13 +57,13 @@
 </div>
 
 <script>
+    const prepositions = ["before", "in", "with", "of", "for", "after", "from"];
     const fullData = [
-        { en: "Although technology has the potential to increase productivity, it can also have a negative impact on productivity.", ko: "기술은 생산성을 높일 가능성이 있지만, 생산성에 부정적인 영향을 미칠 수도 있습니다.", voca: ["potential:가능성/잠재력", "increase:높이다/증가시키다", "productivity:생산성", "negative:부정적인", "impact:영향", "technology:기술", "Although:비록 ~이지만", "also:또한", "have:가지다", "🍎"] },
-        { en: "For example, in many office environments workers sit at desks with computers and have access to the internet.", ko: "예를 들어, 많은 사무실 환경에서 노동자들은 컴퓨터가 있는 책상에 앉아 인터넷에 접속합니다.", voca: ["office environments:사무실 환경", "access:접속/접근", "internet:인터넷", "workers:노동자들", "sit:앉다", "desks:책상", "computers:컴퓨터", "have:가지다", "many:많은", "🍎"] },
-        { en: "They are able to check their personal e-mails and use social media whenever they want to.", ko: "그들은 원할 때마다 개인 이메일을 확인하고 소셜 미디어를 사용할 수 있습니다.", voca: ["check:확인하다", "personal:개인의", "social media:소셜 미디어", "whenever:~할 때마다", "want to:원하다", "able to:~할 수 있는", "e-mails:이메일", "use:사용하다", "they:그들", "🍎"] },
-        { en: "This can stop them from doing their work and make them less productive.", ko: "이것은 그들이 일을 하는 것을 방해하고 그들을 덜 생산적으로 만들 수 있습니다.", voca: ["stop A from B:A가 B하는 것을 막다", "doing:하는 것", "work:일", "less:덜", "productive:생산적인", "make:만들다", "them:그들", "this:이것", "can:할 수 있다", "🍎"] },
-        { en: "Introducing new technology can also have a negative impact on production when it causes a change to the production process or requires workers to learn a new system.", ko: "새로운 기술을 도입하는 것은 또한 생산 과정에 변화를 일으키거나 노동자들이 새로운 시스템을 배워야 할 때 생산에 부정적인 영향을 미칠 수 있습니다.", voca: ["Introducing:도입하는 것", "causes:유발하다/일으키다", "change:변화", "production process:생산 과정", "requires:요구하다", "learn:배우다", "new system:새로운 시스템", "impact:영향", "negative:부정적인", "🍎"] },
-        { en: "Learning to use new technology can be time consuming and stressful for workers and this can cause a decline in productivity.", ko: "새로운 기술을 사용하는 것을 배우는 것은 노동자들에게 시간이 많이 걸리고 스트레스를 줄 수 있으며, 이것은 생산성의 저하를 일으킬 수 있습니다.", voca: ["time consuming:시간이 많이 걸리는", "stressful:스트레스를 주는", "cause:일으키다", "decline:저하/하락", "productivity:생산성", "learning:배우는 것", "use:사용하다", "workers:노동자들", "and:그리고", "🍎"] }
+        { en: "Before getting licensed to drive a cab in London, a person has to pass an incredibly difficult test with an intimidating name—“The Knowledge.”", ko: "런던에서 택시 운전 면허를 받기 전에, 사람은 'The Knowledge'라는 위협적인 이름을 가진 엄청나게 어려운 시험을 통과해야 합니다.", voca: ["licensed:면허를 받은", "incredibly:엄청나게", "intimidating:위협적인", "Knowledge:지식", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The test involves memorizing the layout of more than 20,000 streets in the Greater London area—a feat that involves an incredible amount of memory resources.", ko: "이 시험은 런던 전역의 20,000개 이상의 거리 배치를 암기하는 것을 포함하는데, 이는 엄청난 양의 기억 자원을 필요로 하는 위업입니다.", voca: ["involves:포함하다", "memorizing:암기하는 것", "layout:배치/구획", "feat:위업/묘기", "memory resources:기억 자원", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In fact, fewer than 50 percent of the people who sign up for taxi driver training pass the test, even after spending two or three years studying for it!", ko: "사실, 택시 기사 훈련에 등록한 사람들 중 50% 미만만이 2, 3년 동안 공부한 후에도 이 시험에 합격합니다!", voca: ["fewer than:~보다 적은", "sign up:등록하다", "spending:보내는 것/쓰는 것", "studying for:~을 위해 공부하다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "And as it turns out, the brains of London cabbies are different from non-cab-driving humans in ways that reflect their herculean memory efforts.", ko: "그리고 밝혀진 바와 같이, 런던 택시 기사들의 뇌는 그들의 엄청난 기억 노력을 반영하는 방식으로 일반인들과는 다릅니다.", voca: ["turns out:밝혀지다", "cabbies:택시 기사들", "reflect:반영하다", "herculean:엄청난 힘이 드는", "efforts:노력", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In fact, the part of the brain that has been most frequently associated with spatial memory, the tail of the sea horse-shaped brain region called the hippocampus, is bigger than average in these taxi drivers.", ko: "사실, 공간 기억과 가장 빈번하게 연관되어 온 뇌 부위인, 해마라고 불리는 해마 모양의 뇌 영역의 꼬리 부분이 이 택시 기사들에게서 평균보다 더 큽니다.", voca: ["frequently:빈번하게", "associated with:~와 연관된", "spatial memory:공간 기억", "sea horse-shaped:해마 모양의", "hippocampus:해마", "average:평균", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,83 +77,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #35";
+            header.innerText = "English Master #Brain";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Two Sides<br>of Technology</h1><p>2023년 6월 고1 모의고사 35번</p></div>
+                <div class="main-title-card"><h1>The Cabbie's<br>Amazing Brain</h1><p>2025년 3월 고2 특선</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 기술은 생산성을 높일 수 있는 잠재력이 크지만, 동시에 부정적인 영향도 미칠 수 있음.</p>
-                    <p>• <b>📍 본론 1:</b> 사무직 노동자들이 원할 때마다 인터넷을 통해 개인 이메일이나 소셜 미디어를 사용하면서 업무 집중도가 떨어지고 생산성이 저하됨.</p>
-                    <p>• <b>📍 본론 2:</b> 신기술 도입은 생산 공정을 바꾸고 새로운 시스템 습득을 요구하는데, 이 과정에서 노동자들은 시간 소모와 스트레스를 겪음.</p>
-                    <p>• <b>📍 결론:</b> 이러한 기술적 산만함과 학습에 대한 부담은 결국 전체적인 생산성의 하락을 불러올 수 있음.</p>
+                    <p>• <b>📍 서론:</b> 런던 택시 기사가 되기 위해서는 'The Knowledge'라는 악명 높은 암기 시험을 통과해야 함.</p>
+                    <p>• <b>📍 본론:</b> 2만 개 이상의 거리 배치를 외우는 이 과정은 매우 힘들어 등록자의 절반도 통과하지 못함.</p>
+                    <p>• <b>📍 결론:</b> 이러한 엄청난 노력의 결과로 런던 택시 기사들은 공간 기억을 담당하는 '해마' 부위가 일반인보다 더 크게 발달함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 기술 도입이 가져올 수 있는 산만함과 학습 부담으로 인한 생산성 저하</span>
-                    <span class="topic-eng">Topic: Deceased productivity due to distractions and learning curves associated with new technology</span>
+                    <span class="topic-kor">주제: 런던 택시 기사들의 고강도 학습이 뇌의 해마 크기에 미치는 영향</span>
+                    <span class="topic-eng">Topic: The impact of intense spatial learning on the size of the hippocampus in London taxi drivers</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

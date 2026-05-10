@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #29 - 23년 6월 고1 모의고사</title>
+    <title>English Master #Psychology - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #29</div>
+    <div class="header" id="header-title">English Master #Psychology</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,14 +57,15 @@
 </div>
 
 <script>
+    const prepositions = ["with", "of", "whenever", "to", "by", "for", "about", "when", "in"];
     const fullData = [
-        { en: "Although praise is one of the most powerful tools available for improving young children’s behavior, it is equally powerful for improving your child’s self-esteem.", ko: "칭찬은 어린 아이들의 행동을 개선하는 데 사용할 수 있는 가장 강력한 도구 중 하나이지만, 아이의 자존감을 향상시키는 데도 똑같이 강력합니다.", voca: ["praise:칭찬", "powerful tools:강력한 도구", "available:사용 가능한", "improving:개선하는/향상시키는", "self-esteem:자존감", "young children:어린 아이들", "behavior:행동", "equally:똑같이", "Although:비록 ~이지만", "🍎"] },
-        { en: "Preschoolers believe what their parents tell them in a very profound way.", ko: "미취학 아동들은 부모가 자신에게 하는 말을 매우 깊이 있는 방식으로 믿습니다.", voca: ["Preschoolers:미취학 아동", "believe:믿다", "parents:부모", "profound:깊은/심오한", "way:방식", "tell:말하다", "what:~하는 것", "very:매우", "🍎", "🍎"] },
-        { en: "They do not yet have the cognitive sophistication to reason analytically and reject false information.", ko: "그들은 분석적으로 추론하고 잘못된 정보를 거부할 수 있는 인지적 정교함을 아직 가지고 있지 않습니다.", voca: ["cognitive:인지적인", "sophistication:정교함", "reason:추론하다", "analytically:분석적으로", "reject:거부하다", "false:잘못된/거짓의", "information:정보", "yet:아직", "🍎", "🍎"] },
-        { en: "If a preschool boy consistently hears from his mother that he is smart and a good helper, he is likely to incorporate that information into his self-image.", ko: "만약 미취학 소년이 어머니로부터 자신이 영리하고 잘 도와주는 사람이라는 말을 지속적으로 듣는다면, 그는 그 정보를 자신의 자아상에 통합시킬 가능성이 높습니다.", voca: ["consistently:지속적으로", "smart:영리한", "good helper:잘 도와주는 사람", "incorporate:통합시키다/포함하다", "self-image:자아상", "likely to:~할 가능성이 높은", "mother:어머니", "information:정보", "into:~로", "🍎"] },
-        { en: "Thinking of himself as a boy who is smart and knows how to do things is likely to make him endure longer in problem-solving efforts.", ko: "자신을 영리하고 일을 어떻게 하는지 아는 소년으로 생각하는 것은 그가 문제 해결 노력에서 더 오래 견디게 할 가능성이 높습니다.", voca: ["Thinking of:~라고 생각하는 것", "endure:견디다/인내하다", "problem-solving:문제 해결", "efforts:노력", "knows how to:~하는 법을 알다", "smart:영리한", "longer:더 오래", "🍎", "🍎", "🍎"] },
-        { en: "And it will increase his confidence in trying new and difficult tasks.", ko: "그리고 그것은 새롭고 어려운 과업을 시도하는 데 있어 그의 자신감을 높여줄 것입니다.", voca: ["increase:높이다/증가시키다", "confidence:자신감", "trying:시도하는 것", "difficult:어려운", "tasks:과업/일", "new:새로운", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Similarly, thinking of himself as the kind of boy who is a good helper will make him more likely to volunteer to help with tasks at home and at preschool.", ko: "마찬가지로, 자신을 잘 도와주는 종류의 소년으로 생각하는 것은 그가 집과 유치원에서 일을 돕겠다고 자원할 가능성을 더 높게 만들 것입니다.", voca: ["Similarly:마찬가지로", "volunteer:자원하다", "help with:~을 돕다", "kind:종류", "more likely:가능성이 더 높은", "tasks:일/과업", "home:집", "preschool:유치원", "🍎", "🍎"] }
+        { en: "Research psychologists often work with self-report data, made up of participants’ verbal accounts of their behavior.", ko: "연구 심리학자들은 종종 참가자들의 행동에 대한 구두 설명으로 구성된 자기 보고 데이터로 작업합니다.", voca: ["self-report:자기 보고", "participants:참가자들", "verbal accounts:구두 설명", "behavior:행동", "made up of:~로 구성된", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This is the case whenever questionnaires, interviews, or personality inventories are used to measure variables.", ko: "설문지, 인터뷰, 또는 성격 목록이 변수를 측정하는 데 사용될 때마다 이러한 경우가 해당됩니다.", voca: ["questionnaires:설문지", "personality inventories:성격 목록", "measure:측정하다", "variables:변수", "whenever:~할 때마다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Self-report methods can be quite useful. They take advantage of the fact that people have a unique opportunity to observe themselves full-time.", ko: "자기 보고법은 꽤 유용할 수 있습니다. 그것들은 사람들이 자신을 항상 관찰할 수 있는 독특한 기회를 가진다는 사실을 이용합니다.", voca: ["methods:방법", "useful:유용한", "take advantage of:~을 이용하다", "observe:관찰하다", "full-time:항상/전담의", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "However, self-reports can be plagued by several kinds of distortion.", ko: "하지만, 자기 보고는 여러 종류의 왜곡에 의해 시달릴 수 있습니다.", voca: ["plagued:시달리는", "distortion:왜곡", "several:여러", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "One of the most problematic of these distortions is the social desirability bias, which is a tendency to give socially approved answers to questions about oneself.", ko: "이러한 왜곡들 중 가장 문제가 되는 것 중 하나는 사회적 바람직성 편향인데, 이것은 자신에 대한 질문에 사회적으로 승인된 답변을 하려는 경향입니다.", voca: ["problematic:문제가 되는", "social desirability bias:사회적 바람직성 편향", "tendency:경향", "socially approved:사회적으로 승인된", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Subjects who are influenced by this bias work overtime trying to create a favorable impression, especially when subjects are asked about sensitive issues.", ko: "이 편향에 영향을 받는 피험자들은 특히 민감한 문제에 대해 질문을 받았을 때 호의적인 인상을 주기 위해 과도하게 노력합니다.", voca: ["influenced:영향을 받는", "favorable:호의적인", "impression:인상", "especially:특히", "sensitive issues:민감한 문제", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For example, many survey respondents will report that they voted in an election or gave to a charity when in fact it is possible to determine that they did not.", ko: "예를 들어, 많은 설문 조사 응답자들은 실제로는 그렇지 않았다는 것을 확인하는 것이 가능함에도 불구하고 선거에서 투표했거나 자선 단체에 기부했다고 보고할 것입니다.", voca: ["respondents:응답자들", "election:선거", "charity:자선 단체", "determine:확인하다/결정하다", "in fact:사실은", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,82 +79,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #29";
+            header.innerText = "English Master #Psychology";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Praise and<br>Self-Image</h1><p>2023년 6월 고1 모의고사 29번</p></div>
-                
+                <div class="main-title-card"><h1>The Paradox of<br>Self-Reporting</h1><p>2025년 3월 고2 특선</p></div>
+                [Image showing a person filling out a questionnaire while a tiny angel/devil on their shoulder suggests the 'socially correct' answer rather than the truth, illustrating Social Desirability Bias]
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 칭찬은 아이의 행동 교정뿐만 아니라 자존감 형성에 매우 강력한 도구임.</p>
-                    <p>• <b>📍 본론:</b> 미취학 아동은 인지 능력이 발달 중이라 부모의 말을 비판 없이 그대로 수용함. 긍정적인 말을 듣고 자란 아이는 이를 자신의 '자아상'으로 통합함.</p>
-                    <p>• <b>📍 결론:</b> 스스로를 유능하다고 믿는 아이는 어려운 문제 앞에서 더 오래 인내하고, 자신감 있게 새로운 도전에 임하며 자발적으로 남을 도움.</p>
+                    <p>• <b>📍 서론:</b> 심리학자들은 설문이나 인터뷰를 통한 자기 보고 데이터를 연구에 자주 활용함.</p>
+                    <p>• <b>📍 본론:</b> 자기 보고법은 자신에 대한 관찰 기회를 제공해 유용하지만, '사회적 바람직성 편향'과 같은 데이터 왜곡에 취약함.</p>
+                    <p>• <b>📍 결론:</b> 사람들은 자신을 호의적으로 보이게 하려 하며, 투표 여부나 기부 사실 등을 사실과 다르게 보고하는 경향이 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 미취학 아동의 자아상 형성과 자존감 향상에 미치는 부모 칭찬의 영향</span>
-                    <span class="topic-eng">Topic: The impact of parental praise on the formation of self-image and self-esteem in preschoolers</span>
+                    <span class="topic-kor">주제: 자기 보고법의 유용성과 사회적 바람직성 편향으로 인한 왜곡 문제</span>
+                    <span class="topic-eng">Topic: Usefulness of self-report methods and the distortion issue caused by social desirability bias</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,';]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,';]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

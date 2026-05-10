@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #38 - 23년 3월 고1 모의고사</title>
+    <title>English Master #37 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #38</div>
+    <div class="header" id="header-title">English Master #37</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,14 +57,17 @@
 </div>
 
 <script>
+    const prepositions = ["in", "around", "compared", "to", "by", "over", "about", "at", "with", "of"];
     const fullData = [
-        { en: "All carbohydrates are basically sugars.", ko: "모든 탄수화물은 기본적으로 당입니다.", voca: ["carbohydrates:탄수화물", "basically:기본적으로", "sugars:당/설탕", "All:모든", "are:이다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Complex carbohydrates are the good carbohydrates for your body.", ko: "복합 탄수화물은 여러분의 몸에 좋은 탄수화물입니다.", voca: ["Complex:복합적인", "carbohydrates:탄수화물", "good:좋은", "body:몸", "for:~을 위한", "are:이다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "These complex sugar compounds are very difficult to break down and can trap other nutrients like vitamins and minerals in their chains.", ko: "이러한 복합 당 화합물은 분해하기가 매우 어렵고 비타민과 미네랄 같은 다른 영양소들을 사슬 안에 가둘 수 있습니다.", voca: ["compounds:화합물", "difficult:어려운", "break down:분해하다", "trap:가두다", "nutrients:영양소", "vitamins:비타민", "minerals:미네랄", "chains:사슬", "very:매우", "🍎"] },
-        { en: "As they slowly break down, the other nutrients are also released into your body, and can provide you with fuel for a number of hours.", ko: "그것들이 천천히 분해되면서 다른 영양소들도 여러분의 몸으로 방출되고, 몇 시간 동안 연료(에너지)를 공급할 수 있습니다.", voca: ["slowly:천천히", "released:방출된", "provide:공급하다", "fuel:연료", "number of hours:몇 시간", "also:또한", "into:~로", "can:할 수 있다", "other:다른", "🍎"] },
-        { en: "Bad carbohydrates, on the other hand, are simple sugars.", ko: "반면에 나쁜 탄수화물은 단순 당입니다.", voca: ["on the other hand:반면에", "simple:단순한", "sugars:당", "Bad:나쁜", "carbohydrates:탄수화물", "are:이다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Because their structure is not complex, they are easy to break down and hold few nutrients for your body other than the sugars from which they are made.", ko: "그것들의 구조는 복잡하지 않기 때문에, 분해되기 쉽고 그것들이 만들어지는 당 외에는 몸을 위한 영양소를 거의 가지고 있지 않습니다.", voca: ["structure:구조", "easy:쉬운", "hold:가지다", "few:거의 없는", "other than:~ 외에", "complex:복잡한", "because:~때문에", "nutrients:영양소", "made:만들어진", "🍎"] },
-        { en: "Your body breaks down these carbohydrates rather quickly and what it cannot use is converted to fat and stored in the body.", ko: "여러분의 몸은 이러한 탄수화물을 꽤 빨리 분해하고 사용하지 못한 것은 지방으로 바뀌어 몸에 저장됩니다.", voca: ["rather:꽤/다소", "quickly:빨리", "cannot:할 수 없다", "converted:전환된/바뀐", "fat:지방", "stored:저장된", "breaks down:분해하다", "use:사용하다", "body:몸", "🍎"] }
+        { en: "Electric communication is mainly known in fish.", ko: "전기적 의사소통은 주로 물고기들에게서 알려져 있습니다.", voca: ["Electric:전기의", "communication:의사소통", "mainly:주로", "known:알려진", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The electric signals are produced in special electric organs.", ko: "전기 신호는 특수한 전기 기관에서 생성됩니다.", voca: ["signals:신호", "produced:생성된", "special:특수한", "organs:기관", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "When the signal is discharged the electric organ will be negatively loaded compared to the head and an electric field is created around the fish.", ko: "신호가 방출될 때 전기 기관은 머리에 비해 음전하를 띠게 되며 물고기 주변에 전기장이 형성됩니다.", voca: ["discharged:방출된", "negatively:음전하로", "compared to:~에 비해", "electric field:전기장", "created:형성된/만들어진", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "A weak electric current is created also in ordinary muscle cells when they contract.", ko: "일반적인 근육 세포가 수축할 때도 약한 전류가 발생합니다.", voca: ["weak:약한", "electric current:전류", "ordinary:일반적인", "muscle cells:근육 세포", "contract:수축하다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In the electric organ the muscle cells are connected in larger chunks, which makes the total current intensity larger than in ordinary muscles.", ko: "전기 기관에서 근육 세포들은 더 큰 덩어리로 연결되어 있으며, 이는 전체 전류 강도를 일반 근육보다 더 크게 만듭니다.", voca: ["connected:연결된", "larger chunks:더 큰 덩어리", "total:전체", "intensity:강도", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The fish varies the signals by changing the form of the electric field or the frequency of discharging.", ko: "물고기는 전기장의 형태나 방출 빈도를 바꿈으로써 신호를 다양하게 변화시킵니다.", voca: ["varies:변화시키다", "form:형태", "frequency:빈도/주파수", "changing:바꾸는 것", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The system is only working over small distances, about one to two meters.", ko: "이 시스템은 약 1~2미터의 짧은 거리에서만 작동합니다.", voca: ["working:작동하는", "small distances:짧은 거리", "about:약", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This is an advantage since the species using the signal system often live in large groups with several other species.", ko: "신호 시스템을 사용하는 종들은 흔히 여러 다른 종과 함께 큰 무리를 지어 살기 때문에 이것은 장점이 됩니다.", voca: ["advantage:장점", "species:종", "large groups:큰 무리", "several:여러", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If many fish send out signals at the same time, the short range decreases the risk of interference.", ko: "많은 물고기가 동시에 신호를 보낼 때, 짧은 도달 범위는 간섭의 위험을 줄여줍니다.", voca: ["send out:보내다", "short range:짧은 범위", "decreases:줄이다", "risk:위험", "interference:간섭", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,82 +81,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #38";
+            header.innerText = "English Master #37";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Good vs. Bad<br>Carbohydrates</h1><p>2023년 3월 고1 모의고사 38번</p></div>
+                <div class="main-title-card"><h1>Electric Signaling<br>in Fish</h1><p>2025년 3월 고2 37번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 모든 탄수화물은 기본적으로 당(sugar)이지만, 구조에 따라 몸에 미치는 영향이 다름.</p>
-                    <p>• <b>📍 본론:</b> 복합 탄수화물은 사슬 구조가 복잡해 분해가 어렵고 영양소를 가두고 있어, 천천히 분해되며 에너지를 오랫동안 공급함.</p>
-                    <p>• <b>📍 결론:</b> 단순 당인 나쁜 탄수화물은 구조가 단순해 빠르게 분해되며 영양소도 거의 없음. 사용되지 못한 과잉 당은 결국 지방으로 저장됨.</p>
+                    <p>• <b>📍 서론:</b> 물고기는 특수 기관을 통해 전기 신호를 만들어 의사소통을 함.</p>
+                    <p>• <b>📍 본론:</b> 근육 세포가 큰 덩어리로 연결되어 강한 전류를 생성하며, 전기장의 형태나 빈도를 조절해 정보를 전달함.</p>
+                    <p>• <b>📍 결론:</b> 신호의 도달 거리가 1~2m로 짧은데, 이는 밀집된 무리 속에서 신호 간섭을 최소화하는 생존 전략임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 탄수화물의 구조적 차이(복합 vs 단순)에 따른 분해 속도와 체내 에너지 공급 및 지방 저장의 원리</span>
-                    <span class="topic-eng">Topic: The principle of energy supply and fat storage based on the structural differences between complex and simple carbohydrates</span>
+                    <span class="topic-kor">주제: 물고기의 전기 신호 생성 원리와 짧은 신호 범위의 이점</span>
+                    <span class="topic-eng">Topic: The mechanism of electric signaling in fish and the advantages of short-range communication</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

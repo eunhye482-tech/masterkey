@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #40 - 23년 6월 고1 모의고사</title>
+    <title>English Master #40 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,16 @@
 </div>
 
 <script>
+    const prepositions = ["in", "according", "to", "across", "while", "without", "by", "on", "up", "down"];
     const fullData = [
-        { en: "Nearly eight of ten U.S. adults believe there are ”good foods“ and ”bad foods.”", ko: "미국 성인 10명 중 거의 8명이 '좋은 음식'과 '나쁜 음식'이 있다고 믿습니다.", voca: ["Nearly:거의", "adults:성인들", "believe:믿다", "good foods:좋은 음식", "bad foods:나쁜 음식", "eight of ten:10명 중 8명", "there are:~이 있다", "🍎", "🍎", "🍎"] },
-        { en: "Unless we’re talking about spoiled stew, or poison mushrooms, no foods can be labeled as either good or bad.", ko: "하지만 우리가 상한 스튜나 독버섯 등에 대해 말하고 있는 것이 아니라면, 어떤 음식도 좋거나 나쁘다고 분류될 수 없습니다.", voca: ["Unless:~하지 않는다면", "spoiled:상한", "poison mushrooms:독버섯", "labeled:분류된/이름 붙여진", "either A or B:A 또는 B", "no foods:어떤 음식도 ~않다", "talking about:~에 대해 말하다", "🍎", "🍎", "🍎"] },
-        { en: "There are, however, combinations of foods that add up to a healthful or unhealthful diet.", ko: "그러나 건강에 좋은 식단이나 건강에 좋지 않은 식단이 되는 음식들의 조합은 있습니다.", voca: ["however:그러나", "combinations:조합", "add up to:~이 되다/결국 ~하다", "healthful:건강에 좋은", "diet:식단", "unhealthful:건강에 좋지 않은", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Consider an adult who eats only foods thought of as ”good“—for example, raw broccoli, apples, and boiled tofu.", ko: "예를 들어, 생브로콜리, 사과, 삶은 두부와 같이 '좋은' 것으로 생각되는 음식만 먹는 한 성인을 생각해 보십시오.", voca: ["Consider:생각해 보다", "thought of as:~라고 생각되는", "raw:생/익히지 않은", "boiled:삶은", "tofu:두부", "example:예를 들어", "only:오직", "🍎", "🍎", "🍎"] },
-        { en: "Although these foods are nutrient-dense, they do not add up to a healthy diet because they don’t supply a wide enough variety of nutrients.", ko: "비록 이 음식들이 영양이 풍부할지라도, 우리가 필요한 충분히 다양한 영양소를 공급하지 않기 때문에 건강한 식단이 되지 않습니다.", voca: ["nutrient-dense:영양이 풍부한", "supply:공급하다", "variety:다양성", "nutrients:영양소", "enough:충분한", "wide:넓은/다양한", "healthy:건강한", "because:~때문에", "Although:비록 ~일지라도", "🍎"] },
-        { en: "The occasional fried chicken isn’t going to knock a teenager's diet off track.", ko: "가끔 먹는 치킨 튀김은 십 대의 식단을 궤도에서 벗어나게 하지 않을 것입니다.", voca: ["occasional:가끔의", "fried chicken:치킨 튀김", "knock off track:궤도에서 벗어나게 하다", "diet:식단", "teenager:십 대", "is not going to:~하지 않을 것이다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "But the person who eats fried foods every day and loads up on soft drinks and candy for snacks has a bad diet.", ko: "하지만 매일 튀긴 음식을 먹고 간식으로 탄산음료와 사탕을 많이 먹는 사람은 나쁜 식단을 가진 것입니다.", voca: ["loads up on:~을 많이 먹다/싣다", "soft drinks:탄산음료", "candy:사탕", "snacks:간식", "every day:매일", "fried foods:튀긴 음식", "bad:나쁜", "diet:식단", "🍎", "🍎"] },
-        { en: "Defining foods as good or bad is not appropriate; a healthy diet is determined largely by what the diet is composed of.", ko: "음식을 좋거나 나쁘다고 정의하는 것은 적절하지 않습니다. 사실 건강한 식단은 주로 그 식단이 무엇으로 구성되는지에 의해 결정됩니다.", voca: ["Defining:정의하는 것", "appropriate:적절한", "determined:결정된", "largely:주로/대체로", "composed of:~로 구성된", "healthy:건강한", "diet:식단", "in fact:사실", "🍎", "🍎"] }
+        { en: "People behave in highly predictable ways when they experience certain thoughts. When they agree, they nod their heads.", ko: "사람들은 특정한 생각을 경험할 때 매우 예측 가능한 방식으로 행동합니다. 그들은 동의할 때 고개를 끄덕입니다.", voca: ["predictable:예측 가능한", "experience:경험하다", "agree:동의하다", "nod:끄덕이다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "So far, no surprise, but according to an area of research known as “proprioceptive psychology,” the process also works in reverse.", ko: "여기까지는 놀랍지 않지만, '자기수용 심리학'이라고 알려진 연구 분야에 따르면, 그 과정은 역으로도 작용합니다.", voca: ["proprioceptive:자기수용적인", "psychology:심리학", "in reverse:역으로", "process:과정", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Get people to behave in a certain way and you cause them to have certain thoughts.", ko: "사람들이 특정한 방식으로 행동하게 만들면, 당신은 그들이 특정한 생각을 갖게 만들 수 있습니다.", voca: ["behave:행동하다", "cause:야기하다/만들다", "certain way:특정한 방식", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The idea was initially controversial, but fortunately it was supported by a compelling experiment.", ko: "그 아이디어는 처음에는 논란의 여지가 있었지만, 다행히도 강력한 실험에 의해 뒷받침되었습니다.", voca: ["initially:처음에", "controversial:논란이 되는", "compelling:강력한/설득력 있는", "experiment:실험", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Participants in a study were asked to fixate on various products moving across a large computer screen and then indicate whether the items appealed to them.", ko: "한 연구의 참가자들은 큰 컴퓨터 화면을 가로질러 움직이는 다양한 제품에 시선을 고정하고, 그 아이템들이 자신에게 매력적인지 표시해달라는 요청을 받았습니다.", voca: ["Participants:참가자들", "fixate on:~에 시선을 고정하다", "indicate:표시하다/나타내다", "appealed to:~에게 매력적이다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Some of the items moved vertically (causing the participants to nod their heads while watching), and others moved horizontally (resulting in a side-to-side head movement).", ko: "일부 아이템은 수직으로 움직였고(보는 동안 참가자들이 고개를 끄덕이게 함), 다른 아이템들은 수평으로 움직였습니다(고개를 양옆으로 흔들게 함).", voca: ["vertically:수직으로", "horizontally:수평으로", "resulting in:~라는 결과를 낳다", "side-to-side:양옆으로", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Participants preferred vertically moving products without being aware that their “yes” and “no” head movements had played a key role in their decisions.", ko: "참가자들은 자신의 '예'와 '아니요' 고개 움직임이 결정에 핵심적인 역할을 했다는 사실을 인지하지 못한 채 수직으로 움직이는 제품을 더 선호했습니다.", voca: ["preferred:선호했다", "aware:인지하는/아는", "played a key role:핵심 역할을 하다", "decisions:결정", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In one study, participants responded favorably to products on a computer screen when they moved their heads up and down, which showed that their decisions were unconsciously influenced by their behavior.", ko: "한 연구에서 참가자들이 고개를 위아래로 움직였을 때 컴퓨터 화면의 제품에 호의적으로 반응했는데, 이는 그들의 결정이 자신의 행동에 의해 무의식적으로 영향을 받았음을 보여주었습니다.", voca: ["favorably:호의적으로", "unconsciously:무의식적으로", "influenced:영향을 받은", "behavior:행동", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +83,69 @@
             header.innerText = "English Master #40";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Balance of<br>Your Plate</h1><p>2023년 6월 고1 모의고사 40번</p></div>
+                <div class="main-title-card"><h1>Body Leads<br>the Mind</h1><p>2025년 3월 고2 40번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 대다수의 사람들은 음식을 '좋다' 혹은 '나쁘다'로 나누지만, 이는 잘못된 고정관념임.</p>
-                    <p>• <b>📍 본론:</b> 소위 '좋은 음식'만 골라 먹어도 영양 불균형이 오면 나쁜 식단이 되고, '나쁜 음식'을 가끔 먹는 것은 전체 식단에 큰 문제가 되지 않음.</p>
-                    <p>• <b>📍 결론:</b> 음식 하나하나에 이름을 붙이기보다, 전체적으로 얼마나 다양한 영양소를 조화롭게 구성하느냐가 건강한 식단의 핵심임.</p>
+                    <p>• <b>📍 서론:</b> 생각에 따라 행동이 결정되기도 하지만, 반대로 행동이 생각을 유발하기도 함.</p>
+                    <p>• <b>📍 본론:</b> 고개를 수직(끄덕임) 혹은 수평(가로저음)으로 움직이게 한 실험 결과, 수직 운동을 한 그룹이 제품을 더 긍정적으로 평가함.</p>
+                    <p>• <b>📍 결론:</b> 우리의 결정은 자신의 무의식적인 행동 패턴에 의해 강력하게 영향을 받음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 개별 음식의 이분법적 분류보다 식단 전체의 구성과 영양 균형의 중요성</span>
-                    <span class="topic-eng">Topic: The importance of overall dietary composition and nutritional balance over binary labeling of individual foods</span>
+                    <span class="topic-kor">주제: 행동이 무의식적인 사고와 결정에 미치는 역방향의 영향</span>
+                    <span class="topic-eng">Topic: The reverse influence of behavior on unconscious thoughts and decisions</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“()]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“()]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

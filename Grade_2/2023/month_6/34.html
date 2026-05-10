@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #34 - 23년 6월 고1 모의고사</title>
+    <title>English Master #Thinking - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #34</div>
+    <div class="header" id="header-title">English Master #Thinking</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,15 +57,14 @@
 </div>
 
 <script>
+    const prepositions = ["in", "if", "not", "yet", "around", "from", "for", "between"];
     const fullData = [
-        { en: "Restricting the number of items customers can buy boosts sales.", ko: "고객이 살 수 있는 품목의 수를 제한하는 것은 판매를 늘립니다.", voca: ["Restricting:제한하는 것", "items:품목/항목", "boosts:늘리다/부양하다", "sales:판매", "customers:고객들", "number of:~의 수", "can:할 수 있다", "buy:사다", "🍎", "🍎"] },
-        { en: "Brian Wansink, Professor of Marketing at Cornell University, investigated the effectiveness of this tactic in 1998.", ko: "Cornell 대학교의 마케팅 교수인 Brian Wansink는 1998년에 이 전략의 효과를 조사했습니다.", voca: ["Professor:교수", "Marketing:마케팅", "investigated:조사했다", "effectiveness:효과/효율성", "tactic:전략/전술", "university:대학교", "this:이", "🍎", "🍎", "🍎"] },
-        { en: "He persuaded three supermarkets in Sioux City, Iowa, to offer Campbell’s soup at a small discount: 79 cents rather than 89 cents.", ko: "그는 아이오와주 Sioux City에 있는 세 곳의 슈퍼마켓이 Campbell 수프를 89센트가 아닌 79센트의 약간 할인된 가격으로 제공하도록 설득했습니다.", voca: ["persuaded:설득했다", "supermarkets:슈퍼마켓", "offer:제공하다", "discount:할인", "rather than:~보다", "small:약간의/작은", "soup:수프", "🍎", "🍎", "🍎"] },
-        { en: "The discounted soup was sold in one of three conditions: a control, where there was no limit, or two tests, where customers were limited to either 4 or 12 cans.", ko: "할인된 수프는 세 가지 조건 중 하나로 판매되었습니다: 제한이 없는 대조군, 또는 고객이 4캔 혹은 12캔으로 제한되는 두 개의 실험군입니다.", voca: ["discounted:할인된", "conditions:조건", "control:대조군", "no limit:제한 없음", "limited to:~로 제한된", "tests:실험군", "either A or B:A 혹은 B", "cans:캔", "sold:판매된", "🍎"] },
-        { en: "In the unlimited condition shoppers bought 3.3 cans on average, whereas in the scarce condition, when there was a limit, they bought 5.3 on average.", ko: "무제한 조건에서 쇼핑객들은 평균 3.3캔을 샀던 반면, 제한이 있는 희소 조건에서는 평균 5.3캔을 샀습니다.", voca: ["unlimited:무제한의", "shoppers:쇼핑객", "on average:평균적으로", "whereas:~인 반면", "scarce:희소한", "limit:제한", "bought:샀다", "🍎", "🍎", "🍎"] },
-        { en: "This suggests scarcity encourages sales.", ko: "이것은 희소성이 판매를 장려한다는 것을 시사합니다.", voca: ["suggests:시사하다/제안하다", "scarcity:희소성", "encourages:장려하다/북돋우다", "sales:판매", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The findings are particularly strong because the test took place in a supermarket with genuine shoppers.", ko: "실험이 실제 쇼핑객들이 있는 슈퍼마켓에서 이루어졌기 때문에 이 결과는 특히 강력합니다.", voca: ["findings:결과/발견", "particularly:특히", "took place:개최되다/이루어지다", "genuine:실제의/진짜의", "strong:강력한", "because:~때문에", "test:실험", "supermarket:슈퍼마켓", "🍎", "🍎"] },
-        { en: "It didn’t rely on claimed data, nor was it held in a laboratory where consumers might behave differently.", ko: "그것은 주장된 데이터에 의존하지 않았고, 소비자들이 다르게 행동할 수도 있는 실험실에서 진행되지도 않았습니다.", voca: ["rely on:~에 의존하다", "claimed data:주장된 데이터", "held:열린/진행된", "laboratory:실험실", "behave:행동하다", "differently:다르게", "nor:또한 ~않다", "consumers:소비자들", "might:~일지도 모른다", "🍎"] }
+        { en: "Many people look for safety and security in popular thinking. They figure that if a lot of people are doing something, then it must be right.", ko: "많은 사람들이 대중적인 사고에서 안전과 안심을 찾습니다. 그들은 많은 사람이 무언가를 하고 있다면, 그것이 틀림없이 옳을 것이라고 생각합니다.", voca: ["safety:안전", "security:안심/보안", "popular thinking:대중적인 사고", "figure:생각하다/판단하다", "must be:~임에 틀림없다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It must be a good idea. If most people accept it, then it probably represents fairness, equality, compassion, and sensitivity, right? Not necessarily.", ko: "그것은 좋은 생각임에 틀림없습니다. 대부분의 사람들이 그것을 받아들인다면, 그것은 아마도 공정성, 평등, 동정심, 그리고 세심함을 나타내겠죠? 반드시 그렇지는 않습니다.", voca: ["accept:받아들이다", "probably:아마도", "represents:나타내다/대변하다", "fairness:공정성", "equality:평등", "compassion:동정심", "sensitivity:세심함", "Not necessarily:반드시 그렇지는 않다", "🍎", "🍎"] },
+        { en: "Popular thinking said the earth was the center of the universe, yet Copernicus studied the stars and planets and proved mathematically that the earth and the other planets in our solar system revolved around the sun.", ko: "대중적인 사고는 지구가 우주의 중심이라고 말했지만, 코페르니쿠스는 별과 행성을 연구했고 지구가 우리 태양계의 다른 행성들과 함께 태양 주위를 돌고 있다는 것을 수학적으로 증명했습니다.", voca: ["center of the universe:우주의 중심", "studied:연구했다", "proved:증명했다", "mathematically:수학적으로", "revolved around:~의 주위를 돌다", "solar system:태양계", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Popular thinking said surgery didn’t require clean instruments, yet Joseph Lister studied the high death rates in hospitals and introduced antiseptic practices that immediately saved lives.", ko: "대중적인 사고는 수술에 깨끗한 도구가 필요하지 않다고 말했지만, 조셉 리스터는 병원의 높은 사망률을 연구했고 즉각적으로 생명을 구한 소독법을 도입했습니다.", voca: ["surgery:수술", "instruments:도구/기구", "death rates:사망률", "antiseptic:소독의/방부의", "immediately:즉각적으로", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Popular thinking said that women shouldn’t have the right to vote, yet people like Emmeline Pankhurst and Susan B. Anthony fought for and won that right.", ko: "대중적인 사고는 여성들이 투표권을 가져서는 안 된다고 말했지만, 에멀라인 팽크허스트와 수잔 B. 앤서니 같은 사람들은 그 권리를 위해 싸워 쟁취했습니다.", voca: ["right to vote:투표권", "fought for:~를 위해 싸우다", "won:쟁취했다/이기다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We must always remember there is a huge difference between acceptance and intelligence. People may say that there’s safety in numbers, but that’s not always true.", ko: "우리는 수용과 지성 사이에 거대한 차이가 있음을 항상 기억해야 합니다. 사람들은 다수 속에 안전이 있다고 말할지도 모르지만, 그것이 항상 사실인 것은 아닙니다.", voca: ["huge difference:거대한 차이", "acceptance:수용", "intelligence:지성", "safety in numbers:다수 속의 안전", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -77,82 +78,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #34";
+            header.innerText = "English Master #Thinking";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Power of<br>Scarcity Marketing</h1><p>2023년 6월 고1 모의고사 34번</p></div>
-                
+                <div class="main-title-card"><h1>Beyond Popular<br>Thinking</h1><p>2025년 3월 고2 특선</p></div>
+                [Image illustrating the Geocentric model (Earth-centered) vs. the Heliocentric model (Sun-centered), showing how the 'popular thinking' of the past was proven wrong by Copernicus's intelligence and scientific observation]
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 구매 수량을 제한하는 마케팅 기법은 실제 소비자의 구매량을 늘리는 효과가 있음.</p>
-                    <p>• <b>📍 본론:</b> 수프 할인 실험 결과, 무제한 판매 시(평균 3.3캔)보다 구매 수량을 제한했을 때(평균 5.3캔) 훨씬 더 많은 양이 판매됨.</p>
-                    <p>• <b>📍 결론:</b> 이 실험은 인위적인 실험실이 아닌 실제 마트에서 진짜 쇼핑객을 대상으로 진행되었기에 그 결과의 신뢰성이 매우 높음.</p>
+                    <p>• <b>📍 서론:</b> 사람들은 다수가 하는 대중적 사고에서 안전을 찾으려 하지만, 그것이 항상 옳은 것은 아님.</p>
+                    <p>• <b>📍 본론:</b> 지동설(코페르니쿠스), 소독법(조셉 리스터), 여성 참정권(팽크허스트) 등 과거의 대중적 사고를 뒤엎은 역사적 사례들이 존재함.</p>
+                    <p>• <b>📍 결론:</b> 단순히 다수가 받아들인다고 해서 그것이 지성적인 것은 아니며, 수용과 지성은 엄연히 다름.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 구매 수량 제한(희소성)이 소비자의 심리를 자극하여 판매량을 증대시키는 효과</span>
-                    <span class="topic-eng">Topic: The effect of scarcity (limiting purchase quantity) on increasing sales volume by stimulating consumer psychology</span>
+                    <span class="topic-kor">주제: 대중적인 사고의 맹신에 대한 경계와 지성의 중요성</span>
+                    <span class="topic-eng">Topic: Warning against blind belief in popular thinking and the importance of intelligence</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'?!]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'?!]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

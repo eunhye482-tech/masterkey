@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #31 - 23년 6월 고1 모의고사</title>
+    <title>English Master #22 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #31</div>
+    <div class="header" id="header-title">English Master #22</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,16 +57,16 @@
 </div>
 
 <script>
+    const prepositions = ["on", "from", "than", "for", "with", "in", "by", "into", "over"];
     const fullData = [
-        { en: "Individuals who perform at a high level in their profession often have instant credibility with others.", ko: "자신의 직업에서 높은 수준으로 성과를 내는 개인들은 종종 타인에게 즉각적인 신뢰를 얻습니다.", voca: ["perform:성과를 내다", "high level:높은 수준", "profession:직업", "instant:즉각적인", "credibility:신뢰도/신뢰성", "individuals:개인들", "others:타인들", "often:종종", "have:가지다", "🍎"] },
-        { en: "People admire them, they want to be like them, and they feel connected to them.", ko: "사람들은 그들을 감탄하고, 그들처럼 되고 싶어 하며, 그들과 연결되어 있다고 느낍니다.", voca: ["admire:감탄하다/존경하다", "connected:연결된", "want to:~하고 싶어 하다", "be like:~처럼 되다", "feel:느끼다", "them:그들", "People:사람들", "🍎", "🍎", "🍎"] },
-        { en: "When they speak, others listen—even if the area of their skill has nothing to do with the advice they give.", ko: "그들이 말할 때, 그들의 기술 분야가 그들이 주는 조언과 전혀 관련이 없을지라도 다른 사람들은 경청합니다.", voca: ["listen:경청하다", "area:분야", "skill:기술", "nothing to do with:~와 관련이 없는", "advice:조언", "even if:비록 ~일지라도", "speak:말하다", "others:다른 사람들", "When:~할 때", "🍎"] },
-        { en: "Think about a world-famous basketball player. He has made more money from endorsements than he ever did playing basketball.", ko: "세계적으로 유명한 농구 선수를 생각해 보십시오. 그는 농구를 해서 벌었던 것보다 광고 홍보로부터 더 많은 돈을 벌어왔습니다.", voca: ["world-famous:세계적으로 유명한", "basketball player:농구 선수", "made money:돈을 벌다", "endorsements:광고 홍보(지지)", "ever:지금껏", "playing:경기를 하는 것", "than:~보다", "Think about:~을 생각하다", "🍎", "🍎"] },
-        { en: "Is it because of his knowledge of the products he endorses? No. It’s because of what he can do with a basketball.", ko: "그것이 그가 홍보하는 제품에 대한 그의 지식 때문입니까? 아닙니다. 그것은 그가 농구공으로 할 수 있는 것 때문입니다.", voca: ["knowledge:지식", "products:제품들", "endorses:홍보하다/지지하다", "because of:~ 때문에", "No:아니오", "basketball:농구(공)", "what:~하는 것", "can:할 수 있다", "do:하다", "🍎"] },
-        { en: "The same can be said of an Olympic medalist swimmer. People listen to him because of what he can do in the pool.", ko: "올림픽 메달리스트 수영 선수에 대해서도 마찬가지입니다. 사람들은 그가 수영장에서 할 수 있는 것 때문에 그의 말을 듣습니다.", voca: ["medalist:메달리스트", "swimmer:수영 선수", "pool:수영장", "listen to:~의 말을 듣다", "The same:마찬가지", "can be said:~라고 말해질 수 있다", "of:~에 대해", "because of:~ 때문에", "🍎", "🍎"] },
-        { en: "And when an actor tells us we should drive a certain car, we don’t listen because of his expertise on engines.", ko: "그리고 한 배우가 우리에게 어떤 차를 운전해야 한다고 말할 때, 우리는 그의 엔진에 대한 전문 지식 때문에 듣는 것이 아닙니다.", voca: ["actor:배우", "certain:어떤/특정한", "expertise:전문 지식", "engines:엔진", "tells:말하다", "should:~해야 한다", "drive:운전하다", "listen:듣다", "because of:~ 때문에", "🍎"] },
-        { en: "We listen because we admire his talent. Excellence connects.", ko: "우리는 그의 재능을 감탄하기 때문에 듣습니다. 탁월함은 연결됩니다.", voca: ["admire:감탄하다", "talent:재능", "Excellence:탁월함", "connects:연결된다", "We:우리", "listen:듣다", "because:~때문에", "🍎", "🍎", "🍎"] },
-        { en: "If you possess a high level of ability in an area, others may desire to connect with you because of it.", ko: "만약 여러분이 한 분야에서 높은 수준의 능력을 갖추고 있다면, 다른 사람들은 그것 때문에 여러분과 연결되기를 원할지도 모릅니다.", voca: ["possess:갖추다/소유하다", "ability:능력", "desire:원하다/열망하다", "connect with:~와 연결되다", "high level:높은 수준", "area:분야", "others:다른 사람들", "because of:~ 때문에", "may:~일지도 모른다", "🍎"] }
+        { en: "In the course of his research on business strategy and the environment, Michael Porter noticed a peculiar pattern: Businesses seemed to be profiting from regulation.", ko: "비즈니스 전략과 환경에 관한 연구 과정에서, Michael Porter는 독특한 패턴을 발견했습니다. 기업들이 규제로부터 이익을 얻고 있는 것처럼 보인다는 것이었습니다.", voca: ["course:과정", "strategy:전략", "peculiar:독특한/이상한", "pattern:패턴", "profiting:이익을 얻는", "regulation:규제", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "He also discovered that the stricter regulations were prompting more innovation than the weaker ones.", ko: "그는 또한 더 엄격한 규제가 약한 규제보다 더 많은 혁신을 불러일으키고 있다는 것을 발견했습니다.", voca: ["discovered:발견했다", "stricter:더 엄격한", "prompting:불러일으키는/자극하는", "innovation:혁신", "weaker:더 약한", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The Dutch flower industry provides an illustration.", ko: "네덜란드의 화훼 산업이 하나의 예시를 제공합니다.", voca: ["Dutch:네덜란드의", "industry:산업", "illustration:예시/설명", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For many years, the companies producing Holland’s world-renowned tulips and other cut flowers were also contaminating the country’s water and soil with fertilizers and pesticides.", ko: "오랫동안 네덜란드의 세계적으로 유명한 튤립과 다른 절화들을 생산하는 회사들은 또한 비료와 살충제로 그 나라의 물과 토양을 오염시키고 있었습니다.", voca: ["world-renowned:세계적으로 유명한", "cut flowers:절화(꺾은 꽃)", "contaminating:오염시키는", "soil:토양", "fertilizers:비료", "pesticides:살충제", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In 1991, the Dutch government adopted a policy designed to cut pesticide use in half by 2000—a goal they ultimately achieved.", ko: "1991년, 네덜란드 정부는 2000년까지 살충제 사용을 절반으로 줄이도록 설계된 정책을 채택했고, 그들은 결국 그 목표를 달성했습니다.", voca: ["adopted:채택했다", "policy:정책", "designed:설계된", "ultimately:결국/궁극적으로", "achieved:달성했다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Facing increasingly strict regulation, greenhouse growers realized they had to develop new methods if they were going to maintain product quality with fewer pesticides.", ko: "점점 더 엄격해지는 규제에 직면하여, 온실 재배자들은 더 적은 살충제로 제품의 품질을 유지하려면 새로운 방법을 개발해야 한다는 것을 깨달았습니다.", voca: ["Facing:직면하여", "increasingly:점점 더", "greenhouse growers:온실 재배자", "maintain:유지하다", "quality:품질", "methods:방법", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In response, they shifted to a cultivation method that circulates water in closed-loop systems and grows flowers in a rock wool substrate.", ko: "이에 대응하여, 그들은 폐쇄형 시스템에서 물을 순환시키고 암면 배지에서 꽃을 재배하는 재배 방식으로 전환했습니다.", voca: ["shifted:전환했다/바꿨다", "cultivation:재배", "circulates:순환시키다", "closed-loop:폐쇄형의", "substrate:배지/기질", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The new system not only reduced the pollution released into the environment; it also increased profits by giving companies greater control over growing conditions.", ko: "이 새로운 시스템은 환경으로 방출되는 오염을 줄였을 뿐만 아니라, 기업들에게 재배 조건에 대한 더 큰 통제권을 부여함으로써 이윤을 증가시켰습니다.", voca: ["reduced:줄였다", "pollution:오염", "released:방출된", "increased:증가시켰다", "profits:이윤/이익", "control:통제(권)", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,82 +80,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #31";
+            header.innerText = "English Master #22";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Connecting Power<br>of Excellence</h1><p>2023년 6월 고1 모의고사 31번</p></div>
+                <div class="main-title-card"><h1>Regulation as a<br>Driver of Innovation</h1><p>2025년 3월 고2 22번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 특정 분야에서 뛰어난 성과를 내는 사람은 타인에게 즉각적인 신뢰를 얻으며, 사람들은 그들과 연결되고 싶어 함.</p>
-                    <p>• <b>📍 본론:</b> 농구 선수나 수영 선수, 배우가 자신의 전문 분야와 무관한 광고를 할 때 사람들이 경청하는 이유는 그들의 '지식'이 아닌 그들의 '탁월함'과 '재능'에 감탄하기 때문임.</p>
-                    <p>• <b>📍 결론:</b> 탁월함은 사람을 연결하는 힘이 있음. 한 분야에서 높은 능력을 갖추면 사람들은 그 능력 자체만으로도 당신과 연결되길 원하게 됨.</p>
+                    <p>• <b>📍 서론:</b> Michael Porter는 엄격한 규제가 기업의 혁신과 이윤 증대를 불러온다는 패턴을 발견함.</p>
+                    <p>• <b>📍 본론:</b> 네덜란드 정부의 강력한 살충제 감축 정책에 직면한 화훼 농가들은 폐쇄형 순환 재배 시스템을 개발함.</p>
+                    <p>• <b>📍 결론:</b> 새로운 방식은 환경 오염을 줄였을 뿐만 아니라, 재배 조건 통제를 통해 기업의 이익을 오히려 높여줌.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 한 분야의 탁월함이 가져오는 즉각적인 신뢰도와 타인과의 연결 능력</span>
-                    <span class="topic-eng">Topic: The instant credibility and ability to connect with others brought by excellence in a specific area</span>
+                    <span class="topic-kor">주제: 엄격한 환경 규제가 기업의 혁신과 이윤 증대를 촉진하는 효과</span>
+                    <span class="topic-eng">Topic: The effect of strict environmental regulations in promoting innovation and increasing profits</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'?!—]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'?!—]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

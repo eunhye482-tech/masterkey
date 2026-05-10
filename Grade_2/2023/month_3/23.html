@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #23 - 23년 3월 고1 모의고사</title>
+    <title>English Master #23 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,15 @@
 </div>
 
 <script>
+    const prepositions = ["of", "for", "in", "with", "between", "as", "by"];
     const fullData = [
-        { en: "As the social and economic situation of countries got better, wage levels and working conditions improved.", ko: "국가들의 사회적, 경제적 상황이 좋아지면서, 임금 수준과 근로 조건이 개선되었습니다.", voca: ["social:사회적인", "economic:경제적인", "wage levels:임금 수준", "working conditions:근로 조건", "improved:개선된", "situation:상황", "countries:국가들", "better:더 좋은", "got:되다", "🍎"] },
-        { en: "Gradually people were given more time off.", ko: "점차 사람들에게 더 많은 휴가 시간이 주어졌습니다.", voca: ["Gradually:점차", "time off:휴가/쉬는 시간", "given:주어진", "people:사람들", "more:더 많은", "were:이었다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "At the same time, forms of transport improved and it became faster and cheaper to get to places.", ko: "동시에, 운송 수단이 개선되었고 장소들에 도달하는 것이 더 빠르고 더 저렴해졌습니다.", voca: ["at the same time:동시에", "forms:형태", "transport:운송/교통", "improved:개선된", "cheaper:더 저렴한", "places:장소들", "became:되었다", "faster:더 빠른", "get to:~에 도달하다", "🍎"] },
-        { en: "England’s industrial revolution led to many of these changes.", ko: "영국의 산업 혁명이 이러한 변화들 중 많은 것을 이끌었습니다.", voca: ["industrial revolution:산업 혁명", "led to:~을 이끌다", "changes:변화들", "many:많은", "these:이러한", "England:영국", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Railways, in the nineteenth century, opened up now famous seaside resorts such as Blackpool and Brighton.", ko: "19세기에 철도는 Blackpool과 Brighton 같은 현재 유명한 해안 리조트들을 가능하게 했습니다.", voca: ["Railways:철도", "nineteenth century:19세기", "opened up:가능하게 하다/열다", "seaside resorts:해안 리조트", "famous:유명한", "such as:~와 같은", "now:지금/현재", "🍎", "🍎", "🍎"] },
-        { en: "With the railways came many large hotels.", ko: "철도와 함께 많은 대형 호텔들이 생겨났습니다.", voca: ["railways:철도", "came:왔다/생겨났다", "large:대형의", "hotels:호텔들", "many:많은", "with:~와 함께", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "In Canada, for example, the new coast-to-coast railway system made possible the building of such famous hotels as Banff Springs and Chateau Lake Louise in the Rockies.", ko: "예를 들어 캐나다에서는, 새로운 대륙 횡단 철도 시스템이 로키산맥의 Banff Springs와 Chateau Lake Louise 같은 유명한 호텔들의 건설을 가능하게 했습니다.", voca: ["coast-to-coast:대륙 횡단의", "railway system:철도 시스템", "made possible:가능하게 만들었다", "building:건설/건물", "Rockies:로키산맥", "famous:유명한", "example:예시", "such as:~와 같은", "🍎", "🍎"] },
-        { en: "Later, the arrival of air transport opened up more of the world and led to tourism growth.", ko: "나중에, 항공 운송의 출현은 세계의 더 많은 곳을 열어주었고 관광 산업의 성장으로 이어졌습니다.", voca: ["arrival:출현/도착", "air transport:항공 운송", "opened up:열어주다", "tourism growth:관광 산업 성장", "led to:~으로 이어지다", "Later:나중에", "world:세계", "more:더 많은", "🍎", "🍎"] }
+        { en: "What consequences of eating too many grapes and other sweet fruit could there possibly be for our brains?", ko: "포도와 다른 단 과일을 너무 많이 먹는 것이 우리 뇌에 어떤 결과를 초래할 수 있을까요?", voca: ["consequences:결과", "possibly:어쩌면", "sweet fruit:단 과일", "brains:뇌", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "A few large studies have helped to shed some light.", ko: "몇몇 대규모 연구들이 실마리를 찾는 데 도움을 주었습니다.", voca: ["studies:연구들", "shed light:실마리를 찾다", "large:대규모의", "helped:도움을 주다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In one, higher fruit intake in older, cognitively healthy adults was linked with less volume in the hippocampus.", ko: "한 연구에서, 인지적으로 건강한 노인의 높은 과일 섭취는 해마의 더 적은 부피와 관련이 있었습니다.", voca: ["intake:섭취", "cognitively:인지적으로", "linked with:~와 관련된", "volume:부피", "hippocampus:해마", "higher:더 높은", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This finding was unusual, since people who eat more fruit usually display the benefits associated with a healthy diet.", ko: "과일을 더 많이 먹는 사람들은 대개 건강한 식단과 관련된 이점을 보이기 때문에 이 발견은 이례적이었습니다.", voca: ["unusual:이례적인", "display:보여주다", "benefits:이점", "associated with:~와 관련된", "diet:식단", "since:~이기 때문에", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In this study, however, the researchers isolated various components of the subjects’ diets and found that fruit didn’t seem to be doing their memory centers any favors.", ko: "그러나 이 연구에서 연구자들은 피험자 식단의 다양한 구성 요소를 분리했고, 과일이 그들의 기억 중추에 아무런 도움이 되지 않는 것 같다는 것을 발견했습니다.", voca: ["isolated:분리했다", "components:구성 요소", "subjects:피험자", "memory centers:기억 중추", "doing favors:도움을 주다", "seemed to:~인 것 같다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Another study from the Mayo Clinic saw a similar inverse relationship between fruit intake and volume of the cortex, the large outer layer of the brain.", ko: "Mayo Clinic의 또 다른 연구는 과일 섭취와 뇌의 거대한 바깥층인 피질 부피 사이의 유사한 역관계를 확인했습니다.", voca: ["inverse:역의/반대의", "relationship:관계", "cortex:피질", "outer layer:바깥층", "similar:유사한", "between:~ 사이의", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Researchers in the latter study noted that excessive consumption of high-sugar fruit (such as mangoes, bananas, and pineapples) may cause metabolic and cognitive problems as much as processed carbs do.", ko: "후자의 연구에서 연구자들은 (망고, 바나나, 파인애플과 같은) 고당도 과일의 과도한 섭취가 가공된 탄수화물만큼이나 대사 및 인지 문제를 일으킬 수 있다고 언급했습니다.", voca: ["latter:후자의", "excessive:과도한", "consumption:섭취/소비", "metabolic:대사의", "cognitive:인지의", "processed carbs:가공 탄수화물", "high-sugar:고당도의", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +82,69 @@
             header.innerText = "English Master #23";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Evolution of<br>Modern Tourism</h1><p>2023년 3월 고1 모의고사 23번</p></div>
-                
+                <div class="main-title-card"><h1>The Dark Side<br>of Sweet Fruit</h1><p>2025년 3월 고2 23번</p></div>
+                [Image showing a brain with the hippocampus and cortex highlighted, being compared to high-sugar fruits like bananas and pineapples, suggesting a potential negative impact on brain volume from excessive consumption]
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 경제 상황이 좋아지며 노동자들의 임금이 오르고 휴가 시간이 늘어남.</p>
-                    <p>• <b>📍 본론:</b> 산업 혁명과 철도의 발달로 인해 해안 리조트와 대형 호텔들이 건설되었으며, 캐나다의 대륙 횡단 철도는 로키산맥의 유명 호텔 탄생을 가능케 함.</p>
-                    <p>• <b>📍 결론:</b> 이후 항공 운송의 등장은 전 세계를 연결하며 현대 관광 산업의 폭발적인 성장을 이끔.</p>
+                    <p>• <b>📍 서론:</b> 고당도 과일 섭취가 뇌 건강에 미칠 수 있는 영향에 대한 의문 제기.</p>
+                    <p>• <b>📍 본론:</b> 연구 결과, 노인의 높은 과일 섭취가 기억 중추인 해마와 피질의 부피 감소와 연관됨이 밝혀짐.</p>
+                    <p>• <b>📍 결론:</b> 고당도 과일의 과도한 섭취는 가공 탄수화물만큼이나 인지 및 대사 문제를 유발할 수 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 경제적 여건 개선과 교통수단의 발달이 이끈 관광 산업의 성장</span>
-                    <span class="topic-eng">Topic: The growth of the tourism industry driven by improved economic conditions and advances in transport</span>
+                    <span class="topic-kor">주제: 고당도 과일의 과도한 섭취가 인지 건강에 미칠 수 있는 부정적 영향</span>
+                    <span class="topic-eng">Topic: The negative impact of excessive high-sugar fruit consumption on cognitive health</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'()]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'()]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

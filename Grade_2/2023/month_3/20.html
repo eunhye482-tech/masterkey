@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #20 - 23년 3월 고1 모의고사</title>
+    <title>English Master #20 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,14 @@
 </div>
 
 <script>
+    const prepositions = ["for", "between", "from", "of", "towards", "around", "to", "in"];
     const fullData = [
-        { en: "It is difficult for any of us to maintain a constant level of attention throughout our working day.", ko: "우리 중 누구라도 근무일 내내 일정한 수준의 주의력을 유지하는 것은 어렵습니다.", voca: ["maintain:유지하다", "constant:일정한/끊임없는", "attention:주의력/집중", "throughout:~ 내내", "working day:근무일", "difficult:어려운", "level:수준", "any:누구라도", "of:중의", "🍎"] },
-        { en: "We all have body rhythms characterised by peaks and valleys of energy and alertness.", ko: "우리 모두는 에너지와 기민함의 정점과 계곡(저점)으로 특징지어지는 신체 리듬을 가지고 있습니다.", voca: ["characterised:~로 특징지어지는", "peaks:정점", "valleys:계곡/저점", "energy:에너지", "alertness:기민함/주의력", "rhythms:리듬", "body:신체", "have:가지다", "all:모두", "🍎"] },
-        { en: "You will achieve more, and feel confident as a benefit, if you schedule your most demanding tasks at times when you are best able to cope with them.", ko: "여러분이 그것들을 가장 잘 처리할 수 있는 시간에 가장 까다로운 과업을 수행하도록 일정을 잡는다면, 더 많은 것을 성취하고 그 혜택으로 자신감을 느낄 것입니다.", voca: ["achieve:성취하다", "confident:자신감 있는", "benefit:혜택/이득", "schedule:일정을 잡다", "demanding:까다로운/요구가 많은", "tasks:과업/일", "cope with:~에 대처하다", "most:가장", "feel:느끼다", "🍎"] },
-        { en: "If you haven’t thought about energy peaks before, take a few days to observe yourself.", ko: "만약 이전에 에너지 정점에 대해 생각해 본 적이 없다면, 며칠 동안 자기 자신을 관찰해 보세요.", voca: ["thought about:~에 대해 생각하다", "before:이전에", "take:시간을 내다", "observe:관찰하다", "yourself:자신", "energy:에너지", "peaks:정점", "few days:며칠", "have not:않다", "🍎"] },
-        { en: "Try to note the times when you are at your best.", ko: "여러분이 최상의 상태인 시간을 기록해 보세요.", voca: ["note:기록하다/주목하다", "at your best:최상의 상태인", "times:시간들", "Try to:~하려고 노력하다", "when:~할 때", "are:이다", "you:당신", "the:그", "🍎", "🍎"] },
-        { en: "We are all different.", ko: "우리 모두는 다릅니다.", voca: ["different:다른", "all:모두", "We:우리", "are:이다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "For some, the peak will come first thing in the morning, but for others it may take a while to warm up.", ko: "어떤 사람들에게는 정점이 아침에 제일 먼저 오겠지만, 다른 사람들에게는 몸을 데우는(준비하는) 데 시간이 좀 걸릴 수도 있습니다.", voca: ["first thing:제일 먼저", "others:다른 사람들", "take a while:시간이 걸리다", "warm up:준비운동을 하다/몸을 데우다", "morning:아침", "peak:정점", "some:어떤 사람들", "but:하지만", "may:일지도 모른다", "🍎"] }
+        { en: "The more people have to do unwanted things the more chances are that they create unpleasant environment for themselves and others.", ko: "사람들이 원치 않는 일을 더 많이 해야 할수록, 자신과 타인에게 불쾌한 환경을 만들 가능성이 더 커집니다.", voca: ["unwanted:원치 않는", "unpleasant:불쾌한", "environment:환경", "chances:가능성", "others:타인들", "create:창조하다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If you hate the thing you do but have to do it nonetheless, you have choice between hating the thing and accepting that it needs to be done.", ko: "만약 당신이 하는 일을 싫어하지만 그럼에도 불구하고 해야 한다면, 당신은 그 일을 싫어하는 것과 그것이 행해져야 한다는 것을 받아들이는 것 사이에서 선택권을 가집니다.", voca: ["nonetheless:그럼에도 불구하고", "choice:선택", "accepting:받아들이는 것", "hating:싫어하는 것", "needs to:~할 필요가 있다", "between:~ 사이의", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Either way you will do it.", ko: "어느 쪽이든 당신은 그 일을 하게 될 것입니다.", voca: ["Either way:어느 쪽이든", "will do:하게 될 것이다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Doing it from place of hatred will develop hatred towards the self and others around you;", ko: "증오의 마음으로 그 일을 하는 것은 자신과 주변 사람들에 대한 증오를 키울 것입니다.", voca: ["hatred:증오", "develop:키우다/발달시키다", "towards:~을 향해", "around:주변의", "self:자신", "place:장소/마음", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "doing it from the place of acceptance will create compassion towards the self and allow for opportunities to find a more suitable way of accomplishing the task.", ko: "수용의 마음으로 그 일을 하는 것은 자신에 대한 자비심을 만들고 그 과업을 수행하는 더 적절한 방법을 찾을 기회를 허용할 것입니다.", voca: ["acceptance:수용", "compassion:자비심/동정심", "opportunities:기회", "suitable:적절한", "accomplishing:수행하는/성취하는", "task:과업", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If you decide to accept the fact that your task has to be done, start from recognising that your situation is a gift from life; this will help you to see it as a lesson in acceptance.", ko: "만약 당신의 과업이 행해져야 한다는 사실을 받아들이기로 결심했다면, 당신의 상황이 삶으로부터 온 선물임을 인식하는 것부터 시작하십시오. 이것은 당신이 그것을 수용의 교훈으로 보도록 도와줄 것입니다.", voca: ["decide:결심하다", "recognising:인식하는 것", "situation:상황", "gift:선물", "lesson:교훈", "acceptance:수용", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +81,68 @@
             header.innerText = "English Master #20";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Sync Your Task<br>with Your Rhythm</h1><p>2023년 3월 고1 모의고사 20번</p></div>
-                
+                <div class="main-title-card"><h1>The Power of<br>Acceptance</h1><p>2025년 3월 고2 20번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 인간은 하루 종일 일정한 집중력을 유지하기 어려우며, 에너지가 오르내리는 신체 리듬을 가짐.</p>
-                    <p>• <b>📍 본론:</b> 자신의 에너지 정점(Peak) 시간을 파악하여, 가장 까다로운 일을 그 시간에 배치하는 것이 효율적임.</p>
-                    <p>• <b>📍 결론:</b> 아침형 인간과 저녁형 인간이 다르듯, 며칠간 자신을 관찰하여 최상의 상태인 시간을 찾아 업무 일정을 조절해야 함.</p>
+                    <p>• <b>📍 서론:</b> 원치 않는 일을 억지로 할 때 주변에 불쾌한 환경을 조성하게 됨.</p>
+                    <p>• <b>📍 본론:</b> 증오는 자신과 타인을 해치지만, 수용은 자신에 대한 자비심과 효율적인 방법을 찾는 기회를 제공함.</p>
+                    <p>• <b>📍 결론:</b> 해야 할 일이라면 삶의 선물로 인식하고 수용의 태도로 임하라.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 자신의 에너지 정점을 파악하여 가장 까다로운 과업을 수행할 시간을 정하라</span>
-                    <span class="topic-eng">Topic: Identify your energy peaks to schedule your most demanding tasks</span>
+                    <span class="topic-kor">주제: 해야 할 일을 수용하는 태도의 중요성</span>
+                    <span class="topic-eng">Topic: The importance of accepting tasks that must be done</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.;,]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.;,]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

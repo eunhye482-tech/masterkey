@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #36 - 23년 3월 고1 모의고사</title>
+    <title>English Master #35 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #36</div>
+    <div class="header" id="header-title">English Master #35</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,16 +57,16 @@
 </div>
 
 <script>
+    const prepositions = ["on", "of", "toward", "to", "as", "if", "in", "for", "from", "by"];
     const fullData = [
-        { en: "In the Old Stone Age, small bands of 20 to 60 people wandered from place to place in search of food.", ko: "구석기 시대에는 20명에서 60명으로 구성된 작은 무리가 식량을 찾아 이곳저곳을 떠돌아다녔습니다.", voca: ["Old Stone Age:구석기 시대", "bands:무리/집단", "wandered:떠돌아다녔다", "in search of:~을 찾아", "people:사람들", "food:식량", "place to place:이곳저곳", "small:작은", "from:~로부터", "🍎"] },
-        { en: "Once people began farming, they could settle down near their farms.", ko: "사람들이 농사를 짓기 시작하자, 그들은 자신들의 농장 근처에 정착할 수 있었습니다.", voca: ["began:시작했다", "farming:농사/농경", "settle down:정착하다", "near:~ 근처에", "farms:농장들", "Once:~하자마자/일단 ~하면", "could:~할 수 있었다", "they:그들", "🍎", "🍎"] },
-        { en: "As a result, towns and villages grew larger.", ko: "그 결과, 마을과 부락이 더 커졌습니다.", voca: ["As a result:그 결과", "towns:마을", "villages:부락/마을", "grew larger:더 커졌다", "and:그리고", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Living in communities allowed people to organize themselves more efficiently.", ko: "공동체 생활을 하는 것은 사람들이 자신들을 더 효율적으로 조직하는 것을 가능하게 했습니다.", voca: ["communities:공동체", "allowed:허용했다/가능하게 했다", "organize:조직하다", "efficiently:효율적으로", "Living:생활하는 것", "themselves:자신들", "more:더", "people:사람들", "🍎", "🍎"] },
-        { en: "They could divide up the work of producing food and other things they needed.", ko: "그들은 식량과 그들이 필요한 다른 것들을 생산하는 일을 나눌 수 있었습니다.", voca: ["divide up:나누다", "producing:생산하는 것", "needed:필요했다", "work:일", "food:식량", "things:것들", "could:~할 수 있었다", "they:그들", "🍎", "🍎"] },
-        { en: "While some workers grew crops, others built new houses and made tools.", ko: "어떤 노동자들은 농작물을 재배하는 동안, 다른 사람들은 새로운 집을 짓고 도구를 만들었습니다.", voca: ["workers:노동자들", "grew crops:농작물을 재배하다", "others:다른 사람들", "built:지었다", "tools:도구", "While:~하는 동안", "new:새로운", "houses:집들", "made:만들었다", "🍎"] },
-        { en: "Village dwellers also learned to work together to do a task faster.", ko: "마을 거주자들은 또한 업무를 더 빨리 하기 위해 협력하는 법을 배웠습니다.", voca: ["dwellers:거주자들", "learned:배웠다", "work together:협력하다", "task:업무/과업", "faster:더 빨리", "also:또한", "do:하다", "village:마을", "🍎", "🍎"] },
-        { en: "For example, toolmakers could share the work of making stone axes and knives.", ko: "예를 들어, 도구 제작자들은 돌도끼와 칼을 만드는 일을 함께 할 수 있었습니다.", voca: ["toolmakers:도구 제작자들", "share:공유하다/함께하다", "stone axes:돌도끼", "knives:칼", "example:예시", "making:만드는 것", "work:일", "🍎", "🍎", "🍎"] },
-        { en: "By working together, they could make more tools in the same amount of time.", ko: "함께 일함으로써, 그들은 같은 시간 안에 더 많은 도구를 만들 수 있었습니다.", voca: ["By working together:함께 일함으로써", "amount of time:시간의 양", "make:만들다", "more:더 많은", "same:같은", "tools:도구들", "they:그들", "could:~할 수 있었다", "in:~안에", "🍎"] }
+        { en: "Like positive habits, bad habits exist on a continuum of easy-to-change and hard-to-change.", ko: "긍정적인 습관과 마찬가지로, 나쁜 습관도 고치기 쉬운 것과 고치기 어려운 것의 연속체 상에 존재합니다.", voca: ["positive habits:긍정적 습관", "continuum:연속체", "easy-to-change:고치기 쉬운", "hard-to-change:고치기 어려운", "exist:존재하다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "When you get toward the “hard” end of the spectrum, note the language you hear—breaking bad habits and battling addiction.", ko: "스펙트럼의 '어려운' 끝부분에 도달할 때, 당신이 듣는 언어, 즉 나쁜 습관을 '부수기'와 중독과 '싸우기'라는 말에 주목하십시오.", voca: ["spectrum:스펙트럼/범위", "note:주목하다", "breaking:부수는 것", "battling:싸우는 것", "addiction:중독", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It’s as if an unwanted behavior is a nefarious villain to be aggressively defeated.", ko: "마치 원치 않는 행동이 공격적으로 패배시켜야 할 사악한 악당인 것과 같습니다.", voca: ["unwanted behavior:원치 않는 행동", "nefarious:사악한", "villain:악당", "aggressively:공격적으로", "defeated:패배한", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "But this kind of language (and the approaches it spawns) frames these challenges in a way that isn’t helpful or effective.", ko: "하지만 이런 종류의 언어(그리고 그것이 만들어내는 접근법)는 이러한 도전 과제들을 도움이 되지 않거나 효과적이지 않은 방식으로 틀을 씌웁니다.", voca: ["approaches:접근법", "spawns:만들어내다/알을 낳다", "frames:틀을 씌우다", "challenges:도전 과제", "effective:효과적인", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "I specifically hope we will stop using this phrase: “break a habit.”", ko: "나는 특히 우리가 '습관을 부수다'라는 구문을 사용하는 것을 멈추기를 바랍니다.", voca: ["specifically:특히/구체적으로", "phrase:구문/구절", "break a habit:습관을 고치다(부수다)", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This language misguides people. The word “break” sets the wrong expectation for how you get rid of a bad habit.", ko: "이 언어는 사람들을 잘못 인도합니다. '부수다'라는 단어는 나쁜 습관을 어떻게 없애는지에 대해 잘못된 기대치를 설정합니다.", voca: ["misguides:잘못 인도하다", "expectation:기대(치)", "get rid of:~을 없애다", "wrong:잘못된", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "This word implies that if you input a lot of force in one moment, the habit will be gone.", ko: "이 단어는 한 순간에 많은 힘을 가하면 습관이 사라질 것이라는 점을 암시합니다.", voca: ["implies:암시하다", "input:가하다/입력하다", "force:힘", "moment:순간", "gone:사라진", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "However, that rarely works, because you usually cannot get rid of an unwanted habit by applying force one time.", ko: "하지만 그것은 거의 효과가 없는데, 왜냐하면 보통 한 번 힘을 가하는 것으로는 원치 않는 습관을 없앨 수 없기 때문입니다.", voca: ["rarely:거의 ~않다", "works:효과가 있다", "applying:가하는 것/적용하는 것", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,82 +80,72 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #36";
+            header.innerText = "English Master #35";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>From Nomads to<br>Settled Communities</h1><p>2023년 3월 고1 모의고사 36번</p></div>
+                <div class="main-title-card"><h1>Beyond "Breaking"<br>Habits</h1><p>2025년 3월 고2 35번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 구석기 시대에는 소규모 무리가 식량을 찾아 계속 이동하는 유목 생활을 함.</p>
-                    <p>• <b>📍 본론:</b> 농경의 시작으로 정착 생활이 가능해졌고, 공동체를 통해 농사, 건축, 도구 제작 등 업무를 효율적으로 분담하기 시작함.</p>
-                    <p>• <b>📍 결론:</b> 마을 사람들이 협력하고 분업(도구 제작 등)을 하면서 같은 시간 안에 더 많은 성과를 내는 효율적인 사회 구조가 형성됨.</p>
+                    <p>• <b>📍 서론:</b> 습관은 변화의 난이도에 따라 연속체 상에 존재함.</p>
+                    <p>• <b>📍 본론:</b> '부수다(break)'나 '싸우다(battle)'와 같은 공격적인 표현은 습관 교정에 대한 잘못된 인식을 심어줌.</p>
+                    <p>• <b>📍 결론:</b> 습관은 한 번의 강한 힘으로 사라지지 않으므로, 'break'라는 표현을 지양해야 함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 정착 농경 생활이 가져온 인류의 공동체 형성 및 효율적인 분업과 협력</span>
-                    <span class="topic-eng">Topic: The formation of communities and efficient division of labor brought by settled agricultural life</span>
+                    <span class="topic-kor">주제: 습관 교정에 있어 '부수다(break)'라는 부적절한 표현이 주는 오해와 한계</span>
+                    <span class="topic-eng">Topic: The misconception and limitations of using the phrase "break a habit" in habit modification</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

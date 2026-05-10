@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #33 - 23년 6월 고1 모의고사</title>
+    <title>English Master #20 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #33</div>
+    <div class="header" id="header-title">English Master #20</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -55,14 +57,14 @@
 </div>
 
 <script>
+    const prepositions = ["in", "under", "of", "by", "into", "after", "on", "from", "with", "to", "as"];
     const fullData = [
-        { en: "Someone else’s body language affects our own body, which then creates an emotional echo that makes us feel accordingly.", ko: "타인의 바디 랭귀지는 우리 자신의 신체에 영향을 미치며, 그것은 곧 우리가 그에 따라 느끼도록 만드는 감정적인 메아리를 만들어냅니다.", voca: ["body language:바디 랭귀지", "affects:영향을 미치다", "emotional echo:감정적인 메아리", "accordingly:그에 따라", "Someone else:타인", "creates:창조하다", "feel:느끼다", "own body:자신의 신체", "🍎", "🍎"] },
-        { en: "As Louis Armstrong sang, “When you’re smiling, the whole world smiles with you.”", ko: "Louis Armstrong이 노래했듯이, '여러분이 미소 지을 때, 온 세상이 여러분과 함께 미소 짓습니다.'", voca: ["smiling:미소 짓는", "whole world:온 세상", "sang:노래했다", "with you:당신과 함께", "When:~할 때", "smiles:미소 짓다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "If copying another’s smile makes us feel happy, the emotion of the smiler has been transmitted via our body.", ko: "만약 타인의 미소를 복사(모방)하는 것이 우리를 행복하게 만든다면, 미소 짓는 사람의 감정은 우리의 신체를 통해 전달된 것입니다.", voca: ["copying:복사/모방하는 것", "happy:행복한", "smiler:미소 짓는 사람", "transmitted:전달된", "via:~을 통해", "emotion:감정", "another:타인", "makes:만들다", "🍎", "🍎"] },
-        { en: "Strange as it may sound, this theory states that emotions arise from our bodies.", ko: "이상하게 들릴지 모르지만, 이 이론은 감정이 우리 신체로부터 발생한다고 명시합니다.", voca: ["Strange:이상한", "theory:이론", "states:명시하다/말하다", "emotions:감정", "arise from:~에서 발생하다", "bodies:신체", "sound:들리다", "may:~일지 모른다", "🍎", "🍎"] },
-        { en: "For example, our mood can be improved by simply lifting up the corners of our mouth.", ko: "예를 들어, 우리의 기분은 단순히 입꼬리를 들어 올리는 것만으로도 좋아질 수 있습니다.", voca: ["mood:기분", "improved:향상된/좋아진", "simply:단순히", "lifting up:들어 올리는 것", "corners:모서리/꼬리", "mouth:입", "can be:~될 수 있다", "example:예시", "🍎", "🍎"] },
-        { en: "If people are asked to bite down on a pencil lengthwise, taking care not to let the pencil touch their lips, they judge cartoons funnier than if they have been asked to frown.", ko: "만약 사람들이 연필이 입술에 닿지 않게 주의하며 연필을 길게 꽉 물라고(입을 미소 모양으로 만들게 됨) 요청받는다면, 그들은 찡그리라는 요청을 받았을 때보다 만화를 더 재미있다고 판단합니다.", voca: ["bite down:꽉 물다", "lengthwise:길게", "touch:닿다", "lips:입술", "judge:판단하다", "funnier:더 재미있는", "frown:찡그리다", "cartoons:만화", "taking care:주의하다", "🍎"] },
-        { en: "The primacy of the body is sometimes summarized in the phrase “I must be afraid, because I’m running.”", ko: "신체의 우선함은 때때로 '내가 도망가고 있기 때문에 나는 무서운 것이 틀림없다'라는 문구로 요약됩니다.", voca: ["primacy:우선함/탁월함", "summarized:요약된", "phrase:문구/구절", "afraid:무서운", "running:달리는 것/도망가는 것", "must be:~임에 틀림없다", "because:~때문에", "sometimes:때때로", "🍎", "🍎"] }
+        { en: "In adolescence many of us had the experience of falling under the sway of a great book or writer.", ko: "청소년기에 우리 중 많은 이들은 훌륭한 책이나 작가의 영향력 아래에 놓이는 경험을 했습니다.", voca: ["adolescence:청소년기", "experience:경험", "falling under:~에 아래에 놓이다", "sway:영향(력)", "great book:훌륭한 책", "writer:작가", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We became entranced by the novel ideas in the book, and because we were so open to influence, these early encounters with exciting ideas sank deeply into our minds and became part of our own thought processes, affecting us decades after we absorbed them.", ko: "우리는 책 속의 참신한 아이디어에 매료되었고, 영향력에 매우 열려 있었기 때문에 흥미로운 아이디어와의 이러한 초기 만남은 우리 마음속에 깊이 가라앉아 우리 사고 과정의 일부가 되었으며, 우리가 그것들을 흡수한 지 수십 년 후에도 우리에게 영향을 미쳤습니다.", voca: ["entranced:매료된", "novel:참신한", "influence:영향", "encounters:만남", "absorbed:흡수한", "thought processes:사고 과정", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Such influences enriched our mental landscape, and in fact our intelligence depends on the ability to absorb the lessons and ideas of those who are older and wiser.", ko: "그러한 영향은 우리의 정신적 풍경을 풍요롭게 했으며, 사실 우리의 지능은 나이가 더 많고 더 현명한 사람들의 교훈과 아이디어를 흡수하는 능력에 달려 있습니다.", voca: ["enriched:풍요롭게 하다", "mental landscape:정신적 풍경", "intelligence:지능", "depends on:~에 달려있다", "wiser:더 현명한", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Just as the body tightens with age, however, so does the mind.", ko: "하지만 나이가 들면서 몸이 굳어지는 것과 마찬가지로, 마음도 그러합니다.", voca: ["tightens:굳어지다", "with age:나이가 들면서", "so does:마찬가지로 그러하다", "mind:마음", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "And just as our sense of weakness and vulnerability motivated the desire to learn, so does our creeping sense of superiority slowly close us off to new ideas and influences.", ko: "그리고 우리의 약함과 취약함에 대한 인식이 배우고자 하는 욕구를 자극했던 것과 마찬가지로, 서서히 생겨나는 우월감은 새로운 아이디어와 영향력에 대해 서서히 우리를 닫아버립니다.", voca: ["weakness:약함", "vulnerability:취약함", "motivated:자극하다", "desire:욕구", "superiority:우월감", "close off:차단하다/닫다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Some may advocate that we all become more skeptical in the modern world, but in fact a far greater danger comes from the increasing closing of the mind that burdens us as individuals as we get older, and seems to be burdening our culture in general.", ko: "어떤 이들은 우리 모두가 현대 세계에서 더 회의적이 되어야 한다고 주장할지도 모르지만, 사실 훨씬 더 큰 위험은 우리가 나이가 들면서 개인으로서 우리에게 짐이 되고 우리 문화 전반에 짐이 되고 있는 것처럼 보이는 점점 더 심해지는 마음의 폐쇄에서 옵니다.", voca: ["advocate:주장하다", "skeptical:회의적인", "burdens:짐이 되다", "individuals:개인", "culture:문화", "in general:전반적으로", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,82 +78,71 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #33";
+            header.innerText = "English Master #20";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Body Leads<br>the Mind</h1><p>2023년 6월 고1 모의고사 33번</p></div>
-                
+                <div class="main-title-card"><h1>The Danger of<br>a Closing Mind</h1><p>2025년 3월 고2 20번</p></div>
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 타인의 바디 랭귀지는 우리의 신체에 영향을 주고, 이는 곧 우리가 그와 같은 감정을 느끼게 함.</p>
-                    <p>• <b>📍 본론:</b> 감정이 신체에서 발생한다는 이론에 따르면, 단순히 입꼬리를 올리는 것만으로도 기분이 개선될 수 있음.</p>
-                    <p>• <b>📍 결론:</b> 연필을 입에 물어 억지로 미소 모양을 만드는 것만으로도 세상이 더 즐겁게 느껴지듯, 신체의 움직임(도망감)이 감정(공포)보다 우선할 수 있음.</p>
+                    <p>• <b>📍 서론:</b> 청소년기에 읽은 책과 아이디어는 우리 사고방식에 평생 영향을 미치는 기초가 됨.</p>
+                    <p>• <b>📍 본론:</b> 나이가 들면 신체가 굳듯 정신도 우월감 때문에 새로운 자극을 거부하며 굳어지기 쉬움.</p>
+                    <p>• <b>📍 결론:</b> 현대의 회의주의보다 더 위험한 것은 나이가 들수록 마음이 닫히는 현상이며, 이는 개인과 문화 모두에 큰 짐이 됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 신체적 반응(미소 등)이 감정 형성에 미치는 영향과 신체의 우선성</span>
-                    <span class="topic-eng">Topic: The influence of physical responses on emotion formation and the primacy of the body</span>
+                    <span class="topic-kor">주제: 나이가 들수록 마음이 폐쇄되는 것에 대한 경계와 열린 태도의 중요성</span>
+                    <span class="topic-eng">Topic: Warning against the closing of the mind as we age and the importance of an open attitude</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'?!]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'?!]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

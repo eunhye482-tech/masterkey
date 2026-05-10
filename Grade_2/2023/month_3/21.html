@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #21 - 23년 3월 고1 모의고사</title>
+    <title>English Master #21 - 25년 3월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,15 @@
 </div>
 
 <script>
+    const prepositions = ["of", "over", "so", "than", "for", "as", "at", "because", "to", "in"];
     const fullData = [
-        { en: "If we adopt technology, we need to pay its costs.", ko: "우리가 기술을 채택한다면, 우리는 그것의 비용을 지불해야 합니다.", voca: ["adopt:채택하다", "technology:기술", "costs:비용", "need to:~할 필요가 있다", "pay:지불하다", "its:그것의", "If:만약", "we:우리", "🍎", "🍎"] },
-        { en: "Thousands of traditional livelihoods have been pushed aside by progress, and the lifestyles around those jobs removed.", ko: "수천 개의 전통적인 생계 수단이 발전에 의해 밀려났고, 그 직업들과 관련된 생활 방식이 제거되었습니다.", voca: ["traditional:전통적인", "livelihoods:생계 수단", "pushed aside:밀려난", "progress:발전/전진", "removed:제거된", "lifestyles:생활 방식", "thousands of:수천 개의", "around:~ 주변의", "jobs:직업들", "🍎"] },
-        { en: "Hundreds of millions of humans today work at jobs they hate, producing things they have no love for.", ko: "오늘날 수억 명의 인간들이 자신이 싫어하는 직업에서 일하며, 아무런 애정을 느끼지 못하는 물건들을 생산하고 있습니다.", voca: ["hundreds of millions:수억의", "hate:싫어하다", "producing:생산하는 것", "no love for:~에 대한 애정이 없는", "humans:인간들", "today:오늘날", "work:일하다", "things:물건들", "jobs:직업들", "🍎"] },
-        { en: "Sometimes these jobs cause physical pain, disability, or chronic disease.", ko: "때때로 이러한 직업들은 육체적 고통, 장애, 또는 만성 질환을 유발합니다.", voca: ["cause:유발하다", "physical:육체적인", "disability:장애", "chronic disease:만성 질환", "pain:고통", "sometimes:때때로", "these:이러한", "jobs:직업들", "or:또는", "🍎"] },
-        { en: "Technology creates many new jobs that are certainly dangerous.", ko: "기술은 확실히 위험한 많은 새로운 직업들을 창출합니다.", voca: ["creates:창출하다/만들다", "certainly:확실히", "dangerous:위험한", "new jobs:새로운 직업들", "Technology:기술", "many:많은", "that:~하는", "are:이다", "🍎", "🍎"] },
-        { en: "At the same time, mass education and media train humans to avoid low-tech physical work, to seek jobs working in the digital world.", ko: "동시에, 대중 교육과 매체는 인간들이 저기술 육체노동을 피하고 디지털 세계에서 일하는 직업을 찾도록 훈련시킵니다.", voca: ["at the same time:동시에", "mass education:대중 교육", "media:매체", "avoid:피하다", "low-tech:저기술의", "physical work:육체노동", "seek:찾다/추구하다", "digital world:디지털 세계", "train:훈련시키다", "🍎"] },
-        { en: "The divorce of the hands from the head puts a stress on the human mind.", ko: "머리로부터 손이 분리되는 것은 인간의 정신에 스트레스를 줍니다.", voca: ["divorce:분리/이혼", "hands:손", "head:머리", "stress:스트레스", "human mind:인간의 정신", "puts:놓다/가하다", "from:~로부터", "the:그", "🍎", "🍎"] },
-        { en: "Indeed, the sedentary nature of the best-paying jobs is a health risk—for body and mind.", ko: "정말로, 보수가 가장 많은 직업들의 주로 앉아서 하는 특성은 몸과 마음 모두에 건강 위험 요소입니다.", voca: ["Indeed:정말로", "sedentary:주로 앉아서 하는", "nature:특성/본성", "best-paying:보수가 가장 많은", "health risk:건강 위험 요소", "body:몸", "mind:마음", "jobs:직업들", "is:이다", "🍎"] }
+        { en: "Everyone’s heard the expression don’t let the perfect become the enemy of the good.", ko: "완벽함이 좋음의 적이 되게 두지 말라는 표현을 모두가 들어본 적이 있습니다.", voca: ["expression:표현", "perfect:완벽한", "enemy:적", "good:좋음", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If you want to get over an obstacle so that your idea can become the solution-based policy you’ve long dreamed of, you can’t have an all-or-nothing mentality.", ko: "만약 당신의 아이디어가 오랫동안 꿈꿔온 해결 기반 정책이 되도록 장애물을 극복하고 싶다면, '전부 아니면 전무'라는 사고방식을 가져서는 안 됩니다.", voca: ["get over:극복하다", "obstacle:장애물", "solution-based:해결 기반의", "policy:정책", "mentality:사고방식", "dreamed of:꿈꿔왔던", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "You have to be willing to alter your idea and let others influence its outcome.", ko: "기꺼이 당신의 아이디어를 수정하고 다른 사람들이 그 결과에 영향을 미치도록 해야 합니다.", voca: ["be willing to:기꺼이 ~하다", "alter:수정하다/변경하다", "influence:영향을 미치다", "outcome:결과", "others:다른 사람들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "You have to be okay with the outcome being a little different, even a little less, than you wanted.", ko: "결과가 당신이 원했던 것보다 조금 다르거나 심지어 조금 부족하더라도 괜찮아야 합니다.", voca: ["different:다른", "little less:조금 부족한", "wanted:원했던", "okay:괜찮은", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Say you’re pushing for a clean water act. Even if what emerges isn’t as well-funded as you wished, or doesn’t match how you originally conceived the bill, you’ll have still succeeded in ensuring that kids in troubled areas have access to clean water.", ko: "당신이 깨끗한 물 법안을 추진하고 있다고 가정해 봅시다. 비록 결과물이 당신이 바랐던 것만큼 자금 지원이 충분하지 않거나, 법안을 처음 구상했던 방식과 일치하지 않더라도, 당신은 여전히 어려운 지역의 아이들이 깨끗한 물을 마실 수 있게 하는 데 성공한 것입니다.", voca: ["pushing for:추진하는", "emerges:나타나다/나오다", "well-funded:자금 지원이 충분한", "conceived:구상했다", "ensuring:보장하는", "access:접근/이용", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "That’s what counts, that they will be safer because of your idea and your effort.", ko: "당신의 아이디어와 노력 덕분에 그들이 더 안전해질 것이라는 사실이 중요한 것입니다.", voca: ["counts:중요하다", "safer:더 안전한", "effort:노력", "because of:~ 때문에", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Is it perfect? No. Is there more work to be done? Absolutely. But in almost every case, helping move the needle forward is vastly better than not helping at all.", ko: "완벽한가요? 아닙니다. 더 해야 할 일이 있나요? 당연합니다. 하지만 거의 모든 경우에, 바늘을 앞으로 나아가게 돕는 것이 전혀 돕지 않는 것보다 훨씬 더 낫습니다.", voca: ["Absolutely:당연히/절대적으로", "vastly:훨씬/거대하게", "better:더 나은", "move the needle:상황을 변화시키다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +82,69 @@
             header.innerText = "English Master #21";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The High Costs<br>of Technology</h1><p>2023년 3월 고1 모의고사 21번</p></div>
+                <div class="main-title-card"><h1>Better Than<br>Nothing</h1><p>2025년 3월 고2 21번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 기술 채택에는 반드시 그에 따른 유무형의 '비용'이 따름.</p>
-                    <p>• <b>📍 본론:</b> 기술 발전은 전통적 생계를 위협하고, 인간을 애정 없는 단순 노동이나 위험한 새 직업으로 내몰며, 육체노동을 기피하게 만듦.</p>
-                    <p>• <b>📍 결론:</b> 특히 '손과 머리의 분리'와 고소득 직종의 '앉아서 하는 특성'은 현대인의 신체와 정신 건강을 위협하는 심각한 리스크임.</p>
+                    <p>• <b>📍 서론:</b> 완벽주의에 갇혀 실질적인 진전을 놓쳐서는 안 됨.</p>
+                    <p>• <b>📍 본론:</b> 아이디어를 수정하고 타인의 영향을 수용하여, 기대보다 조금 부족하더라도 결과를 만들어내는 유연함이 필요함.</p>
+                    <p>• <b>📍 결론:</b> 완벽하지 않더라도 조금이라도 상황을 개선하는 것(move the needle forward)이 아무것도 하지 않는 것보다 훨씬 가치 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 기술 발전으로 인한 전통적 삶의 방식 상실과 현대적 직업의 건강 리스크</span>
-                    <span class="topic-eng">Topic: The loss of traditional lifestyles and health risks of modern jobs due to technological progress</span>
+                    <span class="topic-kor">주제: 완벽주의를 버리고 조금이라도 진전을 이루는 것의 중요성</span>
+                    <span class="topic-eng">Topic: The importance of making progress rather than sticking to perfectionism</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'?!]/g, "").toLowerCase();
+            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
+            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'?!]/g, "")); }; }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>
