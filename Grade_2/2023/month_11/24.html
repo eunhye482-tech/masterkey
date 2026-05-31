@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #24 - 23년 11월 고1 모의고사</title>
+    <title>English Master #24 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,13 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["in", "response", "to", "critics", "might", "charge", "that", "create", "moral", "for", "even", "if", "is", "sometimes", "when", "it", "serves", "should", "it", "be", "for", "just", "as", "on", "the", "with", "might", "be", "easily", "into", "of", "as", "with", "cognitive", "deficits", "according", "to", "a", "professor", "at", "are", "false", "to", "true", "along", "similar", "another", "holds", "that", "should", "remain", "or", "so", "that", "they", "are", "easily", "distinguished", "as", "even", "by", "at", "least", "then", "no", "one", "is", "making", "clearly", "fake", "also", "avoids", "so-called", "where", "are", "perceived", "as", "scary", "because", "they", "so", "closely", "resemble", "us", "but", "not", "quite", "other", "of", "robot", "argue", "that", "when", "care", "recipients", "are", "into", "thinking", "that", "this", "crosses", "a", "line", "and", "violates"];
+
     const fullData = [
-        { en: "The bottom line is that we humans are easily bored.", ko: "결론은 우리 인간이 쉽게 지루함을 느낀다는 것입니다.", voca: ["bottom line:결론/핵심", "humans:인간", "easily:쉽게", "bored:지루해하는", "are:이다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The answer lies in our nerve cells, which reduce their initial excited response to stimuli.", ko: "답은 우리의 신경 세포에 있는데, 그것들은 자극에 대한 초기 흥분 반응을 줄입니다.", voca: ["lies in:~에 있다", "nerve cells:신경 세포", "reduce:줄이다", "initial:초기의", "excited response:흥분 반응", "stimuli:자극들", "which:그리고 그것들은", "🍎", "🍎", "🍎"] },
-        { en: "Neurons enhance their responses to things that change—especially things that change quickly.", ko: "뉴런은 변화하는 것들, 특히 빠르게 변화하는 것들에 대한 반응을 강화합니다.", voca: ["Neurons:뉴런/신경세포", "enhance:강화하다", "responses:반응들", "change:변화하다", "especially:특히", "quickly:빠르게", "things:것들", "🍎", "🍎", "🍎"] },
-        { en: "Our ancestors got more survival value from attending to what was moving in a tree than to the tree itself.", ko: "우리 조상들은 나무 자체보다 나무에서 움직이는 것(푸마 등)에 주의를 기울임으로써 더 많은 생존 가치를 얻었습니다.", voca: ["ancestors:조상들", "survival value:생존 가치", "attending to:~에 주의를 기울이다", "moving:움직이는", "itself:그 자체", "more ~ than:~보다 더 많은", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Boredom turns down the level of neural excitation so that new stimuli stand out more.", ko: "지루함은 새로운 자극이 더 눈에 띄도록 신경 흥분 수준을 낮춥니다.", voca: ["Boredom:지루함", "turns down:낮추다/줄이다", "level:수준", "neural excitation:신경 흥분", "so that:~하도록", "new stimuli:새로운 자극", "stand out:눈에 띄다", "🍎", "🍎", "🍎"] },
-        { en: "It’s the neural equivalent of turning off a front door light to see the fireflies.", ko: "그것은 반딧불이를 보기 위해 현관 등불을 끄는 것과 신경학적으로 같은 것입니다.", voca: ["neural:신경의", "equivalent:상당하는 것/동등한 것", "turning off:끄는 것", "front door light:현관 등불", "fireflies:반딧불이", "see:보다", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "In response to human-like care robots, critics might charge that human-robot interactions create moral hazards for dementia patients.", ko: "인간과 유사한 돌봄 로봇에 대응하여, 비평가들은 인간과 로봇의 상호 작용이 치매 환자들에게 도덕적 해이를 초래한다고 비판할지도 모릅니다.", voca: ["In response to:~에 대응하여", "human-like:인간과 유사한", "care robots:돌봄 로봇", "critics:비평가들", "charge:비판하다/기소하다", "interactions:상호 작용", "create:초래하다/만들다", "moral hazards:도덕적 해이", "dementia patients:치매 환자들", "🍎"] },
+        { en: "Even if deception is sometimes allowed when it serves worthy goals, should it be allowed for vulnerable users?", ko: "비록 기만이 가치 있는 목적을 달성할 때 때로는 허용될지라도, 취약한 사용자들에게도 그것이 허용되어야 할까요?", voca: ["Even if:비록 ~일지라도", "deception:기만/속임수", "sometimes:때로는", "allowed:허용되는", "serves:달성하다/도움이 되다", "worthy goals:가치 있는 목적", "should it be:~해야 하는가", "vulnerable:취약한", "users:사용자들", "🍎"] },
+        { en: "Just as children on the autism spectrum with robot companions might be easily fooled into thinking of robots as friends, older adults with cognitive deficits might be.", ko: "로봇 동반자가 있는 자폐 스펙트럼 위의 아동들이 로봇을 친구로 생각하도록 쉽게 속을 수 있는 것과 마찬가지로, 인지 결함이 있는 고령자들도 그럴 수 있습니다.", voca: ["Just as:~와 마찬가지로", "autism spectrum:자폐 스펙트럼", "companions:동반자/친구", "easily fooled:쉽게 속는", "fooled into B:속아서 B하게 되다", "thinking of A as B:A를 B로 생각하다", "older adults:고령자들", "cognitive deficits:인지 결함", "🍎", "🍎"] },
+        { en: "According to Alexis Elder, a professor at UMD, robots are false friends, inferior to true friendship.", ko: "UMD의 교수인 Alexis Elder에 따르면, 로봇은 진정한 우정보다 열등한 가짜 친구입니다.", voca: ["According to:~에 따르면", "professor:교수", "false friends:가짜 친구들", "inferior to:~보다 열등한", "true friendship:진정한 우정", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Reasoning along similar lines, John Sullins, a professor at Sonoma State University, holds that robots should “remain iconic or cartoonish so that they are easily distinguished as synthetic even by unsophisticated users.”", ko: "비슷한 맥락으로 추론하며, Sonoma 주립 대학교의 교수인 John Sullins는 로봇이 “인류학적으로 세상 경험이 부족한 사용자들에 의해서도 인공물로 쉽게 식별될 수 있도록 상징적이거나 만화 캐릭터 같은 상태로 남아 있어야 한다”고 주장합니다.", voca: ["Reasoning:추론하며", "along similar lines:비슷한 맥락으로", "holds that:~라고 주장하다", "remain:남아 있다", "iconic:상징적인", "cartoonish:만화 캐릭터 같은", "so that:~하도록", "distinguished as:~로 식별되는", "synthetic:인공물/합성의", "unsophisticated users:세상 경험이 부족한 사용자들/단순한 사용자들"] },
+        { en: "At least then no one is fooled.", ko: "적어도 그러면 아무도 속지 않습니다.", voca: ["At least:적어도", "then:그러면/그때", "no one:아무도 ~않다", "fooled:속는", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Making robots clearly fake also avoids the so-called “uncanny valley,” where robots are perceived as scary because they so closely resemble us, but not quite.", ko: "로봇을 명확하게 가짜로 만드는 것은 로봇이 우리와 너무 밀접하게 닮았지만 완전히 똑같지는 않기 때문에 무섭게 인식되는 이른바 ‘불쾌한 골짜기’를 피하게 해 주기도 합니다.", voca: ["clearly fake:명확하게 가짜인", "avoids:피하다", "so-called:이른바/소위", "uncanny valley:불쾌한 골짜기", "perceived as:~로 인식되는", "scary:무서운", "closely resemble:밀접하게 닮다", "not quite:완전히 ~하진 않은", "🍎", "🍎"] },
+        { en: "Other critics of robot deception argue that when care recipients are deceived into thinking that robots care, this crosses a line and violates human dignity.", ko: "로봇 기만에 대한 다른 비평가들은 돌봄 수혜자들이 로봇이 자신을 돌본다고 생각하도록 속을 때, 이것은 선을 넘는 것이며 인간의 존엄성을 침해한다고 주장합니다.", voca: ["Other critics:다른 비평가들", "robot deception:로봇 기만", "argue that:~라고 주장하다", "care recipients:돌봄 수혜자들", "deceived into:~하도록 속는", "robots care:로봇이 돌보다/마음을 쓰다", "crosses a line:선을 넘다", "violates:침해하다/위반하다", "human dignity:인간의 존엄성", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,80 +85,77 @@
             header.innerText = "English Master #24";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Why We Get<br>Bored</h1><p>2023년 11월 고1 모의고사 24번</p></div>
+                <div class="main-title-card"><h1>The Moral Pitfalls of<br>Human-like Care Robots</h1><p>2023년 11월 고2 24번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 현상:</b> 인간은 장난감, 음식, TV 프로그램 등 익숙한 것에 금방 지루함을 느끼도록 설계됨.</p>
-                    <p>• <b>📍 과학적 근거:</b> 신경 세포는 반복되는 자극에는 반응을 줄이고, 변화하는 자극에는 반응을 강화함(신경학적 적응).</p>
-                    <p>• <b>📍 진화적 이유:</b> 정지된 나무보다 그 안에서 움직이는 위협(푸마 등)을 포착하는 것이 생존에 유리했기 때문임.</p>
-                    <p>• <b>📍 비유:</b> 지루함은 새로운 자극(반딧불이)을 더 잘 보기 위해 기존의 배경 자극(현관 불빛)을 끄는 과정과 같음.</p>
+                    <p>• <b>📍 서론:</b> 인간을 닮은 돌봄 로봇은 치매 환자 등 취약한 사용자들에게 정서적 기만과 도덕적 해이(moral hazards)를 유발할 수 있음.</p>
+                    <p>• <b>📍 본론:</b> 로봇은 우정보다 열등한 가짜 친구(false friends)임. 따라서 존 설린스 교수는 로봇을 만화 캐릭터처럼(cartoonish) 만들어 단순한 사용자도 인공물(synthetic)임을 쉽게 구별할 수 있게 해야 한다고 주장함.</p>
+                    <p>• <b>📍 결론:</b> 로봇을 명확히 가짜로 만들면 기만을 방지할 뿐 아니라 기괴함을 주는 '불쾌한 골짜기(uncanny valley)'도 피할 수 있음. 로봇이 인간을 진심으로 염려한다고 믿게 속이는 기만 행위는 인간의 존엄성(human dignity)을 침해하는 선을 넘는 일임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 새로운 자극 포착과 생존을 위해 발달한 신경학적 지루함의 메커니즘</span>
-                    <span class="topic-eng">Topic: The neurological mechanism of boredom evolved for detecting new stimuli and survival</span>
+                    <span class="topic-kor">주제: 인간형 돌봄 로봇이 유발하는 감정적 기만의 윤리적 문제와 존엄성 침해의 위험</span>
+                    <span class="topic-eng">Topic: The ethical problems of emotional deception caused by humanoid care robots and the risk of violating human dignity</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

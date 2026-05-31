@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #31 - 23년 11월 고1 모의고사</title>
+    <title>English Master #31 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["that", "is", "statistically", "seems", "to", "us", "like", "an", "and", "some", "define", "it", "as", "a", "but", "as", "has", "said", "the", "origin", "of", "in", "our", "at", "level", "of", "and", "not", "in", "itself", "have", "been", "later", "on", "discovered", "to", "be", "obedience", "to", "laws", "or", "that", "was", "not", "at", "time", "phrased", "things", "are", "mysterious", "yet", "assumes", "intervention", "beyond", "human", "capability", "to", "there", "are", "methodical", "simple", "ways", "without", "and", "instead", "of", "checking", "out", "investigating", "finding", "source", "we", "then", "those", "who", "too", "lazy", "think"];
+
     const fullData = [
-        { en: "A remarkable characteristic of the visual system is that it has the ability of adapting itself.", ko: "시각 체계의 놀라운 특징은 그것이 스스로 적응하는 능력을 가지고 있다는 것입니다.", voca: ["remarkable:놀라운", "characteristic:특징", "visual system:시각 체계", "ability:능력", "adapting:적응하는", "itself:그 스스로", "is that:~라는 것이다", "🍎", "🍎", "🍎"] },
-        { en: "Stratton wore reversing glasses for several days, which literally turned the world upside down.", ko: "Stratton은 며칠 동안 반전 안경을 썼는데, 그것은 말 그대로 세상을 거꾸로 뒤집어 놓았습니다.", voca: ["reversing glasses:반전 안경", "several days:며칠 동안", "literally:말 그대로", "turned upside down:거꾸로 뒤집다", "wore:썼다/착용했다", "world:세상", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "In the beginning, this caused him great difficulties: just putting food in his mouth was a challenge.", ko: "처음에는 이것이 그에게 큰 어려움을 주었습니다: 단지 포크로 입에 음식을 넣는 것조차 도전이었습니다.", voca: ["beginning:처음/시작", "caused:유발했다", "difficulties:어려움들", "challenge:도전/난제", "putting:넣는 것", "mouth:입", "fork:포크", "just:단지", "🍎", "🍎"] },
-        { en: "With time, however, his visual system adjusted to the new stimuli from reality.", ko: "하지만 시간이 지나면서 그의 시각 체계는 현실로부터 오는 새로운 자극에 적응했습니다.", voca: ["With time:시간이 지나면서", "however:하지만", "adjusted to:~에 적응했다", "new stimuli:새로운 자극", "reality:현실", "visual system:시각 체계", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "He was able to act normally again, even seeing the world upright when he concentrated.", ko: "그는 다시 정상적으로 행동할 수 있었고, 집중했을 때는 심지어 세상을 똑바로 보기도 했습니다.", voca: ["able to:~할 수 있는", "act:행동하다", "normally:정상적으로", "even:심지어", "upright:똑바로/직립하여", "concentrated:집중했다", "seeing:보는 것", "again:다시", "🍎", "🍎"] },
-        { en: "As he took off his reversing glasses, he was again confronted with problems.", ko: "그가 반전 안경을 벗었을 때, 그는 다시 문제들에 직면했습니다.", voca: ["took off:벗었다", "confronted with:~에 직면한", "problems:문제들", "again:다시", "when:~할 때", "reversing glasses:반전 안경", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Fortunately, Stratton could reverse the perception, and everything returned to normal after one day.", ko: "다행히도 Stratton은 지각을 되돌릴 수 있었고, 하루 뒤에 모든 것이 정상으로 돌아왔습니다.", voca: ["Fortunately:다행히도", "reverse:되돌리다/반전시키다", "perception:지각/인식", "returned to normal:정상으로 돌아오다", "after one day:하루 뒤에", "everything:모든 것", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "Coincidence that is statistically impossible seems to us like an irrational event, and some define it as a miracle.", ko: "통계적으로 불가능한 우연은 우리에게 비이성적인 사건처럼 보이며, 어떤 사람들은 그것을 기적으로 정의합니다.", voca: ["Coincidence:우연/우연의 일치", "statistically:통계적으로", "impossible:불가능한", "seems to:~처럼 보인다", "irrational:비이성적인", "event:사건", "define:정의하다", "miracle:기적", "🍎", "🍎"] },
+        { en: "But, as Montaigne has said, “the origin of a miracle is in our ignorance, at the level of our knowledge of nature, and not in nature itself.”", ko: "그러나 Montaigne가 말했듯이, “기적의 기원은 자연 자체에 있는 것이 아니라 자연에 대한 우리의 지식 수준에서의 우리의 무지에 있습니다.”", voca: ["origin:기원", "ignorance:무지", "level:수준", "knowledge:지식", "nature:자연", "itself:자체", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Glorious miracles have been later on discovered to be obedience to the laws of nature or a technological development that was not widely known at the time.", ko: "영광스러운 기적들은 나중에 자연 법칙에 대한 복종이나 당시에는 널리 알려지지 않은 기술 발전인 것으로 발견되었습니다.", voca: ["Glorious:영광스러운", "discovered:발견된", "obedience:복종/따름", "laws of nature:자연 법칙", "technological:기술적인", "development:발전", "widely known:널리 알려진", "at the time:당시에", "🍎", "🍎"] },
+        { en: "As the German poet, Goethe, phrased it: “Things that are mysterious are not yet miracles.”", ko: "독일 시인 Goethe가 표현했듯이, “신비로운 것들이 아직 기적인 것은 아닙니다.”", voca: ["German poet:독일 시인", "phrased:표현했다", "Things:것들/사물", "mysterious:신비로운", "not yet:아직 ~않은", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The miracle assumes the intervention of a “higher power” in its occurrence that is beyond human capability to grasp.", ko: "기적은 그것의 발생에 있어 인간이 파악할 수 있는 능력을 넘어선 ‘더 높은 권력’의 개입을 가정합니다.", voca: ["assumes:가정하다/추정하다", "intervention:개입", "higher power:더 높은 권력/상위의 힘", "occurrence:발생", "beyond:~을 넘어선", "human capability:인간의 능력", "grasp:파악하다/잡다", "🍎", "🍎", "🍎"] },
+        { en: "Yet there are methodical and simple ways to “cause a miracle” without divine revelation and inspiration.", ko: "하지만 신성한 계시와 영감 없이도 ‘기적을 일으키는’ 체계적이고 간단한 방법들이 있습니다.", voca: ["Yet:하지만", "methodical:체계적인", "simple ways:간단한 방법들", "cause:일으키다/원인", "without:~ 없이", "divine:신성한", "revelation:계시", "inspiration:영감", "🍎", "🍎"] },
+        { en: "Instead of checking it out, investigating and finding the source of the event, we define it as a miracle.", ko: "그 사건의 출처를 확인하고, 조사하고, 찾는 대신에, 우리는 그것을 기적으로 정의합니다.", voca: ["Instead of:~ 대신에", "checking out:확인하는 것", "investigating:조사하는 것", "finding:찾는 것", "source:출처/근원", "event:사건", "define as:~로 정의하다", "🍎", "🍎", "🍎"] },
+        { en: "The miracle, then, is the excuse of those who are too lazy to think.", ko: "그렇다면 기적은 생각하기를 너무 게을러하는 사람들의 변명입니다.", voca: ["then:그렇다면/그때", "excuse:변명", "those who:~하는 사람들", "too ~ to...:너무 ~해서 ...할 수 없다", "lazy:게으른", "think:생각하다", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +85,77 @@
             header.innerText = "English Master #31";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Adaptability<br>of Vision</h1><p>2023년 11월 고1 모의고사 31번</p></div>
+                <div class="main-title-card"><h1>The Myth of Miracles<br>& Human Ignorance</h1><p>2023년 11월 고2 31번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 인간의 시각 체계는 환경 변화에 스스로를 맞추는 놀라운 적응 능력을 갖추고 있음.</p>
-                    <p>• <b>📍 본론:</b> Stratton은 세상을 거꾸로 보이게 하는 '반전 안경' 실험을 진행함. 초기에는 음식 먹기조차 힘들 정도로 혼란을 겪었으나, 시간이 흐르자 뇌가 자극에 적응해 정상적으로 생활하게 됨.</p>
-                    <p>• <b>📍 결론:</b> 안경을 벗었을 때 잠시 부작용을 겪었지만 곧 다시 정상 지각으로 회복됨. 이는 우리 뇌의 유연성과 회복력을 증명함.</p>
+                    <p>• <b>📍 서론:</b> 통계적으로 불가능한 우연을 인간은 비이성적인 '기적(miracle)'으로 정의하곤 함.</p>
+                    <p>• <b>📍 본론:</b> 철학자 몽테뉴와 시인 괴테의 말처럼, 기적은 자연 자체의 현상이 아니라 자연을 규명하지 못한 인간의 '무지(ignorance)'에서 비롯됨. 과거의 수많은 기적은 단지 발견되지 않았던 자연 법칙이나 기술 발전이었음.</p>
+                    <p>• <b>📍 결론:</b> 기적은 인간이 이해할 수 없는 초자연적 개입을 가정하지만, 실제로는 신성한 영감 없이도 인과관계를 만드는 체계적 방법이 존재함. 사건을 조사하고 출처를 찾으려 하지 않는 태도, 즉 '생각하기를 귀찮아하는 자들의 변명(excuse)'이 기적의 본질임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 외부 환경의 변화와 왜곡된 자극에 대응하는 시각 체계의 놀라운 적응력</span>
-                    <span class="topic-eng">Topic: The remarkable adaptability of the visual system to environmental changes and distorted stimuli</span>
+                    <span class="topic-kor">주제: 기적의 실체는 과학적 조사와 사고의 부재 및 인간의 인지적 무지에서 비롯된 오해</span>
+                    <span class="topic-eng">Topic: The reality of miracles as a misconception stemming from the lack of scientific investigation, thought, and human cognitive ignorance</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

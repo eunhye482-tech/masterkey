@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #37 - 23년 11월 고1 모의고사</title>
+    <title>English Master #37 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,13 +57,19 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["for", "a", "random", "was", "a", "good", "it", "made", "analysis", "of", "large", "data", "in", "the", "pre-digital", "but", "much", "as", "converting", "a", "digital", "image", "or", "into", "a", "smaller", "results", "in", "loss", "of", "is", "lost", "when", "having", "the", "full", "or", "close", "to", "the", "provides", "a", "lot", "more", "freedom", "to", "to", "look", "at", "the", "data", "from", "different", "or", "to", "look", "closer", "at", "certain", "aspects", "of", "a", "fitting", "may", "be", "the", "which", "captures", "not", "just", "a", "single", "plane", "of", "as", "with", "but", "rays", "from", "the", "entire", "some", "of", "the", "can", "decide", "later", "which", "element", "of", "an", "to", "focus", "on", "in", "the", "there", "is", "no", "need", "to", "focus", "at", "the", "since", "collecting", "all", "the", "makes", "it", "possible", "to", "do", "that", "because", "rays", "from", "the", "entire", "are", "included", "it", "is", "closer", "to", "all", "the", "as", "a", "the", "is", "more", "than", "ordinary", "where", "the", "has", "to", "decide", "what", "to", "focus", "on", "before", "she", "presses", "the"];
+
     const fullData = [
-        { en: "Deep-learning based facial recognition still has limitations in terms of identification performance.", ko: "딥러닝 기반 안면 인식은 식별 성능 측면에서 여전히 한계를 가지고 있습니다.", voca: ["facial recognition:안면 인식", "limitations:한계", "in terms of:~의 측면에서", "identification:식별/확인", "performance:성능", "based on:~에 기반한", "Deep-learning:딥러닝", "🍎", "🍎", "🍎"] },
-        { en: "The performance may decrease if the person to be identified was enrolled over 10 years ago.", ko: "식별될 사람이 10년보다 더 이전에 등록되었다면 그 성능이 저하될 수 있습니다.", voca: ["decrease:감소하다/저하되다", "identified:식별된", "enrolled:등록된", "over 10 years:10년 이상", "ago:이전에", "performance:성능", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "This person may experience changes in the texture of the face, such as wrinkles and sagging skin.", ko: "이 사람은 주름이나 피부 처짐과 같은 얼굴 질감의 변화를 경험할 수 있습니다.", voca: ["experience:경험하다", "texture:질감", "wrinkles:주름", "sagging skin:처진 피부", "changes:변화들", "face:얼굴", "such as:~와 같은", "🍎", "🍎", "🍎"] },
-        { en: "These changes may be highlighted by weight gain or loss.", ko: "이러한 변화들은 체중의 증가나 감소에 의해 강조될 수 있습니다.", voca: ["highlighted:강조된/두드러진", "weight gain:체중 증가", "weight loss:체중 감소", "changes:변화들", "may be:~일 수도 있다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "To counteract this problem, researchers have developed models for face aging or digital de-aging.", ko: "이 문제에 대응하기 위해, 연구자들은 얼굴 노화 모델이나 디지털 디에이징 모델을 개발해 왔습니다.", voca: ["counteract:대응하다/방해하다", "researchers:연구자들", "developed:개발했다", "models:모델들", "face aging:얼굴 노화", "digital de-aging:디지털 디에이징", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "It is used to compensate for the differences in facial characteristics over a given time period.", ko: "그것은 주어진 기간 동안 나타나는 얼굴 특성의 차이를 보정하기 위해 사용됩니다.", voca: ["compensate for:~을 보정/보상하다", "differences:차이점들", "facial characteristics:얼굴 특성", "given time period:주어진 기간", "used to:~하는 데 사용되다", "🍎", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "For a long time, random sampling was a good shortcut.", ko: "오랫동안, 무작위 표본 추출은 훌륭한 지름길이었습니다.", voca: ["For a long time:오랫동안", "random sampling:무작위 표본 추출", "shortcut:지름길", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It made analysis of large data problems possible in the pre-digital era.", ko: "그것은 디지털 이전 시대에 거대한 데이터 문제에 대한 분석을 가능하게 했습니다.", voca: ["analysis:분석", "large data problems:거대한 데이터 문제들", "possible:가능한", "pre-digital era:디지털 이전 시대", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "But much as converting a digital image or song into a smaller file results in loss of data, information is lost when sampling.", ko: "하지만 디지털 이미지나 노래를 더 작은 파일로 변환하는 것이 데이터 손실을 초래하는 것과 마찬가지로, 표본을 추출할 때 정보가 손실됩니다.", voca: ["converting:변환하는 것", "digital image:디지털 이미지", "results in:~을 초래하다/결과를 낳다", "loss of data:데이터 손실", "information:정보", "is lost:손실된다", "sampling:표본 추출", "🍎", "🍎", "🍎"] },
+        { en: "Having the full (or close to the full) dataset provides a lot more freedom to explore, to look at the data from different angles or to look closer at certain aspects of it.", ko: "전체 데이터셋(또는 전체에 가까운 것)을 갖는 것은 탐색하고, 다른 각도에서 데이터를 보거나, 그것의 특정 측면을 더 면밀히 살펴볼 수 있는 훨씬 더 많은 자유를 제공합니다.", voca: ["full dataset:전체 데이터셋", "provides:제공하다", "freedom:자유", "explore:탐색하다", "look at:~을 보다", "different angles:다른 각도들", "look closer:더 면밀히 살펴보다", "certain aspects:특정 측면들", "🍎", "🍎"] },
+        { en: "A fitting example may be the light-field camera, which captures not just a single plane of light, as with conventional cameras, but rays from the entire light field, some 11 million of them.", ko: "적절한 예로는 라이트필드 카메라가 있는데, 그것은 기존 카메라처럼 단일 평면의 빛뿐만 아니라 전체 광장에서 나오는 광선, 즉 1,100만 개 정도를 포착합니다.", voca: ["fitting example:적절한 예", "light-field camera:라이트필드 카메라", "captures:포착하다", "single plane of light:단일 평면의 빛", "conventional cameras:기존 카메라들", "rays:광선들", "entire light field:전체 광장", "11 million:1,100만", "🍎", "🍎"] },
+        { en: "The photographers can decide later which element of an image to focus on in the digital file.", ko: "사진가들은 나중에 디지털 파일에서 이미지의 어떤 요소에 초점을 맞출지 결정할 수 있습니다.", voca: ["photographers:사진가들", "decide:결정하다", "element:요소", "focus on:~에 초점을 맞추다", "digital file:디지털 파일", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "There is no need to focus at the beginning, since collecting all the information makes it possible to do that afterwards.", ko: "처음에 초점을 맞출 필요가 없는데, 왜냐하면 모든 정보를 수집하는 것이 나중에 그것(초점 조정)을 가능하게 하기 때문입니다.", voca: ["no need to:할 필요가 없다", "at the beginning:처음에", "since:왜냐하면/~이므로", "collecting:수집하는 것", "possible:가능한", "afterwards:나중에/그 후에", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Because rays from the entire light field are included, it is closer to all the data.", ko: "전체 광장의 광선이 포함되기 때문에, 그것은 모든 데이터에 더 가깝습니다.", voca: ["Because:~ 때문에", "entire light field:전체 광장", "included:포함된", "closer to:~에 더 가까운", "all the data:모든 데이터", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "As a result, the information is more “reuseable” than ordinary pictures, where the photographer has to decide what to focus on before she presses the shutter.", ko: "결과적으로, 사진가가 셔터를 누르기 전에 무엇에 초점을 맞출지 결정해야 하는 일반적인 사진보다 그 정보는 더 ‘재사용 가능’합니다.", voca: ["As a result:결과적으로", "reuseable:재사용 가능한", "ordinary pictures:일반적인 사진들", "photographer:사진가", "decide:결정하다", "press the shutter:셔터를 누르다", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,80 +86,77 @@
             header.innerText = "English Master #37";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Facial Recognition<br>& Aging</h1><p>2023년 11월 고1 모의고사 37번</p></div>
+                <div class="main-title-card"><h1>The Shift from<br>Sampling to Full Data</h1><p>2023년 11월 고2 37번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 문제점:</b> 딥러닝 안면 인식 기술은 등록 시점과 식별 시점 사이의 시간 간격이 클수록 성능이 저하되는 한계가 있음.</p>
-                    <p>• <b>📍 원인:</b> 10년 이상의 시간이 흐르면 주름, 피부 처짐, 체중 변화 등으로 인해 얼굴의 질감(texture)이 크게 변하기 때문임.</p>
-                    <p>• <b>📍 해결책:</b> 연구자들은 인위적으로 얼굴을 늙게 하거나 젊게 만드는 '얼굴 노화 모델'과 '디지털 디에이징' 기술을 개발함.</p>
-                    <p>• <b>📍 효과:</b> 이러한 기술은 시간의 흐름에 따른 얼굴 특성의 차이를 보정(compensate)하여 안면 인식의 정확도를 높여줌.</p>
+                    <p>• <b>📍 서론:</b> 과거 데이터 분석에서 무작위 표본 추출(random sampling)은 거대 데이터를 처리하는 훌륭한 지름길이었음.</p>
+                    <p>• <b>📍 본론:</b> 하지만 샘플링은 디지털 이미지 압축처럼 필연적인 정보 손실을 수반함. 전체 데이터셋을 확보하면 데이터를 다양한 각도에서 탐색할 수 있는 자유도가 획기적으로 증가함.</p>
+                    <p>• <b>📍 결론:</b> 라이트필드 카메라 사례처럼 전체 정보(all the data)를 수집하면 촬영 후에도 초점을 조절할 수 있는 등 데이터가 훨씬 '재사용 가능한(reuseable)' 상태가 됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 시간 경과에 따른 얼굴 변화를 극복하기 위한 안면 인식 기술의 노화 보정 모델 개발</span>
-                    <span class="topic-eng">Topic: Development of aging compensation models in facial recognition to overcome facial changes over time</span>
+                    <span class="topic-kor">주제: 데이터 분석 환경의 변화에 따른 표본 추출에서 전체 데이터 확보로의 전환과 그 이점</span>
+                    <span class="topic-eng">Topic: The shift from random sampling to full data acquisition and its advantages in the evolving data analysis environment</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

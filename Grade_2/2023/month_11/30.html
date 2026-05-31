@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #30 - 23년 11월 고1 모의고사</title>
+    <title>English Master #30 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["changes", "how", "and", "understand", "the", "concept", "of", "the", "fact", "that", "has", "a", "new", "ability", "to", "or", "watch", "does", "not", "doing", "so", "rather", "advances", "in", "require", "and", "policy", "makers", "to", "consider", "how", "should", "be", "expanded", "for", "example", "when", "first", "became", "available", "for", "and", "use", "citizens", "over", "whether", "new", "laws", "should", "be", "enacted", "to", "protect", "from", "being", "without", "their", "permission", "brought", "about", "by", "this", "new", "technology", "distinction", "between", "and", "it", "was", "determined", "by", "most", "that", "people", "automatically", "gave", "consent", "to", "being", "thus", "once", "they", "voluntarily", "stepped", "into", "a", "although", "some", "might", "be", "with", "spread", "in", "most", "have", "adjusted", "to", "fact", "that", "giving", "up", "right", "not", "be", "observed", "in", "these", "circumstances", "causes", "less", "harm", "to", "community", "than", "failing", "have"];
+
     const fullData = [
-        { en: "The term minimalism gives a negative impression to some who think it’s about sacrificing possessions.", ko: "미니멀리즘이라는 용어는 그것이 소유물을 희생하는 것에 관한 것이라고 생각하는 일부 사람들에게 부정적인 인상을 줍니다.", voca: ["term:용어", "minimalism:미니멀리즘", "negative:부정적인", "impression:인상", "sacrificing:희생하는 것", "possessions:소유물", "think:생각하다", "🍎", "🍎", "🍎"] },
-        { en: "This insecurity stems from their attachment to their possessions.", ko: "이러한 불안함은 그들의 소유물에 대한 애착에서 비롯됩니다.", voca: ["insecurity:불안함", "stems from:~에서 비롯되다", "attachment:애착", "possessions:소유물", "their:그들의", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "It is difficult to distance oneself from something that has been around for quite some time.", ko: "꽤 오랫동안 주변에 있었던 무언가와 거리를 두는 것은 어렵습니다.", voca: ["difficult:어려운", "distance:거리를 두다", "around:주변에", "quite:꽤", "some time:어느 정도의 시간", "oneself:자신", "something:무언가", "🍎", "🍎", "🍎"] },
-        { en: "Being emotional animals, human beings give meaning to the things around them.", ko: "감정적인 동물인 인간은 주변의 사물들에 의미를 부여합니다.", voca: ["emotional:감정적인", "human beings:인간", "give meaning:의미를 부여하다", "things:사물들", "around them:그들 주변의", "animals:동물들", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Minimalism does not hurt emotions. The joy of clarity will overcome the sadness of getting rid of items.", ko: "미니멀리즘은 감정을 상하게 하지 않습니다. 명료함의 기쁨이 물건을 치우는 슬픔을 극복할 것입니다.", voca: ["hurt:상하게 하다", "emotions:감정", "joy:기쁨", "clarity:명료함/맑음", "overcome:극복하다", "getting rid of:~을 제거하는 것", "sadness:슬픔", "items:물건들", "🍎", "🍎"] },
-        { en: "Minimalists never argue that you should leave every convenience of the modern era.", ko: "미니멀리스트들은 현대 시대의 모든 편의를 버려야 한다고 결코 주장하지 않습니다.", voca: ["argue:주장하다", "leave:버리다/떠나다", "convenience:편의", "modern era:현대 시대", "every:모든", "never:결코 ~않다", "should:~해야 한다", "🍎", "🍎", "🍎"] },
-        { en: "They believe you only need to eliminate stuff that is unused or not going to be used soon.", ko: "그들은 사용되지 않거나 곧 사용되지 않을 물건들만 제거하면 된다고 믿습니다.", voca: ["believe:믿다", "eliminate:제거하다", "stuff:물건", "unused:사용되지 않는", "not going to:~하지 않을 것인", "soon:곧", "only:오직", "need to:~할 필요가 있다", "🍎", "🍎"] }
+        { en: "Technology changes how individuals and societies understand the concept of privacy.", ko: "기술은 개인과 사회가 사생활의 개념을 이해하는 방식을 변화시킵니다.", voca: ["Technology:기술", "changes:변화시킨다", "how:방식/어떻게", "individuals:개인들", "societies:사회들", "understand:이해하다", "concept:개념", "privacy:사생활/프라이버시", "🍎", "🍎"] },
+        { en: "The fact that someone has a new ability to access information or watch the actions of another does not justify doing so.", ko: "누군가에게 정보에 접근하거나 타인의 행동을 관찰할 수 있는 새로운 능력이 생겼다는 사실이 그렇게 하는 것을 정당화하지는 않습니다.", voca: ["fact that:~라는 사실", "ability:능력", "access:접근하다", "information:정보", "watch:관찰하다/보다", "actions:행동들", "another:타인/다른 사람", "justify:정당화하다", "doing so:그렇게 하는 것", "🍎"] },
+        { en: "Rather, advances in technology require citizens and policy makers to consider how privacy protections should be expanded.", ko: "오히려 기술의 발전은 시민들과 정책 입안자들이 사생활 보호가 어떻게 확장되어야 하는지 고려할 것을 요구합니다.", voca: ["Rather:오히려", "advances:발전/진보", "require A to B:A에게 B할 것을 요구하다", "citizens:시민들", "policy makers:정책 입안자들", "consider:고려하다/생각하다", "privacy protections:사생활 보호", "should be:~되어야 한다", "expanded:확장된", "🍎"] },
+        { en: "For example, when cameras first became available for commercial and private use, nations and citizens struggled over whether new laws should be enacted to protect individuals from being photographed without their permission.", ko: "예를 들어, 카메라가 상업적 및 개인적 용도로 처음 사용 가능해졌을 때, 나라들과 시민들은 개인들이 그들의 허락 없이 사진 촬영을 당하는 것으로부터 보호하기 위해 새로운 법률이 제정되어야 하는지 여부를 두고 고심했습니다.", voca: ["For example:예를 들어", "available:사용 가능한", "commercial:상업적인", "private use:개인적 용도", "nations:나라들/국가들", "struggled over:~을 두고 고심하다/싸우다", "whether:~인지 여부", "enacted:제정된(법률)", "photographed:사진 촬영을 당하는 것", "without permission:허락 없이"] },
+        { en: "The reconsideration of privacy brought about by this new technology re-affirmed a distinction between private and public spaces.", ko: "이 새로운 기술에 의해 유발된 사생활에 대한 재고는 사적 공간과 공적 공간 간의 구분을 재확인했습니다.", voca: ["reconsideration:재고/다시 생각함", "brought about by:~에 의해 유발된/초래된", "re-affirmed:재확인했다", "distinction:구분/차이", "between A and B:A와 B 사이에", "private space:사적 공간", "public space:공적 공간", "🍎", "🍎", "🍎"] },
+        { en: "It was determined by most cultures that people automatically gave consent to being seen—and thus recorded—once they voluntarily stepped into a public space.", ko: "대부분의 문화권에서는 사람들이 공적 공간에 자발적으로 발을 들여놓으면 자동으로 보는 것에, 따라서 녹화되는 것에 동의한 것으로 판정되었습니다.", voca: ["determined:판정된/결정된", "most cultures:대부분의 문화권", "automatically:자동으로", "gave consent to:~에 동의했다", "being seen:보는 것/목격당함", "thus recorded:따라서 녹화되는 것", "once:일단 ~하면", "voluntarily:자발적으로", "stepped into:~에 발을 들여놓다", "🍎"] },
+        { en: "Although some people might be uncomfortable with the spread of surveillance cameras, citizens in most cultures have adjusted to the fact that giving up the right not to be observed in these circumstances causes less harm to the community than failing to have surveillance.", ko: "비록 일부 사람들이 감시 카메라의 확산에 불편해할 수도 있지만, 대부분의 문화권의 시민들은 이러한 상황에서 관찰당하지 않을 권리를 포기하는 것이 감시를 하지 못하는 것보다 공동체에 해를 덜 끼친다는 사실에 적응해 왔습니다.", voca: ["Although:비록 ~일지라도", "uncomfortable:불편해하는", "spread:확산", "surveillance cameras:감시 카메라/CCTV", "adjusted to:~에 적응해 왔다", "giving up:포기하는 것", "right:권리", "observed:관찰당하는", "causes less harm:해를 덜 끼친다", "community:공동체"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +84,77 @@
             header.innerText = "English Master #30";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The True Meaning<br>of Minimalism</h1><p>2023년 11월 고1 모의고사 30번</p></div>
+                <div class="main-title-card"><h1>Technology and the<br>Evolution of Privacy</h1><p>2023년 11월 고2 30번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 오해:</b> 미니멀리즘은 소중한 소유물을 억지로 희생하는 것이라는 부정적 인식이 있음. 이는 사물에 의미를 부여하는 인간의 애착 본능 때문임.</p>
-                    <p>• <b>📍 진실:</b> 미니멀리즘은 감정을 해치려는 것이 아님. 물건을 비울 때 잠시 슬플 수 있으나, 곧 공간과 마음이 비워지는 '명료함의 기쁨'이 이를 압도함.</p>
-                    <p>• <b>📍 핵심:</b> 현대 문명의 모든 편의를 포기하라는 것이 아니라, 오직 '사용하지 않는' 불필요한 것들을 솎아내어 삶을 가볍게 만드는 것이 본질임.</p>
+                    <p>• <b>📍 서론:</b> 기술 발전은 개인과 사회가 사생활(privacy)을 이해하는 개념적 방식을 변화시킴. 타인을 관찰할 수 있는 능력이 생겼다고 해서 그것이 정당화되지는 않음.</p>
+                    <p>• <b>📍 본론:</b> 기술의 진보는 사생활 보호의 확장을 요구함. 과거 카메라가 처음 등장했을 때 무단 촬영 방지법 제정을 두고 고심하며 사적 공간과 공적 공간의 구분이 재확인됨.</p>
+                    <p>• <b>📍 결론:</b> 대부분의 문화권에서 공적 공간에 자발적으로 들어간 사람은 정보 노출 및 녹화에 자동으로 동의한 것으로 판정함. 오늘날 시민들은 감시 카메라(surveillance)가 주는 유익이 권리 포기의 불편함보다 공동체에 더 이롭다는 사실에 적응해 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 미니멀리즘에 대한 오해 바로잡기: 불필요한 것의 제거를 통한 명료함의 추구</span>
-                    <span class="topic-eng">Topic: Correcting misconceptions about minimalism: seeking clarity through the elimination of the unnecessary</span>
+                    <span class="topic-kor">주제: 기술 발전에 따른 사생활 개념의 변화와 공공 안전을 위한 사적 권리 조정의 수용</span>
+                    <span class="topic-eng">Topic: Changes in the concept of privacy driven by technological advances and the acceptance of adjusting private rights for public safety</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’\-]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’\-]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

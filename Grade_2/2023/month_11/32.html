@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #32 - 23년 11월 고1 모의고사</title>
+    <title>English Master #32 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["encountered", "after", "an", "can", "influence", "subsequent", "external", "can", "easily", "into", "a", "especially", "if", "the", "was", "poorly", "or", "the", "is", "from", "a", "distant", "in", "which", "case", "time", "and", "have", "the", "original", "with", "reduced", "available", "in", "with", "which", "to", "confirm", "the", "validity", "of", "it", "is", "less", "likely", "that", "this", "new", "will", "be", "rejected", "instead", "especially", "when", "it", "fits", "the", "current", "and", "can", "be", "used", "to", "create", "a", "that", "makes", "sense", "to", "him", "or", "her", "it", "may", "be", "as", "part", "of", "the", "original", "this", "process", "can", "be", "witness", "knows", "it", "is", "but", "it", "is", "often", "that", "is", "the", "might", "find", "or", "thinking", "about", "the", "differently", "without", "over", "the", "may", "not", "even", "know", "the", "source", "of", "that", "led", "to", "the", "sources", "of", "in", "forensic", "contexts", "can", "be", "anywhere", "from", "with", "other", "to", "social", "media", "to", "multiple", "with", "or", "other", "legal", "and", "even", "in", "court"];
+
     const fullData = [
-        { en: "Participants were asked to answer questions like ”Why does the moon have phases?“", ko: "참가자들은 ”왜 달은 위상을 갖는가?“와 같은 질문에 답하도록 요청받았습니다.", voca: ["Participants:참가자들", "asked:요청받은/질문받은", "answer:답하다", "questions:질문들", "moon:달", "phases:위상/단계", "like:~와 같은", "🍎", "🍎", "🍎"] },
-        { en: "Half used the internet to search, while the other half weren’t allowed to do so.", ko: "절반은 검색을 위해 인터넷을 사용했고, 나머지 절반은 그렇게 하도록 허용되지 않았습니다.", voca: ["Half:절반", "search:검색하다", "while:반면에", "allowed:허용된", "not allowed:허용되지 않은", "internet:인터넷", "other half:나머지 절반", "🍎", "🍎", "🍎"] },
-        { en: "In the second part, all were asked new questions like ”Why does Swiss cheese have holes?“", ko: "두 번째 파트에서, 모든 이들이 ”왜 스위스 치즈에는 구멍이 있는가?“와 같은 새로운 질문을 받았습니다.", voca: ["second part:두 번째 파트", "new questions:새로운 질문들", "holes:구멍들", "asked:질문받은", "Swiss cheese:스위스 치즈", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "These questions were unrelated to the first part, so internet users had no advantage.", ko: "이 질문들은 첫 번째 파트와 무관했으므로, 인터넷 사용자들에게는 아무런 이점이 없었습니다.", voca: ["unrelated:무관한", "first part:첫 번째 파트", "advantage:이점", "no advantage:이점이 없음", "internet users:인터넷 사용자들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "But those who used the internet rated themselves as more knowledgeable than the others.", ko: "하지만 인터넷을 사용했던 사람들은 다른 사람들보다 자신들이 더 많이 알고 있다고 평가했습니다.", voca: ["rated:평가했다", "knowledgeable:지식이 있는", "the others:다른 사람들", "more ~ than:~보다 더 많이", "themselves:그들 자신", "internet:인터넷", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "They felt smarter even about questions they hadn’t searched online for.", ko: "그들은 온라인으로 검색해보지 않은 질문들에 대해서조차 자신들이 더 똑똑하다고 느꼈습니다.", voca: ["felt smarter:더 똑똑하다고 느꼈다", "even:~조차", "searched:검색한", "online:온라인", "questions:질문들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The study suggests that access to information was enough to pump up their intellectual confidence.", ko: "이 연구는 정보에 대한 접근이 그들의 지적 자신감을 부풀리기에 충분했다는 것을 시사합니다.", voca: ["suggests:시사하다", "access to:~에 대한 접근", "information:정보", "enough:충분한", "pump up:부풀리다/펌프질하다", "intellectual:지적인", "confidence:자신감", "🍎", "🍎", "🍎"] }
+        { en: "Information encountered after an event can influence subsequent remembering.", ko: "사건이 발생한 후에 접하게 되는 정보는 그 이후의 기억에 영향을 미칠 수 있습니다.", voca: ["Information:정보", "encountered:접하게 되는/마주친", "after:~ 후에", "event:사건", "influence:영향을 미치다", "subsequent:그 이후의", "remembering:기억/기억하기", "🍎", "🍎", "🍎"] },
+        { en: "External information can easily integrate into a witness’s memory, especially if the event was poorly encoded or the memory is from a distant event, in which case time and forgetting have degraded the original memory.", ko: "외부 정보는 목격자의 기억 속으로 쉽게 통합될 수 있으며, 특히 사건이 어설프게 부호화되었거나 기억이 오래전 사건의 것인 경우 더욱 그러한데, 이 경우 시간과 망각이 원래의 기억을 부식시켰기 때문입니다.", voca: ["External:외부의", "easily:쉽게", "integrate into:~ 속으로 통합되다", "witness's:목격자의", "especially:특히", "poorly encoded:어설프게 부호화된", "distant event:오래전 사건", "forgetting:망각", "degraded:부식시킨/저하시킨", "original memory:원래의 기억"] },
+        { en: "With reduced information available in memory with which to confirm the validity of post-event misinformation, it is less likely that this new information will be rejected.", ko: "사건 후의 오해 유도 정보의 타당성을 확인하기 위해 기억 속에서 이용할 수 있는 정보가 줄어들면서, 이 새로운 정보가 거부될 가능성은 더 낮아집니다.", voca: ["reduced:줄어든", "available:이용할 수 있는", "confirm:확인하다", "validity:타당성", "post-event:사건 후의", "misinformation:오해 유도 정보/오류 정보", "less likely:~할 가능성이 더 낮은", "rejected:거부된", "🍎", "🍎"] },
+        { en: "Instead, especially when it fits the witness’s current thinking and can be used to create a story that makes sense to him or her, it may be integrated as part of the original experience.", ko: "대신에, 특히 그것이 목격자의 현재 생각과 일치하고 그 또는 그녀에게 말이 되는 이야기를 만드는 데 사용될 수 있을 때, 그것은 원래 경험의 일부로 통합될지도 모릅니다.", voca: ["Instead:대신에", "fits:일치하다/맞다", "current thinking:현재 생각", "create a story:이야기를 만들다", "makes sense:말이 되다/이해되다", "integrated:통합된", "part of:~의 일부", "original experience:원래 경험", "🍎", "🍎"] },
+        { en: "This process can be explicit (i.e., the witness knows it is happening), but it is often unconscious.", ko: "이 과정은 명시적일 수 있지만(즉, 목격자가 그것이 일어나고 있다는 것을 알고 있음), 흔히 무의식적입니다.", voca: ["process:과정", "explicit:명시적인", "i.e.:즉/다시 말해", "happening:일어나고 있는", "often:흔히/종종", "unconscious:무의식적인", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "That is, the witness might find himself or herself thinking about the event differently without awareness.", ko: "즉, 목격자는 알지 못하는 사이에 자신이 그 사건에 대해 다르게 생각하고 있다는 것을 발견할지도 모릅니다.", voca: ["That is:즉/다시 말해", "find himself:자신을 발견하다", "thinking about:~에 대해 생각하는 것", "differently:다르게", "without awareness:알지 못하는 사이에/의식 없이", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Over time, the witness may not even know the source of information that led to the (new) memory.", ko: "시간이 지나면서 목격자는 (새로운) 기억을 유발했던 정보의 출처조차 모를 수도 있습니다.", voca: ["Over time:시간이 지나면서", "even:조차/~도", "know:알다", "source of information:정보의 출처", "led to:~을 유발했던/~로 이어진", "new memory:새로운 기억", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Sources of misinformation in forensic contexts can be encountered anywhere, from discussions with other witnesses to social media searches to multiple interviews with investigators or other legal professionals, and even in court.", ko: "법정 심문 상황에서의 오해 유도 정보의 출처는 다른 목격자들과의 토론에서부터 소셜 미디어 검색, 수사관이나 다른 법률 전문가들과의 여러 차례의 면담, 심지어 법정에 이르기까지 어디에서나 접할 수 있습니다.", voca: ["Sources:출처들", "forensic contexts:법정 심문 상황/법의학적 맥락", "anywhere:어디에서나", "discussions:토론/논의", "other witnesses:다른 목격자들", "social media:소셜 미디어", "multiple interviews:여러 차례의 면담", "investigators:수사관들", "legal professionals:법률 전문가들", "in court:법정에서"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,80 +85,77 @@
             header.innerText = "English Master #32";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Illusion of<br>Knowledge</h1><p>2023년 11월 고1 모의고사 32번</p></div>
+                <div class="main-title-card"><h1>Post-Event Information<br>& Memory Distortion</h1><p>2023년 11월 고2 32번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 실험 1단계:</b> 참가자 절반에게는 인터넷 검색을 허용하고, 나머지 절반은 금지한 채 특정 질문에 답하게 함.</p>
-                    <p>• <b>📍 실험 2단계:</b> 앞의 질문과 전혀 상관없는 새로운 질문들을 제시함. 인터넷 사용 여부가 정답을 맞히는 데 아무런 도움이 되지 않는 상황임.</p>
-                    <p>• <b>📍 결과:</b> 1단계에서 인터넷을 썼던 사람들은 검색해보지 않은 새로운 질문들에 대해서도 자신들이 더 박학다식하다고 스스로를 높게 평가함.</p>
-                    <p>• <b>📍 결론:</b> 단지 인터넷을 통해 정보에 접근할 수 있다는 사실만으로도 사람들은 자신의 실제 지적 수준보다 더 높은 자신감을 갖게 됨.</p>
+                    <p>• <b>📍 서론:</b> 사건 발생 후에 접하게 되는 정보는 그 이후 목격자의 기억 회상에 깊은 영향을 줄 수 있음.</p>
+                    <p>• <b>📍 본론:</b> 초기 부호화가 어설프거나(poorly encoded) 시간이 흘러 기억이 부식되었을 때 외부 오류 정보는 쉽게 통합됨. 기억 속에 타당성을 검증할 자원이 부족해 오해 유도 정보가 거부되지 않고, 목격자의 현재 인지 구조와 결합되어 원래 경험의 일부로 굳어짐.</p>
+                    <p>• <b>📍 결론:</b> 이 왜곡 과정은 자각 없이 '무의식적(unconscious)'으로 빈번히 발생함. 결국 시간이 흐르면 새로운 기억을 만든 정보의 출처(source)조차 망각하며, 법정 상황에서는 동료 목격자와의 대화, SNS 검색, 수사관과의 다중 면담 및 법정 진술 등 도처에서 이러한 오류가 주입될 수 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 인터넷 검색 경험이 비관련 분야에 대한 지적 자신감까지 부풀리는 심리적 착각</span>
-                    <span class="topic-eng">Topic: The psychological illusion where the experience of internet searching inflates intellectual confidence even in unrelated fields</span>
+                    <span class="topic-kor">주제: 사건 이후 접하는 오해 유도 정보가 목격자의 기억 속으로 무의식적으로 통합되어 기억을 왜곡하는 기전</span>
+                    <span class="topic-eng">Topic: The mechanism by which post-event misinformation is unconsciously integrated into a witness's memory and distorts it</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’\-]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’\-]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #20 - 23년 11월 고1 모의고사</title>
+    <title>English Master #20 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,15 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["includes", "a", "of", "such", "as", "and", "it", "is", "one", "the", "and", "most", "back", "of", "has", "played", "in", "development", "allowing", "people", "to", "create", "stable", "settle", "one", "today", "remains", "vital", "that", "feeds", "the", "supports", "provides", "raw", "for", "other", "however", "faces", "numerous", "continues", "grow", "essential", "find", "solutions", "address", "facing", "ensure", "continued", "production"];
+
     const fullData = [
-        { en: "Unfortunately, many people don’t take personal responsibility for their own growth.", ko: "불행히도, 많은 사람들은 자신의 성장에 대해 개인적인 책임을 지지 않습니다.", voca: ["Unfortunately:불행히도", "personal:개인적인", "responsibility:책임", "growth:성장", "take:취하다/지다", "own:자신의", "many:많은", "🍎", "🍎", "🍎"] },
-        { en: "Instead, they simply run the race laid out for them.", ko: "대신에, 그들은 단순히 그들을 위해 마련된 경주를 합니다.", voca: ["Instead:대신에", "simply:단순히", "race:경주", "laid out:마련된/설계된", "for them:그들을 위해", "run:달리다/수행하다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "They do well enough in school to keep advancing and manage to get a good job.", ko: "그들은 계속 발전할 만큼 학교에서 충분히 잘하고, 좋은 직장을 구하기도 합니다.", voca: ["well enough:충분히 잘", "advancing:발전하는/전진하는", "manage to:간신히 ~해내다", "good job:좋은 직장", "keep:~을 계속하다", "school:학교", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "But so many think and act as if their learning journey ends with college.", ko: "하지만 아주 많은 이들이 마치 자신의 학습 여정이 대학과 함께 끝나는 것처럼 생각하고 행동합니다.", voca: ["as if:마치 ~인 것처럼", "learning journey:학습 여정", "ends with:~와 함께 끝나다", "college:대학", "think:생각하다", "act:행동하다", "so many:매우 많은", "🍎", "🍎", "🍎"] },
-        { en: "In truth, when school is finished, your growth becomes voluntary.", ko: "사실, 학교 교육이 끝났을 때 여러분의 성장은 자발적이 됩니다.", voca: ["In truth:사실/진실로", "finished:끝난", "growth:성장", "becomes:~가 되다", "voluntary:자발적인", "school:학교", "when:~할 때", "🍎", "🍎", "🍎"] },
-        { en: "Like healthy eating habits, you need to commit to it and devote thought, time, and energy.", ko: "건강한 식습관처럼, 여러분은 그것에 헌신하고 생각, 시간, 그리고 에너지를 쏟아야 합니다.", voca: ["eating habits:식습관", "commit to:~에 전념하다", "devote:쏟다/바치다", "thought:생각", "energy:에너지", "need to:~할 필요가 있다", "time:시간", "Like:~처럼", "🍎", "🍎"] },
-        { en: "Otherwise, it simply won’t happen—and your life and career are likely to stop progressing.", ko: "그렇지 않으면, 그것은 결코 일어나지 않을 것이며 여러분의 삶과 경력은 진보를 멈출 가능성이 큽니다.", voca: ["Otherwise:그렇지 않으면", "happen:일어나다", "career:경력", "progressing:진보하는/발전하는", "likely to:~할 가능성이 큰", "simply:단순히", "stop:멈추다", "life:삶", "🍎", "🍎"] }
+        { en: "Agriculture includes a range of activities such as planting, harvesting, fertilizing, pest management, raising animals, and distributing food and agricultural products.", ko: "농업은 경작, 수확, 비료 살포, 해충 관리, 가축 사육, 그리고 식품 및 농산물 유통과 같은 다양한 활동을 포함합니다.", voca: ["Agriculture:농업", "includes:포함하다", "range of:다양한/일련의", "activities:활동들", "planting:경작/심기", "harvesting:수확", "fertilizing:비료 살포", "pest management:해충 관리", "raising animals:가축 사육", "distributing:유통/분배"] },
+        { en: "It is one of the oldest and most essential human activities, dating back thousands of years, and has played a critical role in the development of human civilizations, allowing people to create stable food supplies and settle in one place.", ko: "그것은 수천 년 전으로 거슬러 올라가는 가장 오래되고 가장 필수적인 인간 활동 중 하나이며, 인류 문명의 발전에 결정적인 역할을 하여 사람들이 안정적인 식량 공급을 창출하고 한 곳에 정착할 수 있도록 해 주었습니다.", voca: ["oldest:가장 오래된", "essential:필수적인", "dating back:(역사가) ~로 거슬러 올라가는", "thousands of:수천 년의", "critical role:결정적인 역할", "development:발전/개발", "civilizations:문명", "stable:안정적인", "supplies:공급/비축", "settle:정착하다"] },
+        { en: "Today, agriculture remains a vital industry that feeds the world’s population, supports rural communities, and provides raw materials for other industries.", ko: "오늘날 농업은 세계 인구를 먹여 살리고, 농촌 공동체를 지원하며, 다른 산업에 원자재를 제공하는 중요한 산업으로 남아 있습니다.", voca: ["remains:남아 있다", "vital industry:중요한 산업", "feeds:먹여 살리다", "population:인구", "supports:지원하다", "rural communities:농촌 공동체", "provides:제공하다", "raw materials:원자재", "industries:산업들", "🍎"] },
+        { en: "However, agriculture faces numerous challenges such as climate change, water scarcity, soil degradation, and biodiversity loss.", ko: "하지만 농업은 기후 변화, 물 부족, 토양 황폐화, 생물 다양성 손실과 같은 수많은 도전에 직면해 있습니다.", voca: ["However:하지만", "faces:직면하다", "numerous:수많은", "challenges:도전/과제", "climate change:기후 변화", "water scarcity:물 부족", "soil degradation:토양 황폐화", "biodiversity loss:생물 다양성 손실", "🍎", "🍎"] },
+        { en: "As the world’s population continues to grow, it is essential to find sustainable solutions to address the challenges facing agriculture and ensure the continued production of food and other agricultural products.", ko: "세계 인구가 계속 증가함에 따라, 농업이 직면한 과제를 해결하고 식량 및 기타 농산물의 지속적인 생산을 보장하기 위한 지속 가능한 해결책을 찾는 것이 필수적입니다.", voca: ["continues:계속하다", "grow:증가하다/자라다", "essential:필수적인", "sustainable:지속 가능한", "solutions:해결책", "address:해결하다/다루다", "facing:직면한", "ensure:보장하다", "continued:지속적인", "production:생산"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +82,77 @@
             header.innerText = "English Master #20";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Growth is<br>Voluntary</h1><p>2023년 11월 고1 모의고사 20번</p></div>
+                <div class="main-title-card"><h1>The Role and Challenges<br>of Agriculture</h1><p>2023년 11월 고2 20번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 많은 사람들이 정해진 경로(학교, 취업)를 따르는 데만 익숙하여 스스로 성장을 책임지지 않음.</p>
-                    <p>• <b>📍 본론:</b> 대학 졸업과 동시에 학습이 끝났다고 생각하는 것은 큰 오산임. 정해진 로드맵이 사라진 그때가 진짜 성장이 필요한 시점임.</p>
-                    <p>• <b>📍 결론:</b> 성인이 된 후의 성장은 전적으로 '자발적'임. 건강 관리처럼 의식적으로 시간과 에너지를 투자하지 않으면 인생과 경력은 정체될 수밖에 없음.</p>
+                    <p>• <b>📍 서론:</b> 농업은 경작, 수확, 유통 등 다양한 활동을 포함하는 문명 발전의 핵심적 근간임.</p>
+                    <p>• <b>📍 본론:</b> 인류 문명을 정착시키고 세계 인구를 먹여 살려온 농업은 오늘날 기후 변화, 물 부족, 토양 황폐화 등 심각한 도전에 직면함.</p>
+                    <p>• <b>📍 결론:</b> 인구 증가에 맞추어 식량의 안정적 생산을 보장하기 위해서는 농업 과제들을 해결할 지속 가능한 해결책(sustainable solutions) 마련이 필수적임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 학교 교육 이후 지속적인 성장을 위해 필요한 자발적인 노력과 헌신</span>
-                    <span class="topic-eng">Topic: The necessity of voluntary effort and commitment for continuous growth after formal education</span>
+                    <span class="topic-kor">주제: 인류의 생존을 책임져온 농업의 중요성과 직면한 위기를 해결할 지속 가능한 대책의 필요성</span>
+                    <span class="topic-eng">Topic: The importance of agriculture responsible for human survival and the need for sustainable solutions to address its challenges</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

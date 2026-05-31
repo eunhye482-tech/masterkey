@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #22 - 23년 11월 고1 모의고사</title>
+    <title>English Master #22 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,19 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["many", "have", "pointed", "to", "the", "of", "accurate", "time", "measurement", "to", "western", "economic", "progress", "called", "birth", "public", "mechanical", "clock", "a", "turning", "point", "in", "society", "until", "late", "middle", "ages", "people", "had", "sun", "or", "water", "which", "did", "not", "play", "any", "meaningful", "role", "business", "activities", "started", "with", "sunrise", "and", "typically", "ended", "at", "noon", "was", "its", "peak", "but", "when", "first", "clocks", "were", "introduced", "spread", "across", "cities", "set", "by", "stroke", "hour", "thus", "greatly", "contributed", "life", "work", "providing", "new", "concept", "easy", "for", "everyone", "understand", "this", "turn", "helped", "facilitate", "trade", "commerce", "between", "consumers", "retailers", "wholesalers", "became", "less", "irregular", "important", "town", "meetings", "began", "follow", "pace", "allowing", "better", "plan", "their", "allocate", "resources", "efficient", "manner"];
+
     const fullData = [
-        { en: "When writing a novel, research for information needs to be done.", ko: "소설을 쓸 때, 정보를 위한 조사가 수행되어야 합니다.", voca: ["writing:쓰는 것", "novel:소설", "research:조사/연구", "information:정보", "needs to:~할 필요가 있다", "done:수행된", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Some kinds of fiction demand a higher level of detail: crime fiction or scientific thrillers.", ko: "어떤 종류의 소설은 더 높은 수준의 세부 사항을 요구합니다: 예를 들어 범죄 소설이나 과학 스릴러처럼요.", voca: ["fiction:소설", "demand:요구하다", "higher level:더 높은 수준", "detail:세부 사항", "crime fiction:범죄 소설", "scientific:과학적인", "thrillers:스릴러", "🍎", "🍎", "🍎"] },
-        { en: "The information is never hard to find; crime writers can even visit police stations to get it right.", ko: "정보는 찾기 결코 어렵지 않습니다; 범죄 소설 작가들은 정확하게 쓰기 위해 경찰서를 방문할 수도 있습니다.", voca: ["hard to find:찾기 어려운", "never:결코 ~않다", "writers:작가들", "visit:방문하다", "get it right:정확하게 하다", "even:심지어", "police stations:경찰서", "🍎", "🍎", "🍎"] },
-        { en: "Often, a polite letter will earn you permission to visit a location and record all the details.", ko: "종종 공중한 편지 한 통이면 특정 장소를 방문하여 필요한 모든 세부 사항을 기록할 허가를 얻을 수 있습니다.", voca: ["polite:공손한", "letter:편지", "earn:얻다/벌다", "permission:허가", "location:장소", "record:기록하다", "Often:종종", "details:세부 사항들", "🍎", "🍎"] },
-        { en: "But remember that you will drive readers to boredom if you pack everything you discover into your work.", ko: "하지만 여러분이 발견한 모든 것을 작품에 채워 넣어야 한다고 생각하면 독자들을 지루하게 만들 것임을 기억하세요.", voca: ["remember:기억하다", "drive:몰아가다/만들다", "boredom:지루함", "pack:채워 넣다", "everything:모든 것", "discover:발견하다", "work:작품", "if:만약", "🍎", "🍎"] },
-        { en: "The details that matter are those that reveal the human experience.", ko: "중요한 세부 사항은 인간의 경험을 드러내는 것들입니다.", voca: ["matter:중요하다", "reveal:드러내다", "human experience:인간의 경험", "details:세부 사항들", "those:것들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The crucial thing is telling a story, characters, and conflict—not the building blueprint.", ko: "중요한 것은 이야기, 캐릭터, 그리고 갈등을 말하는 것이지, 건물의 청사진이 아닙니다.", voca: ["crucial:중요한/결정적인", "telling:말하는 것", "characters:등장인물", "conflict:갈등", "blueprint:청사진", "not:~이 아니라", "story:이야기", "🍎", "🍎", "🍎"] }
+        { en: "Many historians have pointed to the significance of accurate time measurement to Western economic progress.", ko: "많은 역사학자들은 서구의 경제 진보에 있어 정확한 시간 측정의 중요성을 지적해 왔습니다.", voca: ["historians:역사학자들", "pointed to:~을 지적하다/가리키다", "significance:중요성/의의", "accurate:정확한", "time measurement:시간 측정", "economic progress:경제 진보", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The French historian Jacques Le Goff called the birth of the public mechanical clock a turning point in Western society.", ko: "프랑스 역사학자 Jacques Le Goff는 공공 기계식 시계의 탄생을 서구 사회의 전환점이라고 불렀습니다.", voca: ["French historian:프랑스 역사학자", "birth:탄생", "public mechanical clock:공공 기계식 시계", "turning point:전환점", "Western society:서구 사회", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Until the late Middle Ages, people had sun or water clocks, which did not play any meaningful role in business activities.", ko: "중세 후기까지 사람들은 해시계나 물시계를 가지고 있었는데, 이것들은 상업 활동에서 아무런 의미 있는 역할을 하지 못했습니다.", voca: ["Until:~까지", "late Middle Ages:중세 후기", "sun or water clocks:해시계나 물시계", "meaningful role:의미 있는 역할", "business activities:상업 활동/비즈니스 활동", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Market openings and activities started with the sunrise and typically ended at noon when the sun was at its peak.", ko: "시장 개장과 상업 활동은 해 뜨는 시점에 시작해서 대개 태양이 정점에 있는 정오에 끝났습니다.", voca: ["Market openings:시장 개장", "activities:활동들", "sunrise:일출/해 뜨는 시점", "typically:대개/전형적으로", "ended:끝났다", "noon:정오", "at its peak:정점에 있는", "🍎", "🍎", "🍎"] },
+        { en: "But when the first public mechanical clocks were introduced and spread across European cities, market times were set by the stroke of the hour.", ko: "하지만 최초의 공공 기계식 시계들이 도입되어 유럽 도시 전역으로 퍼졌을 때, 시장 시간은 매 정시를 알리는 타종에 의해 정해졌습니다.", voca: ["introduced:도입된", "spread:퍼졌다/확산되었다", "across:~ 전역에", "European cities:유럽 도시들", "market times:시장 시간", "set by:~에 의해 정해진", "stroke of the hour:정시를 알리는 타종/종소리", "🍎", "🍎", "🍎"] },
+        { en: "Public clocks thus greatly contributed to public life and work by providing a new concept of time that was easy for everyone to understand.", ko: "따라서 공공 시계는 모든 사람이 이해하기 쉬운 새로운 시간 개념을 제공함으로써 공공 생활과 업무에 크게 기여했습니다.", voca: ["thus:따라서", "greatly:크게/대단히", "contributed to:~에 기여했다", "public life:공공 생활", "work:업무/노동", "providing:제공함으로써", "new concept:새로운 개념", "easy to understand:이해하기 쉬운", "🍎", "🍎"] },
+        { en: "This, in turn, helped facilitate trade and commerce.", ko: "이것은 결과적으로 무역과 상업을 촉진하는 데 도움이 되었습니다.", voca: ["in turn:결과적으로/차례로", "helped facilitate:촉진하는 데 도움을 주었다", "trade and commerce:무역과 상업", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Interactions and transactions between consumers, retailers, and wholesalers became less irregular.", ko: "소비자, 소매상, 도매상 간의 상호 작용과 거래가 덜 불규칙하게 되었습니다.", voca: ["Interactions:상호 작용", "transactions:거래", "between:~ 사이에", "consumers:소비자", "retailers:소매상", "wholesalers:도매상", "less irregular:덜 불규칙한", "🍎", "🍎", "🍎"] },
+        { en: "Important town meetings began to follow the pace of the clock, allowing people to better plan their time and allocate resources in a more efficient manner.", ko: "중요한 마을 회의들이 시계의 속도를 따르기 시작하여, 사람들이 시간을 더 잘 계획하고 더 효율적인 방식으로 자원을 배분할 수 있도록 해 주었습니다.", voca: ["town meetings:마을 회의", "follow:따르다", "pace:속도/보폭", "allowing:하게 하면서", "plan:계획하다", "allocate:배분하다/할당하다", "resources:자원", "efficient manner:효율적인 방식", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +86,77 @@
             header.innerText = "English Master #22";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Story Over<br>Information</h1><p>2023년 11월 고1 모의고사 22번</p></div>
+                <div class="main-title-card"><h1>The Clock and<br>Economic Progress</h1><p>2023년 11월 고2 22번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 소설, 특히 범죄 소설이나 과학 스릴러는 전문적인 조사를 통한 세부 정보가 필수적임.</p>
-                    <p>• <b>📍 본론:</b> 웹사이트나 직접 방문 등을 통해 정보를 얻는 것은 어렵지 않으나, 조사한 모든 것을 작품에 담으려 하면 독자는 지루함을 느낌.</p>
-                    <p>• <b>📍 결론:</b> 소설에서 진짜 중요한 것은 '인간의 경험'을 드러내는 디테일임. 독자가 원하는 것은 건물의 청사진이 아니라 살아있는 이야기와 갈등임.</p>
+                    <p>• <b>📍 서론:</b> 많은 역사학자들은 서구의 경제 진보(economic progress)에 있어 정확한 시간 측정의 지대한 중요성을 지적해옴.</p>
+                    <p>• <b>📍 본론:</b> 해시계·물시계에 의존해 일출과 정오(peak)에 얽매여 불규칙했던 과거 상업 활동과 달리, 공공 기계식 시계가 보급되면서 정시 타종(stroke of the hour)에 맞춰 시장 시간이 통제됨.</p>
+                    <p>• <b>📍 결론:</b> 모두가 이해하기 쉬운 시간 개념은 무역과 상업을 촉진(facilitate)했고 상인 간 거래의 불규칙성을 없앴으며, 회의와 일상 일정이 정밀해져 한층 효율적인 방식으로 자원을 배분(allocate resources)하게 만듦.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 소설 집필 시 과도한 정보 나열을 경계하고 인간의 경험과 스토리에 집중해야 할 필요성</span>
-                    <span class="topic-eng">Topic: The need to focus on human experience and storytelling rather than overloading a novel with researched information</span>
+                    <span class="topic-kor">주제: 공공 기계식 시계의 도입이 가져온 시간 측정의 정확성과 무역·상업의 효율적 진보</span>
+                    <span class="topic-eng">Topic: The accuracy of time measurement brought by the introduction of public mechanical clocks and the efficient progress of trade and commerce</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #39 - 23년 11월 고1 모의고사</title>
+    <title>English Master #39 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,13 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["by", "the", "had", "a", "of", "to", "capture", "space", "time", "and", "and", "had", "to", "get", "other", "to", "adopt", "the", "same", "standards", "just", "a", "later", "in", "the", "the", "of", "quantum", "forever", "the", "dream", "of", "and", "perfect", "measurement", "and", "yet", "outside", "a", "relatively", "small", "of", "the", "of", "humankind’s", "drive", "to", "flawlessly", "continued", "among", "and", "in", "the", "of", "it", "even", "as", "the", "of", "and", "to", "all", "areas", "of", "however", "contrary", "to", "the", "of", "the", "past", "several", "in", "many", "new", "that", "are", "occurring", "today", "allowing", "for", "for", "may", "be", "a", "positive", "not", "a", "as", "a", "for", "the", "of", "one", "can", "get", "a", "of", "much", "more", "it", "isn’t", "just", "that", "more", "is", "than", "but", "that", "in", "fact", "sometimes", "more", "is", "greater", "than"];
+
     const fullData = [
-        { en: "Between 1940 and 2000, Cuba ruled the world baseball scene.", ko: "1940년에서 2000년 사이, 쿠바는 세계 야구계를 지배했습니다.", voca: ["Between:사이에", "ruled:지배했다", "baseball scene:야구계", "Cuba:쿠바", "world:세계의", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The Cubans were known for wearing uniforms covered in red from head to toe.", ko: "쿠바 선수들은 머리부터 발끝까지 빨간색으로 덮인 유니폼을 입는 것으로 알려졌습니다.", voca: ["known for:~로 알려진", "wearing:입는 것", "uniforms:유니폼", "covered in red:빨간색으로 덮인", "head to toe:머리부터 발끝까지", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Not only were their athletic talents superior, the Cubans appeared even stronger from the colour of their uniforms.", ko: "그들의 운동 재능이 우수했을 뿐만 아니라, 쿠바 선수들은 유니폼 색깔만으로도 훨씬 더 강해 보였습니다.", voca: ["Not only:A뿐만 아니라", "athletic talents:운동 재능", "superior:우수한", "appeared:보였다", "even stronger:훨씬 더 강한", "colour:색깔", "uniforms:유니폼", "🍎", "🍎", "🍎"] },
-        { en: "A game would not even start and the opposing team would already be scared.", ko: "경기가 시작되기도 전에 상대 팀은 이미 겁을 먹곤 했습니다.", voca: ["opposing team:상대 팀", "already:이미", "scared:겁먹은", "not even:~조차 않다", "start:시작하다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "A few years ago, Cuba altered that uniform style, and the national team has declined since that time.", ko: "몇 년 전 쿠바는 그 유니폼 스타일을 바꿨고, 국가대표팀은 그때 이후로 쇠퇴했습니다.", voca: ["altered:바꿨다", "style:스타일", "national team:국가대표팀", "declined:쇠퇴했다", "since:이후로", "uniform:유니폼", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Traditions are important for a team; if it abandons its roots, negative effects can surface.", ko: "전통은 팀에게 중요합니다; 만약 팀이 자신의 뿌리를 버린다면, 부정적인 영향이 나타날 수 있습니다.", voca: ["Traditions:전통", "important:중요한", "abandons:버리다", "roots:뿌리", "negative effects:부정적인 영향", "surface:나타나다/표면화되다", "if:만약", "🍎", "🍎", "🍎"] }
+        { en: "By the nineteenth century, France had developed a system of precisely defined units of measurement to capture space, time, and more, and had begun to get other nations to adopt the same standards.", ko: "19세기에 이르러 프랑스는 공간, 시간, 그 이상을 포착하기 위한 정확하게 정의된 측정 단위 체계를 개발했고, 다른 국가들이 동일한 표준을 채택하도록 하기 시작했습니다.", voca: ["nineteenth century:19세기", "precisely defined:정확하게 정의된", "units of measurement:측정 단위", "capture:포착하다", "adopt:채택하다", "standards:표준", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Just half a century later, in the 1920s, the discoveries of quantum mechanics forever destroyed the dream of comprehensive and perfect measurement.", ko: "불과 반세기 후인 1920년대에, 양자 역학의 발견은 포괄적이고 완벽한 측정이라는 꿈을 영원히 파괴했습니다.", voca: ["half a century later:반세기 후", "discoveries:발견들", "quantum mechanics:양자 역학", "forever:영원히", "destroyed:파괴했다", "dream:꿈", "comprehensive:포괄적인", "perfect measurement:완벽한 측정", "🍎", "🍎"] },
+        { en: "And yet, outside a relatively small circle of physicists, the mindset of humankind’s drive to flawlessly measure continued among engineers and scientists.", ko: "그럼에도 불구하고, 비교적 작은 물리학자 집단을 제외하고는, 흠 없이 측정하려는 인류의 욕구라는 사고방식은 엔지니어들과 과학자들 사이에서 계속되었습니다.", voca: ["And yet:그럼에도 불구하고", "circle of physicists:물리학자 집단", "mindset:사고방식", "humankind's drive:인류의 욕구/추동", "flawlessly:흠 없이/완벽하게", "continued:계속되었다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In the world of business it even expanded, as the precision-oriented sciences of mathematics and statistics began to influence all areas of commerce.", ko: "비즈니스 세계에서 그것은 수학과 통계학이라는 정밀 지향적인 과학이 상업의 모든 영역에 영향을 미치기 시작하면서 더욱 확장되었습니다.", voca: ["expanded:확장되었다", "precision-oriented:정밀 지향적인", "sciences:과학들", "mathematics:수학", "statistics:통계학", "influence:영향을 미치다", "all areas of commerce:상업의 모든 영역", "🍎", "🍎", "🍎"] },
+        { en: "However, contrary to the trend of the past several decades, in many new situations that are occurring today, allowing for imprecision—for messiness—may be a positive feature, not a shortcoming.", ko: "하지만 지난 수십 년의 추세와는 반대로, 오늘날 발생하는 많은 새로운 상황에서는, 부정확함을, 즉 무질서함을 허용하는 것이 단점이 아니라 긍정적인 특징일지도 모릅니다.", voca: ["However:하지만", "contrary to:~와 반대로", "trend:추세", "past several decades:지난 수십 년", "occurring:발생하는", "allowing for:~을 허용하다", "imprecision:부정확함", "messiness:무질서함/지저분함", "positive feature:긍정적인 특징", "shortcoming:단점/결함"] },
+        { en: "As a tradeoff for relaxing the standards of allowable errors, one can get a hold of much more data.", ko: "허용 가능한 오류의 기준을 완화하는 것에 대한 대가로, 더 많은 데이터를 얻을 수 있습니다.", voca: ["tradeoff:대가/상쇄", "relaxing:완화하는 것", "standards:기준", "allowable errors:허용 가능한 오류들", "get a hold of:~을 얻다", "much more data:훨씬 더 많은 데이터", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "It isn’t just that “more is better than some,” but that, in fact, sometimes “more is greater than better.”", ko: "‘일부보다는 많은 것이 더 낫다’는 것뿐만 아니라, 사실 때로는 ‘많은 것이 더 나은 것보다 더 위대하다’는 것입니다.", voca: ["isn't just that:~일 뿐만이 아니다", "better than some:일부보다 더 나은", "in fact:사실", "sometimes:때로는", "greater than better:더 나은 것보다 위대한/큰", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,80 +84,77 @@
             header.innerText = "English Master #39";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Power of<br>Team Roots</h1><p>2023년 11월 고1 모의고사 39번</p></div>
+                <div class="main-title-card"><h1>The Value of Messiness:<br>Beyond Perfection</h1><p>2023년 11월 고2 39번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 전성기:</b> 1940~2000년 사이 쿠바는 올림픽과 월드컵을 휩쓸며 세계 야구를 지배했음.</p>
-                    <p>• <b>📍 상징성:</b> 쿠바 팀의 상징은 머리부터 발끝까지 강렬한 빨간색 유니폼이었으며, 이는 경기 전부터 상대 팀에게 엄청난 위압감을 주었음.</p>
-                    <p>• <b>📍 변화와 하락:</b> 유행에 맞춰 유니폼 스타일을 현대적으로 바꾼 이후, 공교롭게도 쿠바 야구의 위상은 급격히 떨어짐.</p>
-                    <p>• <b>📍 교훈:</b> 시대에 발맞추는 것도 좋지만, 팀의 정체성인 '뿌리(Roots)'와 '전통'을 버리는 것은 부정적인 결과를 초래할 수 있음.</p>
+                    <p>• <b>📍 서론:</b> 19세기 프랑스에서 시작된 표준 측정 단위 체계는 과학·경제 발전에 기여했으나, 1920년대 양자 역학의 등장으로 완벽한 측정의 꿈이 파괴됨.</p>
+                    <p>• <b>📍 본론:</b> 그럼에도 과학자와 엔지니어들은 완벽하게 측정하려는 강박을 유지했고, 수학·통계의 영향으로 비즈니스 분야에서도 정밀함을 강조하는 추세가 지속됨.</p>
+                    <p>• <b>📍 결론:</b> 하지만 오늘날 데이터 시대에는 부정확함과 무질서함(messiness)을 허용하는 것이 단점이 아닌 긍정적 특징이 됨. 기준을 낮추면 데이터 총량이 압도적으로 늘어나기 때문이며, 때로는 '더 나은 것(정밀한 것)'보다 '더 많은 양'이 위대한 가치를 만듦.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 팀의 전통과 정체성 유지의 중요성: 쿠바 야구 유니폼 사례</span>
-                    <span class="topic-eng">Topic: The importance of maintaining team traditions and identity: The case of Cuba's baseball uniforms</span>
+                    <span class="topic-kor">주제: 데이터 시대의 새로운 패러다임 - 정밀한 측정보다 데이터의 양을 중시하는 측정의 변화</span>
+                    <span class="topic-eng">Topic: The new paradigm in the data era - A shift in measurement prioritizing data volume over precision</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

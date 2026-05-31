@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #29 - 23년 11월 고1 모의고사</title>
+    <title>English Master #29 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,13 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["are", "large", "that", "serve", "as", "a", "that", "use", "to", "the", "in", "most", "bind", "to", "as", "we", "consume", "they", "also", "found", "in", "the", "between", "joints", "and", "all", "according", "these", "can", "between", "and", "cause", "and", "is", "just", "one", "result", "of", "an", "upset", "is", "another", "common", "of", "lists", "wide", "range", "of", "other", "including", "that", "been", "in", "his", "once", "from", "their", "writes", "that", "hypothesis", "that", "involved", "is", "also", "gaining", "with", "animal", "showing", "that", "once", "may", "be", "damaging", "travelling", "where", "appear", "dopaminergic"];
+
     const fullData = [
-        { en: "Some countries have proposed tougher guidelines for determining brain death when organ transplantation is under consideration.", ko: "일부 국가들은 장기 이식이 고려될 때 뇌사를 결정하기 위한 더 엄격한 가이드라인을 제안해 왔습니다.", voca: ["proposed:제안했다", "tougher:더 엄격한", "guidelines:가이드라인", "determining:결정하는", "brain death:뇌사", "transplantation:이식", "consideration:고려", "🍎", "🍎", "🍎"] },
-        { en: "Legal requirements specify that a whole team of doctors must agree over the diagnosis of death for a potential donor.", ko: "법적 요구 사항들은 잠재적 기증자의 사망 진단에 대해 의사 팀 전체가 합의해야 함을 명시합니다.", voca: ["Legal:법적인", "requirements:요구 사항", "specify:명시하다", "diagnosis:진단", "potential:잠재적인", "donor:기증자", "must agree:합의해야 한다", "🍎", "🍎", "🍎"] },
-        { en: "The reason for these strict regulations is to ease public fears of a premature diagnosis for obtaining organs.", ko: "이러한 엄격한 규정의 이유는 장기 적출을 위한 조기 사망 진단에 대한 대중의 두려움을 완화하기 위함입니다.", voca: ["strict:엄격한", "regulations:규정", "ease:완화하다", "public fears:대중의 두려움", "premature:조급한/조기의", "obtaining:얻는 것", "organs:장기", "🍎", "🍎", "🍎"] },
-        { en: "But it is questionable whether these requirements reduce public suspicions as much as they create them.", ko: "하지만 이러한 요구 사항들이 의심을 만들어내는 것만큼이나 대중의 의심을 줄여주는지는 의문입니다.", voca: ["questionable:의문이 드는", "whether:~인지 아닌지", "reduce:줄이다", "suspicions:의심", "create:만들어내다", "as much as:~만큼", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "They certainly maintain mistaken beliefs that diagnosing brain death is an unreliable process lacking precision.", ko: "그것들은 뇌사 진단이 정밀함이 부족하고 신뢰할 수 없는 과정이라는 잘못된 믿음을 확실히 유지시킵니다.", voca: ["maintain:유지시키다", "mistaken beliefs:잘못된 믿음", "diagnosing:진단하는 것", "unreliable:신뢰할 수 없는", "lacking:부족한", "precision:정밀함", "certainly:확실히", "🍎", "🍎", "🍎"] },
-        { en: "Criteria for diagnosing the deaths of organ donors should be exactly the same as for everyone else.", ko: "장기 기증자의 사망을 진단하는 기준은 다른 모든 사람들과 정확히 같아야 합니다.", voca: ["Criteria:기준", "diagnosing:진단하는 것", "organ donors:장기 기증자", "exactly:정확히", "the same as:~와 같은", "everyone else:다른 모든 사람", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "Lectins are large proteins that serve as a crucial weapon that plants use to defend themselves.", ko: "렉틴은 식물이 자신을 방어하기 위해 사용하는 결정적인 무기의 역할을 하는 대형 단백질입니다.", voca: ["Lectins:렉틴", "proteins:단백질", "serve as:~의 역할을 하다", "crucial weapon:결정적인 무기", "plants:식물", "defend:방어하다/지키다", "themselves:자신들", "🍎", "🍎", "🍎"] },
+        { en: "The lectins in most plants bind to carbohydrates as we consume the plant.", ko: "대부분의 식물에 들어 있는 렉틴은 우리가 식물을 섭취할 때 탄수화물과 결합합니다.", voca: ["most plants:대부분의 식물", "bind to:~와 결합하다", "carbohydrates:탄수화물", "consume:섭취하다/소비하다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "They also bind to sugar molecules found in the gut, in the brain, between nerve endings, in joints and in all bodily fluids.", ko: "그것들은 또한 장, 뇌, 신경 말단 사이, 관절, 그리고 모든 체액에서 발견되는 당 분자와 결합합니다.", voca: ["sugar molecules:당 분자", "found:발견되는", "gut:장(창자)", "brain:뇌", "nerve endings:신경 말단", "joints:관절", "bodily fluids:체액", "🍎", "🍎", "🍎"] },
+        { en: "According to Dr. Steven Gundry, these sticky proteins can interrupt messaging between cells and cause toxic and inflammatory reactions.", ko: "Steven Gundry 박사에 따르면, 이 끈적끈적한 단백질은 세포 간의 메시지 전달을 방해하고 독성과 염증 반응을 일으킬 수 있습니다.", voca: ["According to:~에 따르면", "sticky:끈적끈적한", "interrupt:방해하다/중단시키다", "messaging:메시지 전달", "between cells:세포 간의", "cause:일으키다/원인", "toxic:독성의", "inflammatory:염증의/염증성을 유발하는", "reactions:반응", "🍎"] },
+        { en: "Brain fog is just one result of lectins interrupting communication between nerves.", ko: "브레인 포그(뇌 안개)는 렉틴이 신경 간의 통신을 방해하는 한 가지 결과일 뿐입니다.", voca: ["Brain fog:브레인 포그(인지 탁함)", "result:결과", "interrupting:방해하는 것", "communication:통신/소통", "between nerves:신경 간의", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "An upset stomach is another common symptom of lectin overload.", ko: "위장 장애는 렉틴 과부하의 또 다른 흔한 증상입니다.", voca: ["upset stomach:위장 장애/속탈", "another:또 다른", "common symptom:흔한 증상", "lectin overload:렉틴 과부하", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Dr. Gundry lists a wide range of other health problems including aching joints, dementia, headaches and infertility that have been resolved in his patients once they eliminated lectins from their diets.", ko: "Gundry 박사는 환자들이 식단에서 렉틴을 제거하자 해결되었던 통증이 있는 관절, 치매, 두통, 불임을 포함한 광범위한 다른 건강 문제들을 열거합니다.", voca: ["lists:열거하다/목록", "wide range of:광범위한/다양한", "health problems:건강 문제", "including:~을 포함하여", "aching joints:통증이 있는 관절", "dementia:치매", "headaches:두통", "infertility:불임", "resolved:해결된", "eliminated:제거했다"] },
+        { en: "Dr. Paul Saladino writes that the hypothesis that lectins are involved in Parkinson’s disease is also gaining support, with animal studies showing that ‘lectins, once eaten, may be damaging the gut and travelling to the brain, where they appear to be toxic to dopaminergic neurons’.", ko: "Paul Saladino 박사는 렉틴이 파라슨병에 관여한다는 가설도 지지를 얻고 있다고 쓰면서, ‘렉틴은 일단 섭취되면 장에 손상을 입히고 뇌로 이동하여 도파민 작동성 뉴런에 독성을 나타내는 것으로 보인다’는 동물 연구를 보여줍니다.", voca: ["hypothesis:가설", "involved in:~에 관여하는/연루된", "Parkinson’s disease:파킨슨병", "gaining support:지지를 얻고 있는", "animal studies:동물 연구", "once eaten:일단 섭취되면", "damaging:손상을 입히는", "travelling to:~로 이동하는", "neurons:뉴런(신경세포)", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,80 +85,77 @@
             header.innerText = "English Master #29";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Dilemma of<br>Brain Death Criteria</h1><p>2023년 11월 고1 모의고사 29번</p></div>
+                <div class="main-title-card"><h1>Lectins: The Hidden<br>Plant Weapons</h1><p>2023년 11월 고2 29번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 배경:</b> 장기 기증 예정자의 뇌사 판정 시, 일부 국가는 의사 여러 명의 합의를 요구하는 등 더 엄격한 기준을 적용함.</p>
-                    <p>• <b>📍 목적:</b> 이는 장기 확보를 위해 성급하게 사망 판정을 내릴지 모른다는 대중의 공포를 달래기 위함임.</p>
-                    <p>• <b>📍 문제점:</b> 그러나 역설적으로 이런 과도한 절차는 '뇌사 진단이 원래 불확실한 것인가?'라는 의구심과 잘못된 믿음을 강화할 수 있음.</p>
-                    <p>• <b>📍 결론:</b> 일관성을 위해 기증자든 아니든 모든 죽음의 진단 기준은 동일하게 적용되어야 함.</p>
+                    <p>• <b>📍 서론:</b> 렉틴은 식물이 포식자로부터 자신을 방어하기 위해 사용하는 결정적인 무기(crucial weapon) 역할을 하는 대형 단백질임.</p>
+                    <p>• <b>📍 본론:</b> 우리가 식물을 섭취할 때 체내 당 분자(장, 뇌, 관절 등)와 결합하는 이 끈적끈적한 단백질은 세포 간 신호 전달을 방해하여 브레인 포그, 위장 장애, 관절통, 불임 등 광범위한 염증 및 독성 반응을 유발함.</p>
+                    <p>• <b>📍 결론:</b> 최신 의학 가설에 따르면 렉틴이 파킨슨병(Parkinson’s disease)과도 관련이 있다는 지지가 나타남. 동물 실험 결과 섭취된 렉틴이 장을 망가뜨리고 뇌로 이동해 도파민 신경세포에 치명적인 독성을 보인다는 사실이 밝혀짐.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 장기 기증 상황에서 뇌사 판정 기준의 일관성 유지 필요성</span>
-                    <span class="topic-eng">Topic: The necessity of maintaining consistency in brain death criteria for organ donors</span>
+                    <span class="topic-kor">주제: 식물의 방어 무기인 렉틴 단백질이 인체에 미치는 유해한 영향과 질병 유발 가능성</span>
+                    <span class="topic-eng">Topic: The harmful effects of lectin proteins, a plant defense weapon, on the human body and their potential to cause diseases</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’‘]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’‘]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

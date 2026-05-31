@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #38 - 23년 11월 고1 모의고사</title>
+    <title>English Master #38 - 23년 11월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["do", "have", "to", "overcome", "the", "that", "are", "more", "effective", "although", "the", "into", "almost", "equal", "parts", "between", "more", "than", "of", "and", "are", "in", "a", "study", "done", "in", "of", "senior", "corporate", "viewed", "as", "a", "barrier", "to", "we", "must", "reexamine", "this", "however", "as", "it", "doesn’t", "always", "hold", "found", "that", "a", "desire", "to", "be", "of", "service", "to", "others", "and", "to", "empower", "them", "to", "grow", "which", "is", "more", "common", "among", "than", "is", "a", "key", "factor", "in", "becoming", "a", "and", "retaining", "so-called", "dating", "back", "to", "ancient", "adheres", "to", "the", "belief", "that", "a", "company’s", "are", "best", "achieved", "by", "helping", "or", "achieve", "their", "such", "do", "not", "seek", "but", "rather", "want", "to", "shine", "a", "light", "on", "others’", "and", "requires", "but", "that", "ultimately", "pays", "off"];
+
     const fullData = [
-        { en: "The decline in the diversity of our food is an entirely human-made process.", ko: "우리 식량 다양성의 감소는 전적으로 인간에 의해 만들어진 과정입니다.", voca: ["decline:감소", "diversity:다양성", "food:식량/음식", "entirely:전적으로", "human-made:인간이 만든", "process:과정", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The biggest loss of crop diversity came in the decades that followed the Second World War.", ko: "작물 다양성의 가장 큰 손실은 제2차 세계대전 이후 수십 년 동안 발생했습니다.", voca: ["biggest loss:가장 큰 손실", "crop diversity:작물 다양성", "decades:수십 년", "followed:~이후의/뒤따르는", "Second World War:제2차 세계대전", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Scientists found ways to produce grains such as rice and wheat on an enormous scale.", ko: "과학자들은 쌀과 밀 같은 곡물을 거대한 규모로 생산하는 방법들을 찾아냈습니다.", voca: ["produce:생산하다", "grains:곡물", "rice:쌀", "wheat:밀", "enormous scale:거대한 규모", "found ways:방법을 찾았다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Thousands of traditional varieties were replaced by a small number of new super-productive ones.", ko: "수천 가지의 전통적인 품종들이 소수의 새로운 초고생산성 품종들로 대체되었습니다.", voca: ["traditional:전통적인", "varieties:품종들", "replaced:대체된", "small number:소수", "super-productive:초고생산성의", "thousands of:수천의", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Because of it, grain production tripled, and the human population more than doubled.", ko: "그것 덕분에 곡물 생산량은 세 배가 되었고, 인구는 두 배 이상으로 늘어났습니다.", voca: ["tripled:세 배가 된", "doubled:두 배가 된", "human population:인구", "Because of:~때문에", "production:생산량", "more than:~이상", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The danger of creating more uniform crops is that they are more at risk during disasters.", ko: "더 획일적인 작물을 만드는 것의 위험은 재난 시에 그것들이 더 큰 위험에 처한다는 점입니다.", voca: ["danger:위험", "uniform:획일적인/균일한", "crops:작물들", "at risk:위험에 처한", "disasters:재난", "creating:만드는 것", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "A global food system depending on narrow selection has a greater chance of not surviving diseases and pests.", ko: "좁은 선택 범위에 의존하는 세계 식량 시스템은 질병과 해충으로부터 살아남지 못할 가능성이 더 큽니다.", voca: ["global food system:세계 식량 시스템", "depending on:~에 의존하는", "narrow selection:좁은 선택 범위", "greater chance:더 큰 가능성", "surviving:살아남는 것", "diseases:질병", "pests:해충", "climate extremes:기후 위기", "🍎", "🍎"] }
+        { en: "Introverted leaders do have to overcome the strong cultural presumption that extroverts are more effective leaders.", ko: "내향적인 리더들은 외향적인 사람들이 더 유능한 리더라는 강한 문화적 추정을 극복해야 합니다.", voca: ["Introverted leaders:내향적인 리더들", "overcome:극복하다", "cultural presumption:문화적 추정/가정", "extroverts:외향적인 사람들", "effective:유능한/효과적인", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Although the population splits into almost equal parts between introverts and extroverts, more than 96 percent of managers and executives are extroverted.", ko: "인구는 내향적인 사람과 외향적인 사람으로 거의 같은 부분으로 나뉘지만, 관리자와 경영진의 96퍼센트 이상이 외향적입니다.", voca: ["population:인구", "splits into:~로 나뉘다", "almost equal parts:거의 같은 부분들", "managers:관리자들", "executives:경영진들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In a study done in 2006, 65 percent of senior corporate executives viewed introversion as a barrier to leadership.", ko: "2006년에 행해진 한 연구에서, 고위 기업 경영진의 65퍼센트는 내향성을 리더십에 대한 장벽으로 보았습니다.", voca: ["study done in 2006:2006년에 행해진 연구", "senior corporate executives:고위 기업 경영진", "viewed A as B:A를 B로 보다", "introversion:내향성", "barrier to leadership:리더십에 대한 장벽", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "We must reexamine this stereotype, however, as it doesn’t always hold true.", ko: "하지만, 우리는 이 고정관념이 항상 사실인 것은 아니기에 그것을 재검토해야 합니다.", voca: ["reexamine:재검토하다", "stereotype:고정관념", "however:하지만", "doesn't always hold true:항상 사실인 것은 아니다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Regent University found that a desire to be of service to others and to empower them to grow, which is more common among introverts than extroverts, is a key factor in becoming a leader and retaining leadership.", ko: "Regent 대학교는 타인에게 봉사하고 그들이 성장하도록 힘을 실어주려는 욕구가, 외향적인 사람보다 내향적인 사람에게 더 흔하며, 이것이 리더가 되고 리더십을 유지하는 데 핵심 요소라는 것을 발견했습니다.", voca: ["desire:욕구", "be of service to:~에게 봉사하다", "empower:힘을 실어주다/권한을 주다", "grow:성장하다", "common among:~에게 흔한", "key factor:핵심 요소", "becoming a leader:리더가 되는 것", "retaining leadership:리더십을 유지하는 것", "🍎", "🍎"] },
+        { en: "So-called servant leadership, dating back to ancient philosophical literature, adheres to the belief that a company’s goals are best achieved by helping workers or customers achieve their goals.", ko: "고대 철학 문헌으로 거슬러 올라가는 이른바 ‘서번트 리더십’은 회사의 목표가 직원이나 고객이 그들의 목표를 달성하도록 도움으로써 가장 잘 달성된다는 신념을 고수합니다.", voca: ["So-called:이른바", "servant leadership:서번트 리더십(섬기는 리더십)", "dating back to:~로 거슬러 올라가는", "ancient philosophical literature:고대 철학 문헌", "adheres to:고수하다", "belief:신념", "company's goals:회사의 목표", "best achieved:가장 잘 달성되는", "helping:도움으로써", "achieve:달성하다"] },
+        { en: "Such leaders do not seek attention but rather want to shine a light on others’ wins and achievements; servant leadership requires humility, but that humility ultimately pays off.", ko: "그러한 리더들은 주목받기를 추구하지 않고 오히려 다른 사람들의 승리와 성취를 조명하기를 원합니다. 서번트 리더십은 겸손함을 요구하지만, 그 겸손함은 궁극적으로 성과를 냅니다.", voca: ["seek attention:주목받기를 추구하다", "shine a light on:~을 조명하다", "wins:승리/성공", "achievements:성취", "requires:요구하다", "humility:겸손함", "ultimately:궁극적으로", "pays off:성과를 내다/보답하다", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +84,77 @@
             header.innerText = "English Master #38";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Danger of<br>Uniform Crops</h1><p>2023년 11월 고1 모의고사 38번</p></div>
+                <div class="main-title-card"><h1>The Power of<br>Introverted Leadership</h1><p>2023년 11월 고2 38번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 역사적 배경:</b> 2차 대전 이후 기아 문제를 해결하기 위해 쌀과 밀의 대량 생산 기술이 발달함.</p>
-                    <p>• <b>📍 성과:</b> 수천 종의 전통 품종 대신 소수의 초고수익 품종을 재배하며 곡물 생산량이 3배 늘었고 인구도 2배 이상 부양함.</p>
-                    <p>• <b>📍 위험성:</b> 하지만 작물의 획일화(uniformity)는 재난에 취약함. 특정 병충해나 기후 위기가 닥치면 대체할 수 있는 품종이 없어 식량 시스템 전체가 붕괴할 수 있음.</p>
+                    <p>• <b>📍 서론:</b> 외향적인 사람이 더 유능한 리더라는 강력한 사회적 고정관념이 존재하며, 실제로 고위직의 96% 이상이 외향형임.</p>
+                    <p>• <b>📍 본론:</b> 하지만 이 고정관념은 사실이 아님. 타인을 섬기고(be of service) 성장을 돕는 '서번트 리더십(servant leadership)'이 리더십 유지의 핵심인데, 이 성향은 내향적인 사람들에게 더 흔함.</p>
+                    <p>• <b>📍 결론:</b> 진정한 리더는 주목받기보다 타인의 성취를 조명(shine a light)하며, 이러한 겸손함은 결국 조직의 목표를 더 효과적으로 달성하게 하여 리더에게도 보답(pays off)으로 돌아옴.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 식량 대량 생산을 위한 작물 획일화가 가져온 식량 안보의 취약성</span>
-                    <span class="topic-eng">Topic: The vulnerability of food security caused by crop uniformity for mass production</span>
+                    <span class="topic-kor">주제: 서번트 리더십을 바탕으로 본 내향적 리더들의 겸손함과 리더십 효과성</span>
+                    <span class="topic-eng">Topic: The humility and leadership effectiveness of introverted leaders based on servant leadership</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>
