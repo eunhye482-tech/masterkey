@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #33 - 23년 9월 고1 모의고사</title>
+    <title>English Master #33 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,15 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["as", "always", "with", "and", "their", "have", "been", "engaged", "in", "a", "for", "it’s", "that", "in", "arose", "specifically", "in", "response", "to", "the", "of", "being", "by", "not", "all", "can", "over", "have", "at", "ever", "and", "as", "they", "have", "of", "have", "risen", "too", "some", "have", "also", "on", "their", "and", "a", "on", "their", "both", "act", "as", "by", "in", "the", "by", "thereby", "those", "from", "the", "and", "other", "have", "made", "of", "that", "do", "something", "similar", "with"];
+
     const fullData = [
-        { en: "A key to engagement and achievement is providing students with relevant texts they will be interested in.", ko: "참여와 성취의 핵심은 학생들에게 그들이 흥미를 느낄 관련 있는 텍스트를 제공하는 것입니다.", voca: ["engagement:참여", "achievement:성취", "relevant:관련 있는", "texts:글/텍스트", "interested in:~에 흥미가 있는", "providing:제공하는 것", "students:학생들", "key:핵심", "🍎", "🍎"] },
-        { en: "She interviewed twelve adults who were highly successful, including a physicist and a CEO.", ko: "그녀는 물리학자와 CEO를 포함하여 매우 성공한 성인 12명을 인터뷰했습니다.", voca: ["interviewed:인터뷰했다", "highly successful:매우 성공한", "including:~을 포함하여", "physicist:물리학자", "CEO:최고 경영자", "adults:성인들", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "All of them had dyslexia and had had significant problems with reading throughout their school years.", ko: "그들 모두는 난독증이 있었고 학창 시절 내내 읽기에 상당한 문제를 겪었습니다.", voca: ["dyslexia:난독증", "significant:상당한", "reading:읽기", "throughout:~ 내내", "school years:학창 시절", "problems:문제들", "All of them:그들 모두", "🍎", "🍎", "🍎"] },
-        { en: "To my surprise, I found that these dyslexics were enthusiastic readers; they rarely avoided reading.", ko: "놀랍게도, 저는 이 난독증이 있는 사람들이 열성적인 독자라는 것을 발견했습니다. 그들은 좀처럼 읽기를 피하지 않았습니다.", voca: ["To my surprise:놀랍게도", "dyslexics:난독증이 있는 사람들", "enthusiastic:열성적인", "rarely:좀처럼 ~않는", "avoided:피했다", "found:발견했다", "readers:독자들", "🍎", "🍎", "🍎"] },
-        { en: "The pattern Fink discovered was that all of her subjects had been passionate in some personal interest.", ko: "Fink가 발견한 패턴은 그녀의 모든 피험자들이 어떤 개인적인 관심사에 열정적이었다는 것이었습니다.", voca: ["pattern:패턴/양상", "discovered:발견한", "subjects:피험자들", "passionate:열정적인", "personal interest:개인적 관심사", "all of:~의 모두", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The areas of interest included religion, math, business, science, history, and biography.", ko: "관심 분야에는 종교, 수학, 경영, 과학, 역사, 그리고 전기가 포함되었습니다.", voca: ["areas:분야들", "included:포함했다", "religion:종교", "math:수학", "business:경영", "science:과학", "history:역사", "biography:전기", "🍎", "🍎"] },
-        { en: "What mattered was that they read voraciously to find out more.", ko: "중요한 것은 그들이 더 많은 것을 알아내기 위해 탐욕스럽게(많이) 읽었다는 것이었습니다.", voca: ["mattered:중요했다", "voraciously:탐욕스럽게/열심히", "find out:알아내다", "more:더 많은 것", "What:~한 것", "read:읽었다", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "As always happens with natural selection, bats and their prey have been engaged in a life-or-death sensory arms race for millions of years.", ko: "자연 선택에서 항상 일어나는 일이듯이, 박쥐와 그들의 먹이는 수백만 년 동안 생사의 감각 군비 경쟁에 참여해 왔습니다.", voca: ["natural selection:자연 선택", "prey:먹이", "engaged in:~에 참여한/종사한", "life-or-death:생사의", "sensory:감각의", "arms race:군비 경쟁", "millions of:수백만 의", "🍎", "🍎", "🍎"] },
+        { en: "It’s believed that hearing in moths arose specifically in response to the threat of being eaten by bats. (Not all insects can hear.)", ko: "나방의 청각은 특히 박쥐에게 잡아먹히는 위협에 대응하여 생겨났다고 여겨집니다. (모든 곤충이 들을 수 있는 것은 아닙니다.)", voca: ["believed:여겨지는", "hearing:청각", "moths:나방", "arose:생겨났다/발생했다", "specifically:특히", "in response to:~에 대응하여", "threat:위협", "insects:곤충", "🍎", "🍎"] },
+        { en: "Over millions of years, moths have evolved the ability to detect sounds at ever higher frequencies, and, as they have, the frequencies of bats’ vocalizations have risen, too.", ko: "수백만 년 동안 나방은 점점 더 높은 주파수의 소리를 감지하는 능력을 진화시켰고, 그들이 그렇게 함에 따라 박쥐의 발성 주파수도 높아졌습니다.", voca: ["evolved:진화시켰다", "ability:능력", "detect:감지하다/찾아내다", "higher frequencies:더 높은 주파수", "vocalizations:발성", "risen:높아진/오른", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Some moth species have also evolved scales on their wings and a fur-like coat on their bodies; both act as “acoustic camouflage,” by absorbing sound waves in the frequencies emitted by bats, thereby preventing those sound waves from bouncing back.", ko: "일부 나방 종은 날개에 비늘을, 몸에는 모피와 같은 코트를 진화시키기도 했는데, 둘 다 박쥐가 방출하는 주파수의 음파를 흡수함으로써 '음향 위장'의 역할을 하여, 그 음파가 되돌아가는 것을 방지합니다.", voca: ["species:종(단복수 동형)", "scales:비늘", "fur-like coat:모피 같은 코트", "act as:~의 역할을 하다", "acoustic camouflage:음향 위장", "absorbing:흡수하는 것", "emitted:방출된", "thereby:그렇게 함으로써", "prevent A from B-ing:A가 B하는 것을 방지하다", "bouncing back:되돌아가는 것/반사되는 것"] },
+        { en: "The B-2 bomber and other “stealth” aircraft have fuselages made of materials that do something similar with radar beams.", ko: "B-2 폭격기와 다른 '스텔스' 항공기는 레이더 전파에 대해 유사한 동체를 가진 재료로 만들어진 동체를 가지고 있습니다.", voca: ["bomber:폭격기", "stealth:스텔스/은밀함", "aircraft:항공기", "fuselages:동체(비행기 몸체)", "materials:재료", "similar:유사한", "radar beams:레이더 전파/광선", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +82,77 @@
             header.innerText = "English Master #33";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Passion Overcomes<br>Dyslexia</h1><p>2023년 9월 고1 모의고사 33번</p></div>
+                <div class="main-title-card"><h1>The Sensory<br>Arms Race</h1><p>2023년 9월 고2 33번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 학생들의 학습 참여와 성취를 높이는 가장 중요한 열쇠는 그들이 흥미를 가질 만한 글을 제공하는 것임.</p>
-                    <p>• <b>📍 본론:</b> Rosalie Fink의 연구에 따르면, 난독증을 극복하고 성공한 사람들은 읽기를 피하기는커녕 오히려 책을 찾아 읽는 열성적인 독자들이었음.</p>
-                    <p>• <b>📍 결론:</b> 이들의 공통점은 특정 분야(수학, 경영, 과학 등)에 대한 깊은 개인적 열정이었으며, 더 알고 싶은 갈망이 난독증이라는 장벽을 뛰어넘어 엄청난 양의 독서를 가능하게 함.</p>
+                    <p>• <b>📍 서론:</b> 자연 선택에 따라 박쥐와 그 먹이(나방)는 수백만 년 동안 생사의 감각 군비 경쟁(arms race)을 벌여옴.</p>
+                    <p>• <b>📍 본론:</b> 나방은 포식 위험에 대응하여 고주파 감지 능력을 진화시켰고, 이에 맞춰 박쥐의 발성 주파수도 함께 높아짐. 또한 나방은 날개의 비늘과 몸의 털로 박쥐의 음파를 흡수하는 '음향 위장(acoustic camouflage)'을 발달시킴.</p>
+                    <p>• <b>📍 결론:</b> 이 음향 위장은 음파가 되돌아가는 것을 막아(prevent from bouncing back) 박쥐를 교란하며, 이는 현대의 B-2 스텔스 전투기가 레이더 전파를 흡수하는 원리와 완벽히 유사함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 난독증을 극복하고 성공하게 만든 개인적 관심사와 열정적인 독서의 힘</span>
-                    <span class="topic-eng">Topic: The power of personal interest and enthusiastic reading in overcoming dyslexia and achieving success</span>
+                    <span class="topic-kor">주제: 포식자 박쥐와 피식자 나방 사이의 진화론적 감각 군비 경쟁과 음향 위장</span>
+                    <span class="topic-eng">Topic: Evolutionary sensory arms race and acoustic camouflage between predator bats and prey moths</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

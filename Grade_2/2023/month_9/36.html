@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #36 - 23년 9월 고1 모의고사</title>
+    <title>English Master #36 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["if", "you", "down", "a", "will", "find", "right", "next", "to", "one", "for", "in", "most", "has", "and", "more", "all", "the", "time", "these", "is", "as", "up", "price", "of", "without", "any", "this", "doesn’t", "for", "why", "where", "sell", "enables", "to", "their", "about", "new", "yes", "but", "also", "help", "make", "from", "and", "we", "get", "that’s", "pretty", "close", "our", "vision", "no", "other", "delivers", "that"];
+
     const fullData = [
-        { en: "How do you “build” the Earth? That’s simple: one atom at a time.", ko: "지구를 어떻게 '만듭니까'? 그것은 간단합니다: 한 번에 원자 하나씩입니다.", voca: ["build:만들다/건설하다", "atom:원자", "at a time:한 번에", "simple:간단한", "Earth:지구", "How:어떻게", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Atoms are the basic building blocks of crystals, and since all rocks are made up of crystals, the more you know about atoms, the better.", ko: "원자는 결정의 기본 구성 요소이며, 모든 암석은 결정으로 이루어져 있기 때문에, 원자에 대해 더 많이 알수록 더 좋습니다.", voca: ["basic:기본적인", "building blocks:구성 요소", "crystals:결정/수정", "made up of:~로 이루어진", "the more:더 많이 ~할수록", "better:더 좋은", "rocks:암석", "since:~이기 때문에", "🍎", "🍎"] },
-        { en: "Crystals come in a variety of shapes that scientists call habits.", ko: "결정은 과학자들이 '습성'이라고 부르는 다양한 모양으로 나타납니다.", voca: ["variety of:다양한", "shapes:모양", "scientists:과학자들이", "call:부르다", "habits:습성", "come in:나타나다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Common crystal habits include squares, triangles, and six-sided hexagons.", ko: "일반적인 결정 습성에는 사각형, 삼각형, 그리고 육면의 육각형이 포함됩니다.", voca: ["Common:일반적인", "include:포함하다", "squares:사각형", "triangles:삼각형", "six-sided:육면의", "hexagons:육각형", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Usually crystals form when liquids cool, such as when you create ice cubes.", ko: "보통 결정은 여러분이 얼음을 만들 때와 같이 액체가 식을 때 형성됩니다.", voca: ["Usually:보통", "form:형성되다", "liquids:액체", "cool:식다", "create:만들다", "ice cubes:얼음", "such as:~와 같은", "when:~할 때", "🍎", "🍎"] },
-        { en: "Many times, crystals form in ways that do not allow for perfect shapes.", ko: "많은 경우, 결정은 완벽한 모양을 허용하지 않는 방식으로 형성됩니다.", voca: ["Many times:여러 번/자주", "allow for:~을 허용하다", "perfect shapes:완벽한 모양", "ways:방식들", "form:형성되다", "do not:~하지 않다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "If conditions are too cold, too hot, or there isn’t enough source material, they can form strange, twisted shapes.", ko: "만약 조건이 너무 차갑거나, 너무 뜨겁거나, 혹은 원료가 충분하지 않다면, 그것들은 이상하고 뒤틀린 모양을 형성할 수 있습니다.", voca: ["conditions:조건", "enough:충분한", "source material:원료", "strange:이상한", "twisted:뒤틀린", "shapes:모양", "too:~도 또한/너무", "🍎", "🍎", "🍎"] },
-        { en: "Usually, a slow, steady environment allows atoms plenty of time to join perfectly into the crystal lattice.", ko: "보통, 느리고 안정적인 환경은 원자들이 결정 격자라고 알려진 곳에 완벽하게 결합할 충분한 시간을 줍니다.", voca: ["slow:느린", "steady:안정적인", "environment:환경", "plenty of:충분한", "join:결합하다", "perfectly:완벽하게", "crystal lattice:결정 격자", "allows:허용하다", "🍎", "🍎"] }
+        { en: "If you drive down a busy street, you will find many competing businesses, often right next to one another.", ko: "번화한 거리를 운전하다 보면, 종종 서로 바로 옆에서 경쟁하는 많은 업체들을 발견할 것입니다.", voca: ["busy street:번화한 거리", "competing:경쟁하는", "businesses:업체들/사업", "often:종종", "right next to:~ 바로 옆에", "one another:서로", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "For example, in most places a consumer in search of a quick meal has many choices, and more fast-food restaurants appear all the time.", ko: "예를 들어, 대부분의 장소에서 빠른 식사를 찾는 소비자는 많은 선택권을 가지며, 더 많은 패스트푸드 음식점들이 항상 나타납니다.", voca: ["For example:예를 들어", "consumer:소비자", "in search of:~을 찾는", "quick meal:빠른 식사", "choices:선택권/선택", "fast-food:패스트푸드", "appear:나타나다", "all the time:항상/언제나", "🍎", "🍎"] },
+        { en: "These competing firms advertise heavily.", ko: "이러한 경쟁 기업들은 대대적으로 광고를 합니다.", voca: ["firms:기업들/회사", "advertise:광고하다", "heavily:대대적으로/심하게", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The temptation is to see advertising as driving up the price of a product without any benefit to the consumer.", ko: "광고를 소비자에게 아무런 이득 없이 제품의 가격을 올리는 것으로 보려는 유혹이 생깁니다.", voca: ["temptation:유혹", "driving up:올리는 것", "price:가격", "product:제품", "without:~ 없이", "benefit:이득/혜택", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "However, this misconception doesn’t account for why firms advertise.", ko: "하지만, 이러한 오해는 기업들이 왜 광고를 하는지 설명해 주지 못합니다.", voca: ["However:하지만", "misconception:오해", "account for:~을 설명하다", "why:왜", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In markets where competitors sell slightly differentiated products, advertising enables firms to inform their customers about new products and services.", ko: "경쟁사들이 약간 차별화된 제품을 판매하는 시장에서, 광고는 기업들이 고객들에게 새로운 제품과 서비스를 알릴 수 있게 해 줍니다.", voca: ["competitors:경쟁사들", "slightly:약간", "differentiated:차별화된", "enables:가능하게 하다", "inform:알리다", "customers:고객들", "new products:신제품", "services:서비스", "🍎", "🍎"] },
+        { en: "Yes, costs rise, but consumers also gain information to help make purchasing decisions.", ko: "맞습니다, 비용은 상승하지만, 소비자들은 또한 구매 결정을 내리는 데 도움이 되는 정보를 얻습니다.", voca: ["costs:비용", "rise:상승하다", "gain:얻다", "information:정보", "purchasing decisions:구매 결정", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Consumers also benefit from added variety, and we all get a product that’s pretty close to our vision of a perfect good—and no other market structure delivers that outcome.", ko: "소비자들은 또한 추가된 다양성으로부터 이득을 얻고, 우리 모두는 완벽한 상품에 대한 우리의 상상에 꽤 가까운 제품을 얻게 되며, 다른 어떤 시장 구조도 그러한 결과를 내놓지 못합니다.", voca: ["benefit from:~로부터 이득을 얻다", "added variety:추가된 다양성", "pretty close:꽤 가까운", "vision:상상/전망", "perfect good:완벽한 상품", "market structure:시장 구조", "delivers:내놓다/배달하다", "outcome:결과", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +85,77 @@
             header.innerText = "English Master #36";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>How Earth and<br>Crystals are Built</h1><p>2023년 9월 고1 모의고사 36번</p></div>
+                <div class="main-title-card"><h1>The True Value<br>of Advertising</h1><p>2023년 9월 고2 36번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 지구는 원자라는 기본 단위가 하나씩 모여 만들어짐. 원자는 결정의 기본 요소이며, 암석은 결정으로 구성됨.</p>
-                    <p>• <b>📍 본론:</b> 결정은 액체가 식으면서 형성되며 사각형, 육각형 등 '습성(habit)'이라 불리는 다양한 모양을 가짐.</p>
-                    <p>• <b>📍 결론:</b> 온도가 너무 급격히 변하거나 원료가 부족하면 뒤틀린 모양이 되지만, 느리고 안정적인 환경에서는 원자들이 '결정 격자'에 완벽히 결합하여 아름다운 모양을 이룸.</p>
+                    <p>• <b>📍 서론:</b> 번화한 거리에서 수많은 패스트푸드점이 밀집해 경쟁하듯, 경쟁 기업들은 대대적으로 광고를 집행함.</p>
+                    <p>• <b>📍 본론:</b> 광고가 혜택 없이 제품 가격만 올린다는 통념(misconception)이 있으나, 이는 오해임. 광고는 제품 차별화 시장에서 소비자에게 신제품 정보를 제공(inform)하는 핵심 역할을 함.</p>
+                    <p>• <b>📍 결론:</b> 비록 비용은 상승하지만 소비자는 유용한 구매 정보를 얻고, 상품의 다양성 혜택을 누리며 독점이나 타 시장 구조가 주지 못하는 '이상적인 상품'을 구매할 수 있게 됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 암석의 기본 단위인 결정의 형성 원리와 환경 조건에 따른 모양의 변화</span>
-                    <span class="topic-eng">Topic: The formation principles of crystals and the variation of shapes according to environmental conditions</span>
+                    <span class="topic-kor">주제: 광고가 소비자에게 제공하는 정보적 가치와 상품 다양성의 긍정적 측면</span>
+                    <span class="topic-eng">Topic: The informational value of advertising for consumers and the positive aspects of product variety</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()—]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()—]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #34 - 23년 9월 고1 모의고사</title>
+    <title>English Master #34 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,16 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["much", "of", "is", "designed", "to", "out", "and", "the", "rest", "into", "a", "from", "our", "could", "create", "an", "especially", "given", "amount", "available", "in", "and", "out", "all", "it", "is", "find", "small", "that", "most", "relevant", "our", "needs", "organize", "usable", "stock", "some", "this", "helping", "focusing", "attention", "on", "are", "marked", "by", "steady", "only", "part", "around", "then", "fraction", "gets", "stored", "committed", "can", "be"];
+
     const fullData = [
-        { en: "For many people, ability refers to intellectual competence, so they want everything they do to reflect how smart they are.", ko: "많은 사람들에게 능력은 지적 능력을 의미하며, 그래서 그들은 자신이 하는 모든 일이 자신이 얼마나 똑똑한지를 반영하기를 원합니다.", voca: ["refers to:~을 의미하다", "intellectual:지적인", "competence:능력/역량", "reflect:반영하다", "everything:모든 것", "smart:똑똑한", "ability:능력", "people:사람들", "🍎", "🍎"] },
-        { en: "Examples include writing a brilliant legal brief, getting the highest grade, or saying something wise in a conversation.", ko: "훌륭한 법률 보고서를 쓰거나, 최고 성적을 받거나, 대화에서 현명한 말을 하는 것 등이 예시입니다.", voca: ["brilliant:훌륭한", "legal brief:법률 보고서", "highest grade:최고 성적", "wise:현명한", "conversation:대화", "including:~을 포함하여", "writing:쓰는 것", "getting:받는 것", "🍎", "🍎"] },
-        { en: "You could also define ability in terms of a particular skill or talent, such as how well one plays the piano or serves a tennis ball.", ko: "여러분은 또한 피아노를 얼마나 잘 치는지나 테니스 서브를 어떻게 넣는지와 같은 특정한 기술이나 재능의 관점에서 능력을 정의할 수도 있습니다.", voca: ["define:정의하다", "in terms of:~의 관점에서", "particular:특정한", "skill:기술", "talent:재능", "plays:연주하다", "serves:서브를 넣다", "well:잘", "🍎", "🍎"] },
-        { en: "Some people focus on their ability to be attractive, entertaining, or to have the newest gadgets.", ko: "어떤 사람들은 매력적이거나, 즐거움을 주거나, 최신 기기를 가지는 능력에 초점을 맞춥니다.", voca: ["focus on:~에 초점을 맞추다", "attractive:매력적인", "entertaining:즐거움을 주는", "newest gadgets:최신 기기", "ability:능력", "have:가지다", "Some:어떤 사람들", "🍎", "🍎", "🍎"] },
-        { en: "However ability may be defined, a problem occurs when it is the sole determinant of one’s self-worth.", ko: "능력이 어떻게 정의되든, 그것이 자아 존중감의 유일한 결정 요인이 될 때 문제가 발생합니다.", voca: ["However:어떻게 ~하더라도", "defined:정의된", "occurs:발생하다", "sole:유일한", "determinant:결정 요인", "self-worth:자아 존중감", "problem:문제", "when:~할 때", "🍎", "🍎"] },
-        { en: "The performance becomes the only measure of the person; nothing else is taken into account.", ko: "수행 결과가 그 사람의 유일한 척도가 되며, 그 외의 다른 것은 고려되지 않습니다.", voca: ["performance:수행 결과/공연", "measure:척도/측정", "taken into account:고려되는", "only:유일한", "nothing else:그 외 아무것도 ~않다", "person:사람", "becomes:~가 되다", "🍎", "🍎", "🍎"] },
-        { en: "An outstanding performance means an outstanding person; an average performance means an average person. Period.", ko: "뛰어난 수행 결과는 뛰어난 사람을 의미하고, 평균적인 수행 결과는 평균적인 사람을 의미합니다. 끝(이상입니다).", voca: ["outstanding:뛰어난", "means:의미하다", "average:평균적인", "Period:마침표/끝", "performance:수행 결과", "person:사람", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "Much of human thought is designed to screen out information and to sort the rest into a manageable condition.", ko: "인간 사고의 많은 부분은 정보를 걸러내고 나머지는 관리 가능한 상태로 분류하도록 설계되어 있습니다.", voca: ["human thought:인간 사고", "designed:설계된", "screen out:걸러내다", "information:정보", "sort:분류하다/종류", "manageable:관리 가능한", "condition:상태/조건", "🍎", "🍎", "🍎"] },
+        { en: "The inflow of data from our senses could create an overwhelming chaos, especially given the enormous amount of information available in culture and society.", ko: "감각으로부터 들어오는 데이터의 유입은 특히 문화와 사회에서 이용 가능한 엄청난 양의 정보를 고려할 때, 압도적인 혼란을 야기할 수 있습니다.", voca: ["inflow:유입", "senses:감각", "overwhelming:압도적인", "chaos:혼란/카오스", "especially:특히", "given:~을 고려할 때", "enormous:엄청난/거대한", "available:이용 가능한", "culture and society:문화와 사회", "🍎"] },
+        { en: "Out of all the sensory impressions and possible information, it is vital to find a small amount that is most relevant to our individual needs and to organize that into a usable stock of knowledge.", ko: "모든 감각적 인상과 가능한 정보 중에서, 우리의 개인적 필요에 가장 관련이 있는 소량을 찾아내어 그것을 유용한 지식 축적으로 조직하는 것이 필수적입니다.", voca: ["sensory impressions:감각적 인상", "possible:가능한", "vital:필수적인/매우 중요한", "relevant to:~와 관련이 있는", "individual needs:개인적 필요", "organize:조직하다/정리하다", "usable:유용한/사용 가능한", "stock of knowledge:지식 축적", "🍎", "🍎"] },
+        { en: "Expectancies accomplish some of this work, helping to screen out information that is irrelevant to what is expected, and focusing our attention on clear contradictions.", ko: "예상(예측 가능성)은 예상된 것과 무관한 정보를 걸러내는 데 도움을 주고, 명확한 모순에 우리의 주의를 집중시킴으로써 이 작업의 일부를 수행합니다.", voca: ["Expectancies:예상/기대", "accomplish:수행하다/성취하다", "irrelevant to:~와 무관한", "expected:예상된 것", "focusing:집중시키는 것", "attention:주의/집중", "clear contradictions:명확한 모순", "🍎", "🍎", "🍎"] },
+        { en: "The processes of learning and memory are marked by a steady elimination of information.", ko: "학습과 기억의 과정은 정보의 지속적인 삭제로 특징지어집니다.", voca: ["processes:과정", "learning and memory:학습과 기억", "marked by:~로 특징지어지는", "steady:지속적인/확고한", "elimination:삭제/제거", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "People notice only a part of the world around them. Then, only a fraction of what they notice gets processed and stored into memory. And only part of what gets committed to memory can be retrieved.", ko: "사람들은 주변 세상의 일부분만 인지합니다. 그런 다음 인지한 것의 아주 작은 일부만 처리되어 기억에 저장됩니다. 그리고 기억에 넘겨진 것의 일부분만 회상될 수 있습니다.", voca: ["notice:인지하다/주목하다", "fraction:아주 작은 일부/분수", "processed:처리된", "stored:저장된", "committed to:~에 넘겨진/위임된", "retrieved:회상되는/되찾아오는", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +83,77 @@
             header.innerText = "English Master #34";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Trap of<br>Self-Worth</h1><p>2023년 9월 고1 모의고사 34번</p></div>
+                <div class="main-title-card"><h1>The Cognitive<br>Information Filter</h1><p>2023년 9월 고2 34번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 사람들은 '능력'을 지적 역량, 특정 기술(피아노, 테니스), 혹은 매력이나 최신 유행을 따르는 힘 등 다양하게 정의함.</p>
-                    <p>• <b>📍 본론:</b> 능력이 무엇이든 간에, 그것이 자기 가치(self-worth)를 결정하는 '유일한' 잣대가 될 때 심각한 문제가 생김.</p>
-                    <p>• <b>📍 결론:</b> 이 경우 오직 '결과(performance)'만이 그 사람을 평가하는 척도가 되어, 성적이 좋으면 훌륭한 사람, 성적이 평범하면 평범한 사람이라는 이분법적 함정에 빠지게 됨.</p>
+                    <p>• <b>📍 서론:</b> 인간의 사고는 혼란을 막기 위해 유입되는 감각 데이터와 사회 정보를 걸러내고(screen out) 관리 가능하게 분류함.</p>
+                    <p>• <b>📍 본론:</b> 수많은 자극 중 개인의 필요에 맞고 유용한 정보만 지식으로 조직해야 하며, 이 과정에서 '예상(Expectancies)'이 무관한 정보를 차단하는 필터 역할을 수행함.</p>
+                    <p>• <b>📍 결론:</b> 학습과 기억은 정보의 '지속적인 삭제(steady elimination)' 과정임. 사람은 세상의 일부만 인지하고, 그중 일부만 저장하며, 저장된 것 중 또 일부만 최종 회상(retrieved)해낼 수 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 능력을 자아 존중감의 유일한 결정 요인으로 삼을 때 발생하는 위험성</span>
-                    <span class="topic-eng">Topic: The danger of making ability the sole determinant of one's self-worth</span>
+                    <span class="topic-kor">주제: 인지 과부하를 방지하기 위한 인간 사고의 효율적인 정보 스크리닝 및 제거 과정</span>
+                    <span class="topic-eng">Topic: The efficient process of information screening and elimination in human thought to prevent cognitive overload</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

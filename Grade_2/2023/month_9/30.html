@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #30 - 23년 9월 고1 모의고사</title>
+    <title>English Master #30 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,18 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["of", "does", "off", "is", "from", "your", "by", "an", "within", "which", "it", "over", "time", "based", "in", "on", "some", "have", "a", "more", "the", "that", "allowing", "to", "rapidly", "these", "can", "drink", "with", "and", "fall", "at", "without", "others", "however", "have", "takes", "far", "for", "same", "amount", "as", "result", "they", "are", "very", "to", "one", "or", "will", "much", "should", "even", "early", "afternoon", "find", "difficult", "evening", "also", "older", "we", "thus", "become", "later", "influence"];
+
     const fullData = [
-        { en: "While moving is difficult for everyone, it is particularly stressful for children.", ko: "이사는 누구에게나 힘들지만, 아이들에게는 특히 스트레스가 많은 일입니다.", voca: ["moving:이사", "difficult:어려운/힘든", "particularly:특히", "stressful:스트레스가 많은", "children:아이들", "everyone:모든 사람", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "They lose their sense of security and may feel disoriented when their routine is disrupted.", ko: "그들은 안정감을 잃고 일상이 중단될 때 혼란스러움을 느낄 수도 있습니다.", voca: ["sense:감각", "security:안정/안보", "disoriented:혼란스러운", "routine:일상", "disrupted:중단된", "lose:잃다", "feel:느끼다", "when:~할 때", "🍎", "🍎"] },
-        { en: "Young children, ages 3-6, are particularly affected by a move. Their understanding is quite literal.", ko: "3세에서 6세 사이의 어린아이들은 이사에 특히 영향을 받습니다. 그들의 이해는 상당히 문자 그대로입니다.", voca: ["affected:영향을 받는", "understanding:이해", "quite:상당히", "literal:문자 그대로의", "ages 3-6:3~6세", "particularly:특히", "move:이사", "🍎", "🍎", "🍎"] },
-        { en: "It is difficult for them to imagine beforehand a new home and their new room.", ko: "그들이 새로운 집과 새로운 방을 사전에 상상하는 것은 어렵습니다.", voca: ["difficult:어려운", "imagine:상상하다", "beforehand:사전에", "new home:새로운 집", "new room:새로운 방", "for them:그들에게", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Young children may have worries such as “Will I still be me in the new place?”", ko: "어린아이들은 “새로운 곳에서도 여전히 나일까?”와 같은 걱정을 할 수도 있습니다.", voca: ["worries:걱정들", "still:여전히", "new place:새로운 곳", "such as:~와 같은", "may:~일지도 모른다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "It is important to establish a balance between validating past experiences and helping them adjust.", ko: "과거의 경험을 인정해주는 것과 적응하도록 돕는 것 사이의 균형을 잡는 것이 중요합니다.", voca: ["establish:확립하다", "balance:균형", "validating:인정하는/확인하는", "past experiences:과거 경험", "adjust:적응하다", "helping:돕는 것", "between A and B:A와 B 사이에", "important:중요한", "🍎", "🍎"] },
-        { en: "Children need to share their backgrounds in a way that respects their past as an part of who they are.", ko: "아이들은 과거를 자신의 중요한 일부로 존중하는 방식으로 자신의 배경을 공유할 기회가 필요합니다.", voca: ["share:공유하다", "backgrounds:배경", "respects:존중하다", "past:과거", "part:일부", "who they are:자신의 정체성", "way:방식", "need to:~할 필요가 있다", "🍎", "🍎"] },
-        { en: "This contributes to building a sense of community, which is essential for all children in transition.", ko: "이것은 공동체 의식을 형성하는 데 기여하며, 이는 변화를 겪는 모든 아이에게 필수적입니다.", voca: ["contributes to:~에 기여하다", "building:형성/구축", "sense of community:공동체 의식", "essential:필수적인", "transition:변화/전이", "all:모든", "which:그리고 그것은", "🍎", "🍎", "🍎"] }
+        { en: "The “jolt” of caffeine does wear off.", ko: "카페인의 ‘효과(충격)’는 실제로 사라집니다.", voca: ["jolt:충격/갑작스러운 위동", "caffeine:카페인", "wear off:사라지다/효과가 다하다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Caffeine is removed from your system by an enzyme within your liver, which gradually degrades it over time.", ko: "카페인은 여러분의 간 속에 있는 효소에 의해 신체 시스템에서 제거되는데, 이 효소는 시간이 지남에 따라 그것을 점진적으로 분해합니다.", voca: ["removed:제거된", "system:시스템/신체", "enzyme:효소", "liver:간", "gradually:점진적으로", "degrades:분해하다/하락시키다", "over time:시간이 지남에 따라", "🍎", "🍎", "🍎"] },
+        { en: "Based in large part on genetics, some people have a more efficient version of the enzyme that degrades caffeine, allowing the liver to rapidly clear it from the bloodstream.", ko: "상당 부분 유전학에 기반하여, 어떤 사람들은 카페인을 분해하는 더 효율적인 버전의 효소를 가지고 있어서 간이 혈류로부터 카페인을 빠르게 제거할 수 있도록 합니다.", voca: ["Based on:~에 기반하여", "in large part:상당 부분", "genetics:유전학", "efficient:효율적인", "version:버전/형태", "allowing:허용하는/하게 하는", "rapidly:빠르게", "clear:제거하다/맑게 하다", "bloodstream:혈류", "🍎"] },
+        { en: "These rare individuals can drink an espresso with dinner and fall fast asleep at midnight without a problem.", ko: "이러한 드문 개인들은 저녁 식사와 함께 에스프레소를 마시고도 아무 문제 없이 자정에 깊은 잠에 들 수 있습니다.", voca: ["rare:드문/희귀한", "individuals:개인들", "espresso:에스프레소", "dinner:저녁 식사", "fall fast asleep:깊은 잠에 들다", "midnight:자정", "without a problem:문제 없이", "🍎", "🍎", "🍎"] },
+        { en: "Others, however, have a slower-acting version of the enzyme. It takes far longer for their system to eliminate the same amount of caffeine.", ko: "그러나 다른 사람들은 더 느리게 작용하는 버전의 효소를 가지고 있습니다. 그들의 시스템이 같은 양의 카페인을 제거하는 데 훨씬 더 오랜 시간이 걸립니다.", voca: ["however:그러나", "slower-acting:더 느리게 작용하는", "takes far longer:훨씬 더 오랜 시간이 걸리다", "eliminate:제거하다", "same amount:같은 양", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "As a result, they are very sensitive to caffeine’s effects.", ko: "결과적으로, 그들은 카페인의 효과에 매우 민감합니다.", voca: ["As a result:결과적으로", "sensitive:민감한", "effects:효과/영향", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "One cup of tea or coffee in the morning will last much of the day, and should they have a second cup, even early in the afternoon, they will find it difficult to fall asleep in the evening.", ko: "아침에 마시는 차나 커피 한 잔이 하루 종일 지속될 것이며, 오후 일찍이라도 두 번째 잔을 마신다면, 그들은 저녁에 잠들기 어렵다는 것을 알게 될 것입니다.", voca: ["last:지속되다/마지막의", "much of the day:하루의 대부분", "should they have:그들이 마신다면(도치문)", "second cup:두 번째 잔", "difficult:어려운", "fall asleep:잠들다", "evening:저녁", "🍎", "🍎", "🍎"] },
+        { en: "Aging also alters the speed of caffeine clearance: the older we are, the longer it takes our brain and body to remove caffeine, and thus the more sensitive we become in later life to caffeine’s sleep-disrupting influence.", ko: "나이가 드는 것 또한 카페인 제거 속도를 변화시킵니다: 우리가 나이가 들수록 우리의 뇌와 몸이 카페인을 제거하는 데 더 오랜 시간이 걸리고, 따라서 우리는 노년에 카페인의 수면을 방해하는 영향에 더 민감해집니다.", voca: ["Aging:나이가 드는 것/노화", "alters:변화시키다", "speed:속도", "clearance:제거/청소", "the older ~, the longer ~:더 나이가 들수록, 더 오래 걸린다", "brain and body:뇌와 몸", "remove:제거하다", "thus:따라서", "sleep-disrupting:수면을 방해하는", "influence:영향"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +85,77 @@
             header.innerText = "English Master #30";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Helping Children<br>Adjust to Moving</h1><p>2023년 9월 고1 모의고사 30번</p></div>
+                <div class="main-title-card"><h1>Caffeine Clearance<br>& Genetics</h1><p>2023년 9월 고2 30번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 이사는 아이들에게 매우 스트레스가 큰 사건이며, 특히 일상의 변화는 안정감을 앗아감.</p>
-                    <p>• <b>📍 본론:</b> 3~6세 아이들은 사고가 매우 직관적이라 미래의 방을 상상하기 어렵고, 자기 정체성이나 물건에 대한 원초적인 걱정을 함.</p>
-                    <p>• <b>📍 결론:</b> 부모는 아이의 과거 경험을 충분히 존중해줌과 동시에 새로운 환경에 적응하도록 돕는 균형을 유지해야 함. 이를 통해 아이는 변화 속에서도 공동체 의식을 형성할 수 있음.</p>
+                    <p>• <b>📍 서론:</b> 카페인의 효과는 간 속의 특정 효소가 시간이 지나며 점진적으로 분해하면서 결국 사라짐.</p>
+                    <p>• <b>📍 본론:</b> 유전적 요인에 의해 효소의 효율성이 높은 사람은 밤늦게 에스프레소를 마셔도 잘 자지만, 느린 효소를 가진 사람은 아침 한 잔의 효과도 종일 지속되어 매우 민감함(sensitive).</p>
+                    <p>• <b>📍 결론:</b> 나이가 들수록(Aging) 뇌와 신체가 카페인을 제거하는 속도가 느려져 노년기에는 수면 방해 영향에 더욱 취약해짐.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 이사하는 아이들의 심리적 불안 해소를 위한 과거 존중과 새로운 적응 사이의 균형</span>
-                    <span class="topic-eng">Topic: The balance between respecting the past and aiding adjustment for children moving to a new home</span>
+                    <span class="topic-kor">주제: 유전적 요인과 연령에 따른 체내 카페인 분해 효소 속도의 차이 및 영향</span>
+                    <span class="topic-eng">Topic: Differences and impacts of caffeine decomposition enzyme speed in the body based on genetics and age</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”’:-]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”’:-]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #35 - 23년 9월 고1 모의고사</title>
+    <title>English Master #35 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,15 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["the", "of", "early", "in", "is", "that", "it", "and", "precisely", "because", "for", "a", "very", "were", "after", "fall", "lacked", "ability", "to", "what", "their", "and", "substantial", "taxes", "based", "on", "this", "most", "way", "illustrate", "show", "how", "little", "collected", "would", "eventually", "strong", "systems", "but", "took", "an", "awfully", "do", "so", "in", "times", "for", "part", "era", "able", "extract", "much", "more", "economic", "than", "any", "with", "exception", "small"];
+
     const fullData = [
-        { en: "Sensory nerves have specialized endings in the tissues that pick up a particular sensation.", ko: "감각 신경은 특정한 감각을 포착하는 조직 내의 특화된 말단을 가지고 있습니다.", voca: ["Sensory nerves:감각 신경", "specialized:특화된", "endings:말단/끝", "tissues:조직", "pick up:포착하다/집어들다", "particular:특정한", "sensation:감각", "have:가지다", "🍎", "🍎"] },
-        { en: "If you step on a pin, nerve endings in the skin will transmit the pain sensation up to the brain.", ko: "만약 여러분이 핀을 밟으면, 피부의 신경 말단이 통증 감각을 뇌까지 전달할 것입니다.", voca: ["step on:밟다", "nerve endings:신경 말단", "skin:피부", "transmit:전달하다", "pain sensation:통증 감각", "brain:뇌", "along:~을 따라", "spinal cord:척수", "🍎", "🍎"] },
-        { en: "While the pain itself is unpleasant, it is acting as a protective mechanism for the foot.", ko: "통증 그 자체는 불쾌하지만, 그것은 사실 발을 위한 보호 메커니즘으로 작용하고 있습니다.", voca: ["unpleasant:불쾌한", "acting:작용하는", "protective:보호하는", "mechanism:메커니즘/기제", "itself:그 자체", "While:반면에/비록 ~이지만", "fact:사실", "foot:발", "🍎", "🍎"] },
-        { en: "Within the brain, nerves will connect to the area that controls speech, so that you may shout ‘ouch’.", ko: "뇌 안에서 신경은 언어를 조절하는 부위와 연결될 것이고, 그래서 여러분은 '아야'라고 소리칠 수도 있습니다.", voca: ["Within:~ 안에서", "connect:연결되다", "area:부위/영역", "controls:조절하다/제어하다", "speech:언어/말", "shout:소리치다", "may:~일지도 모른다", "🍎", "🍎", "🍎"] },
-        { en: "They also connect to motor nerves that travel back down to the muscles in your leg.", ko: "그것들은 또한 여러분의 다리 근육으로 다시 내려가는 운동 신경과 연결됩니다.", voca: ["motor nerves:운동 신경", "travel:이동하다/이동", "muscles:근육", "leg:다리", "connect:연결되다", "also:또한", "back down:다시 아래로", "🍎", "🍎", "🍎"] },
-        { en: "The muscles now contract quickly to lift your foot away from the painful object.", ko: "이제 근육은 그 고통스러운 물체로부터 여러분의 발을 떼어 들어 올리기 위해 빠르게 수축합니다.", voca: ["contract:수축하다", "quickly:빠르게", "lift:들어 올리다", "painful:고통스러운", "object:물체", "away from:~로부터 멀리", "now:이제", "🍎", "🍎", "🍎"] },
-        { en: "Sensory and motor nerves control almost all functions in the body.", ko: "감각 신경과 운동 신경은 신체의 거의 모든 기능을 조절합니다.", voca: ["functions:기능들", "control:조절하다", "almost:거의", "body:신체", "Sensory:감각의", "motor:운동의", "nerves:신경들", "all:모든", "🍎", "🍎"] }
+        { en: "The irony of early democracy in Europe is that it thrived and prospered precisely because European rulers for a very long time were remarkably weak.", ko: "유럽 초기 민주주의의 아이러니는 유럽의 통치자들이 매우 오랜 기간 동안 현저하게 약했기 때문에 정작 그것이 번창하고 번영했다는 점입니다.", voca: ["irony:아이러니/역설", "early democracy:초기 민주주의", "thrived:번창했다", "prospered:번영했다", "precisely:정확히/바로", "rulers:통치자들", "remarkably:현저하게/매우", "weak:약한", "🍎", "🍎"] },
+        { en: "For more than a millennium after the fall of Rome, European rulers lacked the ability to assess what their people were producing and to levy substantial taxes based on this.", ko: "로마가 멸망한 후 천 년이 넘는 기간 동안, 유럽의 통치자들은 백성들이 생산하고 있는 것을 평가하고 이를 바탕으로 상당한 세금을 부과하는 능력이 부족했습니다.", voca: ["millennium:천 년", "fall:멸망/추락", "lacked:부족했다", "ability:능력", "assess:평가하다", "producing:생산하고 있는 것", "levy:부과하다(세금 등)", "substantial:상당한", "taxes:세금", "based on:~에 기반하여"] },
+        { en: "The most striking way to illustrate European weakness is to show how little revenue they collected.", ko: "유럽의 취약함을 보여주는 가장 두드러진 방법은 그들이 얼마나 적은 세입을 거두었는지 보여주는 것입니다.", voca: ["striking:두드러진/인상적인", "illustrate:보여주다/설명하다", "weakness:취약함/약함", "revenue:세입/수입", "collected:거두었다/수집했다", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Europeans would eventually develop strong systems of revenue collection, but it took them an awfully long time to do so.", ko: "유럽인들은 결국 강력한 세입 징수 체계를 개발하곤 했지만, 그렇게 하는 데 엄청나게 오랜 시간이 걸렸습니다.", voca: ["eventually:결국", "develop:개발하다", "systems:체계/시스템", "revenue collection:세입 징수", "awfully:엄청나게/굉장히", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In medieval times, and for part of the early modern era, Chinese emperors and Muslim caliphs were able to extract much more of economic production than any European ruler with the exception of small city-states.", ko: "중세 시대와 초기 근대 세대의 일부 기간 동안, 중국의 황제들과 이슬람의 칼리프들은 소규모 도시 국가들을 제외한 그 어떤 유럽 통치자들보다 경제적 생산물의 훨씬 더 많은 부분을 뜯어낼 수 있었습니다.", voca: ["medieval times:중세 시대", "early modern era:초기 근대", "emperors:황제들", "caliphs:칼리프들", "extract:뜯어내다/추출하다", "economic production:경제적 생산물", "with the exception of:~을 제외하고", "city-states:도시 국가들", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +82,77 @@
             header.innerText = "English Master #35";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Guard of<br>Our Body</h1><p>2023년 9월 고1 모의고사 35번</p></div>
+                <div class="main-title-card"><h1>The Irony of<br>Early Democracy</h1><p>2023년 9월 고2 35번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 우리 몸의 감각 신경은 특정 자극을 포착하는 특화된 말단을 가지고 있음.</p>
-                    <p>• <b>📍 본론:</b> 핀을 밟으면 감각 신경이 통증을 뇌로 전달함. 뇌는 이를 분석해 언어 부위(비명)와 운동 신경(발 들기)에 명령을 보냄.</p>
-                    <p>• <b>📍 결론:</b> 통증은 불쾌하지만 신체를 보호하는 필수 기제이며, 감각 및 운동 신경은 심장 박동부터 소화까지 우리 몸의 거의 모든 기능을 조절함.</p>
+                    <p>• <b>📍 서론:</b> 유럽 초기 민주주의가 번창한 역설적 이유는 통치자들의 권력이 오랫동안 현저히 약했기 때문임.</p>
+                    <p>• <b>📍 본론:</b> 로마 멸망 후 천 년간 유럽 군주들은 생산량 평가 및 세금 부과(levy substantial taxes) 능력이 결여되어 세입 징수가 매우 미미했음.</p>
+                    <p>• <b>📍 결론:</b> 동시대 중국 황제나 이슬람 칼리프가 강력한 권력으로 경제적 생산물을 전방위로 수탈한 반면, 유럽은 권력 공백 덕분에 민주주의가 발전할 수 있는 토양이 마련됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 신체 보호와 조절을 담당하는 감각 신경과 운동 신경의 상호작용 메커니즘</span>
-                    <span class="topic-eng">Topic: The interaction mechanism of sensory and motor nerves for body protection and regulation</span>
+                    <span class="topic-kor">주제: 유럽 군주들의 재정적·정치적 취약성이 초기 민주주의 발전에 미친 역설적 영향</span>
+                    <span class="topic-eng">Topic: The paradoxical impact of European rulers' financial and political weakness on the development of early democracy</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

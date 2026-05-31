@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #32 - 23년 9월 고1 모의고사</title>
+    <title>English Master #32 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,16 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["a", "creates", "an", "in", "which", "highly", "of", "connects", "that", "exist", "first", "only", "the", "and", "are", "then", "viewer", "if", "were", "to", "about", "how", "much", "must", "order", "follow", "speculate", "you", "would", "discover", "it", "is", "at", "least", "as", "knowledge", "required", "piece", "modern", "cases", "yet", "viewers", "with", "are", "they", "able", "cope", "such", "because", "course", "built", "extremely", "between", "them", "very", "like", "real", "people", "we", "experience", "every", "step", "removed", "mental", "provided"];
+
     const fullData = [
-        { en: "Frans de Waal says humans downplay similarities between us and other animals to maintain our spot at the top.", ko: "Frans de Waal은 인간이 정상의 자리를 유지하기 위해 우리와 다른 동물 사이의 유사성을 경시한다고 말합니다.", voca: ["downplay:경시하다/과소평가하다", "similarities:유사성", "maintain:유지하다", "spot:자리/위치", "top:정상", "humans:인간", "animals:동물들", "🍎", "🍎", "🍎"] },
-        { en: "Scientists employ technical language to distance the other animals from us.", ko: "과학자들은 다른 동물들을 우리와 거리를 두기 위해 전문적인 용어를 사용합니다.", voca: ["employ:사용하다/고용하다", "technical:전문적인/기술적인", "distance:거리를 두다", "language:언어", "Scientists:과학자들", "distance A from B:A와 B를 거리두게 하다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "They call ”kissing“ in chimps ”mouth-to-mouth contact“ and ”friends“ between primates ”favorite affiliation partners“.", ko: "그들은 침팬지의 '키스'를 '입과 입의 접촉'으로, 영장류 사이의 '친구'를 '가장 좋아하는 제휴 파트너'라고 부릅니다.", voca: ["chimps:침팬지", "contact:접촉", "primates:영장류", "affiliation:제휴/소속", "partners:파트너", "favorite:가장 좋아하는", "call A B:A를 B라고 부르다", "🍎", "🍎", "🍎"] },
-        { en: "They interpret evidence of toolmaking in crows as being qualitatively different from humanity's toolmaking.", ko: "그들은 까마귀의 도구 제작 증거를 인류의 도구 제작과는 질적으로 다른 것으로 해석합니다.", voca: ["interpret:해석하다", "evidence:증거", "toolmaking:도구 제작", "crows:까마귀", "qualitatively:질적으로", "humanity:인류", "different from:~와 다른", "🍎", "🍎", "🍎"] },
-        { en: "If an animal can beat us at a cognitive task, they write it off as instinct, not intelligence.", ko: "만약 동물이 인지 과업에서 우리를 이기면, 그들은 그것을 지능이 아니라 본능으로 치부해 버립니다.", voca: ["beat:이기다", "cognitive task:인지 과업", "write off:~으로 치부하다", "instinct:본능", "intelligence:지능", "If:만약", "not:~이 아니라", "🍎", "🍎", "🍎"] },
-        { en: "This and so many more tricks of language are what de Waal has termed ”linguistic castration.“", ko: "이것과 더 많은 언어적 수법들은 de Waal이 '언어적 거세'라고 명명한 것들입니다.", voca: ["tricks:수법/속임수", "termed:명명한", "linguistic:언어적인", "castration:거세", "what:~하는 것", "language:언어", "so many:매우 많은", "🍎", "🍎", "🍎"] },
-        { en: "It is the way we use our tongues to disempower animals to maintain our spot at the top.", ko: "그것은 우리가 정상의 자리를 유지하기 위해 동물의 힘을 빼앗으려고 우리의 혀(언어)를 사용하는 방식입니다.", voca: ["tongues:혀/언어", "disempower:권력을 빼앗다", "maintain:유지하다", "spot:자리", "way:방식", "top:정상", "animals:동물들", "use:사용하다", "🍎", "🍎"] }
+        { en: "A typical soap opera creates an abstract world, in which a highly complex web of relationships connects fictional characters that exist first only in the minds of the program’s creators and are then recreated in the minds of the viewer.", ko: "전형적인 연속극은 추상적인 세계를 만들어내는데, 그 세계 속에서는 매우 복잡한 관계망이 프로그램 제작자들의 마음속에만 먼저 존재했다가 시청자들의 마음속에 다시 재현되는 허구의 등장인물들을 연결합니다.", voca: ["typical:전형적인", "soap opera:연속극", "abstract:추상적인", "complex web:복잡한 망", "relationships:관계", "fictional:허구의", "characters:등장인물", "creators:제작자", "recreated:재현된", "viewer:시청자"] },
+        { en: "If you were to think about how much human psychology, law, and even everyday physics the viewer must know in order to follow and speculate about the plot, you would discover it is considerable—at least as much as the knowledge required to follow and speculate about a piece of modern mathematics, and in most cases, much more.", ko: "줄거리를 따라가고 그것에 대해 추측하기 위해 시청자가 얼마나 많은 인간 심리학, 법, 그리고 심지어 일상 물리학을 알아야 하는지 생각해보면, 그것이 상당하다는 것을, 즉 적어도 현대 수학의 한 분야를 따라가고 추측하는 데 요구되는 지식만큼은 되며 대부분의 경우 훨씬 더 많다는 것을 발견할 것입니다.", voca: ["human psychology:인간 심리학", "law:법", "everyday physics:일상 물리학", "follow:따라가다/이해하다", "speculate:추측하다/사색하다", "plot:줄거리", "discover:발견하다", "considerable:상당한", "modern mathematics:현대 수학", "much more:훨씬 더 많은"] },
+        { en: "Yet viewers follow soap operas with ease. How are they able to cope with such abstraction?", ko: "하지만 시청자들은 연속극을 쉽게 따라갑니다. 그들은 어떻게 그러한 추상성을 대처할 수 있는 걸까요?", voca: ["Yet:하지만/그럼에도", "with ease:쉽게", "cope with:~에 대처하다/처리하다", "abstraction:추상성", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Because, of course, the abstraction is built on an extremely familiar framework.", ko: "왜냐하면, 당연하게도 그 추상성은 매우 익숙한 틀을 기반으로 만들어졌기 때문입니다.", voca: ["Because:왜냐하면", "of course:당연히", "built on:~을 기반으로 지어진", "extremely:매우/극도로", "familiar:익숙한", "framework:틀/구조", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The characters in a soap opera and the relationships between them are very much like the real people and relationships we experience every day.", ko: "연속극 속 등장인물들과 그들 사이의 관계는 우리가 매일 경험하는 실제 사람 및 관계와 매우 비슷합니다.", voca: ["characters:등장인물", "relationships:관계", "between them:그들 사이의", "real people:실제 사람", "experience:경험하다", "every day:매일", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The abstraction of a soap opera is only a step removed from the real world. The mental “training” required to follow a soap opera is provided by our everyday lives.", ko: "연속극의 추상성은 실제 세계에서 단지 한 걸음 떨어져 있을 뿐입니다. 연속극을 따라가는 데 요구되는 정신적 '훈련'은 우리의 일상생활에 의해 제공됩니다.", voca: ["abstraction:추상성", "only a step:단지 한 걸음", "removed from:~에서 떨어진/벗어난", "mental training:정신적 훈련", "provided:제공된", "everyday lives:일상생활", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +83,77 @@
             header.innerText = "English Master #32";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Linguistic<br>Castration</h1><p>2023년 9월 고1 모의고사 32번</p></div>
+                <div class="main-title-card"><h1>The Reality Behind<br>Soap Operas</h1><p>2023년 9월 고2 32번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 영장류 학자 Frans de Waal은 인간이 우월함을 유지하려 동물과의 유사성을 고의로 무시한다고 주장함.</p>
-                    <p>• <b>📍 본론:</b> 과학자들은 '키스'를 '입 접촉'으로, '친구'를 '제휴 파트너'로 부르며 언어적 거리두기를 함. 또한 동물의 도구 제작이나 뛰어난 인지 능력(기억력 등)을 지능이 아닌 '본능'으로 치부함.</p>
-                    <p>• <b>📍 결론:</b> 이러한 수법을 '언어적 거세'라고 함. 인간은 언어를 발명해 동물의 능력을 폄하함으로써 상상의 사다리 꼭대기 자리를 지키려 함.</p>
+                    <p>• <b>📍 서론:</b> 연속극은 복잡한 인간관계망을 가진 허구의 세계(추상적 세계)를 다룸.</p>
+                    <p>• <b>📍 본론:</b> 연속극의 줄거리(plot)를 추측하려면 현대 수학 못지않은 방대한 양의 심리학, 법, 물리학적 지식이 요구되지만 시청자들은 이를 쉽게 이해함.</p>
+                    <p>• <b>📍 결론:</b> 이러한 대처가 가능한 이유는 극의 추상성이 우리가 매일 겪는 실제 인간관계라는 '익숙한 틀(familiar framework)'에 기반하기 때문이며, 필요한 훈련은 일상에서 이미 완료됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 인간의 우월적 지위 유지를 위한 언어적 도구(언어적 거세)의 사용</span>
-                    <span class="topic-eng">Topic: The use of linguistic tools (linguistic castration) to maintain human superiority over animals</span>
+                    <span class="topic-kor">주제: 일상의 경험과 익숙한 틀을 바탕으로 복잡한 연속극의 추상성을 쉽게 이해하는 시청자들</span>
+                    <span class="topic-eng">Topic: Viewers easily understanding the abstraction of complex soap operas based on everyday experiences and familiar frameworks</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”?]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'/“”?]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

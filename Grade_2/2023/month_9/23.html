@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #23 - 23년 9월 고1 모의고사</title>
+    <title>English Master #23 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,16 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["if", "is", "as", "to", "and", "as", "suggests", "it", "stands", "that", "the", "of", "in", "our", "would", "have", "for", "and", "so", "has", "are", "they", "all", "not", "at", "of", "much", "of", "the", "of", "to", "has", "of", "what", "has", "been", "their", "for", "the", "making", "it", "for", "them", "outside", "and", "have", "that", "such", "a", "large", "in", "and", "was", "bound", "to", "other", "in", "the", "including", "and", "us", "that", "we", "can", "now", "in", "also", "allowed", "us", "to", "making", "it", "even", "for", "with", "no", "and", "little", "to", "a", "whole", "all", "that’s", "is", "a"];
+
     const fullData = [
-        { en: "The interaction of workers from different backgrounds with the host population might increase productivity.", ko: "서로 다른 배경을 가진 노동자들과 현지 주민의 상호작용은 생산성을 높일 수 있습니다.", voca: ["interaction:상호작용", "different:서로 다른", "backgrounds:배경", "host population:현지 주민", "increase:높이다", "productivity:생산성", "might:~일지 모른다", "workers:노동자들", "🍎", "🍎"] },
-        { en: "This is due to positive externalities like knowledge spillovers.", ko: "이것은 지식 파급 효과와 같은 긍정적인 외부 효과 때문입니다.", voca: ["due to:~ 때문인", "positive:긍정적인", "externalities:외부 효과", "knowledge:지식", "spillovers:파급/유출", "like:~와 같은", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "When the variety is too large, fractionalization may cause excessive transaction costs, which may lower productivity.", ko: "다양성이 너무 클 때, 분절화는 과도한 거래 비용을 초래하여 생산성을 낮출 수 있습니다.", voca: ["variety:다양성", "fractionalization:분절화", "cause:초래하다/유발하다", "excessive:과도한", "transaction costs:거래 비용", "lower:낮추다", "too large:너무 큰", "which:그리고 그것은", "🍎", "🍎"] },
-        { en: "Diversity not only impacts the labour market, but may also affect the quality of life in a location.", ko: "다양성은 노동 시장에 영향을 줄 뿐만 아니라, 어느 지역의 삶의 질에도 영향을 미칠 수 있습니다.", voca: ["Diversity:다양성", "impacts:영향을 주다", "labour market:노동 시장", "affect:영향을 미치다", "quality of life:삶의 질", "location:장소/지역", "not only A but also B:A뿐만 아니라 B도", "🍎", "🍎", "🍎"] },
-        { en: "A tolerant native population may value a multicultural city because of an increase in the range of goods and services.", ko: "관용적인 현지인들은 상품과 서비스 범위의 증가 때문에 다문화 도시를 가치 있게 여길 수 있습니다.", voca: ["tolerant:관용적인", "native:현지인/원주민", "value:가치 있게 여기다", "multicultural:다문화의", "range:범위", "goods and services:상품과 서비스", "increase:증가", "because of:~ 때문에", "🍎", "🍎"] },
-        { en: "On the other hand, diversity could be perceived as unattractive if natives see it as a distortion of their national identity.", ko: "반면에, 현지인들이 다양성을 국가 정체성의 왜곡으로 본다면 그것은 매력적이지 않은 특징으로 인식될 수 있습니다.", voca: ["perceived:인식된", "unattractive:매력 없는", "distortion:왜곡", "national identity:국가 정체성", "On the other hand:반면에", "if:만약 ~라면", "feature:특징", "🍎", "🍎", "🍎"] },
-        { en: "They might even discriminate against other ethnic groups and fear that social conflicts are imported into their neighbourhood.", ko: "그들은 심지어 다른 민족 집단을 차별할 수도 있고 사회적 갈등이 그들의 이웃으로 유입되는 것을 두려워할 수도 있습니다.", voca: ["discriminate:차별하다", "ethnic groups:민족 집단", "fear:두려워하다", "social conflicts:사회적 갈등", "imported:유입된/수입된", "neighbourhood:이웃/지역", "against:~에 대항하여", "even:심지어", "🍎", "🍎"] }
+        { en: "If cooking is as central to human identity, biology, and culture as the biological anthropologist Richard Wrangham suggests, it stands to reason that the decline of cooking in our time would have serious consequences for modern life, and so it has.", ko: "만약 생물인류학자인 Richard Wrangham이 시사하는 바와 같이 요리가 인간의 정체성, 생물학, 그리고 문화에 중심적이라면, 우리 시대에 요리가 감소한 것이 현대 생활에 심각한 결과를 초래할 것이라는 것은 당연하며, 실제로 그러해 왔습니다.", voca: ["central:중심적인", "identity:정정체성", "biology:생물학", "anthropologist:인류학자", "suggests:시사하다/제안하다", "stands to reason:당연하다/이치에 맞다", "decline:감소/하락", "serious consequences:심각한 결과", "modern life:현대 생활", "🍎"] },
+        { en: "Are they all bad? Not at all.", ko: "그 결과들이 모두 나쁠까요? 전혀 그렇지 않습니다.", voca: ["Not at all:전혀 ~가 아니다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The outsourcing of much of the work of cooking to corporations has relieved women of what has traditionally been their exclusive responsibility for feeding the family, making it easier for them to work outside the home and have careers.", ko: "요리 노동의 많은 부분을 기업에 외주 주는 것은 여성이 가족을 먹여 살려야 했던 전통적인 독점적 책임에서 벗어나게 해 주었고, 여성이 집 밖에서 일하고 직업을 갖는 것을 더 쉽게 만들어 주었습니다.", voca: ["outsourcing:외주화", "corporations:기업", "relieved A of B:A에게서 B를 덜어주다", "traditionally:전통적으로", "exclusive responsibility:독점적 책임", "feeding:먹여 살리는 것", "careers:직업/경력", "🍎", "🍎", "🍎"] },
+        { en: "It has headed off many of the domestic conflicts that such a large shift in gender roles and family dynamics was bound to spark.", ko: "그것은 성 역할과 가족 역학의 거대한 변화가 촉발할 수밖에 없었던 많은 가정 내 갈등을 막아 주었습니다.", voca: ["headed off:~을 막다/방지하다", "domestic conflicts:가정 내 갈등", "large shift:거대한 변화", "gender roles:성 역할", "family dynamics:가족 역학", "bound to:~하기 마련인/틀림없이 ~하는", "spark:촉발하다", "🍎", "🍎", "🍎"] },
+        { en: "It has relieved other pressures in the household, including longer workdays and overscheduled children, and saved us time that we can now invest in other pursuits.", ko: "그것은 더 길어진 근무일과 일정이 너무 빽빽한 아이들을 포함하여 가정 내의 다른 압박감을 덜어 주었고, 우리가 이제 다른 일에 투자할 수 있는 시간을 절약해 주었습니다.", voca: ["pressures:압박감/압력", "household:가정/세대", "longer workdays:더 길어진 근무일", "overscheduled:일정이 너무 빽빽한", "saved:절약했다", "invest:투자하다", "pursuits:일/추구", "🍎", "🍎", "🍎"] },
+        { en: "It has also allowed us to diversify our diets substantially, making it possible even for people with no cooking skills and little money to enjoy a whole different cuisine. All that’s required is a microwave.", ko: "그것은 또한 우리의 식단을 상당히 다양화할 수 있게 해 주어, 요리 기술이 없고 돈이 거의 없는 사람들까지도 완전히 색다른 요리를 즐길 수 있도록 만들어 주었습니다. 요구되는 전부는 전자레인지뿐입니다.", voca: ["diversify:다양화하다", "diets:식단", "substantially:상당히/실질적으로", "cooking skills:요리 기술", "little money:돈이 거의 없는", "cuisine:요리/요리법", "required:요구되는", "microwave:전자레인지", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,80 +83,77 @@
             header.innerText = "English Master #23";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Two Faces<br>of Diversity</h1><p>2023년 9월 고1 모의고사 23번</p></div>
+                <div class="main-title-card"><h1>The Benefits of<br>Outsourcing Cooking</h1><p>2023년 9월 고2 23번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 서로 다른 문화적 배경을 가진 노동자들의 유입은 지식 공유를 통해 경제적 생산성을 높일 수 있음.</p>
-                    <p>• <b>📍 본론 1:</b> 하지만 다양성이 너무 지나치면 소통을 위한 '거래 비용'이 커져 오히려 효율이 떨어짐.</p>
-                    <p>• <b>📍 본론 2:</b> 삶의 질 측면에서도, 관용적인 사회는 다양한 문화 상품을 즐기지만, 정체성 위협을 느끼는 사회는 다양성을 부정적으로 인식함.</p>
-                    <p>• <b>📍 결론:</b> 다양성은 경제와 문화에 긍정적인 풍요를 주기도 하지만, 차별이나 사회적 갈등 유입에 대한 두려움을 낳는 양면성을 가짐.</p>
+                    <p>• <b>📍 서론:</b> 요리의 감소가 현대 생활에 가져온 변화가 반드시 부정적인 것만은 아님.</p>
+                    <p>• <b>📍 본론:</b> 요리를 기업에 외주화하면서 여성의 가사 독점 책임이 경감되어 사회 진출과 커리어 형성이 쉬워졌고, 급격한 성 역할 변화로 인한 가정 내 갈등 및 긴 근무 시간 등의 압박감도 완화됨.</p>
+                    <p>• <b>📍 결론:</b> 시간 절약뿐만 아니라 기술과 자본이 부족한 대중도 전자레인지만 있으면 다양한 요리(cuisine)를 즐길 수 있도록 식단이 상당히 다양해짐.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 문화적 다양성이 생산성과 삶의 질에 미치는 긍정적·부정적 영향</span>
-                    <span class="topic-eng">Topic: The positive and negative impacts of cultural diversity on productivity and quality of life</span>
+                    <span class="topic-kor">주제: 요리 노동의 외주화가 현대 가정과 생활에 가져다준 긍정적인 통찰과 이점</span>
+                    <span class="topic-eng">Topic: The positive insights and benefits brought to modern households and life by outsourcing cooking tasks</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”.:?]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”.:?]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

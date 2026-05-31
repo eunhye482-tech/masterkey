@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #38 - 23년 9월 고1 모의고사</title>
+    <title>English Master #38 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["the", "is", "a", "of", "which", "its", "although", "for", "merely", "it", "consumes", "available", "can’t", "however", "so", "has", "to", "since", "economizes", "thus", "during", "shifts", "away", "from", "nuances", "singular", "and", "fixed", "at", "hand", "don’t", "sit", "back", "about", "when", "you", "are", "instead", "all", "your", "trying", "figure", "what", "sometimes", "this", "parts", "automatic", "reflexive", "lead", "too", "without", "thinking"];
+
     const fullData = [
-        { en: "Boundaries between work and home are blurring as portable digital technology makes it possible to work anywhere, anytime.", ko: "휴대용 디지털 기술이 언제 어디서나 일하는 것을 가능하게 함에 따라 일과 가정 사이의 경계가 모호해지고 있습니다.", voca: ["Boundaries:경계", "blurring:모호해지는", "portable:휴대용의", "technology:기술", "anywhere:어디서나", "anytime:언제나", "makes it possible:~을 가능하게 하다", "🍎", "🍎", "🍎"] },
-        { en: "Individuals differ in how they like to manage their time to meet work and outside responsibilities.", ko: "개인들은 업무와 그 외의 책임을 다하기 위해 자신의 시간을 관리하고 싶어 하는 방식에서 차이가 있습니다.", voca: ["Individuals:개인들", "differ:다르다", "manage:관리하다", "meet:충족시키다/다하다", "responsibilities:책임", "outside:그 외의/외부의", "how:방식", "🍎", "🍎", "🍎"] },
-        { en: "Some people prefer to separate or segment roles so that boundary crossings are minimized.", ko: "어떤 사람들은 경계를 넘나드는 일이 최소화되도록 역할을 분리하거나 분할하는 것을 선호합니다.", voca: ["prefer:선호하다", "separate:분리하다", "segment:분할하다", "roles:역할", "crossings:넘나듦/교차", "minimized:최소화된", "so that:~하도록", "🍎", "🍎", "🍎"] },
-        { en: "For example, these people might keep separate email accounts for work and family.", ko: "예를 들어, 이러한 사람들은 업무와 가정을 위해 별개의 이메일 계정을 유지할지도 모릅니다.", voca: ["For example:예를 들어", "separate:별개의", "email accounts:이메일 계정", "work:업무", "family:가정", "keep:유지하다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "We’ve even noticed more of these “segmenters” carrying two phones—one for work and one for personal use.", ko: "우리는 이러한 '분할자'들이 업무용과 개인용으로 두 개의 휴대폰을 가지고 다니는 것을 훨씬 더 많이 발견했습니다.", voca: ["segmenters:분할자들", "carrying:가지고 다니는", "personal use:개인용", "even:심지어/훨씬", "noticed:발견했다/주목했다", "phones:휴대폰", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Flexible schedules enable greater distinction between time at work and time in other roles.", ko: "유연한 시간표는 직장에서의 시간과 다른 역할에서의 시간 사이의 더 큰 구별을 가능하게 합니다.", voca: ["Flexible:유연한", "schedules:시간표", "enable:가능하게 하다", "distinction:구별/차이", "greater:더 큰", "between A and B:A와 B 사이", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Other individuals prefer integrating work and family roles all day long.", ko: "다른 개인들은 하루 종일 업무와 가정의 역할을 통합하는 것을 선호합니다.", voca: ["integrating:통합하는 것", "roles:역할", "all day long:하루 종일", "prefer:선호하다", "family:가정", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "This might entail trading text messages with children from the office, or monitoring emails at home.", ko: "이것은 사무실에서 아이들과 문자 메시지를 주고받거나 집에서 이메일을 확인하는 것을 수반할지도 모릅니다.", voca: ["entail:수반하다", "trading:주고받는 것", "text messages:문자 메시지", "monitoring:확인/감시하는 것", "office:사무실", "at home:집에서", "🍎", "🍎", "🍎", "🍎"] }
+        { en: "The brain is a high-energy consumer of glucose, which is its fuel.", ko: "뇌는 그것의 연료인 포도당의 고에너지 소비자입니다.", voca: ["brain:뇌", "high-energy:고에너지", "consumer:소비자", "glucose:포도당", "fuel:연료", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Although the brain accounts for merely 3 percent of a person’s body weight, it consumes 20 percent of the available fuel.", ko: "뇌는 단지 사람 체중의 3퍼센트만을 차지하지만, 이용 가능한 연료의 20퍼센트를 소비합니다.", voca: ["Although:~에도 불구하고", "accounts for:~을 차지하다", "merely:단지/겨우", "percent:퍼센트", "body weight:체중", "consumes:소비하다", "available:이용 가능한", "🍎", "🍎", "🍎"] },
+        { en: "Your brain can’t store fuel, however, so it has to “pay as it goes.”", ko: "그러나 여러분의 뇌는 연료를 저장할 수 없어서, '그때그때 지불(활동하는 만큼 연료를 소비)'해야 합니다.", voca: ["store:저장하다", "however:그러나", "has to:~해야 한다", "pay as it goes:그때그때 지불하다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Since your brain is incredibly adaptive, it economizes its fuel resources.", ko: "여러분의 뇌는 놀라울 정도로 적응력이 뛰어나기 때문에, 연료 자원을 절약합니다.", voca: ["Since:~ 때문에/~ 이후로", "incredibly:놀라울 정도로", "adaptive:적응력이 뛰어난", "economizes:절약하다/아끼다", "fuel resources:연료 자원", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Thus, during a period of high stress, it shifts away from the analysis of the nuances of a situation to a singular and fixed focus on the stressful situation at hand.", ko: "따라서, 고도의 스트레스를 받는 기간 동안, 뇌는 상황의 미묘한 차이를 분석하는 것에서 당면한 스트레스 상황에 대한 단일하고 고정된 초점으로 이동합니다.", voca: ["Thus:따라서", "during:~ 동안", "period:기간", "high stress:고도의 스트레스", "shifts away from:~에서 이동하다", "analysis:분석", "nuances:미묘한 차이/뉘앙스", "singular:단일한", "fixed focus:고정된 초점", "at hand:당면한/손닿는 곳에"] },
+        { en: "You don’t sit back and speculate about the meaning of life when you are stressed. Instead, you devote all your energy to trying to figure out what action to take.", ko: "스트레스를 받을 때 편안히 앉아 삶의 의미에 대해 사색하지 않습니다. 대신, 어떤 조치를 취해야 할지 알아내는 데 모든 에너지를 쏟습니다.", voca: ["sit back:편안히 앉다", "speculate about:~에 대해 사색/추측하다", "meaning of life:삶의 의미", "Instead:대신에", "devote A to B-ing:A를 B에 쏟다/바치다", "figure out:알아내다/이해하다", "action to take:취해야 할 조치", "🍎", "🍎", "🍎"] },
+        { en: "Sometimes, however, this shift from the higher-thinking parts of the brain to the automatic and reflexive parts of the brain can lead you to do something too quickly, without thinking.", ko: "그러나 때로는, 뇌의 고차원적 사고 부위에서 자동적이고 반사적인 부위로의 이러한 이동은 여러분이 생각하지 않고 너무 빨리 무언가를 하도록 유도할 수 있습니다.", voca: ["shift:이동/변화", "higher-thinking parts:고차원적 사고 부위", "automatic:자동적인", "reflexive:반사적인", "lead A to B:A가 B하도록 유도하다", "too quickly:너무 빨리", "without thinking:생각 없이", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,80 +84,77 @@
             header.innerText = "English Master #38";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Work-Life<br>Boundaries</h1><p>2023년 9월 고1 모의고사 38번</p></div>
+                <div class="main-title-card"><h1>Brain Fuel Allocation<br>Under Stress</h1><p>2023년 9월 고2 38번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 디지털 기술의 발달로 일과 가정의 경계가 무너지는 '경계 모호성' 현상이 나타남.</p>
-                    <p>• <b>📍 본론 1 (분할자):</b> 일과 삶을 철저히 분리하려는 사람들은 계정을 따로 쓰고 휴대폰도 두 개씩 쓰는 등 경계 넘나듦을 최소화함.</p>
-                    <p>• <b>📍 본론 2 (통합자):</b> 반면 일과 가정을 하나로 섞는 사람들은 업무 중 가족과 문자를 하거나 휴가 중에도 이메일을 보며 역할을 통합함.</p>
-                    <p>• <b>📍 결론:</b> 사람마다 시간 관리 방식이 다르며, 이는 기술이 주는 유연성을 어떻게 활용하느냐의 선호도 차이임.</p>
+                    <p>• <b>📍 서론:</b> 뇌는 체중의 3%에 불과하지만 전체 포도당 연료의 20%를 소비하는 고에너지 기관이며, 저장 능력이 없어 그때그때 연료를 소모함.</p>
+                    <p>• <b>📍 본론:</b> 뛰어난 적응력으로 연료를 아끼는(economizes) 뇌는 스트레스 상황이 오면 상황 분석을 멈추고 오직 당면한 위협에만 단일하게 초점을 맞춤.</p>
+                    <p>• <b>📍 결론:</b> 이 과정에서 철학적 사색 대신 즉각적 대책 마련에 에너지를 몰아주는데, 고차원 부위에서 자동·반사적 부위로의 이 급격한 이동(shift)이 때로는 생각 없이 성급한 행동을 하도록 유도함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 일과 가정의 경계를 관리하는 두 가지 방식: 분할(Segmentation)과 통합(Integration)</span>
-                    <span class="topic-eng">Topic: Two different styles of managing boundaries between work and home: segmentation and integration</span>
+                    <span class="topic-kor">주제: 스트레스 상황 속에서 나타나는 뇌의 연료 절약 기전과 성급한 행동 유발의 원인</span>
+                    <span class="topic-eng">Topic: The brain's fuel-economizing mechanism under stress and the cause of hasty behavior</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()’]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()’]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

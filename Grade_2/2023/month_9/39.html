@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #39 - 23년 9월 고1 모의고사</title>
+    <title>English Master #39 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,15 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["much", "has", "been", "carried", "out", "on", "the", "an", "that", "is", "from", "both", "a", "and", "may", "us", "to", "or", "it", "into", "two", "and", "most", "are", "the", "latter", "of", "course", "being", "responsible", "for", "indeed", "by", "their", "honest", "and", "on", "performance", "with", "necessary", "enable", "them", "well", "is", "however", "noteworthy", "that", "although", "also", "in", "other", "when", "are", "able", "to", "point", "exceed", "own", "will", "be", "find", "this", "especially", "evident", "align"];
+
     const fullData = [
-        { en: "A “complementary good” is a product that is often consumed alongside another product.", ko: "‘보완재’는 종종 다른 제품과 함께 소비되는 제품입니다.", voca: ["complementary good:보완재", "product:제품", "consumed:소비되는", "alongside:~와 함께", "often:종종", "another:다른", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "For example, popcorn is a complementary good to a movie.", ko: "예를 들어, 팝콘은 영화에 대한 보완재입니다.", voca: ["For example:예를 들어", "popcorn:팝콘", "movie:영화", "good:재화/제품", "complementary:보완적인", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "When the popularity of one product increases, the sales of its complementary good also increase.", ko: "한 제품의 인기가 높아지면, 그 보완재의 판매량도 늘어납니다.", voca: ["popularity:인기", "increases:증가하다", "sales:판매량", "complementary:보완적인", "also:또한", "its:그것의", "one product:한 제품", "🍎", "🍎", "🍎"] },
-        { en: "By producing goods that complement popular products, you can ensure a steady stream of demand.", ko: "인기 있는 제품을 보완하는 제품을 생산함으로써, 여러분은 수요의 꾸준한 흐름을 보장할 수 있습니다.", voca: ["producing:생산하는 것", "complement:보완하다", "ensure:보장하다", "steady:꾸준한/안정적인", "stream:흐름", "demand:수요", "popular:인기 있는", "🍎", "🍎", "🍎"] },
-        { en: "Some products enjoy perfect complementary status—they have to be consumed together.", ko: "어떤 제품들은 완벽한 보완 관계 상태를 누리는데, 그것들은 함께 소비되어야만 합니다.", voca: ["perfect:완벽한", "status:상태/지위", "together:함께", "consumed:소비되는", "have to:~해야 한다", "enjoy:누리다", "Some:어떤", "🍎", "🍎", "🍎"] },
-        { en: "Examples of perfect complements are a lamp and a lightbulb.", ko: "완벽한 보완재의 예시는 전등과 전구입니다.", voca: ["Examples:예시들", "complements:보완재들", "lamp:전등", "lightbulb:전구", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "However, customers may not be completely locked in to the product.", ko: "하지만, 고객들이 그 제품에 완전히 고정되어(가두어져) 있지 않을 수도 있습니다.", voca: ["However:하지만", "customers:고객들", "completely:완전히", "locked in:~에 고정된/가두어진", "product:제품", "may not:~않을지도 모른다", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Motorists may seem required to purchase gasoline, but they can switch to electric cars.", ko: "운전자들이 가솔린을 구매해야만 하는 것처럼 보일 수 있지만, 그들은 전기차로 전환할 수 있습니다.", voca: ["Motorists:운전자들", "required:요구되는", "purchase:구매하다", "gasoline:가솔린", "switch to:~로 전환하다", "electric cars:전기차", "seem:~처럼 보이다", "🍎", "🍎", "🍎"] }
+        { en: "Much research has been carried out on the causes of engagement, an issue that is important from both a theoretical and practical standpoint: identifying the drivers of work engagement may enable us to manipulate or influence it.", ko: "이론적 및 실용적 관점 모두에서 중요한 문제인 몰입의 원인에 대해 많은 연구가 수행되어 왔습니다. 직무 몰입의 동인을 식별하면 우리가 그것을 조작하거나 영향을 미칠 수 있게 할지도 모릅니다.", voca: ["research:연구", "carried out:수행된", "causes:원인들", "engagement:몰입/참여", "theoretical:이론적인", "practical:실용적인", "standpoint:관점", "identifying:식별하는 것", "drivers:동인(이끄는 요인)", "manipulate:조작하다"] },
+        { en: "The causes of engagement fall into two major camps: situational and personal.", ko: "몰입의 원인은 상황적 요인과 개인적 요인이라는 두 가지 주요 진영으로 나뉩니다.", voca: ["fall into:~로 나뉘다", "major camps:주요 진영", "situational:상황적인", "personal:개인적인", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "The most influential situational causes are job resources, feedback and leadership, the latter, of course, being responsible for job resources and feedback.", ko: "가장 영향력 있는 상황적 원인은 직무 자원, 피드백, 그리고 리더십이며, 후자는 물론 직무 자원과 피드백에 대한 책임이 있습니다.", voca: ["influential:영향력 있는", "job resources:직무 자원", "feedback:피드백", "leadership:리더십", "the latter:후자", "responsible for:~에 책임이 있는", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Indeed, leaders influence engagement by giving their employees honest and constructive feedback on their performance, and by providing them with the necessary resources that enable them to perform their job well.", ko: "실제로, 리더들은 직원들에게 그들의 성과에 대한 정직하고 건설적인 피드백을 제공하고, 그들이 직무를 잘 수행할 수 있도록 필요한 자원을 제공함으로써 몰입에 영향을 미칩니다.", voca: ["Indeed:실제로/참으로", "influence:영향을 미치다", "employees:직원들", "honest:정직한", "constructive:건설적인", "performance:성과/수행", "providing A with B:A에게 B를 제공하다", "necessary:필요한", "perform:수행하다", "🍎"] },
+        { en: "It is, however, noteworthy that although engagement drives job performance, job performance also drives engagement.", ko: "그러나, 몰입이 직무 성과를 이끌어내기도 하지만, 직무 성과 또한 몰입을 이끌어낸다는 점은 주목할 만합니다.", voca: ["however:그러나", "noteworthy:주목할 만한", "although:~에도 불구하고", "drives:이끌어내다/추진하다", "job performance:직무 성과", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "In other words, when employees are able to do their jobs well—to the point that they match or exceed their own expectations and ambitions—they will engage more, be proud of their achievements, and find work more meaningful.", ko: "다시 말해, 직원들이 자신의 기대와 포부에 부합하거나 이를 능가할 정도로 직무를 잘 수행할 수 있을 때, 그들은 더 몰입하고, 자신의 성과를 자랑스러워하며, 업무가 더 의미 있다고 느낄 것입니다.", voca: ["In other words:다시 말해", "to the point that:~할 정도로", "match:부합하다/일치하다", "exceed:능가하다/넘어서다", "expectations:기대", "ambitions:포부/야망", "be proud of:~을 자랑스러워하다", "achievements:성과/성취", "meaningful:의미 있는", "🍎"] },
+        { en: "This is especially evident when people are employed in jobs that align with their values.", ko: "이것은 사람들이 자신의 가치관과 일치하는 직무에 고용되었을 때 특히 분명합니다.", voca: ["especially:특히", "evident:분명한/명백한", "employed:고용된", "align with:~와 일치하다/나란히 하다", "values:가치관", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -80,79 +84,77 @@
             header.innerText = "English Master #39";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Power of<br>Complementary Goods</h1><p>2023년 9월 고1 모의고사 39번</p></div>
+                <div class="main-title-card"><h1>The Reciprocal Cycle<br>of Engagement</h1><p>2023년 9월 고2 39번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 보완재는 영화와 팝콘처럼 다른 제품과 함께 소비되는 제품을 말함.</p>
-                    <p>• <b>📍 본론:</b> 한 제품의 인기가 오르면 보완재 판매도 함께 오르므로, 인기 제품의 보완재를 만드는 것은 안정적인 수요 확보의 전략이 됨.</p>
-                    <p>• <b>📍 결론:</b> 전등과 전구처럼 반드시 함께 써야 하는 '완전 보완재'도 있지만, 가솔린 자동차 사용자가 전기차로 넘어갈 수 있듯 소비자가 항상 특정 제품에 묶여 있는 것은 아님을 주의해야 함.</p>
+                    <p>• <b>📍 서론:</b> 직무 몰입(work engagement)의 원인을 식별하고 통제하기 위해 많은 이론적·실용적 연구가 이루어짐.</p>
+                    <p>• <b>📍 본론:</b> 원인은 상황적(situational) 요인과 개인적 요인으로 나뉘며, 리더는 정직하고 건설적인 피드백과 자원을 지원해 몰입을 유도함. 주목할 점은 몰입이 성과를 내기도 하지만, 직무 성과가 다시 몰입을 촉진한다는 점임.</p>
+                    <p>• <b>📍 결론:</b> 즉, 기대와 포부를 능가하는 성과를 낼 때 성취감을 느끼며 더 깊이 몰입하게 되고, 특히 자신의 가치관(values)과 일치하는 업무일 때 이 선순환이 명확히 드러남.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 보완재의 개념과 시장에서의 수요 연동성 및 소비자의 선택 가능성</span>
-                    <span class="topic-eng">Topic: The concept of complementary goods, demand linkage in the market, and the possibility of consumer choice</span>
+                    <span class="topic-kor">주제: 직무 몰입과 업무 성과 간의 상호 호혜적 인과관계 및 선순환 구조</span>
+                    <span class="topic-eng">Topic: The reciprocal causal relationship and virtuous cycle between work engagement and job performance</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()—]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()—]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

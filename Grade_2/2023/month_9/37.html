@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #37 - 23년 9월 고1 모의고사</title>
+    <title>English Master #37 - 23년 9월 고2</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,16 +31,19 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
         .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
         .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -55,14 +57,17 @@
 </div>
 
 <script>
+    // 노출 타겟: 전치사, 접속사, 관사 등 (일관된 시스템 규칙)
+    const visibleWords = ["might", "say", "a", "can", "never", "or", "an", "because", "cannot", "be", "yet", "consider", "the", "in", "which", "contains", "composed", "of", "ten", "thousand", "it", "is", "sort", "of", "that", "makes", "one", "think", "that", "only", "and", "with", "at", "could", "something", "so", "was", "in", "fact", "using", "known", "as", "gave", "system", "set", "generated", "for", "to", "choose", "from", "similar", "has", "been", "used", "chairs", "among", "much", "else", "are", "these", "no", "they", "lots", "power", "working", "very", "different", "way", "human"];
+
     const fullData = [
-        { en: "When you pluck a guitar string it moves back and forth hundreds of times every second.", ko: "기타 줄을 뜯으면 그것은 매초 수백 번씩 앞뒤로 움직입니다.", voca: ["pluck:뜯다/퉁기다", "string:줄", "moves:움직이다", "back and forth:앞뒤로", "hundreds of:수백의", "every second:매초", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "Naturally, this movement is so fast that you cannot see it; you just see the blurred outline.", ko: "당연히 이 움직임은 너무 빨라서 볼 수 없습니다; 여러분은 그저 흐릿한 윤곽만 보게 됩니다.", voca: ["Naturally:당연히", "movement:움직임", "so ~ that:너무 ~해서 ~하다", "cannot see:볼 수 없다", "blurred:흐릿한", "outline:윤곽", "just:그저", "🍎", "🍎", "🍎"] },
-        { en: "Strings vibrating on their own make hardly any noise because they are very thin.", ko: "줄이 스스로 진동할 때는 매우 가늘기 때문에 거의 소리가 나지 않습니다.", voca: ["vibrating:진동하는", "on their own:스스로", "hardly:거의 ~않다", "noise:소음/소리", "thin:가느다란", "because:~때문에", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "But if you attach a string to a big hollow box, then the vibration is amplified.", ko: "하지만 줄을 커다란 빈 상자에 연결하면 진동이 증폭됩니다.", voca: ["attach:연결하다/붙이다", "hollow:속이 빈", "box:상자", "vibration:진동", "amplified:증폭된", "if:만약", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "The vibration of the string is passed on to the wooden panels, which vibrate at the same rate.", ko: "줄의 진동은 나무 판으로 전달되며, 이것은 같은 속도로 진동합니다.", voca: ["passed on:전달된", "wooden:나무의", "panels:판", "vibrate:진동하다", "at the same rate:같은 속도로", "which:그리고 그것은", "string:줄", "🍎", "🍎", "🍎"] },
-        { en: "The vibration of the wood creates more powerful waves in the air pressure.", ko: "나무의 진동은 공기 압력에 더 강력한 파동을 만들어냅니다.", voca: ["creates:창조하다/만들다", "powerful:강력한", "waves:파동/물결", "air pressure:공기 압력/기압", "wood:나무", "vibration:진동", "🍎", "🍎", "🍎", "🍎"] },
-        { en: "When the waves reach your eardrums they flex in and out the same number of times as the string.", ko: "파동이 여러분의 고막에 도달하면, 고막은 원래의 줄과 같은 횟수만큼 안팎으로 굽어집니다.", voca: ["reach:도달하다", "eardrums:고막", "flex:굽히다/몸을 풀다", "in and out:안팎으로", "number of times:횟수", "original:원래의", "same ~ as:~와 같은 ~", "🍎", "🍎", "🍎"] }
+        { en: "Architects might say a machine can never design an innovative or impressive building because a computer cannot be “creative.”", ko: "건축가들은 컴퓨터가 ‘창의적’일 수 없기 때문에 기계는 결코 혁신적이거나 인상적인 건물을 설계할 수 없다고 말할지도 모릅니다.", voca: ["Architects:건축가들", "machine:기계", "never:결코 ~않다", "innovative:혁신적인", "impressive:인상적인", "building:건물", "computer:컴퓨터", "creative:창의적인", "🍎", "🍎"] },
+        { en: "Yet consider the Elbphilharmonie, a new concert hall in Hamburg, which contains a remarkably beautiful auditorium composed of ten thousand interlocking acoustic panels.", ko: "하지만 만개의 서로 맞물린 음향 패널로 구성된 현저하게 아름다운 강당을 포함하고 있는 함부르크의 새로운 콘서트홀인 Elbphilharmonie를 고려해 보십시오.", voca: ["Yet:하지만", "consider:고려하다", "concert hall:콘서트홀", "contains:포함하다", "remarkably:현저하게/매우", "beautiful:아름다운", "auditorium:강당/대강당", "composed of:~로 구성된", "ten thousand:만개(10,000)", "interlocking acoustic panels:서로 맞물린 음향 패널"] },
+        { en: "It is the sort of space that makes one instinctively think that only a human being—and a human with a remarkably refined creative sensibility, at that—could design something so aesthetically impressive.", ko: "그것은 오직 인간만이, 그것도 놀라울 정도로 세련된 창의적 감수성을 가진 인간만이 그렇게 미적으로 인상적인 것을 설계할 수 있다고 본능적으로 생각하게 만드는 종류의 공간입니다.", voca: ["sort of space:종류의 공간", "instinctively:본본능적으로", "human being:인간", "refined:세련된/정제된", "sensibility:감수성/민감성", "at that:그것도/게다가", "something:어떤 것", "aesthetically:미적으로", "impressive:인상적인", "🍎"] },
+        { en: "Yet the auditorium was, in fact, designed algorithmically, using a technique known as “parametric design.”", ko: "하지만 그 강당은 사실 ‘파라메트릭 디자인’으로 알려진 기술을 사용하여 알고리즘에 의해 설계되었습니다.", voca: ["Yet:하지만", "in fact:사실", "designed:설계된", "algorithmically:알고리즘에 의해", "using:사용하여", "technique:기술/기법", "known as:~로 알려진", "parametric design:파라메트릭 디자인", "🍎", "🍎"] },
+        { en: "The architects gave the system a set of criteria, and it generated a set of possible designs for the architects to choose from.", ko: "건축가들이 시스템에 일련의 기준을 주었고, 그것은 건축가들이 선택할 수 있는 일련의 가능한 디자인을 생성했습니다.", voca: ["gave:주었다", "system:시스템", "set of criteria:일련의 기준", "generated:생성했다", "possible designs:가능한 디자인들", "choose from:~에서 고르다/선택하다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "Similar software has been used to design lightweight bicycle frames and sturdier chairs, among much else.", ko: "유사한 소프트웨어가 다른 많은 것들 중에서도 가벼운 자전거 프레임과 더 튼튼한 의자를 디자인하는 데 사용되어 왔습니다.", voca: ["Similar:유사한", "software:소프트웨어", "used to design:디자인하는 데 사용된", "lightweight:가벼운/경량의", "bicycle frames:자전거 프레임", "sturdier:더 튼튼한", "chairs:의자들", "among much else:다른 많은 것들 중에서도", "🍎", "🍎"] },
+        { en: "Are these systems behaving “creatively”? No, they are using lots of processing power to blindly generate varied possible designs, working in a very different way from a human being.", ko: "이 시스템들이 ‘창의적으로’ 행동하고 있을까요? 아닙니다, 그것들은 맹목적으로 다양한 가능한 디자인을 생성하기 위해 많은 처리 능력을 사용하고 있으며, 인간과는 매우 다른 방식으로 작동하고 있습니다.", voca: ["behaving:행동하는 것", "creatively:창의적으로", "lots of:많은", "processing power:처리 능력/연산력", "blindly:맹목적으로", "generate:생성하다", "varied:다양한", "possible:가능한", "working:작동하는 것", "different way from:~와 다른 방식"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,79 +84,77 @@
             header.innerText = "English Master #37";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Physics of<br>Guitar Sound</h1><p>2023년 9월 고1 모의고사 37번</p></div>
+                <div class="main-title-card"><h1>Algorithmic Creativity<br>in Architecture</h1><p>2023년 9월 고2 37번</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 기타 줄을 퉁기면 초당 수백 번 진동하며 흐릿한 윤곽만 보일 정도로 빠름.</p>
-                    <p>• <b>📍 본론:</b> 가느다란 줄 하나만으로는 공기를 많이 밀어내지 못해 소리가 작음. 하지만 이를 속이 빈 '울림통'에 연결하면 진동이 나무 판 전체로 전달됨.</p>
-                    <p>• <b>📍 결론:</b> 나무 판이 줄과 같은 속도로 진동하며 강력한 공기 파동을 만들고, 이 파동이 우리 고막에 전달되어 비로소 크고 선명한 소리를 듣게 됨.</p>
+                    <p>• <b>📍 서론:</b> 컴퓨터는 창의적일 수 없으므로 혁신적인 건물을 설계할 수 없다는 통념이 존재함.</p>
+                    <p>• <b>📍 본론:</b> 그러나 함부르크의 Elbphilharmonie 강당은 미적으로 매우 뛰어남에도 불구하고, 사실 '파라메트릭 디자인(parametric design)'이라는 알고리즘 기술을 통해 설계되었음. 건축가가 조건(criteria)을 주면 시스템이 대안들을 생성하는 방식임.</p>
+                    <p>• <b>📍 결론:</b> 이 시스템은 인간처럼 직관적으로 창의성을 발휘하는 것이 아니라, 방대한 연산 처리 능력(processing power)을 활용해 맹목적으로 무수한 디자인을 생성하는 것뿐이며 인간과는 전혀 다른 방식으로 작동함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 기타 몸통(울림통)을 통한 현의 진동 증폭과 소리 전달의 원리</span>
-                    <span class="topic-eng">Topic: The principle of string vibration amplification and sound transmission through the guitar body</span>
+                    <span class="topic-kor">주제: 파라메트릭 디자인 알고리즘을 활용한 건축 설계와 기계 연산력의 특징</span>
+                    <span class="topic-eng">Topic: Architectural design utilizing parametric design algorithms and the characteristics of machine processing power</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
                 fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-    function fillBlanks(sentence) {
-        const container = document.getElementById('blank-area');
-        sentence.split(' ').forEach(word => {
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
             const span = document.createElement('span');
-            span.className = 'word-blank'; span.innerText = word;
-            span.onclick = function() { this.classList.add('revealed'); playTTS(word.replace(/[.,'"]/g, "")); };
-            container.appendChild(span);
+            const cw = w.replace(/[.,'“”;:()—]/g, "").toLowerCase();
+            if(visibleWords.includes(cw)) { 
+                span.innerText = w; 
+                span.style.margin="0 4px"; 
+                span.style.fontWeight="bold"; 
+                span.style.color = "var(--purple-dark)";
+            } else { 
+                span.className = 'word-blank'; 
+                span.innerText = w; 
+                span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'“”;:()—]/g, "")); }; 
+            }
+            area.appendChild(span);
         });
     }
 
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>
