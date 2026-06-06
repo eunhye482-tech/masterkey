@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Master #20 - Official Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Master - Parent Coaching</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -12,18 +12,17 @@
             --purple-dark: #673AB7;
             --pink-soft: #FFF0F6;
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        .phone-container { width: 100%; max-width: 450px; height: 100%; background: white; display: flex; flex-direction: column; position: relative; }
-        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; }
-        #display-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #F8F7FA; display: flex; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 450px; background: white; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .header { padding: 12px; text-align: center; font-weight: bold; color: var(--purple-dark); border-bottom: 1px solid #eee; background: white; font-size: 0.95rem; position: sticky; top: 0; z-index: 10; }
+        #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,25 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
-        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        /* 전체 빈칸 구조화 로직 */
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 12px; background: #fdfdfd; border-radius: 15px; border: 1px solid #eee; line-height: 2.3; }
+        .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 45px; text-align: center; font-size: 1.05rem; color: transparent; cursor: pointer; padding: 0 4px; transition: all 0.2s; display: inline-block; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; word-break: break-all; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #20</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,13 +59,13 @@
 
 <script>
     const fullData = [
-        { en: "People often ask me, 'What surprises you most about habits?'", ko: "사람들은 종종 나에게 '습관에 대해 무엇이 당신을 가장 놀라게 하나요?'라고 묻습니다.", voca: ["habits:습관", "surprises:놀라게하다", "often:종종", "most:가장", "ask:묻다", "people:사람들", "about:~에대해", "what:무엇", "me:나에게", "🍌"] },
-        { en: "One thing that continually astonishes me is the degree to which we’re influenced by sheer convenience.", ko: "나를 계속해서 깜짝 놀라게 하는 한 가지는 우리가 순전한 편리함에 의해 영향을 받는 정도입니다.", voca: ["continually:계속해서", "astonishes:놀라게하다", "degree:정도", "influenced:영향을받는", "sheer:순전한", "convenience:편리함", "thing:것", "which:그것", "we are:우리는", "🍌"] },
-        { en: "The amount of effort, time, or decision making required by an action has a huge influence on habit formation.", ko: "행동에 요구되는 노력, 시간, 또는 의사 결정의 양은 습관 형성에 큰 영향을 미칩니다.", voca: ["effort:노력", "decision making:의사결정", "required:요구되는", "huge:거대한/큰", "influence:영향", "formation:형성", "amount:양", "action:행동", "habit:습관", "time:시간"] },
-        { en: "To a truly remarkable extent, we’re more likely to do something if it’s convenient, and less likely if it’s not.", ko: "정말로 주목할 만한 정도로, 우리는 어떤 일이 편리하면 그것을 할 가능성이 더 높고, 편리하지 않으면 그럴 가능성이 낮습니다.", voca: ["remarkable:주목할만한", "extent:정도", "more likely:더~할것같은", "convenient:편리한", "less likely:덜~할것같은", "truly:정말로", "something:무언가", "if:~라면", "🍌", "🍌"] },
-        { en: "For this reason, we should pay close attention to the convenience of any activity we want to make into a habit.", ko: "이러한 이유로, 우리는 습관으로 만들고 싶은 모든 활동의 편리함에 세심한 주의를 기울여야 합니다.", voca: ["reason:이유", "pay attention:주의를기울이다", "activity:활동", "habit:습관", "close:세심한", "should:~해야한다", "convenience:편리함", "any:어떤/모든", "want:원하다", "make:만들다"] },
-        { en: "Putting a wastebasket next to our front door made mail sorting slightly more convenient, and I stopped procrastinating with this chore.", ko: "현관 옆에 휴지통을 두는 것은 우편물 분류를 약간 더 편리하게 만들었고, 나는 이 잡일을 미루는 것을 그만두었습니다.", voca: ["wastebasket:휴지통", "sorting:분류", "slightly:약간", "procrastinating:미루는것", "chore:잡일", "putting:두는것", "next to:~옆에", "front door:현관", "stopped:그만두었다", "convenient:편리한"] },
-        { en: "Many people report that they do a much better job of staying close to distant family members now that tools like group chats make it easy to stay in touch.", ko: "많은 사람들은 이제 그룹 채팅과 같은 도구들이 연락을 유지하는 것을 쉽게 만들어 주기 때문에 멀리 떨어진 가족들과 친밀하게 지내는 일을 훨씬 더 잘한다고 보고합니다.", voca: ["report:보고하다", "distant:먼/떨어진", "group chats:그룹채팅", "stay in touch:연락을유지하다", "family members:가족구성원", "better:더나은", "tools:도구", "easy:쉬운", "stay:머물다", "like:~와같은"] }
+        { en: "Remember how you learned to drive or cook?", ko: "당신이 운전이나 요리를 어떻게 배웠는지 기억하십니까?", voca: ["Remember:기억하다", "learned:배웠다", "drive:운전하다", "cook:요리하다", "how:어떻게", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "You practiced while someone coached you, reminding you what to do until you were able to coach yourself and then, eventually, do it automatically.", ko: "당신은 누군가가 당신을 코치하고, 당신이 스스로를 코치할 수 있을 때까지 무엇을 해야 할지 상기시켜 주는 동안 연습했고, 그러고 나서 결국 그것을 무의식적으로 하게 되었습니다.", voca: ["practiced:연습했다", "coached:코치했다", "reminding:상기시키며", "until:~할 때까지", "able to:~할 수 있는", "coach yourself:스스로를 코치하다", "eventually:결국", "automatically:무의식적으로/자동으로", "🍎", "🍎"] },
+        { en: "Children learn values much the same way.", ko: "아이들도 거의 같은 방식으로 가치관을 배웁니다.", voca: ["Children:아이들", "learn:배우다", "values:가치관", "much the same way:거의 같은 방식으로", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "They practice different kinds of behavior, while, you, as coach, help focus their attention on what is important and on fine-tuning important skills.", ko: "그들이 다양한 종류의 행동을 연습하는 동안, 당신은 코치로서 그들의 주의를 중요한 것에 집중시키고 중요한 기술을 미세 조정하도록 돕습니다.", voca: ["behavior:행동", "as coach:코치로서", "focus:집중시키다", "attention:주의/집중", "important:중요한", "fine-tuning:미세 조정", "skills:기술들", "different kinds:다양한 종류", "🍎", "🍎"] },
+        { en: "You support them with your praise, encouragement and gentle reminders.", ko: "당신은 칭찬, 격려, 그리고 정중하게 상기시키는 말로 그들을 지원합니다.", voca: ["support:지원하다/지지하다", "praise:칭찬", "encouragement:격려", "gentle:정중한/부드러운", "reminders:상기시키는 것", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: "If you don’t coach your child, she will find her coaches elsewhere and be guided by the values of the media, her peers and anyone else who captures her interest.", ko: "만약 당신이 자녀를 코치하지 않는다면, 그녀는 다른 곳에서 자신의 코치를 찾을 것이고 미디어, 또래, 그리고 그녀의 흥미를 끄는 다른 누구의 가치관에 의해 인도될 것입니다.", voca: ["elsewhere:다른 곳에서", "guided by:~에 의해 인도되는", "values:가치관", "media:미디어", "peers:또래", "captures:자아내다/잡다", "interest:흥미/관심", "anyone else:다른 누구", "🍎", "🍎"] },
+        { en: "So, step up to the plate, don’t be afraid and help your child learn how to be a good person, step by step.", ko: "그러니 당당하게 나서서 두려워하지 말고, 자녀가 좋은 사람이 되는 법을 단계별로 배우도록 도우십시오.", voca: ["step up to the plate:당당하게 나서다", "afraid:두려워하는", "learn:배우다", "good person:좋은 사람", "step by step:단계별로", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,103 +79,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #20";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Influence of Convenience<br>on Habit Formation</h1><p>2025년 6월 고1 모의고사 20번</p></div>
+                <div class="main-title-card"><h1>The Parent as<br>a Life Coach</h1><p>자녀 코칭과 가치관 형성</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 습관 형성에서 가장 놀라운 요소는 바로 '순전한 편리함'임.</p>
-                    <p>• <b>📍 본론:</b> 행동에 필요한 노력, 시간, 의사결정의 양이 적을수록 습관이 되기 쉬움.</p>
-                    <p>• <b>📍 결론:</b> 습관을 만들고 싶다면 그 활동을 최대한 편리하게 환경을 조성해야 함.</p>
+                    <p>• <b>📍 서론:</b> 운전이나 요리 학습 과정처럼, 인간의 모든 행동 양식과 내면화 과정은 외부의 지속적인 코칭과 상기(reminding) 작업을 동반함.</p>
+                    <p>• <b>📍 본론:</b> 자녀들의 가치관 배움 또한 이와 동일함. 부모가 코치로서 중요한 가치에 주의를 집중시키고 미세 조정(fine-tuning)을 도우며, 칭찬과 격려로 가이드라인을 제공해야 함.</p>
+                    <p>• <b>📍 결론:</b> 부모의 코칭 공백은 미디어, 또래 집단 등 정제되지 않은 외부 가치관의 무분별한 유입을 초래함. 따라서 두려워하지 말고 당당히 나서서(step up to the plate) 자녀의 성장을 단계별로 견인해야 함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 편리함이 습관 형성에 미치는 지대한 영향</span>
-                    <span class="topic-eng">Topic: The Profound Influence of Convenience on the Formation of Habits</span>
+                    <span class="topic-kor">주제: 자녀의 올바른 가치관 형성을 위한 부모의 적극적인 코칭 역할의 필요성</span>
+                    <span class="topic-eng">Topic: The necessity of parents' active coaching role for shaping children's right values</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = `STEP ${stepNum} (${currentIdx + 1}/${fullData.length})`;
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
-  // 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,'“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

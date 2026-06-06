@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #32 - Official Version</title>
+    <title>English Master - Learning Environment & Variety</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #32</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,12 +58,15 @@
 
 <script>
     const fullData = [
-        { en: "Most entrepreneurs put in tremendous amounts of time and effort in creating and launching new products and services and then make the mistake of overpricing them.", ko: "대부분의 기업가는 신제품과 서비스를 만들고 출시하는 데 엄청난 시간과 노력을 들이고 나서 그것들에 너무 높은 가격을 매기는 실수를 범합니다.", voca: ["entrepreneurs:기업가", "tremendous:엄청난", "amounts:양", "effort:노력", "launching:출시", "mistake:실수", "overpricing:과도하게가격을매기다", "products:제품", "services:서비스", "creating:창조/제작"] },
-        { en: "They have created something they care deeply about, it’s theirs, and this powerful sense of ownership distorts their perception of value which causes them to overprice their products.", ko: "그들은 자신들이 깊이 관심을 두는 무언가를 만들었고, 그것은 자신들의 것이며, 이러한 강력한 소유 의식은 가치에 대한 인식을 왜곡하여 그들이 제품 가격을 과하게 책정하게 만듭니다.", voca: ["care deeply:깊이관심두다", "ownership:소유권", "distorts:왜곡하다", "perception:인식", "value:가치", "causes:유발하다", "overprice:과하게가격매기다", "sense:의식/감각", "powerful:강력한", "theirs:그들의것"] },
-        { en: "While many of them are quick to realize that their initial prices are too high, not all these people are happy or willing to drop their prices to make their products more attractive.", ko: "그들 중 다수는 초기 가격이 너무 높다는 것을 빨리 깨닫지만, 이 사람들 모두가 제품을 더 매력적으로 만들기 위해 기꺼이 가격을 내리거나 기쁘게 생각하는 것은 아닙니다.", voca: ["realize:깨닫다", "initial:초기의", "willing to:기꺼이~하는", "drop:내리다", "attractive:매력적인", "while:~이지만", "quick:빠른", "prices:가격", "people:사람들", "happy:기쁜"] },
-        { en: "And this can be a very costly mistake that may lead to the failure of their new business.", ko: "그리고 이것은 새로운 사업의 실패로 이어질 수 있는 매우 큰 대가를 치르는 실수가 될 수 있습니다.", voca: ["costly:대가가큰/비싼", "mistake:실수", "lead to:~로이어지다", "failure:실패", "business:사업", "new:새로운", "can:할수있다", "very:매우", "may:일지도모른다", "🍌"] },
-        { en: "When you launch a new product or service, your priority should be to get sufficient market adoption as soon as possible and you should be ready to sacrifice your initial prices and profits to achieve this aim.", ko: "신제품이나 서비스를 출시할 때, 여러분의 우선순위는 가능한 한 빨리 충분한 시장 채택을 얻는 것이어야 하며, 이 목표를 달성하기 위해 초기 가격과 이익을 희생할 준비가 되어 있어야 합니다.", voca: ["priority:우선순위", "sufficient:충분한", "adoption:채택", "as soon as possible:가능한한빨리", "sacrifice:희생하다", "profits:이익", "achieve:달성하다", "aim:목표", "ready:준비된", "initial:초기의"] },
-        { en: "Once you have strong sales volumes, you can increase your prices to maximize your profits.", ko: "일단 강력한 판매량을 확보하면, 이익을 극대화하기 위해 가격을 올릴 수 있습니다.", voca: ["Once:일단~하면", "sales volumes:판매량", "increase:늘리다/인상하다", "maximize:극대화하다", "profits:이익", "strong:강력한", "prices:가격", "can:할수있다", "🍌", "🍌"] }
+        { en: `Do you always study in the same spot?`, ko: `당신은 항상 같은 장소에서 공부하나요?`, voca: ["always:항상", "study:공부하다", "same spot:같은 장소", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Don’t.`, ko: `그러지 마십시오.`, voca: ["Don't:그러지 마라", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `If you study in different places, that helps create variety, and that rich experience can reinforce what you are learning.`, ko: `만약 당신이 서로 다른 장소에서 공부한다면, 그것은 다양성을 만드는 데 도움이 되며, 그러한 풍부한 경험은 당신이 배우고 있는 것을 강화할 수 있습니다.`, voca: ["different places:서로 다른 장소들", "helps create:~을 만드는 데 돕다", "variety:다양성", "rich experience:풍부한 경험", "reinforce:강화하다", "what you are learning:당신이 배우고 있는 것", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `When several college students told us they did school work in different places rather than in some favorite nook, that habit reflected the research on learning.`, ko: `몇몇 대학생들이 자신들이 선호하는 구석진 자리보다는 서로 다른 장소에서 학교 공부를 했다고 우리에게 말했을 때, 그 습관은 학습에 대한 연구를 반영한 것이었습니다.`, voca: ["several:몇몇의", "college students:대학생들", "school work:학교 공부", "rather than:~보다 오히려", "favorite nook:선호하는 구석진 자리", "habit:습관", "reflected:반영했다", "research on learning:학습에 대한 연구", "🍎", "🍎"] },
+        { en: `Numerous experiments have found that if learners simply study in at least two different places, they are more likely to recall the material.`, ko: `수많은 실험을 통해 학습자가 단순히 최소 두 곳의 서로 다른 장소에서 공부하기만 해도 학습 내용을 더 잘 회상할 가능성이 높다는 것이 밝혀졌습니다.`, voca: ["Numerous:수많은", "experiments:실험들", "found:밝혀냈다/발견했다", "learners:학습자들", "simply:단순히", "at least:최소한/적어도", "two different places:두 곳의 서로 다른 장소들", "more likely to:~할 가능성이 더 높은", "recall:회상하다/기억해내다", "material:학습 내용/재료"] },
+        { en: `In one of the first such trials, two different groups studied a list of words.`, ko: `그러한 첫 번째 시도 중 하나에서, 두 개의 서로 다른 그룹이 단어 목록을 학습했습니다.`, voca: ["first such trials:그러한 첫 번째 시도들", "two different groups:두 개의 서로 다른 그룹들", "studied:학습했다/공부했다", "list of words:단어 목록", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Some students returned to the same room twice while their counterparts spent the same amount of time divided between two locations.`, ko: `어떤 학생들은 같은 방에 두 번 돌아온 반면, 다른 편 학생들은 두 장소에 나누어 같은 양의 시간을 보냈습니다.`, voca: ["returned:돌아왔다", "same room:같은 방", "twice:두 번", "while:~인 반면에", "counterparts:다른 편 상대방/대응물", "spent:보냈다", "same amount:같은 양", "divided:나누어진", "two locations:두 장소들", "🍎"] },
+        { en: `When asked to recall as many words on the list as possible, those who had moved around did far better.`, ko: `목록에 있는 단어를 가능한 한 많이 회상하라는 요청을 받았을 때, 장소를 이동했던 학생들이 훨씬 더 잘했습니다.`, voca: ["asked to recall:회상하라는 요청을 받았을 때", "as many ~ as possible:가능한 한 많은 ~", "moved around:장소를 이동했던/돌아다녔던", "did far better:훨씬 더 잘했다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Variety creates rich association, even when those connections form in the background, totally outside of what we are consciously thinking.`, ko: `그러한 연결고리가 우리가 의식적으로 생각하고 있는 것의 완전히 밖인 배경에서 형성될 때조차도, 다양성은 풍부한 연합을 만들어 냅니다.`, voca: ["Variety:다양성", "creates:만들어 낸다", "rich association:풍부한 연합", "connections:연결고리들", "form:형성되다", "in the background:배경에서", "totally outside:완전히 밖에서", "consciously thinking:의식적으로 생각하는 것", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,103 +80,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #32";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Trap of Overpricing:<br>Ownership Bias</h1><p>2025년 6월 고1 모의고사 32번</p></div>
+                <div class="main-title-card"><h1>Learning Environment<br>& Cognitive Variety</h1><p>학습 장소의 다양성과 기억 강화 기전</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 많은 기업가들이 신제품 출시 시 소유 의식 때문에 가격을 너무 높게 책정하는 실수를 함.</p>
-                    <p>• <b>📍 본론:</b> 소유권에 대한 애착은 가치 인식을 왜곡하며, 가격 인하를 주저하게 만들어 사업 실패를 초래함.</p>
-                    <p>• <b>📍 결론:</b> 초기에는 이익보다 시장 점유율 확보를 우선시해야 하며, 판매량이 안정된 후 가격을 올려야 함.</p>
+                    <p>• <b>📍 서론:</b> 매번 똑같은 한 장소(same spot)에서만 고수하며 공부하는 습관을 지양(Don't)하라는 실천적 제안으로 시작함.</p>
+                    <p>• <b>📍 본론:</b> 서로 다른 환경(different places)에서의 공부는 다양성을 부여하며, 이 풍부한 경험은 학습 내용의 내면화와 인지적 강화를 견인함. 수많은 실험 결과, 최소 두 장소(at least two different places)에서 공부한 학습자가 자료를 훨씬 더 높은 확률로 회상(recall)함.</p>
+                    <p>• <b>📍 결론:</b> 동일 장소에 머문 대조군보다 공간적 변동을 준 학생들이 기억 수행 능력에서 탁월한 성과를 거둠. 다양성은 의식적인 생각의 영역 밖인 뇌의 무의식적 배경(background)에서조차 풍부한 연합(rich association)과 굳건한 연결고리를 형성하기 때문임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 신제품 출시 시 과도한 가격 책정의 위험성과 시장 채택의 우선순위</span>
-                    <span class="topic-eng">Topic: The Dangers of Overpricing and the Priority of Market Adoption in New Product Launch</span>
+                    <span class="topic-kor">주제: 기억력 향상과 풍부한 연합 형성을 유도하는 다양한 학습 장소 선택의 필요성</span>
+                    <span class="topic-eng">Topic: The necessity of studying in different places to improve memory recall and create rich cognitive associations</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

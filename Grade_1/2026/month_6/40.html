@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #40 - Official Version</title>
+    <title>English Master - Danger Detector & Decisions</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #40</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,15 +58,12 @@
 
 <script>
     const fullData = [
-        { en: "There is a natural assumption of truth, or a truth bias when humans communicate with one another.", ko: "인간이 서로 의사소통할 때 진실에 대한 자연스러운 가정, 즉 진실 편향이 존재합니다.", voca: ["natural:자연스러운", "assumption:가정", "truth bias:진실 편향", "communicate:의사소통하다", "one another:서로", "humans:인간들", "there is:~이 있다", "truth:진실", "🍌", "🍌"] },
-        { en: "In other words, when we’re listening to others or reading their words, our automatic assumption is that the other person is telling the truth.", ko: "다시 말해, 우리가 다른 사람의 말을 듣거나 그들의 글을 읽을 때, 우리의 자동적인 가정은 상대방이 진실을 말하고 있다는 것입니다.", voca: ["In other words:다시 말해", "automatic:자동적인", "assumption:가정", "telling:말하는 것", "listening:듣는 것", "reading:읽는 것", "words:말/글", "others:다른 사람들", "truth:진실", "🍌"] },
-        { en: "This usually works out fine.", ko: "이것은 보통 잘 작동합니다.", voca: ["usually:보통/일반적으로", "works out:작동하다/해결되다", "fine:잘/좋게", "This:이것", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "If you ask someone where the restroom is located or if it’s raining outside, you can safely assume that most people will not lie in their responses.", ko: "화장실이 어디에 있는지 물어보거나 밖에 비가 오는지 물어본다면, 대부분의 사람들이 응답에서 거짓말을 하지 않을 것이라고 안전하게 가정할 수 있습니다.", voca: ["located:위치한", "safely:안전하게", "assume:가정하다", "lie:거짓말하다", "responses:응답/대답", "ask:묻다", "restroom:화장실", "outside:밖에", "raining:비가 오는", "🍌"] },
-        { en: "Imagine how difficult it would be to converse with someone if you assumed that everything they were telling you was false!", ko: "상대방이 당신에게 하는 모든 말이 거짓이라고 가정하고 대화하는 것이 얼마나 어려울지 상상해 보십시오!", voca: ["Imagine:상상하다", "converse:대화하다", "false:거짓의", "difficult:어려운", "everything:모든 것", "assumed:가정했다면", "telling:말하는 것", "someone:누군가", "how:얼마나", "🍌"] },
-        { en: "Indeed, questioning the truth of a statement and then choosing not to believe it requires additional mental steps.", ko: "실제로 진술의 진실성을 의심하고 믿지 않기로 선택하는 것은 추가적인 정신적 단계가 필요합니다.", voca: ["Indeed:실제로/참으로", "questioning:의심/질문하는 것", "statement:진술", "choosing:선택하는 것", "requires:필요로 하다", "additional:추가적인", "mental steps:정신적 단계", "believe:믿다", "truth:진실", "🍌"] },
-        { en: "For the most part, humans are 'cognitive misers,' which means we typically don’t expend more mental effort than seems necessary in a given situation.", ko: "대체로 인간은 '인지적 구두쇠'인데, 이는 우리가 주어진 상황에서 필요해 보이는 것 이상의 정신적 노력을 일반적으로 들이지 않는다는 것을 의미합니다.", voca: ["cognitive misers:인지적 구두쇠", "typically:일반적으로", "expend:들이다/소비하다", "necessary:필요한", "situation:상황", "mental effort:정신적 노력", "means:의미하다", "given:주어진", "most part:대부분", "🍌"] },
-        { en: "It makes sense then, that when we see something online, even if it is fake, our default is to believe it, at least at first.", ko: "그러므로 우리가 온라인에서 무언가를 볼 때, 비록 그것이 가짜일지라도 우리의 기본 설정은 적어도 처음에는 그것을 믿는 것이라는 점이 이해가 됩니다.", voca: ["makes sense:이해가 되다", "online:온라인에서", "fake:가짜의", "default:기본 설정", "at least:적어도", "at first:처음에는", "believe:믿다", "even if:비록 ~일지라도", "something:무언가", "🍌"] },
-        { en: "We humans are unlikely to doubt the truth of information we receive, due to our tendency to save mental effort.", ko: "우리 인간은 정신적 노력을 아끼려는 경향 때문에 우리가 받는 정보의 진실성을 의심하지 않을 가능성이 높습니다.", voca: ["unlikely:할 것 같지 않은", "doubt:의심하다", "tendency:경향", "save:아끼다/저장하다", "mental effort:정신적 노력", "information:정보", "receive:받다", "due to:~때문에", "truth:진실", "🍌"] }
+        { en: `We go out in the world every day and make decisions about what is safe or not and what is appropriate or not.`, ko: `우리는 매일 세상에 나가 무엇이 안전한지 그렇지 않은지, 그리고 무엇이 적절한지 그렇지 않은지에 대해 결정을 내립니다.`, voca: ["go out:나가다", "every day:매일", "make decisions:결정을 내리다", "safe or not:안전한지 아닌지", "appropriate:적절한", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `It is what psychologist Joseph LeDoux has suggested is an unconscious “danger detector” that determines whether or not something or someone is safe before we can even begin to consciously make a determination.`, ko: `그것은 심리학자인 Joseph LeDoux가 제안한 것으로, 우리가 의식적으로 판단을 내리기 시작하기도 전에 어떤 것이나 누군가가 안전한지 아닌지를 결정하는 무의식적인 '위험 감지기'입니다.`, voca: ["psychologist:심리학자", "suggested:제안했다", "unconscious:무의식적인", "danger detector:위험 감지기", "determines:결정한다", "whether or not:~인지 아닌지", "before:~하기 전에", "consciously:의식적으로", "determination:판단/결정", "🍎"] },
+        { en: `When the object, animal, or person is assessed to be dangerous, a fear response, which has been called “fight or flight,” occurs.`, ko: `물건, 동물, 또는 사람이 위험하다고 평가되면 '투쟁 혹은 도피'라고 불리는 공포 반응이 일어납니다.`, voca: ["object:물건/대상", "assessed:평가된", "dangerous:위험한", "fear response:공포 반응", "called:~라고 불리는", "fight or flight:투쟁 혹은 도피", "occurs:일어난다/발생한다", "🍎", "🍎", "🍎"] },
+        { en: `On a conscious level we may correct a mistake in this “danger detector” when we notice it, but often, of course, we simply begin to generate reasons for why it was accurate in the first place.`, ko: `의식적인 수준에서 우리는 이 '위험 감지기'의 실수를 알아차렸을 때 그것을 수정할 수도 있지만, 물론 흔히 우리는 그것이 애초에 왜 정확했는지에 대한 이유를 대기 시작할 뿐입니다.`, voca: ["conscious level:의식적인 수준", "correct:수정하다/올바른", "mistake:실수", "notice:알아차리다", "generate reasons:이유를 대다/만들어내다", "accurate:정확한", "in the first place:애초에/처음에", "🍎", "🍎", "🍎"] },
+        { en: `We are generally convinced that our decisions are “rational,” but in reality, most human decisions are made emotionally, and then we collect or generate the facts to justify these decisions.`, ko: ` 우리는 일반적으로 우리의 결정이 '합리적'이라고 확신하지만, 실제로는 대부분의 인간의 결정이 감정적으로 내려지고, 그러고 나서 우리는 이러한 결정을 정당화하기 위해 사실을 수집하거나 만들어 냅니다.`, voca: ["generally:일반적으로", "convinced:확신하는", "rational:합리적인", "in reality:실제로는/사실은", "emotionally:감정적으로", "collect:수집하다", "facts:사실들", "justify:정당화하다", "decisions:결정들", "🍎"] },
+        { en: `When we see something or someone who “feels” dangerous, we have already launched into action internally before we have even started “thinking.”`, ko: `우리가 위험하다고 '느껴지는' 어떤 것이나 누군가를 볼 때, 우리는 '생각'을 시작하기도 전에 이미 내면적으로 행동에 착수했습니다.`, voca: ["feels dangerous:위험하다고 느껴지는", "already:이미", "launched into action:행동에 착수했다", "internally:내면적으로", "before:~하기 전에", "started thinking:생각을 시작했다", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,103 +77,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #40";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Truth Bias:<br>Cognitive Misers</h1><p>2025년 6월 고1 모의고사 40번</p></div>
+                <div class="main-title-card"><h1>Danger Detector &<br>Emotional Decisions</h1><p>무의식적 위험 감지와 감정의 사후 정당화</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 인간은 소통할 때 상대가 진실을 말한다고 가정하는 '진실 편향'을 가지고 있음.</p>
-                    <p>• <b>📍 본론:</b> 의심은 추가적인 정신적 노력을 요구하므로, '인지적 구두쇠'인 인간은 노력을 아끼기 위해 기본적으로 믿음을 선택함.</p>
-                    <p>• <b>📍 결론:</b> 이러한 경향 때문에 온라인의 가짜 정보도 처음에는 의심 없이 받아들이게 됨.</p>
+                    <p>• <b>📍 서론:</b> 인간은 매일 환경 속에서 안전(safe)과 적절성(appropriate)을 직관적으로 평가하고 결정하는 삶을 살아감.</p>
+                    <p>• <b>📍 본론:</b> 심리학자 조셉 르두에 의하면, 뇌 안에는 의식적 사유 전에 작동하는 무의식적 '위험 감지기(danger detector)'가 존재함. 대상이 위험하다고 판단되면 즉각적인 공포 반응인 '투쟁 혹은 도피(fight or flight)' 기전이 실행됨.</p>
+                    <p>• <b>📍 결론:</b> 우리는 의식 수준에서 오류를 수정하기보다, 애초에 그 판단이 옳았다는 사후 핑계를 생성함. 인간의 결정은 합리적(rational)인 것 같지만 실제로는 감정적으로 결정(made emotionally)된 후, 이를 정당화(justify)할 사실을 수집·조작하는 경향을 보임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 인지적 노력을 아끼려는 성향으로 인한 진실 편향과 정보 수용</span>
-                    <span class="topic-eng">Topic: Truth Bias and Information Acceptance Due to the Tendency to Save Mental Effort</span>
+                    <span class="topic-kor">주제: 감정적·무의식적으로 내려진 결정을 사후에 이성적으로 정당화하려는 인간의 인지적 특성</span>
+                    <span class="topic-eng">Topic: The human cognitive tendency to rationally justify decisions after they are made emotionally and unconsciously</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

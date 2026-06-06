@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #37 - Official Version</title>
+    <title>English Master - Working and Long-Term Memory</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #37</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,12 +58,17 @@
 
 <script>
     const fullData = [
-        { en: "Stanford psychology professor Dr. Carol Dweck is the internationally recognized pioneer of the concept of 'growth mindset' as a way to continually grow, learn, and persevere in our efforts.", ko: "스탠퍼드 대학교의 심리학 교수인 Carol Dweck 박사는 우리의 노력 속에서 지속적으로 성장하고, 배우고, 인내하는 방법으로서 '성장 마인드셋' 개념의 국제적으로 인정받는 선구자입니다.", voca: ["professor:교수", "internationally:국제적으로", "recognized:인정받는", "pioneer:선구자", "concept:개념", "growth mindset:성장마인드셋", "continually:지속적으로", "persevere:인내하다", "efforts:노력", "psychology:심리학"] },
-        { en: "Dweck found that kids who are told they’re 'smart' actually underperform in future tasks, by choosing easier tasks to avoid evidence that they are not smart, which Dweck calls having a 'fixed mindset.'", ko: "Dweck은 '똑똑하다'는 말을 들은 아이들이 자신이 똑똑하지 않다는 증거를 피하기 위해 더 쉬운 과제를 선택함으로써 실제로 미래의 과제에서 더 낮은 성과를 낸다는 것을 발견했는데, Dweck은 이를 '고정 마인드셋'을 가진 것이라고 부릅니다.", voca: ["underperform:낮은성과를내다", "future tasks:미래의과제", "choosing:선택하는것", "avoid:피하다", "evidence:증거", "fixed mindset:고정마인드셋", "smart:똑똑한", "actually:실제로", "calls:부르다", "kids:아이들"] },
-        { en: "In contrast, Dweck found, kids who are praised not for their smarts but for their effort develop what Dweck calls a 'growth mindset.'", ko: "반면에 Dweck은 지능이 아니라 노력에 대해 칭찬을 받은 아이들이 Dweck이 '성장 마인드셋'이라고 부르는 것을 발달시킨다는 것을 발견했습니다.", voca: ["In contrast:대조적으로", "praised:칭찬받은", "smarts:지능", "effort:노력", "develop:발달시키다", "found:발견했다", "kids:아이들", "calls:부르다", "what:것", "🍌"] },
-        { en: "They learn that their effort is what led to their success, and if they continue to try, over time they’ll improve and achieve more things.", ko: "그들은 자신의 노력이 성공으로 이어진 것이며, 계속 노력하면 시간이 지남에 따라 향상되고 더 많은 것을 성취할 것이라는 점을 배웁니다.", voca: ["effort:노력", "led to:~로이어지다", "success:성공", "continue:계속하다", "improve:향상되다", "achieve:성취하다", "things:것들", "over time:시간이지남에따라", "learn:배우다", "try:노력하다"] },
-        { en: "These kids end up taking on tougher things, and feel better about themselves.", ko: "이 아이들은 결국 더 힘든 일들을 맡게 되고, 자신에 대해 더 좋게 느끼게 됩니다.", voca: ["end up:결국~하게되다", "taking on:맡다/떠맡다", "tougher:더힘든", "feel better:기분이더좋다", "themselves:그들자신", "things:일들", "These:이러한", "kids:아이들", "about:~에대해", "🍌"] },
-        { en: "“Emphasizing effort gives a child a variable that they can control,” Dweck has explained.", ko: "Dweck은 “노력을 강조하는 것은 아이에게 스스로 조절할 수 있는 변수를 주는 것”이라고 설명했습니다.", voca: ["Emphasizing:강조하는것", "effort:노력", "variable:변수", "control:조절/통제하다", "explained:설명했다", "gives:주다", "child:아이", "can:할수있다", "they:그들", "🍌"] }
+        { en: `The big difference between working and long-term memory is that we are explicitly aware of the information in working memory, but we are not able to directly access the information in our long-term memory.`, ko: `작업 기억과 장기 기억의 큰 차이점은 우리가 작업 기억 속의 정보는 명시적으로 의식하지만, 장기 기억 속의 정보에는 직접 접근할 수 없다는 것입니다.`, voca: ["big difference:큰 차이점", "working memory:작업 기억", "long-term memory:장기 기억", "explicitly aware:명시적으로 의식하는", "information:정보", "not able to:~할 수 없는", "directly access:직접 접근하다", "🍎", "🍎", "🍎"] },
+        { en: `We access long-term memory by bringing the information into working memory.`, ko: `우리는 그 정보를 작업 기억으로 가져옴으로써 장기 기억에 접근합니다.`, voca: ["access:접근하다", "by bringing:~을 가져옴으로써", "information:정보", "into:~ 안으로", "working memory:작업 기억", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `For example, right now you are not aware of all the actors you have ever seen.`, ko: `예를 들어, 지금 당장 여러분은 여러분이 지금까지 보았던 모든 배우들을 의식하지는 못합니다.`, voca: ["For example:예를 들어", "right now:지금 당장", "not aware of:~을 의식하지 못하는", "all the actors:모든 배우들", "ever seen:지금까지 보았던", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `They are stored in your long-term memory outside your consciousness.`, ko: `그것들은 여러분의 의식 밖의 장기 기억에 저장되어 있습니다.`, voca: ["stored:저장된", "outside:~ 밖에", "consciousness:의식", "long-term memory:장기 기억", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `However, if I asked you to list all the actors, you would use your working memory to retrieve them one by one and reel them off.`, ko: `하지만, 만약 내가 여러분에게 모든 배우의 목록을 대보라고 요청한다면, 여러분은 그것들을 하나씩 회수하여 줄줄이 읊기 위해 작업 기억을 사용할 것입니다.`, voca: ["asked you to 요청하다", "list:목록을 대다/나열하다", "retrieve:회수하다/되찾아오다", "one by one:하나씩", "reel off:줄줄이 읊다", "would use:사용할 것이다", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Your working memory can access your long-term memory and bring those memories to awareness.`, ko: `여러분의 작업 기억은 장기 기억에 접근하여 그러한 기억들을 의식으로 가져올 수 있습니다.`, voca: ["working memory:작업 기억", "access:접근하다", "long-term memory:장기 기억", "bring A to awareness:A를 의식으로 가져오다", "memories:기억들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `But remember it has a limit of seven items or chunks.`, ko: `하지만 그것이 7개의 항목이나 덩어리라는 한계를 가지고 있다는 것을 기억하십시오.`, voca: ["remember:기억하다", "limit:한계/제한", "seven items:7개의 항목들", "chunks:덩어리들", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Each actor would be an item.`, ko: `각 배우가 하나의 항목이 될 것입니다.`, voca: ["Each actor:각 배우", "would be:~이 될 것이다", "item:항목", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Try and hold all the actors you know in your explicit awareness.`, ko: `여러분이 알고 있는 모든 배우를 명시적 의식 속에 담아두려고 노력해 보십시오.`, voca: ["Try and hold:담아두려고 노력하다", "all the actors:모든 배우들", "you know:여러분이 알고 있는", "explicit awareness:명시적 의식", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `You might try to visualize a large group of them.`, ko: `여러분은 그들의 큰 집단을 마음속에 시각화하려고 노력할지도 모릅니다.`, voca: ["try to visualize:시각화하려고 노력하다", "large group:큰 집단", "them:그들", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `But you still would only be aware of a few actors at any one time.`, ko: `하지만 여러분은 여전히 어느 한 번에 오직 몇 명의 배우만을 의식할 수 있을 것입니다.`, voca: ["still:여전히", "only be aware of:오직 ~만을 의식하다", "a few actors:몇 명의 배우들", "at any one time:어느 한 번에/동시에", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,104 +82,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #37";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Fixed vs. Growth Mindset:<br>The Power of Effort</h1><p>2025년 6월 고1 모의고사 37번</p></div>
+                <div class="main-title-card"><h1>Working vs. Long-Term<br>Memory Mechanisms</h1><p>작업 기억과 장기 기억의 소통과 용량 한계</p></div>
                 
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 캐럴 덱 박사는 지속적 성장을 위한 '성장 마인드셋' 개념의 선구자임.</p>
-                    <p>• <b>📍 본론:</b> 지능 칭찬은 고정 마인드셋(도전 회피)을 만들고, 노력 칭찬은 성장 마인드셋(도전 수용)을 만듦.</p>
-                    <p>• <b>📍 결론:</b> 노력을 강조하면 아이는 스스로 통제 가능한 변수를 얻게 되어 더 어려운 과제에 도전하게 됨.</p>
+                    <p>• <b>📍 서론:</b> 작업 기억(Working memory)과 장기 기억(Long-term memory)의 결정적 차이는 정보에 대한 명시적 의식(explicit awareness) 여부임.</p>
+                    <p>• <b>📍 본론:</b> 의식 밖에 저장된 장기 기억에 직접 접근하는 것은 불가능하며, 정보를 작업 기억 영역으로 소환(retrieve)해야만 활용할 수 있음. 배우의 이름을 떠올려 줄줄이 읊는(reel off) 행위가 이 상호작용의 예시임.</p>
+                    <p>• <b>📍 결론:</b> 그러나 작업 기억은 한 번에 '7개의 항목이나 덩어리(seven items or chunks)'만 처리할 수 있는 병목 한계를 가짐. 아무리 수많은 배우를 동시에 시각화하려 노력해도 한 순간에는 극소수의 배우만 의식 속에 붙잡아둘 수 있음.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 능력(지능)이 아닌 노력에 대한 칭찬이 마인드셋과 성취에 미치는 영향</span>
-                    <span class="topic-eng">Topic: The Impact of Praising Effort over Smarts on Mindset and Achievement</span>
+                    <span class="topic-kor">주제: 작업 기억과 장기 기억의 기능적 차이 및 작업 기억이 가진 정보 처리의 한계</span>
+                    <span class="topic-eng">Topic: The functional differences between working and long-term memory, and the capacity limitations of working memory</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

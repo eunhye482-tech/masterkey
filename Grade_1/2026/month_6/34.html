@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #34 - Official Version</title>
+    <title>English Master - Behavioral Adaptation</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #34</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,12 +58,11 @@
 
 <script>
     const fullData = [
-        { en: "When scientists make an important new discovery or experimentally prove some hypothesis, they do not, in general, keep that information to themselves so that they alone can consider its meaning and derive additional theories from it.", ko: "과학자들이 중요한 새로운 발견을 하거나 어떤 가설을 실험적으로 증명할 때, 그들은 일반적으로 그 의미를 혼자서만 고찰하고 그로부터 추가적인 이론을 끌어낼 수 있도록 그 정보를 자신들만 알고 있지는 않습니다.", voca: ["discovery:발견", "experimentally:실험적으로", "hypothesis:가설", "in general:일반적으로", "derive:이끌어내다/유래하다", "theories:이론들", "consider:고찰하다/고려하다", "meaning:의미", "alone:홀로", "additional:추가적인"] },
-        { en: "Instead, they publish their results and make their data available for inspection.", ko: "대신에, 그들은 결과를 발표하고 자신들의 데이터를 검토할 수 있도록 공개합니다.", voca: ["Instead:대신에", "publish:발표/출판하다", "results:결과", "available:이용가능한", "inspection:검토/사찰", "data:자료", "make:만들다", "🍌", "🍌", "🍌"] },
-        { en: "This makes it possible for other scientists to reconsider their data and possibly refute their conclusions.", ko: "이것은 다른 과학자들이 그들의 데이터를 재고하고 아마도 그들의 결론을 반박하는 것을 가능하게 합니다.", voca: ["possible:가능한", "reconsider:재고하다", "possibly:아마도", "refute:반박하다", "conclusions:결론", "data:자료", "scientists:과학자들", "other:다른", "makes:만들다", "🍌"] },
-        { en: "More important, though, it makes it possible for other scientists to use that data to construct new hypotheses and perform new experiments.", ko: "하지만 더 중요한 것은, 그것이 다른 과학자들이 그 데이터를 사용하여 새로운 가설을 세우고 새로운 실험을 수행하는 것을 가능하게 한다는 점입니다.", voca: ["though:하지만", "construct:세우다/구성하다", "hypotheses:가설들", "perform:수행하다", "experiments:실험들", "use:사용하다", "scientists:과학자들", "possible:가능한", "data:자료", "important:중요한"] },
-        { en: "The assumption is that society as a whole will end up knowing more if information is spread as widely as possible, rather than being limited to a few people.", ko: "그 전제는 정보가 소수의 사람들에게 제한되기보다는 가능한 한 널리 퍼질 때 사회 전체가 결국 더 많은 것을 알게 될 것이라는 점입니다.", voca: ["assumption:전제/가정", "society:사회", "as a whole:전체적으로", "end up:결국~하게되다", "spread:퍼지다", "widely:널리", "limited:제한된", "rather than:~보다", "information:정보", "possible:가능한"] },
-        { en: "In a strict sense, every scientist depends on the work of other scientists.", ko: "엄격한 의미에서, 모든 과학자는 다른 과학자들의 작업에 의존합니다.", voca: ["strict:엄격한", "sense:의미", "depends on:~에의존하다", "work:작업/노력", "scientists:과학자들", "every:모든", "other:다른", "🍌", "🍌", "🍌"] }
+        { en: `A particularly powerful way in which human beings adapt and adjust to their circumstances is by changing behaviors in light of the consequences that they yield.`, ko: `인간이 환경에 적응하고 조정하는 특히 강력한 방법은 행동이 가져오는 결과를 고려하여 행동을 바꾸는 것입니다.`, voca: ["particularly:특히", "powerful way:강력한 방법", "adapt and adjust:~에 적응하고 조정하다", "circumstances:환경/상황", "changing behaviors:행동을 바꾸는 것", "in light of:~을 고려하여", "consequences:결과들", "yield:가져오다/산출하다", "🍎", "🍎"] },
+        { en: `For instance, a child who gets praised by her teacher for doing an exercise correctly is likely to continue doing the exercise in that way.`, ko: `예를 들어, 과제를 올바르게 수행하여 교사로부터 칭찬을 받은 아이는 그런 방식으로 그 과제를 계속할 가능성이 높습니다.`, voca: ["For instance:예를 들어", "praised:칭찬을 받은", "teacher:교사/선생님", "doing an exercise:과제를 수행하는 것", "correctly:올바르게", "likely to:~할 가능성이 있는", "continue:계속하다", "in that way:그런 방식으로", "🍎", "🍎"] },
+        { en: `A dancer who feels that a particular conditioning exercise is not giving any results is likely to give that exercise up in favor of another one that seems more promising.`, ko: `특정 조건화 운동이 아무런 결과를 내지 못한다고 느끼는 무용수는 더 유망해 보이는 다른 운동을 지지하여 그 운동을 포기할 가능성이 높습니다.`, voca: ["particular:특정", "conditioning exercise:조건화 운동", "results:결과들", "give up:포기하다", "in favor of:~을 지지하여/~을 위하여", "another one:다른 것", "seems more promising:더 유망해 보이는", "🍎", "🍎", "🍎"] },
+        { en: `In general, we tend to do things that bring us some kind of benefit or act in ways that help us avoid some kind of problem, discomfort, or disadvantage.`, ko: `일반적으로 우리는 우리에게 어떤 종류의 이익을 가져다주는 일을 하거나, 어떤 종류의 문제, 불편함, 또는 불이익을 피하도록 도와주는 방식으로 행동하는 경향이 있습니다.`, voca: ["In general:일반적으로", "tend to:~하는 경향이 있다", "bring:가져다주다", "benefit:이익", "act:행동하다", "avoid:피하다", "problem:문제", "discomfort:불편함", "disadvantage:불이익", "🍎"] },
+        { en: `We also tend to do fewer things (or stop doing things) that lead to problems, discomfort, or disadvantages, and we tend to avoid acting in ways that do not bring any benefit or reward.`, ko: `우리는 또한 문제, 불편함, 또는 불이익을 초래하는 일을 더 적게 하거나(또는 하는 것을 중단하거나) 하는 경향이 있으며, 어떠한 이익이나 보상도 가져다주지 않는 방식으로 행동하는 것을 피하는 경향이 있습니다.`, voca: ["fewer things:더 적은 일들", "stop doing:하는 것을 중단하다", "lead to:~을 초래하다", "disadvantages:불이익들", "avoid acting:행동하는 것을 피하다", "reward:보상", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -75,103 +76,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #34";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Transparency of Science:<br>Sharing Knowledge</h1><p>2025년 6월 고1 모의고사 34번</p></div>
+                <div class="main-title-card"><h1>Behavioral Adaptation<br>& Consequences</h1><p>결과에 기반한 인간의 행동 조절 기전</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 과학자들은 발견한 정보를 독점하지 않고 공개적으로 발표함.</p>
-                    <p>• <b>📍 본론:</b> 정보 공개는 동료 검토와 반박을 가능하게 하며, 새로운 가설과 실험의 토대가 됨.</p>
-                    <p>• <b>📍 결론:</b> 과학은 소수의 독점이 아닌 지식의 공유를 통해 사회 전체의 발전을 도모하는 의존적 체계임.</p>
+                    <p>• <b>📍 서론:</b> 인간이 환경에 적응하고 조정(adapt and adjust)하는 매우 강력한 기전은 행동이 초래하는 결과(consequences)를 고려해 행동을 수정하는 것임.</p>
+                    <p>• <b>📍 본론:</b> 올바른 수행으로 교사의 칭찬을 받은 아동이 그 행동을 지속하는 정적 강화의 예시, 그리고 성과가 없는 조건화 운동을 포기하고 더 유망한 대안을 선택하는 무용수의 부적 강화 예시가 이를 뒷받침함.</p>
+                    <p>• <b>📍 결론:</b> 일반화하면 인간은 보상과 이익(benefit)을 주는 행위를 지속하고, 문제나 불편함, 불이익(disadvantage)을 유발하는 행위는 본능적으로 감소시키거나 중단함. 결과가 행동의 빈도를 결정한다는 행동주의적 적응 모델을 보여줌.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 지식 공유와 상호 의존성을 통한 과학의 발전 원리</span>
-                    <span class="topic-eng">Topic: The Principles of Scientific Progress through Knowledge Sharing and Interdependence</span>
+                    <span class="topic-kor">주제: 이익과 불이익이라는 행동의 결과에 따라 행동을 조절하고 환경에 적응하는 인간의 경향</span>
+                    <span class="topic-eng">Topic: The human tendency to modify behaviors and adapt to circumstances based on the benefits and disadvantages of their consequences</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

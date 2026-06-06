@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #29 - Official Version</title>
+    <title>English Master - Enduring Power of Literature</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #29</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,13 +58,12 @@
 
 <script>
     const fullData = [
-        { en: "Studies of experts provide insight into what it means to have deep and flexible understanding.", ko: "전문가들에 대한 연구는 깊고 유연한 이해를 갖는다는 것이 무엇을 의미하는지에 대한 통찰력을 제공합니다.", voca: ["Studies:연구", "experts:전문가", "provide:제공하다", "insight:통찰력", "flexible:유연한", "understanding:이해", "means:의미하다", "deep:깊은", "into:~에대한", "🍌"] },
-        { en: "Experts in a particular domain are people who have deep, richly interconnected ideas about the world.", ko: "특정 분야의 전문가는 세상에 대해 깊고 풍부하게 상호 연결된 아이디어를 가진 사람들입니다.", voca: ["particular:특정한", "domain:분야/영역", "richly:풍부하게", "interconnected:상호연결된", "ideas:아이디어", "world:세상", "people:사람들", "about:~에대해", "deep:깊은", "🍌"] },
-        { en: "They are not just good thinkers or people who are exceptionally smart.", ko: "그들은 단순히 훌륭한 사고가이거나 예외적으로 똑똑한 사람들이 아닙니다.", voca: ["just:단순히", "thinkers:사고자", "exceptionally:예외적으로", "smart:똑똑한", "people:사람들", "They:그들", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Rather, experts have knowledge in a specific domain—such as chess, chemistry, or tennis—and are not generalists.", ko: "오히려 전문가는 체스, 화학 또는 테니스와 같은 특정 분야의 지식을 갖고 있으며 다방면에 능한 사람(제너럴리스트)이 아닙니다.", voca: ["Rather:오히려", "knowledge:지식", "specific:특정한", "chemistry:화학", "generalists:제너럴리스트", "domain:분야", "such as:~와같은", "🍌", "🍌", "🍌"] },
-        { en: "However, experts do not just know 'a bunch of facts.'", ko: "하지만 전문가는 단순히 '많은 사실'만을 알고 있는 것이 아닙니다.", voca: ["However:하지만", "just:단순히", "a bunch of:많은/다수의", "facts:사실들", "know:알다", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "In fact, having expertise in a topic means that knowledge is organized into coherent frameworks, and the expert understands the inter-relationship between facts and can distinguish which ideas are most central.", ko: "사실, 한 주제에 대해 전문 지식을 갖는다는 것은 지식이 일관된 체계로 조직되어 있다는 것을 의미하며, 전문가는 사실들 사이의 상호 관계를 이해하고 어떤 아이디어가 가장 핵심적인지 구별할 수 있습니다.", voca: ["expertise:전문지식", "organized:조직된", "coherent:일관된", "frameworks:체계/프레임워크", "inter-relationship:상호관계", "distinguish:구별하다", "central:핵심적인", "means:의미하다", "knowledge:지식", "between:~사이에"] },
-        { en: "This kind of deep but organized understanding allows for greater flexibility in learning and facilitates application across multiple contexts.", ko: "이러한 종류의 깊고 조직된 이해는 학습의 더 큰 유연성을 가능하게 하고 여러 맥락에 걸친 적용을 용이하게 합니다.", voca: ["kind:종류", "organized:조직된", "allows:가능하게하다", "flexibility:유연성", "facilitates:용이하게하다", "application:적용", "multiple:여러/다양한", "contexts:맥락", "across:~에걸쳐", "learning:학습"] }
+        { en: `Literature, in its essence, is a testament to the enduring power of human creativity and expression.`, ko: `문학은 본질적으로 인간의 창의성과 표현의 영속적인 힘에 대한 증거입니다.`, voca: ["Literature:문학", "essence:본질", "testament:증거", "enduring power:영속적인 힘", "creativity:창의성", "expression:표현", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `It transcends time and space, connecting us with the thoughts and emotions of people from all walks of life, across centuries and cultures.`, ko: `그것은 시공간을 초월하여 수 세기와 여러 문화에 걸쳐 각계각층의 사람들의 생각 및 감정과 우리를 연결해 줍니다.`, voca: ["transcends:초월하다", "time and space:시공간", "connecting:~와 연결하는", "thoughts:생각들", "emotions:감정들", "all walks of life:각계각층의 사람들", "across centuries:수 세기에 걸쳐", "cultures:문화들", "🍎", "🍎"] },
+        { en: `Despite the rise of new technologies and the ever-changing landscape of media, literature has retained its relevance and significance as a timeless art form.`, ko: `새로운 기술의 부상과 미디어 환경의 끊임없는 변화에도 불구하고, 문학은 시대를 초월한 예술 형식으로서 그것의 타당성과 중요성을 유지해 왔습니다.`, voca: ["Despite:~에도 불구하고", "rise:부상/상승", "new technologies:새로운 기술들", "ever-changing:끊임없이 변화하는", "landscape of media:미디어 환경/풍경", "retained:유지했다/보유했다", "relevance:타당성/관련성", "significance:중요성", "timeless:시대를 초월한", "art form:예술 형식"] },
+        { en: `One reason for literature’s enduring power is its ability to capture and convey the complexities of the human experience.`, ko: `문학의 영속적인 힘의 한 가지 이유는 인간 경험의 복잡성을 포착하고 전달하는 능력입니다.`, voca: ["reason:이유", "enduring power:영속적인 힘", "ability:능력", "capture:포착하다", "convey:전달하다", "complexities:복잡성들", "human experience:인간의 경험", "🍎", "🍎", "🍎"] },
+        { en: `Through the written word, authors have the unique ability to explore the depths of human emotion, the nuances of relationships, and the challenges and triumphs of the human spirit.`, ko: `글로 쓰인 단어를 통해 저자들은 인간 감정의 깊이, 관계의 뉘앙스, 그리고 인간 정신의 도전과 승리를 탐구하는 독특한 능력을 갖추고 있습니다.`, voca: ["written word:글로 쓰인 단어", "authors:저자들/작가들", "unique:독특한", "explore:탐구하다", "depths:깊이들", "nuances of relationships:관계의 뉘앙스들", "challenges:도전들", "triumphs:승리들", "human spirit:인간 정신", "🍎"] },
+        { en: `Literature allows us to see ourselves reflected in the pages of a book, to empathize with characters different from ourselves, and to gain a deeper understanding of the human condition.`, ko: `문학은 우리가 책의 페이지에 투영된 우리 자신을 보고, 우리와 다른 등장인물들에게 공감하며, 인간의 조건에 대한 더 깊은 이해를 얻을 수 있게 해 줍니다.`, voca: ["allows us to:~가 ~할 수 있게 해 준다", "reflected:투영된/반사된", "pages of a book:책의 페이지들", "empathize with:~에 공감하다", "characters:등장인물들", "different from:~와 다른", "gain:얻다", "deeper understanding:더 깊은 이해", "human condition:인간의 조건", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,104 +77,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #29";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Nature of Expertise:<br>Coherent Frameworks</h1><p>2025년 6월 고1 모의고사 29번</p></div>
-                [Image of structured knowledge organization versus a list of random facts]
+                <div class="main-title-card"><h1>The Enduring Power<br>of Literature</h1><p>시공간을 초월하는 문학의 가치</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 전문가는 특정 분야에서 깊고 상호 연결된 아이디어를 가진 사람임.</p>
-                    <p>• <b>📍 본론:</b> 전문 지식은 단순히 사실을 아는 것이 아니라, 일관된 체계로 지식을 조직하고 핵심을 구별하는 능력임.</p>
-                    <p>• <b>📍 결론:</b> 이러한 조직된 이해는 학습의 유연성을 높이고 다양한 상황에 지식을 적용하게 해줌.</p>
+                    <p>• <b>📍 서론:</b> 문학(Literature)은 본질적으로 인간의 창의성과 표현력의 영속적인 힘(enduring power)을 증명해 주는 결실임.</p>
+                    <p>• <b>📍 본론:</b> 기술의 발전과 미디어 환경의 격변 속에서도 문학은 시대를 초월한 예술 형식으로 존재함. 문자는 각계각층의 시공간을 초월하여 타인의 생각 및 감정과 연결해 주고, 인간 경험의 복잡성(complexities)을 온전히 보존함.</p>
+                    <p>• <b>📍 결론:</b> 작가는 문학을 통해 감정의 깊이와 인간관계의 미묘한 뉘앙스를 탐구함. 독자는 책 속에 투영된 자신을 발견하고, 다른 인물들과 깊이 공감하며(empathize), 인간의 조건에 대한 진정한 이해에 도달함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 전문가의 지식 조직화와 깊고 유연한 이해의 특성</span>
-                    <span class="topic-eng">Topic: Knowledge Organization and Characteristics of Deep and Flexible Understanding in Experts</span>
+                    <span class="topic-kor">주제: 시공간을 초월하여 인간 경험의 복잡성을 전달하는 문학의 영속적인 가치</span>
+                    <span class="topic-eng">Topic: The enduring value of literature that transcends time and space to convey the complexities of human experience</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

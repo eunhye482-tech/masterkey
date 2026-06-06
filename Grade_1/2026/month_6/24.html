@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #24 - Official Version</title>
+    <title>English Master - Dopamine & Homeostasis</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #24</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,16 +58,12 @@
 
 <script>
     const fullData = [
-        { en: "We think we’re being logical, objective, and rational—and therefore accurate in our analysis, judgment, and decisions.", ko: "우리는 우리가 논리적이고 객관적이며 합리적이라고 생각하며, 따라서 분석, 판단, 결정에 있어 정확하다고 생각합니다.", voca: ["logical:논리적인", "objective:객관적인", "rational:합리적인", "therefore:따라서", "accurate:정확한", "analysis:분석", "judgment:판단", "decisions:결정", "rational:이성적인", "🍌"] },
-        { en: "So we think that if other people are logical, objective, and rational, they will agree with us and see what we see.", ko: "그래서 우리는 다른 사람들도 논리적이고 객관적이며 합리적이라면 그들이 우리에게 동의하고 우리가 보는 것을 볼 것이라고 생각합니다.", voca: ["agree with:동의하다", "what we see:우리가보는것", "logical:논리적인", "objective:객관적인", "rational:합리적인", "other:다른", "people:사람들", "think:생각하다", "agree:동의", "🍌"] },
-        { en: "But the opposite is the case.", ko: "하지만 그 반대가 사실입니다.", voca: ["opposite:반대", "case:사실/경우", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Every human brain is different.", ko: "모든 인간의 뇌는 다릅니다.", voca: ["brain:뇌", "different:다른", "human:인간의", "every:모든", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Everyone’s life experience is different.", ko: "모든 사람의 삶의 경험은 다릅니다.", voca: ["experience:경험", "different:다른", "life:삶", "everyone:모든사람", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Everyone’s desires and knowledge are different.", ko: "모든 사람의 욕구와 지식은 다릅니다.", voca: ["desires:욕구/열망", "knowledge:지식", "different:다른", "everyone:모든사람", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "You might think you’re being realistic—that is, that your ideas match reality, but that’s impossible.", ko: "여러분은 자신이 현실적이라고 생각할지 모르지만, 즉 여러분의 생각이 현실과 일치한다고 생각하겠지만, 그것은 불가능합니다.", voca: ["realistic:현실적인", "match:일치하다", "reality:현실", "impossible:불가능한", "that is:즉", "ideas:생각", "might:할지도모른다", "think:생각하다", "realistic:현실적", "🍌"] },
-        { en: "It’s only your interpretation of reality, which will always be different from someone else’s.", ko: "그것은 단지 현실에 대한 여러분의 해석일 뿐이며, 이는 항상 다른 누군가의 해석과는 다를 것입니다.", voca: ["interpretation:해석", "reality:현실", "different:다른", "someone else:누군가다른사람", "always:항상", "only:단지", "interpretation:해석", "🍌", "🍌", "🍌"] },
-        { en: "When two nations play each other in the World Cup, the fans of each country criticize the referees for missing all the infractions that the other team commits.", ko: "월드컵에서 두 나라가 경기를 할 때, 각 나라의 팬들은 상대 팀이 저지른 모든 반칙을 놓친 것에 대해 심판을 비판합니다.", voca: ["criticize:비판하다", "referees:심판", "missing:놓치는것", "infractions:반칙", "commits:저지르다", "nations:국가", "each:각각", "other:다른", "play:경기하다", "team:팀"] },
-        { en: "Without fail, each fan base believes that the referees are biased against their team.", ko: "어김없이, 각 팬층은 심판이 자신의 팀에게 편향되어 있다고 믿습니다.", voca: ["Without fail:어김없이", "fan base:팬층", "biased:편향된", "against:~에반대하여", "believes:믿는다", "team:팀", "each:각각", "referees:심판", "biased:편견을가진", "🍌"] }
+        { en: `Let’s look at what is occurring in your brain when scrolling on social media, a quick dopamine activity.`, ko: `빠른 도파민 활동인 소셜 미디어를 스크롤할 때 여러분의 뇌에서 무슨 일이 일어나는지 살펴봅시다.`, voca: ["Let's look at:~을 살펴봅시다", "occurring:일어나고 있는/발생하는", "brain:뇌", "scrolling:스크롤하기", "social media:소셜 미디어", "quick:빠른", "dopamine activity:도파민 활동", "🍎", "🍎", "🍎"] },
+        { en: `You open your social media apps and immediately you notice you feel really good, your dopamine levels increase incredibly fast and pleasure is experienced in your brain.`, ko: `여러분은 소셜 미디어 앱을 열고 즉시 기분이 정말 좋아지는 것을 느끼며, 도파민 수치가 믿을 수 없을 정도로 빠르게 증가하고 뇌에서 쾌감이 경험됩니다.`, voca: ["open:열다", "immediately:즉시", "notice:느끼다/알아차리다", "feel really good:기분이 정말 좋아지다", "dopamine levels:도파민 수치", "increase:증가하다", "incredibly fast:믿을 수 없을 정도로 빠르게", "pleasure:쾌감/기쁨", "experienced:경험되는", "🍎"] },
+        { en: `The challenge this creates is as with everything in our universe: as the laws of physics explain, “what goes up, must come down.”`, ko: `이것이 만드는 문제는 우리 우주의 모든 것에 해당하는 것과 같습니다. 물리학 법칙이 설명하듯이, "올라가는 것은 반드시 내려와야 한다."는 것입니다.`, voca: ["challenge:문제/난제", "creates:만드는", "as with:~와 마찬가지로", "universe:우주", "laws of physics:물리학 법칙들", "explain:설명하다", "what goes up:올라가는 것", "must come down:반드시 내려와야 한다", "🍎", "🍎"] },
+        { en: `Your brain and body are always seeking something called “homeostasis,” which simply means balance.`, ko: `여러분의 뇌와 몸은 항상 '항상성'이라고 불리는 것을 추구하는데, 이것은 쉽게 말해 균형을 의미합니다.`, voca: ["brain and body:뇌와 몸", "always:항상", "seeking:추구하는 것", "called:~라고 불리는", "homeostasis:항상성", "simply means:쉽게 말해 ~을 의미한다", "balance:균형", "🍎", "🍎", "🍎"] },
+        { en: `With this in mind, when dopamine levels increase incredibly fast when scrolling social media, the brain then thinks, “Wow, how are my dopamine levels so high?”`, ko: `이것을 염두에 두고, 소셜 미디어를 스크롤할 때 도파민 수치가 믿을 수 없을 정도로 빠르게 증가하면, 뇌는 "와, 내 도파민 수치가 어떻게 이렇게 높지?"라고 생각합니다.`, voca: ["With this in mind:이것을 염두에 두고", "dopamine levels:도파민 수치", "increase:증가하다", "incredibly fast:믿을 수 없을 정도로 빠르게", "scrolling:스크롤할 때", "then thinks:그 다음에 생각한다", "how:어떻게", "so high:이렇게 높게", "🍎", "🍎"] },
+        { en: `In order to achieve homeostasis, or balance, the dopamine then has to quickly drop an equal amount below your baseline level in order to rebalance, making you feel even worse than before you started scrolling.`, ko: `항상성, 즉 균형을 이루기 위해, 도파민은 재균형을 맞추기 위해 기저선 수치 아래로 동일한 양만큼 빠르게 떨어져야 하며, 이는 여러분이 스크롤을 시작하기 전보다 기분이 훨씬 더 나빠지게 만듭니다.`, voca: ["In order to:~하기 위해서", "achieve:이루다/성취하다", "homeostasis:항상성", "quickly drop:빠르게 떨어지다", "equal amount:동일한 양", "baseline level:기저선 수치/기본 수치", "rebalance:재균형을 맞추다", "feel even worse:기분이 훨씬 더 나빠지다", "before:~하기 전에", "started scrolling:스크롤을 시작했다"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,103 +77,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #24";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Subjectivity of Reality:<br>Interpretation Matters</h1><p>2025년 6월 고1 모의고사 24번</p></div>
+                <div class="main-title-card"><h1>Social Media &<br>Dopamine Homeostasis</h1><p>도파민 급증과 뇌의 균형 기전</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 우리는 자신이 논리적이고 정확하다고 믿으며 타인도 동의할 것이라 기대함.</p>
-                    <p>• <b>📍 본론:</b> 하지만 뇌, 경험, 욕구가 모두 다르기에 각자의 현실 해석은 다를 수밖에 없음.</p>
-                    <p>• <b>📍 결론:</b> 월드컵 팬들이 심판 판정을 서로 편향되었다고 느끼듯, 현실은 주관적인 해석의 결과임.</p>
+                    <p>• <b>📍 서론:</b> 빠른 도파민 활성 반응인 소셜 미디어 스크롤링 현상이 진행될 때 뇌 내부에서 일어나는 메커니즘을 탐색해 봄.</p>
+                    <p>• <b>📍 본론:</b> 앱을 연 직후 도파민 수치가 급격히 증가(increase incredibly fast)하며 인지적 쾌감을 느끼지만, 물리학 법칙처럼 상승한 가치는 반드시 하강함. 뇌와 신체는 항상 안정적인 균형 상태인 '항상성(homeostasis)'을 본능적으로 추구하기 때문임.</p>
+                    <p>• <b>📍 결론:</b> 비정상적으로 치솟은 도파민을 낮추기 위해 뇌는 기저선(baseline level) 이하로 수치를 강제로 떨어뜨려 재균형을 시도함. 이로 인해 스크롤을 하기 전보다 기분이 훨씬 더 악화되는 부작용이 동반됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 현실 인식의 주관성과 개인별 해석의 차이</span>
-                    <span class="topic-eng">Topic: The Subjectivity of Reality Perception and Individual Interpretational Differences</span>
+                    <span class="topic-kor">주제: 소셜 미디어 스크롤에 따른 도파민 급증과 항상성 유지 기전이 초래하는 기분 저하</span>
+                    <span class="topic-eng">Topic: Dopamine spikes from social media scrolling and the resulting mood drop caused by the homeostasis mechanism</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

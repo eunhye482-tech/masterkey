@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #31 - Official Version</title>
+    <title>English Master - Ever-Changing World</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #31</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,16 +58,16 @@
 
 <script>
     const fullData = [
-        { en: "In everyday life, we use previous experience to predict where we should pay attention.", ko: "일상생활에서 우리는 이전의 경험을 사용하여 어디에 주의를 기울여야 할지 예측합니다.", voca: ["everyday life:일상생활", "previous:이전의", "experience:경험", "predict:예측하다", "pay attention:주의를기울이다", "where:어디에", "should:~해야한다", "use:사용하다", "🍌", "🍌"] },
-        { en: "Different environments create different expectations.", ko: "서로 다른 환경은 서로 다른 기대를 만듭니다.", voca: ["Different:다른", "environments:환경", "create:만들다", "expectations:기대", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "This was profoundly illustrated by the scientist Jared Diamond in his book Guns, Germs, and Steel.", ko: "이것은 과학자 Jared Diamond에 의해 그의 저서 '총, 균, 쇠'에서 깊이 있게 설명되었습니다.", voca: ["profoundly:깊이있게", "illustrated:설명된/그려진", "scientist:과학자", "Guns:총", "Germs:균", "Steel:쇠", "book:책", "🍌", "🍌", "🍌"] },
-        { en: "He describes an adventure wandering through the New Guinea jungle with native New Guineans.", ko: "그는 뉴기니 원주민들과 함께 뉴기니 정글을 헤매는 모험을 묘사합니다.", voca: ["describes:묘사하다", "adventure:모험", "wandering:헤매는", "through:~을통해", "native:원주민", "jungle:정글", "with:~와함께", "🍌", "🍌", "🍌"] },
-        { en: "He relates that these natives tend to perform poorly at tasks Westerners have been trained to do since childhood.", ko: "그는 이 원주민들이 서구인들이 어린 시절부터 하도록 훈련받아온 과업에서 서투른 성과를 내는 경향이 있다고 이야기합니다.", voca: ["relates:이야기하다", "tend to:~하는경향이있다", "perform:수행하다", "poorly:서투르게/형편없이", "tasks:과업/일", "Westerners:서구인들", "trained:훈련된", "since:~이후로", "childhood:어린시절", "natives:원주민들"] },
-        { en: "But they are hardly stupid.", ko: "하지만 그들은 결코 어리석지 않습니다.", voca: ["hardly:결코~않다", "stupid:어리석은", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "They can detect the most subtle changes in the jungle, good for following the tracks of a predator or for finding the way back home.", ko: "그들은 정글의 가장 미묘한 변화를 감지할 수 있는데, 이는 포식자의 흔적을 따라가거나 집으로 돌아가는 길을 찾는 데 유용합니다.", voca: ["detect:감지하다", "subtle:미묘한", "changes:변화들", "following:따라가는것", "tracks:흔적/자국", "predator:포식자", "finding:찾는것", "way back:돌아오는길", "good for:~에좋은", "jungle:정글"] },
-        { en: "They know which insects to leave alone, know where food exists, can build and tear down shelters with ease.", ko: "그들은 어떤 곤충을 건드리지 말아야 할지 알고, 음식이 어디에 있는지 알며, 숙소를 쉽게 짓고 허물 수 있습니다.", voca: ["insects:곤충", "leave alone:내버려두다", "exists:존재하다", "build:짓다", "tear down:허물다", "shelters:숙소/은신처", "with ease:쉽게", "know:알다", "where:어디에", "🍌"] },
-        { en: "Diamond, who had never spent time in such places, has no ability to pay attention to these things.", ko: "그런 장소에서 시간을 보낸 적이 없는 Diamond는 이러한 것들에 주의를 기울일 능력이 없습니다.", voca: ["spent time:시간을보내다", "such:그런", "places:장소들", "ability:능력", "pay attention:주의를기울이다", "things:것들", "never:결코~않은", "Diamond:다이아몬드", "🍌", "🍌"] },
-        { en: "Were he to be tested on such tasks, he also would perform poorly.", ko: "만약 그가 그런 과업으로 테스트를 받는다면, 그 또한 서투른 성과를 낼 것입니다.", voca: ["tested:테스트받는", "tasks:과업", "perform:수행하다", "poorly:서투르게", "also:또한", "such:그런", "🍌", "🍌", "🍌", "🍌"] }
+        { en: `Our world is not just interconnected, but ever-changing, even if we can’t sense it.`, ko: `우리 세계는 상호 연결되어 있을 뿐만 아니라, 우리가 그것을 감지하지 못하더라도 끊임없이 변하고 있습니다.`, voca: ["interconnected:상호 연결된", "ever-changing:끊임없이 변하는", "even if:~일지라도", "sense:감지하다/느끼다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `While you’re reading this, you’re changing.`, ko: `여러분이 이것을 읽는 동안, 여러분은 변하고 있습니다.`, voca: ["While:~하는 동안", "reading:읽는 것", "changing:변하는 것", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `You’re aging (a minute amount, thankfully), but the neural networks in your brain are also imperceptibly changing as you perceive each word.`, ko: `여러분은 나이 들어가고 있지만(감사하게도 아주 미미한 양만큼), 여러분이 각 단어를 인지할 때 여러분의 뇌 속 신경망 또한 감지할 수 없을 정도로 변하고 있습니다.`, voca: ["aging:나이 드는 것", "minute amount:미미한 양", "thankfully:감사하게도", "neural networks:신경망", "brain:뇌", "imperceptibly:감지할 수 없을 정도로", "perceive:인지하다/지각하다", "each word:각 단어", "🍎", "🍎"] },
+        { en: `Crucially, even when we’re seemingly not doing anything of note, events are taking place outside your immediate surroundings that will change your life in the future, though you won’t realize it yet.`, ko: `결정적으로, 우리가 겉보기에는 주목할 만한 아무것도 하지 않고 있을 때조차, 비록 여러분은 아직 깨닫지 못하겠지만 미래에 여러분의 삶을 바꿀 사건들이 여러분의 아주 가까운 환경 밖에서 일어나고 있습니다.`, voca: ["Crucially:결정적으로", "seemingly:겉보기에는", "anything of note:주목할 만한 것", "events:사건들", "taking place:일어나는/발생하는", "outside:~의 밖에서", "immediate surroundings:아주 가까운 환경", "future:미래", "realize:깨닫다", "yet:아직"] },
+        { en: `Heraclitus, the ancient Greek philosopher, rightly pointed out, “No man ever steps in the same river twice.`, ko: `고대 그리스 철학자인 헤라클레이토스는 "어떤 사람도 같은 강에 두 번 발을 디딜 수 없다."라고 올바르게 지적했습니다.`, voca: ["ancient:고대의", "Greek philosopher:그리스 철학자", "rightly:올바르게", "pointed out:지적했다", "steps in:~에 발을 디디다", "same river:같은 강", "twice:두 번", "🍎", "🍎", "🍎"] },
+        { en: `For it’s not the same river and he’s not the same man.”`, ko: `왜냐하면 그것은 같은 강이 아니고 그는 같은 사람이 아니기 때문입니다."`, voca: ["For:왜냐하면 ~이기 때문이다", "same river:같은 강", "same man:같은 사람", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `To that, Cratylus, a student of Heraclitus, added that we are not mere passive observers.`, ko: `그것에 대해 헤라클레이토스의 제자인 크라틸로스는 우리가 단순한 수동적인 관찰자가 아니라는 말을 덧붙였습니다.`, voca: ["student:제자/학생", "added:덧붙였다", "mere:단순한", "passive:수동적인", "observers:관찰자들", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `When you step in a river, you change it.`, ko: `여러분이 강에 발을 디딜 때, 여러분은 그것을 변화시키는 것입니다.`, voca: ["step in:~에 발을 디디다", "change:변화시키다", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Nothing is static.`, ko: `아무것도 정지해 있지 않습니다.`, voca: ["Nothing:아무것도 ~않다", "static:정지해 있는/고정된", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Even microscopic changes add up over time.`, ko: `미세한 변화조차 시간이 지나면서 쌓입니다.`, voca: ["microscopic:미세한/현미경으로 봐야만 보이는", "changes:변화들", "add up:쌓이다/합산되다", "over time:시간이 지나면서", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -79,103 +81,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #31";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Environment and<br>Attention Expectations</h1><p>2025년 6월 고1 모의고사 31번</p></div>
+                <div class="main-title-card"><h1>The Dynamic World &<br>Constant Change</h1><p>끊임없는 변화와 상호작용 기전</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 일상에서 우리는 이전 경험을 바탕으로 주의를 기울일 곳을 예측함.</p>
-                    <p>• <b>📍 본론:</b> 뉴기니 원주민들은 서구적 과업엔 서툴지만, 정글의 미묘한 변화를 읽는 데는 탁월함.</p>
-                    <p>• <b>📍 결론:</b> 능력은 지능의 문제가 아니라, 각자가 처한 환경과 훈련된 경험에 따라 달라짐.</p>
+                    <p>• <b>📍 서론:</b> 우리 세계는 감지하지 못할지라도(can't sense it) 단순히 상호 연결된 것을 넘어 끊임없이 변화하는(ever-changing) 역동적 공간임.</p>
+                    <p>• <b>📍 본론:</b> 글을 읽는 찰나에도 신체는 노화하고 뇌 신경망(neural networks)은 인지하는 단어에 맞춰 미세하게 변함. 겉보기엔 정지해 있는 순간에도 우리 주변 밖에서는 미래를 바꿀 사건들이 끊임없이 발생함.</p>
+                    <p>• <b>📍 결론:</b> 헤라클레이토스는 "같은 강에 두 번 들어설 수 없다"며 변화를 정의했고, 제자 크라틸로스는 더 나아가 인간은 단순한 수동적 관찰자(passive observers)가 아니라 강에 들어섬으로써 대상을 변화시키는 상호작용의 주체라고 강조함. 정지된 것(static)은 없으며 미세한 변화는 시간과 함께 축적됨.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 환경과 경험에 따른 주의 집중 영역과 능력의 차이</span>
-                    <span class="topic-eng">Topic: Differences in Areas of Attention and Ability Based on Environment and Experience</span>
+                    <span class="topic-kor">주제: 끊임없이 변화하는 세계의 본질과 세상의 변화에 참여하는 주체로서의 인간</span>
+                    <span class="topic-eng">Topic: The ever-changing nature of the world and humans as active participants who alter it</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
- 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #39 - Official Version</title>
+    <title>English Master - Deforestation and Global Warming</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #39</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,13 +58,14 @@
 
 <script>
     const fullData = [
-        { en: "We have a 'diving reflex', like other marine mammals.", ko: "우리는 다른 해양 포유류와 마찬가지로 '잠수 반사'를 가지고 있습니다.", voca: ["diving reflex:잠수 반사", "marine:해양의", "mammals:포유류", "like:~와 같이", "have:가지다", "other:다른", "we:우리", "🍌", "🍌", "🍌"] },
-        { en: "This means that special nerve endings on our faces, around the mouth and nose, trigger this reflex only when the facial region goes under water.", ko: "이것은 우리의 입과 코 주변인 얼굴에 있는 특수한 신경 말단이 얼굴 부위가 물속으로 들어갈 때만 이 반사를 유발한다는 것을 의미합니다.", voca: ["nerve endings:신경 말단", "trigger:유발하다", "facial:얼굴의", "region:부위/영역", "means:의미하다", "special:특수한", "around:주변에", "under:아래/속으로", "only when:~할 때만", "mouth and nose:입과 코"] },
-        { en: "If we are in the water, with our head out in the air, there is no diving reflex.", ko: "우리가 물속에 있더라도 머리가 공기 중에 나와 있으면 잠수 반사는 일어나지 않습니다.", voca: ["water:물", "air:공기", "diving reflex:잠수 반사", "head out:머리가 밖으로", "no:아무것도 없는", "If:~라면", "we are:우리가 있다", "🍌", "🍌", "🍌"] },
-        { en: "But if we sink just our face in a bowl of water, while the whole of the rest of our body is in the dry air, the diving reflex is triggered.", ko: "하지만 몸의 나머지 전체가 건조한 공기 중에 있는 동안 얼굴만 물 한 그릇에 담그면 잠수 반사가 유발됩니다.", voca: ["sink:담그다/가라앉다", "bowl:그릇", "rest:나머지", "triggered:유발된", "dry air:건조한 공기", "whole:전체", "while:~하는 동안", "But:하지만", "just:단지", "face:얼굴"] },
-        { en: "It automatically closes down the airway, reducing the risk of swallowing water, and it narrows the small air-passages in the lungs.", ko: "그것은 자동으로 기도를 폐쇄하여 물을 삼킬 위험을 줄이고 폐 안의 작은 공기 통로를 좁힙니다.", voca: ["automatically:자동으로", "airway:기도", "reducing:줄이는 것", "swallowing:삼키는 것", "narrows:좁히다", "air-passages:공기 통로", "lungs:폐", "risk:위험", "closes down:폐쇄하다", "🍌"] },
-        { en: "At the same time the heart rate is slowed down to half speed and blood is shunted to the vital organs, protecting them from the effects of the brief stop in breathing.", ko: "동시에 심박수는 절반 속도로 느려지고 혈액은 중요 장기로 우회되어, 일시적인 호흡 정지의 영향으로부터 장기들을 보호합니다.", voca: ["at the same time:동시에", "heart rate:심박수", "shunted:우회된/돌려진", "vital organs:중요 장기", "protecting:보호하는 것", "effects:영향", "brief:일시적인/짧은", "breathing:호흡", "slowed down:느려진", "blood:혈액"] },
-        { en: "By contrast, if a chimpanzee or a gorilla found itself in water with its face below the surface, it would panic, its heart would race and it would quickly drown.", ko: "대조적으로, 만약 침팬지나 고릴라가 얼굴이 수면 아래에 있는 상태로 물속에 있게 된다면, 그것은 공황 상태에 빠지고 심장은 요동치며 금방 익사할 것입니다.", voca: ["By contrast:대조적으로", "surface:수면/표면", "panic:공황 상태", "race:요동치다/빨리 뛰다", "drown:익사하다", "found itself:처하게 되다", "below:~ 아래에", "quickly:빨리", "chimpanzee:침팬지", "gorilla:고릴라"] }
+        { en: `Approximately 15-20% of global greenhouse gas emissions are caused by degradation and deforestation.`, ko: `전 세계 온실가스 배출량의 대략 15-20%가 산림 황폐화와 산림 파괴로 인해 발생합니다.`, voca: ["Approximately:대략", "global:전 세계의/글로벌", "greenhouse gas emissions:온실가스 배출량", "caused by:~로 인해 발생하는", "degradation:황폐화/비하", "deforestation:산림 파괴/벌채", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `Trees play a huge role in the carbon cycle.`, ko: `나무는 탄소 순환에서 거대한 역할을 합니다.`, voca: ["Trees:나무들", "play a huge role:거대한 역할을 하다", "carbon cycle:탄소 순환", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `They convert the CO2 in the air to oxygen through the process of photosynthesis, and consequently, they are viewed as a natural regulator of carbon dioxide.`, ko: `그것들은 광합성 과정을 통해 공기 중의 이산화탄소를 산소로 전환하며, 결과적으로 이산화탄소의 천연 조절자로 여겨집니다.`, voca: ["convert A to B:A를 B로 전환하다", "air:공기", "oxygen:산소", "through:~을 통해", "process:과정", "photosynthesis:광합성", "consequently:결과적으로", "viewed as:~로 여겨지는", "natural regulator:천연 조절자", "carbon dioxide:이산화탄소"] },
+        { en: `The existence of a larger amount of trees will no doubt lead to the reduced presence of carbon dioxide in the atmosphere and the increased existence of oxygen.`, ko: `더 많은 양의 나무가 존재하면 대기 중 이산화탄소의 존재는 줄어들고 산소의 존재는 늘어나는 결과를 의심 여지 없이 가져올 것입니다.`, voca: ["existence:존재", "larger amount:더 많은 양", "no doubt:의심 여지 없이", "lead to:~로 이어지다/~을 가져오다", "reduced presence:줄어든 존재/감소된 출석", "atmosphere:대기/분위기", "increased:늘어난/증가된", "oxygen:산소", "🍎", "🍎"] },
+        { en: `Unfortunately, deforestation is preventing this process from being fully accomplished.`, ko: `불행하게도, 산림 파괴는 이 과정이 온전히 성취되는 것을 막고 있습니다.`, voca: ["Unfortunately:불행하게도", "deforestation:산림 파괴", "prevent A from B:A가 B하는 것을 막다", "process:과정", "fully:온전히/완전히", "accomplished:성취된/달성된", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `And with half of the Earth’s forests gone, the amount of carbon dioxide is progressively rising.`, ko: `그리고 지구의 숲 중 절반이 사라지면서, 이산화탄소의 양은 점진적으로 증가하고 있습니다.`, voca: ["half of:의 절반", "forests gone:사라진 숲들", "amount of:~의 양", "carbon dioxide:이산화탄소", "progressively:점진적으로/계속해서", "rising:증가하는/오르는", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `With more carbon dioxide in the atmosphere, more of the sun’s radiation is being reflected back to Earth instead of being released into space, and this is causing the planet’s average temperature to rise.`, ko: `대기 중에 더 많은 이산화탄소가 존재하면서, 더 많은 태양 복사열이 우주로 방출되는 대신 지구로 다시 반사되고 있으며, 이것이 지구의 평균 기온을 상승시키고 있습니다.`, voca: ["more carbon dioxide:더 많은 이산화탄소", "sun's radiation:태양 복사열/방사선", "reflected back:다시 반사되는", "instead of:~ 대신에", "released:방출되는", "space:우주/공간", "causing:~을 유발하는", "average temperature:평균 기온", "to rise:상승하는 것", "🍎"] },
+        { en: `Accordingly, deforestation is a major issue when it comes to global warming.`, ko: `따라서, 산림 파괴는 지구 온난화에 관한 한 주요한 문제입니다.`, voca: ["Accordingly:따라서/그에 맞게", "deforestation:산림 파괴", "major issue:주요한 문제", "when it comes to:~에 관한 한", "global warming:지구 온난화", "🍎", "🍎", "🍎", "🍎", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -76,103 +79,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #39";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>The Human Diving Reflex:<br>Survival Mechanism</h1><p>2025년 6월 고1 모의고사 39번</p></div>
+                <div class="main-title-card"><h1>Deforestation &<br>Global Warming</h1><p>산림 파괴와 탄소 순환 제어 불능 기전</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 인간은 해양 포유류처럼 얼굴이 물에 닿을 때 작동하는 '잠수 반사'를 가짐.</p>
-                    <p>• <b>📍 본론:</b> 잠수 반사는 기도를 닫고 심박수를 늦추며 혈액을 주요 장기로 보내 호흡 정지로부터 몸을 보호함.</p>
-                    <p>• <b>📍 결론:</b> 이 반사가 없는 유인원과 달리 인간은 물속에서 생존할 수 있는 본능적 기제를 보유함.</p>
+                    <p>• <b>📍 서론:</b> 전 세계 온실가스 배출량의 약 15-20%가 산림의 황폐화(degradation) 및 파괴(deforestation)에 의해 촉발됨.</p>
+                    <p>• <b>📍 본론:</b> 나무는 광합성(photosynthesis)을 통해 공기 중 CO2를 산소로 변환하는 천연 조절자임. 그러나 지구 상림의 절반이 소실되면서 대기 중 이산화탄소 농도는 점진적으로 증가(progressively rising)하는 현상이 일어남.</p>
+                    <p>• <b>📍 결론:</b> 이산화탄소 층이 두꺼워지면 우주로 방출되어야 할 태양 복사열(sun's radiation)이 대기권 내 갇혀 지구로 역반사됨. 이로 인해 행성의 평균 기온이 지속적으로 상승하므로, 산림 파괴는 지구 온난화(global warming)의 가장 치명적인 변수이자 핵심 난제임.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 인간이 가진 생존 본능인 잠수 반사의 원리와 기능</span>
-                    <span class="topic-eng">Topic: The Principles and Functions of the Human Diving Reflex as a Survival Instinct</span>
+                    <span class="topic-kor">주제: 대기 중 탄소 조절 능력을 억제하여 지구 온난화를 심화시키는 산림 파괴의 유해성</span>
+                    <span class="topic-eng">Topic: The harmful effects of deforestation that worsens global warming by suppressing the atmosphere's carbon regulation capacity</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>

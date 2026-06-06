@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>English Master #36 - Official Version</title>
+    <title>English Master - Ice Age and Farming</title>
     <style>
         :root { 
             --lavender-light: #F3E5F5; 
@@ -18,12 +18,11 @@
         #display-area { flex: 1; padding: 20px; display: flex; flex-direction: column; }
         
         .hidden { display: none !important; }
-        .btn-next { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-prev { background: #EDF2F7; color: #718096; padding: 16px; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; width: 30%; margin-right: 10px; }
+        
+        .btn-intro-step { background: var(--purple-main); color: white; padding: 16px; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
 
-        /* STEP 1: 인트로 (서론/본론/결론 명시) */
         .main-title-card { width: 100%; background: linear-gradient(135deg, #B39DDB 0%, #9575CD 100%); padding: 35px 20px; border-radius: 20px; color: white; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
-        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; }
+        .intro-summary { background: var(--lavender-light); padding: 18px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--purple-pale); font-size: 0.92rem; line-height: 1.6; color: #444; }
         .intro-topic { background: var(--pink-soft); padding: 18px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #F8BBD0; text-align: center; }
         .topic-kor { font-weight: bold; color: #D81B60; display: block; margin-bottom: 5px; }
         .topic-eng { font-size: 0.85rem; color: #888; font-style: italic; }
@@ -32,21 +31,24 @@
         .kor-box { background: #FFF5F7; padding: 20px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; color: #D81B60; margin-bottom: 15px; border: 2px solid #F8BBD0; text-align: center; line-height: 1.6; }
         
         .voca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voca-item { background: #fff; padding: 10px; border-radius: 10px; font-size: 0.82rem; border: 1px solid var(--purple-pale); cursor: pointer; text-align: center; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #333; }
         .voca-item.revealed { background: var(--purple-main); color: white; }
         
-        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; }
+        .blank-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; padding: 10px; background: #fdfdfd; border-radius: 15px; line-height: 2.3; }
         .word-blank { border-bottom: 2px solid var(--purple-main); min-width: 35px; text-align: center; font-size: 1rem; color: transparent; cursor: pointer; padding: 0 2px; }
-        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; }
+        .word-blank.revealed { color: var(--purple-dark); border-bottom-color: transparent; font-weight: bold; background: #EDE7F6; border-radius: 4px; }
 
-        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; }
-        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; }
+        .btn-check { background: #f0f0f0; padding: 12px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; width: 100%; font-size: 0.9rem; color: #555; }
+        .trans-content { display: none; padding: 15px; background: #fafafa; border-radius: 15px; border-left: 5px solid var(--purple-main); font-size: 0.9rem; margin-bottom: 10px; color: #444; }
+        
+        .nav-btns-fixed { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; margin-top: auto; position: sticky; bottom: 0; gap: 10px; align-items: center; }
+        .btn-prev { background: #EDF2F7; color: #718096; border-radius: 15px; border: none; font-size: 1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .btn-next { background: var(--purple-main); color: white; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; height: 55px; flex: 1.5; display: flex; align-items: center; justify-content: center; margin-top: 0; }
     </style>
 </head>
 <body>
 <div class="phone-container">
-    <div class="header" id="header-title">English Master #36</div>
+    <div class="header" id="header-title">English Master</div>
     <div id="display-area"></div>
     <div id="nav-area" class="nav-btns-fixed hidden">
         <button class="btn-prev" onclick="prevSentence()">PREV</button>
@@ -56,15 +58,13 @@
 
 <script>
     const fullData = [
-        { en: "History, people often say, repeats itself.", ko: "사람들은 흔히 역사는 반복된다고 말합니다.", voca: ["History:역사", "often:흔히/종종", "repeats:반복하다", "itself:그자체", "people:사람들", "say:말하다", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "And looking at the historical records of the ancient civilizations, some things do seem to happen again and again.", ko: "그리고 고대 문명의 역사적 기록을 보면 어떤 일들은 정말로 반복해서 일어나는 것처럼 보입니다.", voca: ["historical:역사적인", "records:기록", "ancient:고대의", "civilizations:문명", "seem:~처럼보이다", "happen:일어나다", "again and again:반복해서", "looking at:~을보면", "things:일들", "🍌"] },
-        { en: "Civilizations expand, get overextended, and then collapse as in the cases of Rome, which went under in 476 AD, and the British Empire, which fell apart more than a thousand years later in the post-World War II era.", ko: "기원후 476년에 멸망한 로마와 그로부터 천 년도 더 지난 제2차 세계 대전 이후 시대에 해체된 대영 제국의 사례처럼, 문명은 팽창하고 과도하게 확장되었다가 붕괴합니다.", voca: ["expand:팽창하다", "overextended:과도하게확장된", "collapse:붕괴하다", "went under:멸망하다", "fell apart:해체되다/무너지다", "era:시대", "civilizations:문명", "cases:사례", "later:후에", "thousand:천"] },
-        { en: "But is this always the case?", ko: "하지만 이것이 항상 그러할까요?", voca: ["always:항상", "case:사실/경우", "But:하지만", "is:~인가", "this:이것", "🍌", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "If so, archaeology would be pretty boring; one thing would happen again and again.", ko: "만약 그렇다면 고고학은 꽤 지루할 것입니다. 똑같은 일이 계속 반복될 테니까요.", voca: ["archaeology:고고학", "boring:지루한", "happen:일어나다", "again and again:반복해서", "pretty:꽤", "would:일것이다", "If so:만약그렇다면", "thing:일", "🍌", "🍌"] },
-        { en: "But that’s not what archaeologists see.", ko: "하지만 그것은 고고학자들이 보는 모습이 아닙니다.", voca: ["archaeologists:고고학자들", "see:보다", "what:것", "not:아닌", "that:그것", "But:하지만", "🍌", "🍌", "🍌", "🍌"] },
-        { en: "Some civilizations end suddenly, like the Aztec and Inca, conquered by invaders in the 1520s AD.", ko: "1520년대에 침략자들에 의해 정복당한 아즈텍과 잉카처럼 어떤 문명들은 갑자기 끝이 납니다.", voca: ["suddenly:갑자기", "conquered:정복당한", "invaders:침략자들", "civilizations:문명", "end:끝나다", "like:~처럼", "AD:기원후", "Some:어떤", "🍌", "🍌"] },
-        { en: "Those empires never had the chance to collapse as a result of overexpansion.", ko: "그 제국들은 과도한 팽창의 결과로 붕괴할 기회조차 전혀 없었습니다.", voca: ["empires:제국들", "chance:기회", "collapse:붕괴하다", "as a result of:~의결과로", "overexpansion:과도한팽창", "never:결코~않다", "had:가졌다", "Those:그들", "🍌", "🍌"] },
-        { en: "So in the case of civilizations, 'history repeats itself' seems to be an oversimplification.", ko: "그래서 문명의 경우에 있어 '역사는 반복된다'는 말은 지나친 단순화인 것처럼 보입니다.", voca: ["case:경우", "repeats:반복하다", "seems:~처럼보이다", "oversimplification:지나친단순화", "civilizations:문명", "history:역사", "itself:그자체", "be:~이다", "So:그래서", "🍌"] }
+        { en: `During the Ice Age, not only was the planet much colder, with ice sheets covering much of what we call the northern hemisphere today, but, crucially, it was much drier.`, ko: `빙하기 동안 지구는 오늘날 우리가 북반구라고 부르는 곳의 많은 부분을 대륙 빙하가 뒤덮은 채 훨씬 더 추웠을 뿐만 아니라, 결정적으로 훨씬 더 건조했습니다.`, voca: ["Ice Age:빙하기", "not only A but also B:A뿐만 아니라 B도", "ice sheets:대륙 빙하/빙판", "covering:뒤덮은", "northern hemisphere:북반구", "crucially:결정적으로", "much drier:훨씬 더 건조한", "🍎", "🍎", "🍎"] },
+        { en: `In Ireland, we often associate the cold with the wet but if it is really cold, there is far less evaporation, fewer clouds, and less rain.`, ko: `아일랜드에서 우리는 흔히 추위를 축축함과 연관시키지만, 정말로 추우면 증발이 훨씬 더 적고, 구름도 더 적으며, 비도 더 적게 내립니다.`, voca: ["associate A with B:A와 B를 연관시키다", "cold:추위", "wet:축축함", "evaporation:증발", "fewer clouds:더 적은 구름들", "less rain:더 적은 비", "far less:훨씬 더 적은", "🍎", "🍎", "🍎"] },
+        { en: `Our world in the Ice Age was cold and dry, meaning it was difficult for plants to grow.`, ko: `빙하기의 우리 세계는 춥고 건조했으며, 이는 식물이 자라기 어려웠음을 의미했습니다.`, voca: ["cold and dry:춥고 건조한", "meaning:~을 의미하는", "difficult:어려운", "for plants:식물이", "to grow:자라는 것", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `In this type of climate, farming isn’t an option: it’s too risky to depend on any one piece of land to produce the energy you need.`, ko: `이러한 종류의 기후에서는 농업이 선택 사항이 아닙니다. 여러분이 필요로 하는 에너지를 생산하기 위해 어느 한 곳의 땅에 의존하는 것은 너무 위험합니다.`, voca: ["type of climate:기후의 종류", "farming:농업", "option:선택 사항", "too risky:너무 위험한", "depend on:~에 의존하다", "one piece of land:한 곳의 땅", "produce:생산하다", "energy:에너지", "🍎", "🍎"] },
+        { en: `As the temperature rose and the ice caps melted, we experienced a sudden explosion of life.`, ko: `기온이 오르고 만년설이 녹으면서, 우리는 갑작스러운 생명력의 폭발을 경험했습니다.`, voca: ["temperature:기온/온도", "rose:올랐다", "ice caps:만년설/빙모", "melted:녹았다", "experienced:경험했다", "sudden:갑작스러운", "explosion of life:생명력의 폭발", "🍎", "🍎", "🍎"] },
+        { en: `The world got warmer and wetter, and people started to live around places where they could make food grow most intensively.`, ko: `세상은 더 따뜻해지고 더 습해졌으며, 사람들은 음식을 가장 집약적으로 자라게 할 수 있는 곳 주변에 살기 시작했습니다.`, voca: ["warmer and wetter:더 따뜻하고 더 습한", "started to live:살기 시작했다", "around places:곳 주변에", "make food grow:음식이 자라게 하다", "most intensively:가장 집약적으로", "🍎", "🍎", "🍎", "🍎", "🍎"] },
+        { en: `This didn’t happen overnight; it probably took thousands of years, with hunter-gatherers foraging and hunting, while doing a little side hustle in farming.`, ko: `이것은 하룻밤 사이에 일어나지 않았습니다. 수렵 채취인들이 농업을 부업으로 조금 삼아 하면서 수집하고 사냥하는 가운데, 아마도 수천 년이 걸렸을 것입니다.`, voca: ["overnight:하룻밤 사이에/갑자기", "probably:아마도", "took thousands of years:수천 년이 걸렸다", "hunter-gatherers:수렵 채취인들", "foraging:수집하는 것/먹이를 찾는 것", "hunting:사냥하는 것", "while:~하는 동안", "side hustle:부업/외도", "farming:농업", "🍎"] }
     ];
 
     let currentMode = 'INTRO';
@@ -78,103 +78,75 @@
         area.innerHTML = '';
 
         if (currentMode === 'INTRO') {
-            header.innerText = "English Master #36";
+            header.innerText = "English Master";
             nav.classList.add('hidden');
             area.innerHTML = `
-                <div class="main-title-card"><h1>Is History Repeating?<br>Civilizations' Ends</h1><p>2025년 6월 고1 모의고사 36번</p></div>
+                <div class="main-title-card"><h1>The Ice Age &<br>The Rise of Farming</h1><p>빙하기 기후적 한계와 농업의 점진적 시작</p></div>
+                
                 <div class="intro-summary">
-                    <p>• <b>📍 서론:</b> 흔히 역사는 반복된다고 하며, 로마나 대영제국처럼 과도한 확장 후 붕괴하는 사례가 존재함.</p>
-                    <p>• <b>📍 본론:</b> 그러나 모든 문명이 같은 길을 걷는 것은 아니며, 아즈텍이나 잉카처럼 침략에 의해 갑자기 멸망하기도 함.</p>
-                    <p>• <b>📍 결론:</b> 따라서 문명의 역사를 단순히 '반복'으로 규정하는 것은 지나치게 단순화된 시각임.</p>
+                    <p>• <b>📍 서론:</b> 빙하기 동안 대륙 빙하(ice sheets)가 북반구를 뒤덮어 매우 추웠을 뿐만 아니라, 결정적으로 극도로 건조(much drier)했음.</p>
+                    <p>• <b>📍 본론:</b> 흔히 추위를 축축함과 연관시키지만 극심한 추위 속에서는 증발(evaporation)과 강수가 제한됨. 이로 인해 식물 성장이 불가능해져 한 땅에만 의존하는 농업은 너무나 위험한(too risky) 선택지였음.</p>
+                    <p>• <b>📍 결론:</b> 이후 기온이 상승하고 만년설이 녹으며 기후가 따뜻하고 습해지자 생명력의 폭발(explosion of life)이 일어남. 수렵 채취인들이 농업을 일종의 부업(side hustle)으로 서서히 결합하며 수천 년에 걸쳐 점진적으로 정착 농경 사회를 구축함.</p>
                 </div>
                 <div class="intro-topic">
-                    <span class="topic-kor">주제: 문명의 멸망 방식의 다양성과 역사 반복론의 한계</span>
-                    <span class="topic-eng">Topic: Diversity in the Collapse of Civilizations and Limitations of the Historical Repetition Theory</span>
+                    <span class="topic-kor">주제: 빙하기의 춥고 건조한 기후적 제약과 기후 온난화에 따른 정착 농업으로의 점진적 전환 과정</span>
+                    <span class="topic-eng">Topic: The climatic constraints of the cold and dry Ice Age and the gradual transition to settled farming following global warming</span>
                 </div>
-                <button class="btn-next" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
-                <button class="btn-next" style="margin-top:10px; background:#9C27B0;" onclick="startStep(3)">STEP 3: 영작 연습 시작 ▶</button>
+                <button class="btn-intro-step" onclick="startStep(2)">STEP 2: 문장 학습 시작 ▶</button>
+                <button class="btn-intro-step" style="background:#9C27B0;" onclick="startStep(3)">STEP 3: 전체 빈칸 연습 시작 ▶</button>
             `;
-        } else if (currentMode === 'STEP2' || currentMode === 'STEP3') {
+        } else {
             const stepNum = currentMode === 'STEP2' ? 2 : 3;
-            header.innerText = `STEP ${stepNum}. ${stepNum === 2 ? '문장 학습' : '영작 연습'} (${currentIdx + 1}/${fullData.length})`;
+            header.innerText = "STEP " + stepNum + " (" + (currentIdx + 1) + "/" + fullData.length + ")";
             nav.classList.remove('hidden');
             document.getElementById('main-next-btn').innerText = (currentIdx === fullData.length - 1) ? "FINISH" : "NEXT";
             
             const item = fullData[currentIdx];
             if (currentMode === 'STEP2') {
-                area.innerHTML = `
-                    <div class="sentence-box" onclick="playTTS('${item.en.replace(/'/g, "\\'")}')">${item.en}</div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">해석 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.ko}</div>
-                `;
-                fillVoca(item.voca, '🍌', "#FFD600");
+                area.innerHTML = `<div class="sentence-box" onclick="playTTS(\`${item.en}\`)">${item.en}</div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">해석 확인</button><div id="trans-area" class="trans-content">${item.ko}</div>`;
+                fillVoca(item.voca, '🍎', "#FF3B30");
             } else {
-                area.innerHTML = `
-                    <div class="kor-box">${item.ko}</div>
-                    <div class="blank-area" id="blank-area"></div>
-                    <div class="voca-grid" id="voca-area"></div>
-                    <button class="btn-check" onclick="toggleView('trans-area')">정답 확인하기</button>
-                    <div id="trans-area" class="trans-content">${item.en}</div>
-                `;
+                area.innerHTML = `<div class="kor-box">${item.ko}</div><div class="blank-area" id="blank-area"></div><div class="voca-grid" id="voca-area"></div><button class="btn-check" onclick="toggleView('trans-area')">정답 확인</button><div id="trans-area" class="trans-content">${item.en}</div>`;
                 fillBlanks(item.en);
                 fillVoca(item.voca, '🍇', "#9C27B0");
             }
         }
     }
 
-    function fillVoca(vocaList, emoji, emojiColor) {
-        const container = document.getElementById('voca-area');
+    function fillVoca(vList, emo, col) {
+        const area = document.getElementById('voca-area');
         for (let i = 0; i < 10; i++) {
             const div = document.createElement('div');
             div.className = 'voca-item';
-            if (vocaList[i]) {
-                const [eng, kor] = vocaList[i].split(':');
-                div.innerText = eng;
-                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? kor : eng; };
+            if (vList[i] && vList[i].includes(':')) {
+                const [en, ko] = vList[i].split(':');
+                div.innerText = en;
+                div.onclick = function() { this.classList.toggle('revealed'); this.innerText = this.classList.contains('revealed') ? ko : en; };
             } else {
-                div.innerText = emoji; div.style.color = emojiColor; div.style.cursor = "default";
+                div.innerText = emo; div.style.color = col; div.style.cursor = "default";
             }
-            container.appendChild(div);
+            area.appendChild(div);
         }
     }
 
+    function fillBlanks(s) {
+        const area = document.getElementById('blank-area');
+        s.split(' ').forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word-blank'; 
+            span.innerText = w; 
+            span.onclick = function() { 
+                this.classList.add('revealed'); 
+                playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+            }; 
+            area.appendChild(span);
+        });
+    }
 
-
-// 수정된 Step 3 빈칸 생성 로직
-function fillBlanks(s) {
-    const c = document.getElementById('blank-area');
-    
-    // 🍎 영어에서 자주 쓰이는 전치사 목록 (이 목록에 있으면 자동으로 보임)
-    const prepositions = ["in", "on", "at", "by", "for", "from", "of", "with", "to", "into", "onto", "upon", "about", "above", "across", "after", "against", "along", "among", "around", "as", "before", "behind", "below", "beneath", "beside", "between", "beyond", "during", "except", "inside", "near", "off", "outside", "over", "past", "since", "through", "throughout", "under", "underneath", "until", "up", "within", "without"];
-
-    s.split(' ').forEach(w => {
-        const sp = document.createElement('span');
-        sp.className = 'word-blank';
-        sp.innerText = w;
-        
-        // 🍎 단어에서 문장부호(.,'":;?!)를 제거하고 소문자로 변환하여 전치사인지 확인
-        const pureWord = w.toLowerCase().replace(/[.,'":;?!()“”]/g, "");
-        
-        if (prepositions.includes(pureWord)) {
-            // 전치사라면 처음부터 보여주고 밑줄 제거
-            sp.classList.add('revealed');
-            sp.style.borderBottomColor = 'transparent'; 
-        }
-
-        // 클릭하면 정답이 보이게 하는 기능
-        sp.onclick = function() {
-            this.classList.add('revealed');
-            this.style.borderBottomColor = 'transparent';
-            playTTS(w.replace(/[.,'"]/g, ""));
-        };
-        c.appendChild(sp);
-    });
-}
-    function startStep(step) { currentMode = 'STEP' + step; currentIdx = 0; render(); }
+    function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
     function prevSentence() { if (currentIdx > 0) { currentIdx--; render(); } else { currentMode = 'INTRO'; render(); } }
-    function playTTS(text) { synth.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; synth.speak(utterance); }
+    function playTTS(t) { synth.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; synth.speak(u); }
     function toggleView(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
     window.onload = render;
 </script>
