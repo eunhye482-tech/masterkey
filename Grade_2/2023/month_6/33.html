@@ -128,16 +128,21 @@
         }
     }
 
-    function fillBlanks(s) {
-        const area = document.getElementById('blank-area');
-        s.split(' ').forEach(w => {
-            const span = document.createElement('span');
-            const cw = w.replace(/[.,'?!]/g, "").toLowerCase();
-            if(prepositions.includes(cw)) { span.innerText = w; span.style.margin="0 4px"; span.style.fontWeight="bold"; }
-            else { span.className = 'word-blank'; span.innerText = w; span.onclick = function() { this.classList.add('revealed'); playTTS(w.replace(/[.,'?!]/g, "")); }; }
-            area.appendChild(span);
-        });
-    }
+// 모든 단어를 예외 없이 100% 빈칸 처리하도록 변경된 로직
+function fillBlanks(s) {
+    const area = document.getElementById('blank-area');
+    s.split(' ').forEach(w => {
+        const span = document.createElement('span');
+        // 기존의 prepositions(전치사) 필터링 조건을 완전히 제거
+        span.className = 'word-blank'; 
+        span.innerText = w; 
+        span.onclick = function() { 
+            this.classList.add('revealed'); 
+            playTTS(w.replace(/[.,\'\"“”;:()?\-]/g, "")); 
+        };
+        area.appendChild(span);
+    });
+}
 
     function startStep(s) { currentMode = 'STEP' + s; currentIdx = 0; render(); }
     function nextSentence() { if (currentIdx < fullData.length - 1) { currentIdx++; render(); } else { currentMode = 'INTRO'; render(); } }
